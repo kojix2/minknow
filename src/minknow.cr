@@ -5,8 +5,6 @@ require "./generated/minknow_api/manager.pb.cr"
 require "./generated/minknow_api/manager.grpc.cr"
 
 module Minknow
-  VERSION = "0.1.0"
-
   class Error < Exception; end
 
   class MissingSecurePortError < Error; end
