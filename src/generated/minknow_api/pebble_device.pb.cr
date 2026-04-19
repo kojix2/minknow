@@ -63,7 +63,7 @@ module MinknowApi
           sub = Proto::Wire::Writer.new(buf)
           voltages.each { |item| sub.write_double(item) }
         end
-        if (_v = samples_per_entry)
+        if _v = samples_per_entry
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -161,16 +161,16 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = enabled)
+        if _v = enabled
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = periods)
+        if _v = periods
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = min_adc)
+        if _v = min_adc
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = max_adc)
+        if _v = max_adc
           w.write_embedded(4) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -207,8 +207,6 @@ module MinknowApi
           when 2 then REGEN_RANGE_0_667nA_STEP_0_133nA
           when 3 then REGEN_RANGE_1_0nA_STEP_0_2nA
           when 4 then REGEN_RANGE_2_0nA_STEP_0_4nA
-          else
-            nil
           end
         end
       end
@@ -235,8 +233,6 @@ module MinknowApi
           when 6 then LPF_139kHz_11_us
           when 7 then LPF_116kHz_13_us
           when 8 then LPF_99kHz_16_us
-          else
-            nil
           end
         end
       end
@@ -442,52 +438,52 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = sample_rate)
+        if _v = sample_rate
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = temperature_target)
+        if _v = temperature_target
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = reference_voltage)
+        if _v = reference_voltage
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = unblock_voltage)
+        if _v = unblock_voltage
           w.write_embedded(4) { |sub| _v.encode_partial(sub) }
         end
         if regen_current_range.raw != 0
           w.write_tag(5, Proto::WireType::VARINT)
           w.write_int32(regen_current_range.raw)
         end
-        if (_v = regen_current)
+        if _v = regen_current
           w.write_embedded(6) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = regen_current_voltage_clamp)
+        if _v = regen_current_voltage_clamp
           w.write_embedded(7) { |sub| _v.encode_partial(sub) }
         end
         if bias_voltage_setting_case == BiasVoltageSettingCase::BIAS_VOLTAGE
-          if (_v = bias_voltage)
+          if _v = bias_voltage
             w.write_embedded(8) { |sub| _v.encode_partial(sub) }
           end
         end
         if bias_voltage_setting_case == BiasVoltageSettingCase::BIAS_VOLTAGE_WAVEFORM
-          if (_v = bias_voltage_waveform)
+          if _v = bias_voltage_waveform
             w.write_embedded(9) { |sub| _v.encode_partial(sub) }
           end
         end
-        if (_v = int_capacitor)
+        if _v = int_capacitor
           w.write_embedded(10) { |sub| _v.encode_partial(sub) }
         end
         if lpf_time_constant.raw != 0
           w.write_tag(11, Proto::WireType::VARINT)
           w.write_int32(lpf_time_constant.raw)
         end
-        if (_v = timing_config)
+        if _v = timing_config
           w.write_embedded(12) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = power_save_active)
+        if _v = power_save_active
           w.write_embedded(13) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = overload_protection)
+        if _v = overload_protection
           w.write_embedded(14) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -562,7 +558,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = settings)
+        if _v = settings
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -623,7 +619,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = real_sample_rate)
+        if _v = real_sample_rate
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -719,7 +715,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = settings)
+        if _v = settings
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -751,8 +747,6 @@ module MinknowApi
           when 1 then WELL_1
           when 2 then WELL_2
           when 3 then OTHER
-          else
-            nil
           end
         end
       end
@@ -773,8 +767,6 @@ module MinknowApi
           when 3 then MEMBRANE_SIMULATION
           when 4 then REGEN
           when 5 then CALIBRATION
-          else
-            nil
           end
         end
       end
@@ -884,7 +876,7 @@ module MinknowApi
             w.write_tag(1, Proto::WireType::VARINT)
             w.write_uint32(key)
           end
-          if (_v = value)
+          if _v = value
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
           write_unknown_fields(w)
@@ -956,7 +948,7 @@ module MinknowApi
           entry.value = v
           w.write_embedded(1) { |sub| entry.encode_partial(sub) }
         end
-        if (_v = channel_default)
+        if _v = channel_default
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -1341,7 +1333,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = settings)
+        if _v = settings
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)

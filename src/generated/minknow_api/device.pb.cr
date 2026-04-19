@@ -22,8 +22,6 @@ module MinknowApi
         when 2 then FCCON_MINION_MK1
         when 3 then FCCON_FLONGLE
         when 4 then FCCON_PEBBLE
-        else
-          nil
         end
       end
     end
@@ -38,8 +36,6 @@ module MinknowApi
         when 0 then NOT_RUN
         when 1 then FAILED
         when 2 then SUCCEEDED
-        else
-          nil
         end
       end
     end
@@ -60,8 +56,6 @@ module MinknowApi
         when 3 then WELL_3
         when 4 then WELL_4
         when 5 then WELL_OTHER
-        else
-          nil
         end
       end
     end
@@ -236,8 +230,6 @@ module MinknowApi
           when 7 then MINION_MK1D
           when 8 then P2_INTEGRATED
           when 9 then PEBBLE
-          else
-            nil
           end
         end
       end
@@ -457,8 +449,6 @@ module MinknowApi
           case raw
           when 0 then DEVICE_DISCONNECTED
           when 1 then DEVICE_READY
-          else
-            nil
           end
         end
       end
@@ -1773,10 +1763,10 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::FIXED32)
           w.write_float(temperature)
         end
-        if (_v = wait_for_temperature)
+        if _v = wait_for_temperature
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = secondary_temperature_limits)
+        if _v = secondary_temperature_limits
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -1810,8 +1800,6 @@ module MinknowApi
           when 1 then REACHED_TEMPERATURE
           when 2 then TIMED_OUT_WAITING_FOR_TEMPERATURE
           when 3 then SECONDARY_TEMPERATURE_LIMITS_EXCEEDED
-          else
-            nil
           end
         end
       end
@@ -1960,10 +1948,10 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if (_v = asic_temperature)
+          if _v = asic_temperature
             w.write_embedded(1) { |sub| _v.encode_partial(sub) }
           end
-          if (_v = heatsink_temperature)
+          if _v = heatsink_temperature
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
           write_unknown_fields(w)
@@ -2037,10 +2025,10 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if (_v = flowcell_temperature)
+          if _v = flowcell_temperature
             w.write_embedded(1) { |sub| _v.encode_partial(sub) }
           end
-          if (_v = chamber_temperature)
+          if _v = chamber_temperature
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
           write_unknown_fields(w)
@@ -2126,13 +2114,13 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if (_v = asic_temperature)
+          if _v = asic_temperature
             w.write_embedded(1) { |sub| _v.encode_partial(sub) }
           end
-          if (_v = instrument_temperature)
+          if _v = instrument_temperature
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
-          if (_v = pchip_temperature)
+          if _v = pchip_temperature
             w.write_embedded(3) { |sub| _v.encode_partial(sub) }
           end
           write_unknown_fields(w)
@@ -2314,35 +2302,35 @@ module MinknowApi
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
         if temperature_case == TemperatureCase::MINION
-          if (_v = minion)
+          if _v = minion
             w.write_embedded(1) { |sub| _v.encode_partial(sub) }
           end
         end
         if temperature_case == TemperatureCase::PROMETHION
-          if (_v = promethion)
+          if _v = promethion
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
         end
         if temperature_case == TemperatureCase::PEBBLE
-          if (_v = pebble)
+          if _v = pebble
             w.write_embedded(6) { |sub| _v.encode_partial(sub) }
           end
         end
-        if (_v = target_temperature)
+        if _v = target_temperature
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
         if starting_temperature_case == StartingTemperatureCase::MINION_STARTING_TEMPERATURE
-          if (_v = minion_starting_temperature)
+          if _v = minion_starting_temperature
             w.write_embedded(4) { |sub| _v.encode_partial(sub) }
           end
         end
         if starting_temperature_case == StartingTemperatureCase::PROMETHION_STARTING_TEMPERATURE
-          if (_v = promethion_starting_temperature)
+          if _v = promethion_starting_temperature
             w.write_embedded(5) { |sub| _v.encode_partial(sub) }
           end
         end
         if starting_temperature_case == StartingTemperatureCase::PEBBLE_STARTING_TEMPERATURE
-          if (_v = pebble_starting_temperature)
+          if _v = pebble_starting_temperature
             w.write_embedded(7) { |sub| _v.encode_partial(sub) }
           end
         end
@@ -2776,7 +2764,7 @@ module MinknowApi
             w.write_tag(1, Proto::WireType::VARINT)
             w.write_uint32(key)
           end
-          if (_v = value)
+          if _v = value
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
           write_unknown_fields(w)
@@ -2929,7 +2917,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = channel_configuration)
+        if _v = channel_configuration
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -3064,16 +3052,16 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if (_v = general_threshold)
+          if _v = general_threshold
             w.write_embedded(1) { |sub| _v.encode_partial(sub) }
           end
-          if (_v = unblock_threshold)
+          if _v = unblock_threshold
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
-          if (_v = user_general_threshold)
+          if _v = user_general_threshold
             w.write_embedded(3) { |sub| _v.encode_partial(sub) }
           end
-          if (_v = user_unblock_threshold)
+          if _v = user_unblock_threshold
             w.write_embedded(4) { |sub| _v.encode_partial(sub) }
           end
           write_unknown_fields(w)
@@ -3156,10 +3144,10 @@ module MinknowApi
             w.write_tag(1, Proto::WireType::VARINT)
             w.write_bool(enabled)
           end
-          if (_v = software_min_adc)
+          if _v = software_min_adc
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
-          if (_v = software_max_adc)
+          if _v = software_max_adc
             w.write_embedded(3) { |sub| _v.encode_partial(sub) }
           end
           write_unknown_fields(w)
@@ -3241,10 +3229,10 @@ module MinknowApi
             w.write_tag(1, Proto::WireType::VARINT)
             w.write_bool(enabled)
           end
-          if (_v = user_threshold_min_pa)
+          if _v = user_threshold_min_pa
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
-          if (_v = user_threshold_max_pa)
+          if _v = user_threshold_max_pa
             w.write_embedded(3) { |sub| _v.encode_partial(sub) }
           end
           write_unknown_fields(w)
@@ -3328,13 +3316,13 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = thresholds)
+        if _v = thresholds
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = software_saturation)
+        if _v = software_saturation
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = user_threshold_saturation)
+        if _v = user_threshold_saturation
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -3397,7 +3385,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = settings)
+        if _v = settings
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -3528,7 +3516,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = settings)
+        if _v = settings
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)

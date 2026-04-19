@@ -63,7 +63,7 @@ module MinknowApi
             w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
             w.write_string(key)
           end
-          if (_v = value)
+          if _v = value
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
           write_unknown_fields(w)
@@ -200,10 +200,10 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(acquisition_run_id)
         end
-        if (_v = pause_criteria)
+        if _v = pause_criteria
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = stop_criteria)
+        if _v = stop_criteria
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -357,10 +357,10 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = pause_criteria)
+        if _v = pause_criteria
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = stop_criteria)
+        if _v = stop_criteria
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -472,10 +472,10 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if (_v = min_time)
+          if _v = min_time
             w.write_embedded(1) { |sub| _v.encode_partial(sub) }
           end
-          if (_v = max_time)
+          if _v = max_time
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
           write_unknown_fields(w)
@@ -570,12 +570,12 @@ module MinknowApi
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
           if value_case == ValueCase::NOT_ESTIMATED
-            if (_v = not_estimated)
+            if _v = not_estimated
               w.write_embedded(1) { |sub| _v.encode_partial(sub) }
             end
           end
           if value_case == ValueCase::ESTIMATED
-            if (_v = estimated)
+            if _v = estimated
               w.write_embedded(2) { |sub| _v.encode_partial(sub) }
             end
           end
@@ -649,7 +649,7 @@ module MinknowApi
               w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
               w.write_string(key)
             end
-            if (_v = value)
+            if _v = value
               w.write_embedded(2) { |sub| _v.encode_partial(sub) }
             end
             write_unknown_fields(w)
@@ -776,10 +776,10 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = pause_estimates)
+        if _v = pause_estimates
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = stop_estimates)
+        if _v = stop_estimates
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -812,8 +812,6 @@ module MinknowApi
           when 1 then Paused
           when 2 then Resumed
           when 3 then Stopped
-          else
-            nil
           end
         end
       end
@@ -994,10 +992,10 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = started)
+        if _v = started
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = criteria_updated)
+        if _v = criteria_updated
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -1180,12 +1178,12 @@ module MinknowApi
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
         if error_case == ErrorCase::INVALID_CRITERIA
-          if (_v = invalid_criteria)
+          if _v = invalid_criteria
             w.write_embedded(1) { |sub| _v.encode_partial(sub) }
           end
         end
         if error_case == ErrorCase::OTHER_ERROR
-          if (_v = other_error)
+          if _v = other_error
             w.write_embedded(15) { |sub| _v.encode_partial(sub) }
           end
         end
@@ -1303,19 +1301,19 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = estimated_time_remaining_update)
+        if _v = estimated_time_remaining_update
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = action_update)
+        if _v = action_update
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = script_update)
+        if _v = script_update
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = current_progress_update)
+        if _v = current_progress_update
           w.write_embedded(5) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = error_update)
+        if _v = error_update
           w.write_embedded(14) { |sub| _v.encode_partial(sub) }
         end
         other.each do |item|
@@ -1391,7 +1389,7 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(acquisition_run_id)
         end
-        if (_v = update)
+        if _v = update
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -1559,10 +1557,10 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::VARINT)
           w.write_uint64(idx)
         end
-        if (_v = time)
+        if _v = time
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = update)
+        if _v = update
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)

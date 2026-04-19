@@ -325,27 +325,27 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = flow_cell_id)
+        if _v = flow_cell_id
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(_v)
         end
-        if (_v = product_code)
+        if _v = product_code
           w.write_tag(2, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(_v)
         end
-        if (_v = asic_id_str)
+        if _v = asic_id_str
           w.write_tag(3, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(_v)
         end
-        if (_v = adapter_id)
+        if _v = adapter_id
           w.write_tag(4, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(_v)
         end
-        if (_v = use_count)
+        if _v = use_count
           w.write_tag(5, Proto::WireType::VARINT)
           w.write_uint32(_v)
         end
-        if (_v = flow_cell_partner)
+        if _v = flow_cell_partner
           w.write_tag(6, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(_v)
         end
@@ -471,18 +471,18 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = frame_loss_duration)
+        if _v = frame_loss_duration
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         if start_frame != 0
           w.write_tag(3, Proto::WireType::VARINT)
           w.write_uint64(start_frame)
         end
-        if (_v = start_section)
+        if _v = start_section
           w.write_tag(4, Proto::WireType::VARINT)
           w.write_uint64(_v)
         end
-        if (_v = repeats)
+        if _v = repeats
           w.write_tag(5, Proto::WireType::VARINT)
           w.write_uint64(_v)
         end

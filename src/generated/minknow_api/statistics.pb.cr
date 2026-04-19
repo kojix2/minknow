@@ -19,8 +19,6 @@ module MinknowApi
         when 0 then MinknowEvents
         when 1 then EstimatedBases
         when 2 then BasecalledBases
-        else
-          nil
         end
       end
     end
@@ -33,8 +31,6 @@ module MinknowApi
         case raw
         when 0 then ReadCounts
         when 1 then ReadLengths
-        else
-          nil
         end
       end
     end
@@ -47,8 +43,6 @@ module MinknowApi
         case raw
         when 0 then QScore_ReadCounts
         when 1 then QScore_BasecalledBases
-        else
-          nil
         end
       end
     end
@@ -61,8 +55,6 @@ module MinknowApi
         case raw
         when 0 then QAccuracy_ReadCounts
         when 1 then QAccuracy_BasecalledBases
-        else
-          nil
         end
       end
     end
@@ -150,11 +142,11 @@ module MinknowApi
         self.step = nil
       end
 
-      def has_end? : Bool
+      def has_end_? : Bool
         !end_.nil?
       end
 
-      def clear_end : Nil
+      def clear_end_ : Nil
         self.end_ = nil
       end
 
@@ -184,15 +176,15 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = start)
+        if _v = start
           w.write_tag(1, Proto::WireType::FIXED32)
           w.write_float(_v)
         end
-        if (_v = step)
+        if _v = step
           w.write_tag(2, Proto::WireType::FIXED32)
           w.write_float(_v)
         end
-        if (_v = end_)
+        if _v = end_
           w.write_tag(3, Proto::WireType::FIXED32)
           w.write_float(_v)
         end
@@ -262,7 +254,7 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(acquisition_run_id)
         end
-        if (_v = data_selection)
+        if _v = data_selection
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -434,7 +426,7 @@ module MinknowApi
             w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
             w.write_string(key)
           end
-          if (_v = value)
+          if _v = value
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
           write_unknown_fields(w)
@@ -710,7 +702,7 @@ module MinknowApi
           w.write_tag(3, Proto::WireType::VARINT)
           w.write_int32(read_length_type.raw)
         end
-        if (_v = data_selection)
+        if _v = data_selection
           w.write_embedded(4) { |sub| _v.encode_partial(sub) }
         end
         if bucket_value_type.raw != 0
@@ -724,7 +716,7 @@ module MinknowApi
         filtering.each do |item|
           w.write_embedded(7) { |sub| item.encode_partial(sub) }
         end
-        if (_v = split)
+        if _v = split
           w.write_embedded(8) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -1106,7 +1098,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = n50_data)
+        if _v = n50_data
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -1231,8 +1223,6 @@ module MinknowApi
           when 0 then All
           when 1 then Simplex
           when 2 then Duplex
-          else
-            nil
           end
         end
       end
@@ -1249,8 +1239,6 @@ module MinknowApi
           when 1 then Skipped
           when 2 then Failed
           when 3 then Passed
-          else
-            nil
           end
         end
       end
@@ -1368,7 +1356,7 @@ module MinknowApi
           w.write_tag(2, Proto::WireType::VARINT)
           w.write_uint32(poll_time_seconds)
         end
-        if (_v = data_selection)
+        if _v = data_selection
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
         if bucket_value_type.raw != 0
@@ -1586,7 +1574,7 @@ module MinknowApi
         bucket_ranges.each do |item|
           w.write_embedded(2) { |sub| item.encode_partial(sub) }
         end
-        if (_v = source_data_range)
+        if _v = source_data_range
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
         histogram_data.each do |item|
@@ -1622,8 +1610,6 @@ module MinknowApi
           when 0 then All
           when 1 then Simplex
           when 2 then Duplex
-          else
-            nil
           end
         end
       end
@@ -1640,8 +1626,6 @@ module MinknowApi
           when 1 then Skipped
           when 2 then Failed
           when 3 then Passed
-          else
-            nil
           end
         end
       end
@@ -1759,7 +1743,7 @@ module MinknowApi
           w.write_tag(2, Proto::WireType::VARINT)
           w.write_uint32(poll_time_seconds)
         end
-        if (_v = data_selection)
+        if _v = data_selection
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
         if bucket_value_type.raw != 0
@@ -1977,7 +1961,7 @@ module MinknowApi
         bucket_ranges.each do |item|
           w.write_embedded(2) { |sub| item.encode_partial(sub) }
         end
-        if (_v = source_data_range)
+        if _v = source_data_range
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
         histogram_data.each do |item|
@@ -2254,13 +2238,13 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(acquisition_run_id)
         end
-        if (_v = data_selection)
+        if _v = data_selection
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         filtering.each do |item|
           w.write_embedded(3) { |sub| item.encode_partial(sub) }
         end
-        if (_v = split)
+        if _v = split
           w.write_embedded(4) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -2331,7 +2315,7 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::VARINT)
           w.write_uint32(seconds)
         end
-        if (_v = yield_summary)
+        if _v = yield_summary
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -2520,7 +2504,7 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(acquisition_run_id)
         end
-        if (_v = data_selection)
+        if _v = data_selection
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -2589,7 +2573,7 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::VARINT)
           w.write_uint32(seconds)
         end
-        if (_v = writer_output)
+        if _v = writer_output
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -2812,7 +2796,7 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(acquisition_run_id)
         end
-        if (_v = data_selection)
+        if _v = data_selection
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -3144,21 +3128,21 @@ module MinknowApi
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
         if temperature_case == TemperatureCase::MINION
-          if (_v = minion)
+          if _v = minion
             w.write_embedded(1) { |sub| _v.encode_partial(sub) }
           end
         end
         if temperature_case == TemperatureCase::PROMETHION
-          if (_v = promethion)
+          if _v = promethion
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
         end
         if temperature_case == TemperatureCase::PEBBLE
-          if (_v = pebble)
+          if _v = pebble
             w.write_embedded(4) { |sub| _v.encode_partial(sub) }
           end
         end
-        if (_v = target_temperature)
+        if _v = target_temperature
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -3406,8 +3390,6 @@ module MinknowApi
           when 0 then QSCORE
           when 1 then BASES_PER_SECOND
           when 2 then ACCURACY
-          else
-            nil
           end
         end
       end

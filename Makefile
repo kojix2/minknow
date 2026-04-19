@@ -23,7 +23,6 @@ help:
 	@echo "                                      Generate selected proto files (no format)"
 	@echo "  make gen-fmt                        Format generated Crystal files"
 
-setup: lib/proto/shard.yml lib/grpc/shard.yml
 setup:
 	@if [[ ! -f lib/proto/shard.yml || ! -f lib/grpc/shard.yml || shard.yml -nt lib/proto/shard.yml || shard.lock -nt lib/proto/shard.yml || shard.yml -nt lib/grpc/shard.yml || shard.lock -nt lib/grpc/shard.yml ]]; then \
 		shards install; \

@@ -77,8 +77,6 @@ module MinknowApi
           when 2 then CLOCK_32MHz
           when 3 then CLOCK_16MHz
           when 4 then CLOCK_8MHz
-          else
-            nil
           end
         end
       end
@@ -154,8 +152,6 @@ module MinknowApi
           when 0 then GAIN_KEEP
           when 1 then GAIN_1
           when 2 then GAIN_5
-          else
-            nil
           end
         end
       end
@@ -170,8 +166,6 @@ module MinknowApi
           when 0 then DECIMATION_KEEP
           when 1 then DECIMATION_32
           when 2 then DECIMATION_64
-          else
-            nil
           end
         end
       end
@@ -194,8 +188,6 @@ module MinknowApi
           when 4 then LPF_40kHz
           when 5 then LPF_80kHz
           when 6 then LPF_DISABLED
-          else
-            nil
           end
         end
       end
@@ -210,8 +202,6 @@ module MinknowApi
           when 0 then NOC_KEEP
           when 1 then NOC_1_HS_CLOCK
           when 2 then NOC_2_HS_CLOCK
-          else
-            nil
           end
         end
       end
@@ -230,8 +220,6 @@ module MinknowApi
           when 2 then INTCAP_250fF
           when 3 then INTCAP_1pF
           when 4 then INTCAP_1_1875pF
-          else
-            nil
           end
         end
       end
@@ -250,8 +238,6 @@ module MinknowApi
           when 2 then FANSPEED_LOW
           when 3 then FANSPEED_HIGH
           when 4 then FANSPEED_MAX
-          else
-            nil
           end
         end
       end
@@ -294,8 +280,6 @@ module MinknowApi
           when 14 then TEST_CURRENT_VIA_WELL_4
           when 15 then GROUND_THROUGH_RESISTOR
           when 16 then GROUND
-          else
-            nil
           end
         end
       end
@@ -645,10 +629,10 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = bias_voltage)
+        if _v = bias_voltage
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = sampling_frequency)
+        if _v = sampling_frequency
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         channel_config.each do |k, v|
@@ -657,39 +641,39 @@ module MinknowApi
           entry.value = v
           w.write_embedded(3) { |sub| entry.encode_partial(sub) }
         end
-        if (_v = enable_temperature_control)
+        if _v = enable_temperature_control
           w.write_embedded(4) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = temperature_target)
+        if _v = temperature_target
           w.write_embedded(5) { |sub| _v.encode_partial(sub) }
         end
         if int_capacitor.raw != 0
           w.write_tag(6, Proto::WireType::VARINT)
           w.write_int32(int_capacitor.raw)
         end
-        if (_v = test_current)
+        if _v = test_current
           w.write_embedded(7) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = unblock_voltage)
+        if _v = unblock_voltage
           w.write_embedded(8) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = overcurrent_limit)
+        if _v = overcurrent_limit
           w.write_embedded(10) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = samples_to_reset)
+        if _v = samples_to_reset
           w.write_embedded(11) { |sub| _v.encode_partial(sub) }
         end
         if th_gain.raw != 0
           w.write_tag(12, Proto::WireType::VARINT)
           w.write_int32(th_gain.raw)
         end
-        if (_v = sinc_delay)
+        if _v = sinc_delay
           w.write_embedded(13) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = th_sample_time)
+        if _v = th_sample_time
           w.write_embedded(14) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = int_reset_time)
+        if _v = int_reset_time
           w.write_embedded(15) { |sub| _v.encode_partial(sub) }
         end
         if sinc_decimation.raw != 0
@@ -704,36 +688,36 @@ module MinknowApi
           w.write_tag(18, Proto::WireType::VARINT)
           w.write_int32(non_overlap_clock.raw)
         end
-        if (_v = bias_current)
+        if _v = bias_current
           w.write_embedded(19) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = compensation_capacitor)
+        if _v = compensation_capacitor
           w.write_embedded(20) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = sampling_frequency_params)
+        if _v = sampling_frequency_params
           w.write_embedded(21) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = enable_asic_power)
+        if _v = enable_asic_power
           w.write_embedded(22) { |sub| _v.encode_partial(sub) }
         end
         if fan_speed.raw != 0
           w.write_tag(23, Proto::WireType::VARINT)
           w.write_int32(fan_speed.raw)
         end
-        if (_v = allow_full_fan_stop)
+        if _v = allow_full_fan_stop
           w.write_embedded(24) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = enable_soft_temperature_control)
+        if _v = enable_soft_temperature_control
           w.write_embedded(25) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = enable_bias_voltage_lookup)
+        if _v = enable_bias_voltage_lookup
           w.write_embedded(26) { |sub| _v.encode_partial(sub) }
         end
         w.write_packed(27) do |buf|
           sub = Proto::Wire::Writer.new(buf)
           bias_voltage_lookup_table.each { |item| sub.write_int32(item) }
         end
-        if (_v = samples_per_lut)
+        if _v = samples_per_lut
           w.write_embedded(28) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -824,7 +808,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = settings)
+        if _v = settings
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         if channel_config_default.raw != 0
@@ -960,7 +944,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = settings)
+        if _v = settings
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)

@@ -20,8 +20,6 @@ module MinknowApi
           when 0 then NOTIFICATION_TYPE_INFO
           when 1 then NOTIFICATION_TYPE_WARNING
           when 2 then NOTIFICATION_TYPE_ERROR
-          else
-            nil
           end
         end
       end
@@ -225,17 +223,17 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(id)
         end
-        if (_v = created_at)
+        if _v = created_at
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = last_updated_at)
+        if _v = last_updated_at
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
         if read
           w.write_tag(4, Proto::WireType::VARINT)
           w.write_bool(read)
         end
-        if (_v = content)
+        if _v = content
           w.write_embedded(5) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -478,7 +476,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = content)
+        if _v = content
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -539,7 +537,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = notification)
+        if _v = notification
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)

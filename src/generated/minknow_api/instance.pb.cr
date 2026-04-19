@@ -59,8 +59,6 @@ module MinknowApi
           when 1 then STABLE
           when 2 then UNSTABLE
           when 3 then MODIFIED
-          else
-            nil
           end
         end
       end
@@ -79,8 +77,6 @@ module MinknowApi
           when 2 then PROD
           when 3 then Q_RELEASE
           when 4 then OND_RELEASE
-          else
-            nil
           end
         end
       end
@@ -217,7 +213,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = minknow)
+        if _v = minknow
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         if !bream.empty?
@@ -965,7 +961,7 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::VARINT)
           w.write_int32(device_state.raw)
         end
-        if (_v = device_info)
+        if _v = device_info
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -1357,42 +1353,42 @@ module MinknowApi
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
         if stream_value_case == StreamValueCase::DEVICE_INFO
-          if (_v = device_info)
+          if _v = device_info
             w.write_embedded(1) { |sub| _v.encode_partial(sub) }
           end
         end
         if stream_value_case == StreamValueCase::FLOW_CELL_INFO
-          if (_v = flow_cell_info)
+          if _v = flow_cell_info
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
         end
         if stream_value_case == StreamValueCase::PROTOCOL_RUN_INFO
-          if (_v = protocol_run_info)
+          if _v = protocol_run_info
             w.write_embedded(3) { |sub| _v.encode_partial(sub) }
           end
         end
         if stream_value_case == StreamValueCase::ACQUISITION_RUN_INFO
-          if (_v = acquisition_run_info)
+          if _v = acquisition_run_info
             w.write_embedded(4) { |sub| _v.encode_partial(sub) }
           end
         end
         if stream_value_case == StreamValueCase::FLOW_CELL_HEALTH
-          if (_v = flow_cell_health)
+          if _v = flow_cell_health
             w.write_embedded(5) { |sub| _v.encode_partial(sub) }
           end
         end
         if stream_value_case == StreamValueCase::YIELD_SUMMARY
-          if (_v = yield_summary)
+          if _v = yield_summary
             w.write_embedded(6) { |sub| _v.encode_partial(sub) }
           end
         end
         if stream_value_case == StreamValueCase::BASECALL_SPEED
-          if (_v = basecall_speed)
+          if _v = basecall_speed
             w.write_embedded(7) { |sub| _v.encode_partial(sub) }
           end
         end
         if stream_value_case == StreamValueCase::N50
-          if (_v = n50)
+          if _v = n50
             w.write_embedded(8) { |sub| _v.encode_partial(sub) }
           end
         end

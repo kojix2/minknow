@@ -7,802 +7,889 @@ require "../google/protobuf/wrappers.pb.cr"
 require "./rpc_options.pb.cr"
 
 module MinknowApi
-module PromethionDevice
-  class WaveformSettings
-    include Proto::Message
-
-    property voltages : Array(Float64) = [] of Float64
-    property frequency : Float64 = 0.0_f64
-    property precise_waveform : Bool = false
-
-    def self.decode_partial(io : IO) : self
-      msg = new
-      reader = Proto::Wire::Reader.new(io)
-      while tag = reader.read_tag
-        fn, wt = tag
-        case fn
-        when 1
-          if wt == Proto::WireType::LENGTH_DELIMITED
-            reader.read_packed_double { |v| msg.voltages << v }
-          else
-            msg.voltages << reader.read_double
-          end
-        when 2
-          msg.frequency = reader.read_double
-        when 3
-          msg.precise_waveform = reader.read_bool
-        else
-          msg.capture_unknown_field(reader, fn, wt)
-        end
-      end
-      msg
-    end
-
-    def self.decode(io : IO) : self
-      msg = decode_partial(io)
-      msg
-    end
-
-    def encode_partial(io : IO) : Nil
-      w = Proto::Wire::Writer.new(io)
-      w.write_packed(1) do |buf|
-        sub = Proto::Wire::Writer.new(buf)
-        voltages.each { |item| sub.write_double(item) }
-      end
-      if frequency.to_bits != 0
-        w.write_tag(2, Proto::WireType::FIXED64)
-        w.write_double(frequency)
-      end
-      if precise_waveform
-        w.write_tag(3, Proto::WireType::VARINT)
-        w.write_bool(precise_waveform)
-      end
-      write_unknown_fields(w)
-    end
-
-    def encode(io : IO) : Nil
-      encode_partial(io)
-    end
-
-    def ==(other : self) : Bool
-      return false unless voltages == other.voltages
-      return false unless frequency == other.frequency
-      return false unless precise_waveform == other.precise_waveform
-      true
-    end
-  end
-  class DeviceSettings
-    include Proto::Message
-
-    enum BiasVoltageSettingCase : Int32
-      NONE = 0
-      BIAS_VOLTAGE = 3
-      BIAS_VOLTAGE_WAVEFORM = 4
-    end
-
-    getter bias_voltage_setting_case : BiasVoltageSettingCase = BiasVoltageSettingCase::NONE
-
-    property sampling_frequency : Google::Protobuf::Int32Value? = nil
-    property ramp_voltage : Google::Protobuf::DoubleValue? = nil
-    getter bias_voltage : Float64 = 0.0_f64
-    getter bias_voltage_waveform : MinknowApi::PromethionDevice::WaveformSettings? = nil
-    property saturation_control_enabled : Google::Protobuf::BoolValue? = nil
-    property fast_calibration_enabled : Google::Protobuf::BoolValue? = nil
-    property temperature_target : Google::Protobuf::FloatValue? = nil
-    property timings : MinknowApi::PromethionDevice::TimingEnginePeriods? = nil
-
-    def clear_bias_voltage_setting : Nil
-      @bias_voltage = 0.0_f64
-      @bias_voltage_waveform = nil
-      @bias_voltage_setting_case = BiasVoltageSettingCase::NONE
-    end
-
-    def bias_voltage=(value : Float64) : Float64
-      clear_bias_voltage_setting
-      @bias_voltage = value
-      @bias_voltage_setting_case = BiasVoltageSettingCase::BIAS_VOLTAGE
-      value
-    end
-
-    def bias_voltage_waveform=(value : MinknowApi::PromethionDevice::WaveformSettings?) : MinknowApi::PromethionDevice::WaveformSettings?
-      if value.nil?
-        clear_bias_voltage_setting
-        return value
-      end
-      clear_bias_voltage_setting
-      @bias_voltage_waveform = value
-      @bias_voltage_setting_case = BiasVoltageSettingCase::BIAS_VOLTAGE_WAVEFORM
-      value
-    end
-
-    def has_sampling_frequency? : Bool
-      !sampling_frequency.nil?
-    end
-
-    def clear_sampling_frequency : Nil
-      self.sampling_frequency = nil
-    end
-
-    def has_ramp_voltage? : Bool
-      !ramp_voltage.nil?
-    end
-
-    def clear_ramp_voltage : Nil
-      self.ramp_voltage = nil
-    end
-
-    def has_saturation_control_enabled? : Bool
-      !saturation_control_enabled.nil?
-    end
-
-    def clear_saturation_control_enabled : Nil
-      self.saturation_control_enabled = nil
-    end
-
-    def has_fast_calibration_enabled? : Bool
-      !fast_calibration_enabled.nil?
-    end
-
-    def clear_fast_calibration_enabled : Nil
-      self.fast_calibration_enabled = nil
-    end
-
-    def has_temperature_target? : Bool
-      !temperature_target.nil?
-    end
-
-    def clear_temperature_target : Nil
-      self.temperature_target = nil
-    end
-
-    def has_timings? : Bool
-      !timings.nil?
-    end
-
-    def clear_timings : Nil
-      self.timings = nil
-    end
-
-    def validate_required! : Nil
-    end
-
-    def validate_required_deep! : Nil
-      validate_required!
-      sampling_frequency.try &.validate_required_deep!
-      ramp_voltage.try &.validate_required_deep!
-      bias_voltage_waveform.try &.validate_required_deep!
-      saturation_control_enabled.try &.validate_required_deep!
-      fast_calibration_enabled.try &.validate_required_deep!
-      temperature_target.try &.validate_required_deep!
-      timings.try &.validate_required_deep!
-    end
-
-
-    def self.decode_partial(io : IO) : self
-      msg = new
-      reader = Proto::Wire::Reader.new(io)
-      while tag = reader.read_tag
-        fn, wt = tag
-        case fn
-        when 1
-          msg.sampling_frequency = Google::Protobuf::Int32Value.decode_partial(reader.read_embedded)
-        when 2
-          msg.ramp_voltage = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
-        when 3
-          msg.bias_voltage = reader.read_double
-        when 4
-          msg.bias_voltage_waveform = MinknowApi::PromethionDevice::WaveformSettings.decode_partial(reader.read_embedded)
-        when 5
-          msg.saturation_control_enabled = Google::Protobuf::BoolValue.decode_partial(reader.read_embedded)
-        when 6
-          msg.fast_calibration_enabled = Google::Protobuf::BoolValue.decode_partial(reader.read_embedded)
-        when 7
-          msg.temperature_target = Google::Protobuf::FloatValue.decode_partial(reader.read_embedded)
-        when 8
-          msg.timings = MinknowApi::PromethionDevice::TimingEnginePeriods.decode_partial(reader.read_embedded)
-        else
-          msg.capture_unknown_field(reader, fn, wt)
-        end
-      end
-      msg
-    end
-
-    def self.decode(io : IO) : self
-      msg = decode_partial(io)
-      msg.validate_required_deep!
-      msg
-    end
-
-    def encode_partial(io : IO) : Nil
-      w = Proto::Wire::Writer.new(io)
-      if (_v = sampling_frequency)
-        w.write_embedded(1) { |sub| _v.encode_partial(sub) }
-      end
-      if (_v = ramp_voltage)
-        w.write_embedded(2) { |sub| _v.encode_partial(sub) }
-      end
-      if bias_voltage_setting_case == BiasVoltageSettingCase::BIAS_VOLTAGE
-        w.write_tag(3, Proto::WireType::FIXED64)
-        w.write_double(bias_voltage)
-      end
-      if bias_voltage_setting_case == BiasVoltageSettingCase::BIAS_VOLTAGE_WAVEFORM
-        if (_v = bias_voltage_waveform)
-          w.write_embedded(4) { |sub| _v.encode_partial(sub) }
-        end
-      end
-      if (_v = saturation_control_enabled)
-        w.write_embedded(5) { |sub| _v.encode_partial(sub) }
-      end
-      if (_v = fast_calibration_enabled)
-        w.write_embedded(6) { |sub| _v.encode_partial(sub) }
-      end
-      if (_v = temperature_target)
-        w.write_embedded(7) { |sub| _v.encode_partial(sub) }
-      end
-      if (_v = timings)
-        w.write_embedded(8) { |sub| _v.encode_partial(sub) }
-      end
-      write_unknown_fields(w)
-    end
-
-    def encode(io : IO) : Nil
-      validate_required_deep!
-      encode_partial(io)
-    end
-
-    def ==(other : self) : Bool
-      return false unless bias_voltage_setting_case == other.bias_voltage_setting_case
-      return false unless sampling_frequency == other.sampling_frequency
-      return false unless ramp_voltage == other.ramp_voltage
-      return false unless bias_voltage == other.bias_voltage
-      return false unless bias_voltage_waveform == other.bias_voltage_waveform
-      return false unless saturation_control_enabled == other.saturation_control_enabled
-      return false unless fast_calibration_enabled == other.fast_calibration_enabled
-      return false unless temperature_target == other.temperature_target
-      return false unless timings == other.timings
-      true
-    end
-  end
-  class TimingEnginePeriods
-    include Proto::Message
-
-    property RST1 : Google::Protobuf::UInt32Value? = nil
-    property RST1_CDS1 : Google::Protobuf::UInt32Value? = nil
-    property CDS1 : Google::Protobuf::UInt32Value? = nil
-    property CDS1_DATA : Google::Protobuf::UInt32Value? = nil
-    property DATA : Google::Protobuf::UInt32Value? = nil
-    property DATA_RST2 : Google::Protobuf::UInt32Value? = nil
-    property RST2 : Google::Protobuf::UInt32Value? = nil
-    property RST2_CDS2 : Google::Protobuf::UInt32Value? = nil
-    property CDS2 : Google::Protobuf::UInt32Value? = nil
-    property CDS2_SH : Google::Protobuf::UInt32Value? = nil
-    property SH : Google::Protobuf::UInt32Value? = nil
-    property SH_RST1 : Google::Protobuf::UInt32Value? = nil
-    property use_default_values : Google::Protobuf::BoolValue? = nil
-
-    def has_RST1? : Bool
-      !RST1.nil?
-    end
-
-    def clear_RST1 : Nil
-      self.RST1 = nil
-    end
-
-    def has_RST1_CDS1? : Bool
-      !RST1_CDS1.nil?
-    end
-
-    def clear_RST1_CDS1 : Nil
-      self.RST1_CDS1 = nil
-    end
-
-    def has_CDS1? : Bool
-      !CDS1.nil?
-    end
-
-    def clear_CDS1 : Nil
-      self.CDS1 = nil
-    end
-
-    def has_CDS1_DATA? : Bool
-      !CDS1_DATA.nil?
-    end
-
-    def clear_CDS1_DATA : Nil
-      self.CDS1_DATA = nil
-    end
-
-    def has_DATA? : Bool
-      !DATA.nil?
-    end
-
-    def clear_DATA : Nil
-      self.DATA = nil
-    end
-
-    def has_DATA_RST2? : Bool
-      !DATA_RST2.nil?
-    end
-
-    def clear_DATA_RST2 : Nil
-      self.DATA_RST2 = nil
-    end
-
-    def has_RST2? : Bool
-      !RST2.nil?
-    end
-
-    def clear_RST2 : Nil
-      self.RST2 = nil
-    end
-
-    def has_RST2_CDS2? : Bool
-      !RST2_CDS2.nil?
-    end
-
-    def clear_RST2_CDS2 : Nil
-      self.RST2_CDS2 = nil
-    end
-
-    def has_CDS2? : Bool
-      !CDS2.nil?
-    end
-
-    def clear_CDS2 : Nil
-      self.CDS2 = nil
-    end
-
-    def has_CDS2_SH? : Bool
-      !CDS2_SH.nil?
-    end
-
-    def clear_CDS2_SH : Nil
-      self.CDS2_SH = nil
-    end
-
-    def has_SH? : Bool
-      !SH.nil?
-    end
-
-    def clear_SH : Nil
-      self.SH = nil
-    end
-
-    def has_SH_RST1? : Bool
-      !SH_RST1.nil?
-    end
-
-    def clear_SH_RST1 : Nil
-      self.SH_RST1 = nil
-    end
-
-    def has_use_default_values? : Bool
-      !use_default_values.nil?
-    end
-
-    def clear_use_default_values : Nil
-      self.use_default_values = nil
-    end
-
-    def validate_required! : Nil
-    end
-
-    def validate_required_deep! : Nil
-      validate_required!
-      RST1.try &.validate_required_deep!
-      RST1_CDS1.try &.validate_required_deep!
-      CDS1.try &.validate_required_deep!
-      CDS1_DATA.try &.validate_required_deep!
-      DATA.try &.validate_required_deep!
-      DATA_RST2.try &.validate_required_deep!
-      RST2.try &.validate_required_deep!
-      RST2_CDS2.try &.validate_required_deep!
-      CDS2.try &.validate_required_deep!
-      CDS2_SH.try &.validate_required_deep!
-      SH.try &.validate_required_deep!
-      SH_RST1.try &.validate_required_deep!
-      use_default_values.try &.validate_required_deep!
-    end
-
-
-    def self.decode_partial(io : IO) : self
-      msg = new
-      reader = Proto::Wire::Reader.new(io)
-      while tag = reader.read_tag
-        fn, wt = tag
-        case fn
-        when 1
-          msg.RST1 = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
-        when 2
-          msg.RST1_CDS1 = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
-        when 3
-          msg.CDS1 = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
-        when 4
-          msg.CDS1_DATA = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
-        when 5
-          msg.DATA = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
-        when 6
-          msg.DATA_RST2 = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
-        when 7
-          msg.RST2 = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
-        when 8
-          msg.RST2_CDS2 = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
-        when 9
-          msg.CDS2 = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
-        when 10
-          msg.CDS2_SH = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
-        when 11
-          msg.SH = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
-        when 12
-          msg.SH_RST1 = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
-        when 13
-          msg.use_default_values = Google::Protobuf::BoolValue.decode_partial(reader.read_embedded)
-        else
-          msg.capture_unknown_field(reader, fn, wt)
-        end
-      end
-      msg
-    end
-
-    def self.decode(io : IO) : self
-      msg = decode_partial(io)
-      msg.validate_required_deep!
-      msg
-    end
-
-    def encode_partial(io : IO) : Nil
-      w = Proto::Wire::Writer.new(io)
-      if (_v = RST1)
-        w.write_embedded(1) { |sub| _v.encode_partial(sub) }
-      end
-      if (_v = RST1_CDS1)
-        w.write_embedded(2) { |sub| _v.encode_partial(sub) }
-      end
-      if (_v = CDS1)
-        w.write_embedded(3) { |sub| _v.encode_partial(sub) }
-      end
-      if (_v = CDS1_DATA)
-        w.write_embedded(4) { |sub| _v.encode_partial(sub) }
-      end
-      if (_v = DATA)
-        w.write_embedded(5) { |sub| _v.encode_partial(sub) }
-      end
-      if (_v = DATA_RST2)
-        w.write_embedded(6) { |sub| _v.encode_partial(sub) }
-      end
-      if (_v = RST2)
-        w.write_embedded(7) { |sub| _v.encode_partial(sub) }
-      end
-      if (_v = RST2_CDS2)
-        w.write_embedded(8) { |sub| _v.encode_partial(sub) }
-      end
-      if (_v = CDS2)
-        w.write_embedded(9) { |sub| _v.encode_partial(sub) }
-      end
-      if (_v = CDS2_SH)
-        w.write_embedded(10) { |sub| _v.encode_partial(sub) }
-      end
-      if (_v = SH)
-        w.write_embedded(11) { |sub| _v.encode_partial(sub) }
-      end
-      if (_v = SH_RST1)
-        w.write_embedded(12) { |sub| _v.encode_partial(sub) }
-      end
-      if (_v = use_default_values)
-        w.write_embedded(13) { |sub| _v.encode_partial(sub) }
-      end
-      write_unknown_fields(w)
-    end
-
-    def encode(io : IO) : Nil
-      validate_required_deep!
-      encode_partial(io)
-    end
-
-    def ==(other : self) : Bool
-      return false unless RST1 == other.RST1
-      return false unless RST1_CDS1 == other.RST1_CDS1
-      return false unless CDS1 == other.CDS1
-      return false unless CDS1_DATA == other.CDS1_DATA
-      return false unless DATA == other.DATA
-      return false unless DATA_RST2 == other.DATA_RST2
-      return false unless RST2 == other.RST2
-      return false unless RST2_CDS2 == other.RST2_CDS2
-      return false unless CDS2 == other.CDS2
-      return false unless CDS2_SH == other.CDS2_SH
-      return false unless SH == other.SH
-      return false unless SH_RST1 == other.SH_RST1
-      return false unless use_default_values == other.use_default_values
-      true
-    end
-  end
-  class PixelBlockSettings
-    include Proto::Message
-
-    property regen_current_voltage_clamp : Google::Protobuf::DoubleValue? = nil
-    property unblock_voltage : Google::Protobuf::DoubleValue? = nil
-
-    def has_regen_current_voltage_clamp? : Bool
-      !regen_current_voltage_clamp.nil?
-    end
-
-    def clear_regen_current_voltage_clamp : Nil
-      self.regen_current_voltage_clamp = nil
-    end
-
-    def has_unblock_voltage? : Bool
-      !unblock_voltage.nil?
-    end
-
-    def clear_unblock_voltage : Nil
-      self.unblock_voltage = nil
-    end
-
-    def validate_required! : Nil
-    end
-
-    def validate_required_deep! : Nil
-      validate_required!
-      regen_current_voltage_clamp.try &.validate_required_deep!
-      unblock_voltage.try &.validate_required_deep!
-    end
-
-
-    def self.decode_partial(io : IO) : self
-      msg = new
-      reader = Proto::Wire::Reader.new(io)
-      while tag = reader.read_tag
-        fn, wt = tag
-        case fn
-        when 1
-          msg.regen_current_voltage_clamp = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
-        when 2
-          msg.unblock_voltage = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
-        else
-          msg.capture_unknown_field(reader, fn, wt)
-        end
-      end
-      msg
-    end
-
-    def self.decode(io : IO) : self
-      msg = decode_partial(io)
-      msg.validate_required_deep!
-      msg
-    end
-
-    def encode_partial(io : IO) : Nil
-      w = Proto::Wire::Writer.new(io)
-      if (_v = regen_current_voltage_clamp)
-        w.write_embedded(1) { |sub| _v.encode_partial(sub) }
-      end
-      if (_v = unblock_voltage)
-        w.write_embedded(2) { |sub| _v.encode_partial(sub) }
-      end
-      write_unknown_fields(w)
-    end
-
-    def encode(io : IO) : Nil
-      validate_required_deep!
-      encode_partial(io)
-    end
-
-    def ==(other : self) : Bool
-      return false unless regen_current_voltage_clamp == other.regen_current_voltage_clamp
-      return false unless unblock_voltage == other.unblock_voltage
-      true
-    end
-  end
-  class PixelSettings
-    include Proto::Message
-
-    enum OverloadMode : Int32
-      OVERLOAD_KEEP = 0
-      OVERLOAD_SET_FLAG = 1
-      OVERLOAD_LATCH_OFF = 2
-      OVERLOAD_CLEAR = 3
-      OVERLOAD_LIMIT = 4
-
-      def self.from_raw?(raw : Int32) : self?
-        case raw
-        when 0 then OVERLOAD_KEEP
-        when 1 then OVERLOAD_SET_FLAG
-        when 2 then OVERLOAD_LATCH_OFF
-        when 3 then OVERLOAD_CLEAR
-        when 4 then OVERLOAD_LIMIT
-        else
-          nil
-        end
-      end
-    end
-
-    enum LowPassFilter : Int32
-      LPF_KEEP = 0
-      LPF_10kHz = 1
-      LPF_20kHz = 2
-      LPF_30kHz = 3
-      LPF_40kHz = 4
-      LPF_50kHz = 5
-      LPF_60kHz = 6
-      LPF_70kHz = 7
-      LPF_80kHz = 8
-
-      def self.from_raw?(raw : Int32) : self?
-        case raw
-        when 0 then LPF_KEEP
-        when 1 then LPF_10kHz
-        when 2 then LPF_20kHz
-        when 3 then LPF_30kHz
-        when 4 then LPF_40kHz
-        when 5 then LPF_50kHz
-        when 6 then LPF_60kHz
-        when 7 then LPF_70kHz
-        when 8 then LPF_80kHz
-        else
-          nil
-        end
-      end
-    end
-
-    enum GainMultiplier : Int32
-      INTGAIN_KEEP = 0
-      INTGAIN_2 = 1
-      INTGAIN_4 = 2
-
-      def self.from_raw?(raw : Int32) : self?
-        case raw
-        when 0 then INTGAIN_KEEP
-        when 1 then INTGAIN_2
-        when 2 then INTGAIN_4
-        else
-          nil
-        end
-      end
-    end
-
-    enum GainCapacitor : Int32
-      INTCAP_KEEP = 0
-      INTCAP_100fF = 1
-      INTCAP_200fF = 2
-      INTCAP_500fF = 3
-      INTCAP_600fF = 4
-
-      def self.from_raw?(raw : Int32) : self?
-        case raw
-        when 0 then INTCAP_KEEP
-        when 1 then INTCAP_100fF
-        when 2 then INTCAP_200fF
-        when 3 then INTCAP_500fF
-        when 4 then INTCAP_600fF
-        else
-          nil
-        end
-      end
-    end
-
-    enum CalibrationMode : Int32
-      CALIB_KEEP = 0
-      CALIB_FAST = 1
-      CALIB_SLOW = 2
-
-      def self.from_raw?(raw : Int32) : self?
-        case raw
-        when 0 then CALIB_KEEP
-        when 1 then CALIB_FAST
-        when 2 then CALIB_SLOW
-        else
-          nil
-        end
-      end
-    end
-
-    enum UnblockMode : Int32
-      UNBLOCK_KEEP = 0
-      UNBLOCK_ON = 1
-      UNBLOCK_OFF = 2
-
-      def self.from_raw?(raw : Int32) : self?
-        case raw
-        when 0 then UNBLOCK_KEEP
-        when 1 then UNBLOCK_ON
-        when 2 then UNBLOCK_OFF
-        else
-          nil
-        end
-      end
-    end
-
-    enum RegenerationCurrent : Int32
-      REGEN_KEEP = 0
-      REGEN_0pA = 1
-      REGEN_50pA = 2
-      REGEN_100pA = 3
-      REGEN_150pA = 4
-      REGEN_400pA = 5
-      REGEN_450pA = 6
-      REGEN_500pA = 7
-      REGEN_550pA = 8
-      REGEN_800pA = 9
-      REGEN_850pA = 10
-      REGEN_900pA = 11
-      REGEN_950pA = 12
-      REGEN_1200pA = 13
-      REGEN_1250pA = 14
-      REGEN_1300pA = 15
-      REGEN_1350pA = 16
-
-      def self.from_raw?(raw : Int32) : self?
-        case raw
-        when 0 then REGEN_KEEP
-        when 1 then REGEN_0pA
-        when 2 then REGEN_50pA
-        when 3 then REGEN_100pA
-        when 4 then REGEN_150pA
-        when 5 then REGEN_400pA
-        when 6 then REGEN_450pA
-        when 7 then REGEN_500pA
-        when 8 then REGEN_550pA
-        when 9 then REGEN_800pA
-        when 10 then REGEN_850pA
-        when 11 then REGEN_900pA
-        when 12 then REGEN_950pA
-        when 13 then REGEN_1200pA
-        when 14 then REGEN_1250pA
-        when 15 then REGEN_1300pA
-        when 16 then REGEN_1350pA
-        else
-          nil
-        end
-      end
-    end
-
-    enum BiasCurrent : Int32
-      BIAS_KEEP = 0
-      BIAS_OFF = 1
-      BIAS_LOW = 2
-      BIAS_HIGH = 3
-      BIAS_NOMINAL = 4
-
-      def self.from_raw?(raw : Int32) : self?
-        case raw
-        when 0 then BIAS_KEEP
-        when 1 then BIAS_OFF
-        when 2 then BIAS_LOW
-        when 3 then BIAS_HIGH
-        when 4 then BIAS_NOMINAL
-        else
-          nil
-        end
-      end
-    end
-
-    class InputWell
+  module PromethionDevice
+    class WaveformSettings
       include Proto::Message
 
-      enum InputConfig : Int32
-        NONE = 0
-        WELL_1 = 1
-        WELL_2 = 2
-        WELL_3 = 3
-        WELL_4 = 4
-        ALL = 5
+      property voltages : Array(Float64) = [] of Float64
+      property frequency : Float64 = 0.0_f64
+      property precise_waveform : Bool = false
+
+      def self.decode_partial(io : IO) : self
+        msg = new
+        reader = Proto::Wire::Reader.new(io)
+        while tag = reader.read_tag
+          fn, wt = tag
+          case fn
+          when 1
+            if wt == Proto::WireType::LENGTH_DELIMITED
+              reader.read_packed_double { |v| msg.voltages << v }
+            else
+              msg.voltages << reader.read_double
+            end
+          when 2
+            msg.frequency = reader.read_double
+          when 3
+            msg.precise_waveform = reader.read_bool
+          else
+            msg.capture_unknown_field(reader, fn, wt)
+          end
+        end
+        msg
+      end
+
+      def self.decode(io : IO) : self
+        msg = decode_partial(io)
+        msg
+      end
+
+      def encode_partial(io : IO) : Nil
+        w = Proto::Wire::Writer.new(io)
+        w.write_packed(1) do |buf|
+          sub = Proto::Wire::Writer.new(buf)
+          voltages.each { |item| sub.write_double(item) }
+        end
+        if frequency.to_bits != 0
+          w.write_tag(2, Proto::WireType::FIXED64)
+          w.write_double(frequency)
+        end
+        if precise_waveform
+          w.write_tag(3, Proto::WireType::VARINT)
+          w.write_bool(precise_waveform)
+        end
+        write_unknown_fields(w)
+      end
+
+      def encode(io : IO) : Nil
+        encode_partial(io)
+      end
+
+      def ==(other : self) : Bool
+        return false unless voltages == other.voltages
+        return false unless frequency == other.frequency
+        return false unless precise_waveform == other.precise_waveform
+        true
+      end
+    end
+
+    class DeviceSettings
+      include Proto::Message
+
+      enum BiasVoltageSettingCase : Int32
+        NONE                  = 0
+        BIAS_VOLTAGE          = 3
+        BIAS_VOLTAGE_WAVEFORM = 4
+      end
+
+      getter bias_voltage_setting_case : BiasVoltageSettingCase = BiasVoltageSettingCase::NONE
+
+      property sampling_frequency : Google::Protobuf::Int32Value? = nil
+      property ramp_voltage : Google::Protobuf::DoubleValue? = nil
+      getter bias_voltage : Float64 = 0.0_f64
+      getter bias_voltage_waveform : MinknowApi::PromethionDevice::WaveformSettings? = nil
+      property saturation_control_enabled : Google::Protobuf::BoolValue? = nil
+      property fast_calibration_enabled : Google::Protobuf::BoolValue? = nil
+      property temperature_target : Google::Protobuf::FloatValue? = nil
+      property timings : MinknowApi::PromethionDevice::TimingEnginePeriods? = nil
+
+      def clear_bias_voltage_setting : Nil
+        @bias_voltage = 0.0_f64
+        @bias_voltage_waveform = nil
+        @bias_voltage_setting_case = BiasVoltageSettingCase::NONE
+      end
+
+      def bias_voltage=(value : Float64) : Float64
+        clear_bias_voltage_setting
+        @bias_voltage = value
+        @bias_voltage_setting_case = BiasVoltageSettingCase::BIAS_VOLTAGE
+        value
+      end
+
+      def bias_voltage_waveform=(value : MinknowApi::PromethionDevice::WaveformSettings?) : MinknowApi::PromethionDevice::WaveformSettings?
+        if value.nil?
+          clear_bias_voltage_setting
+          return value
+        end
+        clear_bias_voltage_setting
+        @bias_voltage_waveform = value
+        @bias_voltage_setting_case = BiasVoltageSettingCase::BIAS_VOLTAGE_WAVEFORM
+        value
+      end
+
+      def has_sampling_frequency? : Bool
+        !sampling_frequency.nil?
+      end
+
+      def clear_sampling_frequency : Nil
+        self.sampling_frequency = nil
+      end
+
+      def has_ramp_voltage? : Bool
+        !ramp_voltage.nil?
+      end
+
+      def clear_ramp_voltage : Nil
+        self.ramp_voltage = nil
+      end
+
+      def has_saturation_control_enabled? : Bool
+        !saturation_control_enabled.nil?
+      end
+
+      def clear_saturation_control_enabled : Nil
+        self.saturation_control_enabled = nil
+      end
+
+      def has_fast_calibration_enabled? : Bool
+        !fast_calibration_enabled.nil?
+      end
+
+      def clear_fast_calibration_enabled : Nil
+        self.fast_calibration_enabled = nil
+      end
+
+      def has_temperature_target? : Bool
+        !temperature_target.nil?
+      end
+
+      def clear_temperature_target : Nil
+        self.temperature_target = nil
+      end
+
+      def has_timings? : Bool
+        !timings.nil?
+      end
+
+      def clear_timings : Nil
+        self.timings = nil
+      end
+
+      def validate_required! : Nil
+      end
+
+      def validate_required_deep! : Nil
+        validate_required!
+        sampling_frequency.try &.validate_required_deep!
+        ramp_voltage.try &.validate_required_deep!
+        bias_voltage_waveform.try &.validate_required_deep!
+        saturation_control_enabled.try &.validate_required_deep!
+        fast_calibration_enabled.try &.validate_required_deep!
+        temperature_target.try &.validate_required_deep!
+        timings.try &.validate_required_deep!
+      end
+
+      def self.decode_partial(io : IO) : self
+        msg = new
+        reader = Proto::Wire::Reader.new(io)
+        while tag = reader.read_tag
+          fn, wt = tag
+          case fn
+          when 1
+            msg.sampling_frequency = Google::Protobuf::Int32Value.decode_partial(reader.read_embedded)
+          when 2
+            msg.ramp_voltage = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
+          when 3
+            msg.bias_voltage = reader.read_double
+          when 4
+            msg.bias_voltage_waveform = MinknowApi::PromethionDevice::WaveformSettings.decode_partial(reader.read_embedded)
+          when 5
+            msg.saturation_control_enabled = Google::Protobuf::BoolValue.decode_partial(reader.read_embedded)
+          when 6
+            msg.fast_calibration_enabled = Google::Protobuf::BoolValue.decode_partial(reader.read_embedded)
+          when 7
+            msg.temperature_target = Google::Protobuf::FloatValue.decode_partial(reader.read_embedded)
+          when 8
+            msg.timings = MinknowApi::PromethionDevice::TimingEnginePeriods.decode_partial(reader.read_embedded)
+          else
+            msg.capture_unknown_field(reader, fn, wt)
+          end
+        end
+        msg
+      end
+
+      def self.decode(io : IO) : self
+        msg = decode_partial(io)
+        msg.validate_required_deep!
+        msg
+      end
+
+      def encode_partial(io : IO) : Nil
+        w = Proto::Wire::Writer.new(io)
+        if _v = sampling_frequency
+          w.write_embedded(1) { |sub| _v.encode_partial(sub) }
+        end
+        if _v = ramp_voltage
+          w.write_embedded(2) { |sub| _v.encode_partial(sub) }
+        end
+        if bias_voltage_setting_case == BiasVoltageSettingCase::BIAS_VOLTAGE
+          w.write_tag(3, Proto::WireType::FIXED64)
+          w.write_double(bias_voltage)
+        end
+        if bias_voltage_setting_case == BiasVoltageSettingCase::BIAS_VOLTAGE_WAVEFORM
+          if _v = bias_voltage_waveform
+            w.write_embedded(4) { |sub| _v.encode_partial(sub) }
+          end
+        end
+        if _v = saturation_control_enabled
+          w.write_embedded(5) { |sub| _v.encode_partial(sub) }
+        end
+        if _v = fast_calibration_enabled
+          w.write_embedded(6) { |sub| _v.encode_partial(sub) }
+        end
+        if _v = temperature_target
+          w.write_embedded(7) { |sub| _v.encode_partial(sub) }
+        end
+        if _v = timings
+          w.write_embedded(8) { |sub| _v.encode_partial(sub) }
+        end
+        write_unknown_fields(w)
+      end
+
+      def encode(io : IO) : Nil
+        validate_required_deep!
+        encode_partial(io)
+      end
+
+      def ==(other : self) : Bool
+        return false unless bias_voltage_setting_case == other.bias_voltage_setting_case
+        return false unless sampling_frequency == other.sampling_frequency
+        return false unless ramp_voltage == other.ramp_voltage
+        return false unless bias_voltage == other.bias_voltage
+        return false unless bias_voltage_waveform == other.bias_voltage_waveform
+        return false unless saturation_control_enabled == other.saturation_control_enabled
+        return false unless fast_calibration_enabled == other.fast_calibration_enabled
+        return false unless temperature_target == other.temperature_target
+        return false unless timings == other.timings
+        true
+      end
+    end
+
+    class TimingEnginePeriods
+      include Proto::Message
+
+      property rst1 : Google::Protobuf::UInt32Value? = nil
+      property rst1_cds1 : Google::Protobuf::UInt32Value? = nil
+      property cds1 : Google::Protobuf::UInt32Value? = nil
+      property cds1_data : Google::Protobuf::UInt32Value? = nil
+      property data : Google::Protobuf::UInt32Value? = nil
+      property data_rst2 : Google::Protobuf::UInt32Value? = nil
+      property rst2 : Google::Protobuf::UInt32Value? = nil
+      property rst2_cds2 : Google::Protobuf::UInt32Value? = nil
+      property cds2 : Google::Protobuf::UInt32Value? = nil
+      property cds2_sh : Google::Protobuf::UInt32Value? = nil
+      property sh : Google::Protobuf::UInt32Value? = nil
+      property sh_rst1 : Google::Protobuf::UInt32Value? = nil
+      property use_default_values : Google::Protobuf::BoolValue? = nil
+
+      def has_rst1? : Bool
+        !rst1.nil?
+      end
+
+      def clear_rst1 : Nil
+        self.rst1 = nil
+      end
+
+      def has_rst1_cds1? : Bool
+        !rst1_cds1.nil?
+      end
+
+      def clear_rst1_cds1 : Nil
+        self.rst1_cds1 = nil
+      end
+
+      def has_cds1? : Bool
+        !cds1.nil?
+      end
+
+      def clear_cds1 : Nil
+        self.cds1 = nil
+      end
+
+      def has_cds1_data? : Bool
+        !cds1_data.nil?
+      end
+
+      def clear_cds1_data : Nil
+        self.cds1_data = nil
+      end
+
+      def has_data? : Bool
+        !data.nil?
+      end
+
+      def clear_data : Nil
+        self.data = nil
+      end
+
+      def has_data_rst2? : Bool
+        !data_rst2.nil?
+      end
+
+      def clear_data_rst2 : Nil
+        self.data_rst2 = nil
+      end
+
+      def has_rst2? : Bool
+        !rst2.nil?
+      end
+
+      def clear_rst2 : Nil
+        self.rst2 = nil
+      end
+
+      def has_rst2_cds2? : Bool
+        !rst2_cds2.nil?
+      end
+
+      def clear_rst2_cds2 : Nil
+        self.rst2_cds2 = nil
+      end
+
+      def has_cds2? : Bool
+        !cds2.nil?
+      end
+
+      def clear_cds2 : Nil
+        self.cds2 = nil
+      end
+
+      def has_cds2_sh? : Bool
+        !cds2_sh.nil?
+      end
+
+      def clear_cds2_sh : Nil
+        self.cds2_sh = nil
+      end
+
+      def has_sh? : Bool
+        !sh.nil?
+      end
+
+      def clear_sh : Nil
+        self.sh = nil
+      end
+
+      def has_sh_rst1? : Bool
+        !sh_rst1.nil?
+      end
+
+      def clear_sh_rst1 : Nil
+        self.sh_rst1 = nil
+      end
+
+      def has_use_default_values? : Bool
+        !use_default_values.nil?
+      end
+
+      def clear_use_default_values : Nil
+        self.use_default_values = nil
+      end
+
+      def validate_required! : Nil
+      end
+
+      def validate_required_deep! : Nil
+        validate_required!
+        rst1.try &.validate_required_deep!
+        rst1_cds1.try &.validate_required_deep!
+        cds1.try &.validate_required_deep!
+        cds1_data.try &.validate_required_deep!
+        data.try &.validate_required_deep!
+        data_rst2.try &.validate_required_deep!
+        rst2.try &.validate_required_deep!
+        rst2_cds2.try &.validate_required_deep!
+        cds2.try &.validate_required_deep!
+        cds2_sh.try &.validate_required_deep!
+        sh.try &.validate_required_deep!
+        sh_rst1.try &.validate_required_deep!
+        use_default_values.try &.validate_required_deep!
+      end
+
+      def self.decode_partial(io : IO) : self
+        msg = new
+        reader = Proto::Wire::Reader.new(io)
+        while tag = reader.read_tag
+          fn, wt = tag
+          case fn
+          when 1
+            msg.rst1 = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
+          when 2
+            msg.rst1_cds1 = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
+          when 3
+            msg.cds1 = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
+          when 4
+            msg.cds1_data = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
+          when 5
+            msg.data = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
+          when 6
+            msg.data_rst2 = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
+          when 7
+            msg.rst2 = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
+          when 8
+            msg.rst2_cds2 = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
+          when 9
+            msg.cds2 = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
+          when 10
+            msg.cds2_sh = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
+          when 11
+            msg.sh = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
+          when 12
+            msg.sh_rst1 = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
+          when 13
+            msg.use_default_values = Google::Protobuf::BoolValue.decode_partial(reader.read_embedded)
+          else
+            msg.capture_unknown_field(reader, fn, wt)
+          end
+        end
+        msg
+      end
+
+      def self.decode(io : IO) : self
+        msg = decode_partial(io)
+        msg.validate_required_deep!
+        msg
+      end
+
+      def encode_partial(io : IO) : Nil
+        w = Proto::Wire::Writer.new(io)
+        if _v = rst1
+          w.write_embedded(1) { |sub| _v.encode_partial(sub) }
+        end
+        if _v = rst1_cds1
+          w.write_embedded(2) { |sub| _v.encode_partial(sub) }
+        end
+        if _v = cds1
+          w.write_embedded(3) { |sub| _v.encode_partial(sub) }
+        end
+        if _v = cds1_data
+          w.write_embedded(4) { |sub| _v.encode_partial(sub) }
+        end
+        if _v = data
+          w.write_embedded(5) { |sub| _v.encode_partial(sub) }
+        end
+        if _v = data_rst2
+          w.write_embedded(6) { |sub| _v.encode_partial(sub) }
+        end
+        if _v = rst2
+          w.write_embedded(7) { |sub| _v.encode_partial(sub) }
+        end
+        if _v = rst2_cds2
+          w.write_embedded(8) { |sub| _v.encode_partial(sub) }
+        end
+        if _v = cds2
+          w.write_embedded(9) { |sub| _v.encode_partial(sub) }
+        end
+        if _v = cds2_sh
+          w.write_embedded(10) { |sub| _v.encode_partial(sub) }
+        end
+        if _v = sh
+          w.write_embedded(11) { |sub| _v.encode_partial(sub) }
+        end
+        if _v = sh_rst1
+          w.write_embedded(12) { |sub| _v.encode_partial(sub) }
+        end
+        if _v = use_default_values
+          w.write_embedded(13) { |sub| _v.encode_partial(sub) }
+        end
+        write_unknown_fields(w)
+      end
+
+      def encode(io : IO) : Nil
+        validate_required_deep!
+        encode_partial(io)
+      end
+
+      def ==(other : self) : Bool
+        return false unless rst1 == other.rst1
+        return false unless rst1_cds1 == other.rst1_cds1
+        return false unless cds1 == other.cds1
+        return false unless cds1_data == other.cds1_data
+        return false unless data == other.data
+        return false unless data_rst2 == other.data_rst2
+        return false unless rst2 == other.rst2
+        return false unless rst2_cds2 == other.rst2_cds2
+        return false unless cds2 == other.cds2
+        return false unless cds2_sh == other.cds2_sh
+        return false unless sh == other.sh
+        return false unless sh_rst1 == other.sh_rst1
+        return false unless use_default_values == other.use_default_values
+        true
+      end
+    end
+
+    class PixelBlockSettings
+      include Proto::Message
+
+      property regen_current_voltage_clamp : Google::Protobuf::DoubleValue? = nil
+      property unblock_voltage : Google::Protobuf::DoubleValue? = nil
+
+      def has_regen_current_voltage_clamp? : Bool
+        !regen_current_voltage_clamp.nil?
+      end
+
+      def clear_regen_current_voltage_clamp : Nil
+        self.regen_current_voltage_clamp = nil
+      end
+
+      def has_unblock_voltage? : Bool
+        !unblock_voltage.nil?
+      end
+
+      def clear_unblock_voltage : Nil
+        self.unblock_voltage = nil
+      end
+
+      def validate_required! : Nil
+      end
+
+      def validate_required_deep! : Nil
+        validate_required!
+        regen_current_voltage_clamp.try &.validate_required_deep!
+        unblock_voltage.try &.validate_required_deep!
+      end
+
+      def self.decode_partial(io : IO) : self
+        msg = new
+        reader = Proto::Wire::Reader.new(io)
+        while tag = reader.read_tag
+          fn, wt = tag
+          case fn
+          when 1
+            msg.regen_current_voltage_clamp = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
+          when 2
+            msg.unblock_voltage = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
+          else
+            msg.capture_unknown_field(reader, fn, wt)
+          end
+        end
+        msg
+      end
+
+      def self.decode(io : IO) : self
+        msg = decode_partial(io)
+        msg.validate_required_deep!
+        msg
+      end
+
+      def encode_partial(io : IO) : Nil
+        w = Proto::Wire::Writer.new(io)
+        if _v = regen_current_voltage_clamp
+          w.write_embedded(1) { |sub| _v.encode_partial(sub) }
+        end
+        if _v = unblock_voltage
+          w.write_embedded(2) { |sub| _v.encode_partial(sub) }
+        end
+        write_unknown_fields(w)
+      end
+
+      def encode(io : IO) : Nil
+        validate_required_deep!
+        encode_partial(io)
+      end
+
+      def ==(other : self) : Bool
+        return false unless regen_current_voltage_clamp == other.regen_current_voltage_clamp
+        return false unless unblock_voltage == other.unblock_voltage
+        true
+      end
+    end
+
+    class PixelSettings
+      include Proto::Message
+
+      enum OverloadMode : Int32
+        OVERLOAD_KEEP      = 0
+        OVERLOAD_SET_FLAG  = 1
+        OVERLOAD_LATCH_OFF = 2
+        OVERLOAD_CLEAR     = 3
+        OVERLOAD_LIMIT     = 4
 
         def self.from_raw?(raw : Int32) : self?
           case raw
-          when 0 then NONE
-          when 1 then WELL_1
-          when 2 then WELL_2
-          when 3 then WELL_3
-          when 4 then WELL_4
-          when 5 then ALL
-          else
-            nil
+          when 0 then OVERLOAD_KEEP
+          when 1 then OVERLOAD_SET_FLAG
+          when 2 then OVERLOAD_LATCH_OFF
+          when 3 then OVERLOAD_CLEAR
+          when 4 then OVERLOAD_LIMIT
           end
         end
       end
 
-      property input_well : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::InputWell::InputConfig) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::InputWell::InputConfig).new(0)
-      property regeneration_well : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::InputWell::InputConfig) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::InputWell::InputConfig).new(0)
+      enum LowPassFilter : Int32
+        LPF_KEEP  = 0
+        LPF_10kHz = 1
+        LPF_20kHz = 2
+        LPF_30kHz = 3
+        LPF_40kHz = 4
+        LPF_50kHz = 5
+        LPF_60kHz = 6
+        LPF_70kHz = 7
+        LPF_80kHz = 8
+
+        def self.from_raw?(raw : Int32) : self?
+          case raw
+          when 0 then LPF_KEEP
+          when 1 then LPF_10kHz
+          when 2 then LPF_20kHz
+          when 3 then LPF_30kHz
+          when 4 then LPF_40kHz
+          when 5 then LPF_50kHz
+          when 6 then LPF_60kHz
+          when 7 then LPF_70kHz
+          when 8 then LPF_80kHz
+          end
+        end
+      end
+
+      enum GainMultiplier : Int32
+        INTGAIN_KEEP = 0
+        INTGAIN_2    = 1
+        INTGAIN_4    = 2
+
+        def self.from_raw?(raw : Int32) : self?
+          case raw
+          when 0 then INTGAIN_KEEP
+          when 1 then INTGAIN_2
+          when 2 then INTGAIN_4
+          end
+        end
+      end
+
+      enum GainCapacitor : Int32
+        INTCAP_KEEP  = 0
+        INTCAP_100fF = 1
+        INTCAP_200fF = 2
+        INTCAP_500fF = 3
+        INTCAP_600fF = 4
+
+        def self.from_raw?(raw : Int32) : self?
+          case raw
+          when 0 then INTCAP_KEEP
+          when 1 then INTCAP_100fF
+          when 2 then INTCAP_200fF
+          when 3 then INTCAP_500fF
+          when 4 then INTCAP_600fF
+          end
+        end
+      end
+
+      enum CalibrationMode : Int32
+        CALIB_KEEP = 0
+        CALIB_FAST = 1
+        CALIB_SLOW = 2
+
+        def self.from_raw?(raw : Int32) : self?
+          case raw
+          when 0 then CALIB_KEEP
+          when 1 then CALIB_FAST
+          when 2 then CALIB_SLOW
+          end
+        end
+      end
+
+      enum UnblockMode : Int32
+        UNBLOCK_KEEP = 0
+        UNBLOCK_ON   = 1
+        UNBLOCK_OFF  = 2
+
+        def self.from_raw?(raw : Int32) : self?
+          case raw
+          when 0 then UNBLOCK_KEEP
+          when 1 then UNBLOCK_ON
+          when 2 then UNBLOCK_OFF
+          end
+        end
+      end
+
+      enum RegenerationCurrent : Int32
+        REGEN_KEEP   =  0
+        REGEN_0pA    =  1
+        REGEN_50pA   =  2
+        REGEN_100pA  =  3
+        REGEN_150pA  =  4
+        REGEN_400pA  =  5
+        REGEN_450pA  =  6
+        REGEN_500pA  =  7
+        REGEN_550pA  =  8
+        REGEN_800pA  =  9
+        REGEN_850pA  = 10
+        REGEN_900pA  = 11
+        REGEN_950pA  = 12
+        REGEN_1200pA = 13
+        REGEN_1250pA = 14
+        REGEN_1300pA = 15
+        REGEN_1350pA = 16
+
+        def self.from_raw?(raw : Int32) : self?
+          case raw
+          when  0 then REGEN_KEEP
+          when  1 then REGEN_0pA
+          when  2 then REGEN_50pA
+          when  3 then REGEN_100pA
+          when  4 then REGEN_150pA
+          when  5 then REGEN_400pA
+          when  6 then REGEN_450pA
+          when  7 then REGEN_500pA
+          when  8 then REGEN_550pA
+          when  9 then REGEN_800pA
+          when 10 then REGEN_850pA
+          when 11 then REGEN_900pA
+          when 12 then REGEN_950pA
+          when 13 then REGEN_1200pA
+          when 14 then REGEN_1250pA
+          when 15 then REGEN_1300pA
+          when 16 then REGEN_1350pA
+          end
+        end
+      end
+
+      enum BiasCurrent : Int32
+        BIAS_KEEP    = 0
+        BIAS_OFF     = 1
+        BIAS_LOW     = 2
+        BIAS_HIGH    = 3
+        BIAS_NOMINAL = 4
+
+        def self.from_raw?(raw : Int32) : self?
+          case raw
+          when 0 then BIAS_KEEP
+          when 1 then BIAS_OFF
+          when 2 then BIAS_LOW
+          when 3 then BIAS_HIGH
+          when 4 then BIAS_NOMINAL
+          end
+        end
+      end
+
+      class InputWell
+        include Proto::Message
+
+        enum InputConfig : Int32
+          NONE   = 0
+          WELL_1 = 1
+          WELL_2 = 2
+          WELL_3 = 3
+          WELL_4 = 4
+          ALL    = 5
+
+          def self.from_raw?(raw : Int32) : self?
+            case raw
+            when 0 then NONE
+            when 1 then WELL_1
+            when 2 then WELL_2
+            when 3 then WELL_3
+            when 4 then WELL_4
+            when 5 then ALL
+            end
+          end
+        end
+
+        property input_well : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::InputWell::InputConfig) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::InputWell::InputConfig).new(0)
+        property regeneration_well : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::InputWell::InputConfig) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::InputWell::InputConfig).new(0)
+
+        def self.decode_partial(io : IO) : self
+          msg = new
+          reader = Proto::Wire::Reader.new(io)
+          while tag = reader.read_tag
+            fn, wt = tag
+            case fn
+            when 1
+              _raw = reader.read_int32
+              msg.input_well = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::InputWell::InputConfig).new(_raw)
+            when 2
+              _raw = reader.read_int32
+              msg.regeneration_well = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::InputWell::InputConfig).new(_raw)
+            else
+              msg.capture_unknown_field(reader, fn, wt)
+            end
+          end
+          msg
+        end
+
+        def self.decode(io : IO) : self
+          msg = decode_partial(io)
+          msg
+        end
+
+        def encode_partial(io : IO) : Nil
+          w = Proto::Wire::Writer.new(io)
+          if input_well.raw != 0
+            w.write_tag(1, Proto::WireType::VARINT)
+            w.write_int32(input_well.raw)
+          end
+          if regeneration_well.raw != 0
+            w.write_tag(2, Proto::WireType::VARINT)
+            w.write_int32(regeneration_well.raw)
+          end
+          write_unknown_fields(w)
+        end
+
+        def encode(io : IO) : Nil
+          encode_partial(io)
+        end
+
+        def ==(other : self) : Bool
+          return false unless input_well == other.input_well
+          return false unless regeneration_well == other.regeneration_well
+          true
+        end
+      end
+
+      property input : MinknowApi::PromethionDevice::PixelSettings::InputWell? = nil
+      property overload_mode : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::OverloadMode) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::OverloadMode).new(0)
+      property cutoff_frequency : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::LowPassFilter) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::LowPassFilter).new(0)
+      property gain_multiplier : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::GainMultiplier) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::GainMultiplier).new(0)
+      property gain_capacitor : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::GainCapacitor) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::GainCapacitor).new(0)
+      property calibration_mode : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::CalibrationMode) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::CalibrationMode).new(0)
+      property unblock_voltage : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::UnblockMode) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::UnblockMode).new(0)
+      property current_inverted : Google::Protobuf::BoolValue? = nil
+      property membrane_simulation_enabled : Google::Protobuf::BoolValue? = nil
+      property regeneration_current : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::RegenerationCurrent) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::RegenerationCurrent).new(0)
+      property regeneration_current_test_enabled : Google::Protobuf::BoolValue? = nil
+      property bias_current : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::BiasCurrent) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::BiasCurrent).new(0)
+
+      def has_input? : Bool
+        !input.nil?
+      end
+
+      def clear_input : Nil
+        self.input = nil
+      end
+
+      def has_current_inverted? : Bool
+        !current_inverted.nil?
+      end
+
+      def clear_current_inverted : Nil
+        self.current_inverted = nil
+      end
+
+      def has_membrane_simulation_enabled? : Bool
+        !membrane_simulation_enabled.nil?
+      end
+
+      def clear_membrane_simulation_enabled : Nil
+        self.membrane_simulation_enabled = nil
+      end
+
+      def has_regeneration_current_test_enabled? : Bool
+        !regeneration_current_test_enabled.nil?
+      end
+
+      def clear_regeneration_current_test_enabled : Nil
+        self.regeneration_current_test_enabled = nil
+      end
+
+      def validate_required! : Nil
+      end
+
+      def validate_required_deep! : Nil
+        validate_required!
+        input.try &.validate_required_deep!
+        current_inverted.try &.validate_required_deep!
+        membrane_simulation_enabled.try &.validate_required_deep!
+        regeneration_current_test_enabled.try &.validate_required_deep!
+      end
 
       def self.decode_partial(io : IO) : self
         msg = new
@@ -811,11 +898,37 @@ module PromethionDevice
           fn, wt = tag
           case fn
           when 1
-            _raw = reader.read_int32
-            msg.input_well = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::InputWell::InputConfig).new(_raw)
+            msg.input = MinknowApi::PromethionDevice::PixelSettings::InputWell.decode_partial(reader.read_embedded)
           when 2
             _raw = reader.read_int32
-            msg.regeneration_well = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::InputWell::InputConfig).new(_raw)
+            msg.overload_mode = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::OverloadMode).new(_raw)
+          when 3
+            _raw = reader.read_int32
+            msg.cutoff_frequency = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::LowPassFilter).new(_raw)
+          when 4
+            _raw = reader.read_int32
+            msg.gain_multiplier = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::GainMultiplier).new(_raw)
+          when 5
+            _raw = reader.read_int32
+            msg.gain_capacitor = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::GainCapacitor).new(_raw)
+          when 6
+            _raw = reader.read_int32
+            msg.calibration_mode = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::CalibrationMode).new(_raw)
+          when 7
+            _raw = reader.read_int32
+            msg.unblock_voltage = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::UnblockMode).new(_raw)
+          when 8
+            msg.current_inverted = Google::Protobuf::BoolValue.decode_partial(reader.read_embedded)
+          when 9
+            msg.membrane_simulation_enabled = Google::Protobuf::BoolValue.decode_partial(reader.read_embedded)
+          when 10
+            _raw = reader.read_int32
+            msg.regeneration_current = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::RegenerationCurrent).new(_raw)
+          when 11
+            msg.regeneration_current_test_enabled = Google::Protobuf::BoolValue.decode_partial(reader.read_embedded)
+          when 12
+            _raw = reader.read_int32
+            msg.bias_current = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::BiasCurrent).new(_raw)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -825,443 +938,92 @@ module PromethionDevice
 
       def self.decode(io : IO) : self
         msg = decode_partial(io)
+        msg.validate_required_deep!
         msg
       end
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if input_well.raw != 0
-          w.write_tag(1, Proto::WireType::VARINT)
-          w.write_int32(input_well.raw)
+        if _v = input
+          w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
-        if regeneration_well.raw != 0
+        if overload_mode.raw != 0
           w.write_tag(2, Proto::WireType::VARINT)
-          w.write_int32(regeneration_well.raw)
+          w.write_int32(overload_mode.raw)
+        end
+        if cutoff_frequency.raw != 0
+          w.write_tag(3, Proto::WireType::VARINT)
+          w.write_int32(cutoff_frequency.raw)
+        end
+        if gain_multiplier.raw != 0
+          w.write_tag(4, Proto::WireType::VARINT)
+          w.write_int32(gain_multiplier.raw)
+        end
+        if gain_capacitor.raw != 0
+          w.write_tag(5, Proto::WireType::VARINT)
+          w.write_int32(gain_capacitor.raw)
+        end
+        if calibration_mode.raw != 0
+          w.write_tag(6, Proto::WireType::VARINT)
+          w.write_int32(calibration_mode.raw)
+        end
+        if unblock_voltage.raw != 0
+          w.write_tag(7, Proto::WireType::VARINT)
+          w.write_int32(unblock_voltage.raw)
+        end
+        if _v = current_inverted
+          w.write_embedded(8) { |sub| _v.encode_partial(sub) }
+        end
+        if _v = membrane_simulation_enabled
+          w.write_embedded(9) { |sub| _v.encode_partial(sub) }
+        end
+        if regeneration_current.raw != 0
+          w.write_tag(10, Proto::WireType::VARINT)
+          w.write_int32(regeneration_current.raw)
+        end
+        if _v = regeneration_current_test_enabled
+          w.write_embedded(11) { |sub| _v.encode_partial(sub) }
+        end
+        if bias_current.raw != 0
+          w.write_tag(12, Proto::WireType::VARINT)
+          w.write_int32(bias_current.raw)
         end
         write_unknown_fields(w)
       end
 
       def encode(io : IO) : Nil
+        validate_required_deep!
         encode_partial(io)
       end
 
       def ==(other : self) : Bool
-        return false unless input_well == other.input_well
-        return false unless regeneration_well == other.regeneration_well
+        return false unless input == other.input
+        return false unless overload_mode == other.overload_mode
+        return false unless cutoff_frequency == other.cutoff_frequency
+        return false unless gain_multiplier == other.gain_multiplier
+        return false unless gain_capacitor == other.gain_capacitor
+        return false unless calibration_mode == other.calibration_mode
+        return false unless unblock_voltage == other.unblock_voltage
+        return false unless current_inverted == other.current_inverted
+        return false unless membrane_simulation_enabled == other.membrane_simulation_enabled
+        return false unless regeneration_current == other.regeneration_current
+        return false unless regeneration_current_test_enabled == other.regeneration_current_test_enabled
+        return false unless bias_current == other.bias_current
         true
       end
     end
-    property input : MinknowApi::PromethionDevice::PixelSettings::InputWell? = nil
-    property overload_mode : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::OverloadMode) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::OverloadMode).new(0)
-    property cutoff_frequency : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::LowPassFilter) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::LowPassFilter).new(0)
-    property gain_multiplier : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::GainMultiplier) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::GainMultiplier).new(0)
-    property gain_capacitor : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::GainCapacitor) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::GainCapacitor).new(0)
-    property calibration_mode : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::CalibrationMode) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::CalibrationMode).new(0)
-    property unblock_voltage : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::UnblockMode) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::UnblockMode).new(0)
-    property current_inverted : Google::Protobuf::BoolValue? = nil
-    property membrane_simulation_enabled : Google::Protobuf::BoolValue? = nil
-    property regeneration_current : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::RegenerationCurrent) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::RegenerationCurrent).new(0)
-    property regeneration_current_test_enabled : Google::Protobuf::BoolValue? = nil
-    property bias_current : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::BiasCurrent) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::BiasCurrent).new(0)
 
-    def has_input? : Bool
-      !input.nil?
-    end
-
-    def clear_input : Nil
-      self.input = nil
-    end
-
-    def has_current_inverted? : Bool
-      !current_inverted.nil?
-    end
-
-    def clear_current_inverted : Nil
-      self.current_inverted = nil
-    end
-
-    def has_membrane_simulation_enabled? : Bool
-      !membrane_simulation_enabled.nil?
-    end
-
-    def clear_membrane_simulation_enabled : Nil
-      self.membrane_simulation_enabled = nil
-    end
-
-    def has_regeneration_current_test_enabled? : Bool
-      !regeneration_current_test_enabled.nil?
-    end
-
-    def clear_regeneration_current_test_enabled : Nil
-      self.regeneration_current_test_enabled = nil
-    end
-
-    def validate_required! : Nil
-    end
-
-    def validate_required_deep! : Nil
-      validate_required!
-      input.try &.validate_required_deep!
-      current_inverted.try &.validate_required_deep!
-      membrane_simulation_enabled.try &.validate_required_deep!
-      regeneration_current_test_enabled.try &.validate_required_deep!
-    end
-
-
-    def self.decode_partial(io : IO) : self
-      msg = new
-      reader = Proto::Wire::Reader.new(io)
-      while tag = reader.read_tag
-        fn, wt = tag
-        case fn
-        when 1
-          msg.input = MinknowApi::PromethionDevice::PixelSettings::InputWell.decode_partial(reader.read_embedded)
-        when 2
-          _raw = reader.read_int32
-          msg.overload_mode = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::OverloadMode).new(_raw)
-        when 3
-          _raw = reader.read_int32
-          msg.cutoff_frequency = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::LowPassFilter).new(_raw)
-        when 4
-          _raw = reader.read_int32
-          msg.gain_multiplier = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::GainMultiplier).new(_raw)
-        when 5
-          _raw = reader.read_int32
-          msg.gain_capacitor = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::GainCapacitor).new(_raw)
-        when 6
-          _raw = reader.read_int32
-          msg.calibration_mode = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::CalibrationMode).new(_raw)
-        when 7
-          _raw = reader.read_int32
-          msg.unblock_voltage = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::UnblockMode).new(_raw)
-        when 8
-          msg.current_inverted = Google::Protobuf::BoolValue.decode_partial(reader.read_embedded)
-        when 9
-          msg.membrane_simulation_enabled = Google::Protobuf::BoolValue.decode_partial(reader.read_embedded)
-        when 10
-          _raw = reader.read_int32
-          msg.regeneration_current = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::RegenerationCurrent).new(_raw)
-        when 11
-          msg.regeneration_current_test_enabled = Google::Protobuf::BoolValue.decode_partial(reader.read_embedded)
-        when 12
-          _raw = reader.read_int32
-          msg.bias_current = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::BiasCurrent).new(_raw)
-        else
-          msg.capture_unknown_field(reader, fn, wt)
-        end
-      end
-      msg
-    end
-
-    def self.decode(io : IO) : self
-      msg = decode_partial(io)
-      msg.validate_required_deep!
-      msg
-    end
-
-    def encode_partial(io : IO) : Nil
-      w = Proto::Wire::Writer.new(io)
-      if (_v = input)
-        w.write_embedded(1) { |sub| _v.encode_partial(sub) }
-      end
-      if overload_mode.raw != 0
-        w.write_tag(2, Proto::WireType::VARINT)
-        w.write_int32(overload_mode.raw)
-      end
-      if cutoff_frequency.raw != 0
-        w.write_tag(3, Proto::WireType::VARINT)
-        w.write_int32(cutoff_frequency.raw)
-      end
-      if gain_multiplier.raw != 0
-        w.write_tag(4, Proto::WireType::VARINT)
-        w.write_int32(gain_multiplier.raw)
-      end
-      if gain_capacitor.raw != 0
-        w.write_tag(5, Proto::WireType::VARINT)
-        w.write_int32(gain_capacitor.raw)
-      end
-      if calibration_mode.raw != 0
-        w.write_tag(6, Proto::WireType::VARINT)
-        w.write_int32(calibration_mode.raw)
-      end
-      if unblock_voltage.raw != 0
-        w.write_tag(7, Proto::WireType::VARINT)
-        w.write_int32(unblock_voltage.raw)
-      end
-      if (_v = current_inverted)
-        w.write_embedded(8) { |sub| _v.encode_partial(sub) }
-      end
-      if (_v = membrane_simulation_enabled)
-        w.write_embedded(9) { |sub| _v.encode_partial(sub) }
-      end
-      if regeneration_current.raw != 0
-        w.write_tag(10, Proto::WireType::VARINT)
-        w.write_int32(regeneration_current.raw)
-      end
-      if (_v = regeneration_current_test_enabled)
-        w.write_embedded(11) { |sub| _v.encode_partial(sub) }
-      end
-      if bias_current.raw != 0
-        w.write_tag(12, Proto::WireType::VARINT)
-        w.write_int32(bias_current.raw)
-      end
-      write_unknown_fields(w)
-    end
-
-    def encode(io : IO) : Nil
-      validate_required_deep!
-      encode_partial(io)
-    end
-
-    def ==(other : self) : Bool
-      return false unless input == other.input
-      return false unless overload_mode == other.overload_mode
-      return false unless cutoff_frequency == other.cutoff_frequency
-      return false unless gain_multiplier == other.gain_multiplier
-      return false unless gain_capacitor == other.gain_capacitor
-      return false unless calibration_mode == other.calibration_mode
-      return false unless unblock_voltage == other.unblock_voltage
-      return false unless current_inverted == other.current_inverted
-      return false unless membrane_simulation_enabled == other.membrane_simulation_enabled
-      return false unless regeneration_current == other.regeneration_current
-      return false unless regeneration_current_test_enabled == other.regeneration_current_test_enabled
-      return false unless bias_current == other.bias_current
-      true
-    end
-  end
-  class ChangeDeviceSettingsRequest
-    include Proto::Message
-
-    property settings : MinknowApi::PromethionDevice::DeviceSettings? = nil
-
-    def has_settings? : Bool
-      !settings.nil?
-    end
-
-    def clear_settings : Nil
-      self.settings = nil
-    end
-
-    def validate_required! : Nil
-    end
-
-    def validate_required_deep! : Nil
-      validate_required!
-      settings.try &.validate_required_deep!
-    end
-
-
-    def self.decode_partial(io : IO) : self
-      msg = new
-      reader = Proto::Wire::Reader.new(io)
-      while tag = reader.read_tag
-        fn, wt = tag
-        case fn
-        when 1
-          msg.settings = MinknowApi::PromethionDevice::DeviceSettings.decode_partial(reader.read_embedded)
-        else
-          msg.capture_unknown_field(reader, fn, wt)
-        end
-      end
-      msg
-    end
-
-    def self.decode(io : IO) : self
-      msg = decode_partial(io)
-      msg.validate_required_deep!
-      msg
-    end
-
-    def encode_partial(io : IO) : Nil
-      w = Proto::Wire::Writer.new(io)
-      if (_v = settings)
-        w.write_embedded(1) { |sub| _v.encode_partial(sub) }
-      end
-      write_unknown_fields(w)
-    end
-
-    def encode(io : IO) : Nil
-      validate_required_deep!
-      encode_partial(io)
-    end
-
-    def ==(other : self) : Bool
-      return false unless settings == other.settings
-      true
-    end
-  end
-  class ChangeDeviceSettingsResponse
-    include Proto::Message
-
-    property real_sampling_frequency : Google::Protobuf::Int32Value? = nil
-
-    def has_real_sampling_frequency? : Bool
-      !real_sampling_frequency.nil?
-    end
-
-    def clear_real_sampling_frequency : Nil
-      self.real_sampling_frequency = nil
-    end
-
-    def validate_required! : Nil
-    end
-
-    def validate_required_deep! : Nil
-      validate_required!
-      real_sampling_frequency.try &.validate_required_deep!
-    end
-
-
-    def self.decode_partial(io : IO) : self
-      msg = new
-      reader = Proto::Wire::Reader.new(io)
-      while tag = reader.read_tag
-        fn, wt = tag
-        case fn
-        when 1
-          msg.real_sampling_frequency = Google::Protobuf::Int32Value.decode_partial(reader.read_embedded)
-        else
-          msg.capture_unknown_field(reader, fn, wt)
-        end
-      end
-      msg
-    end
-
-    def self.decode(io : IO) : self
-      msg = decode_partial(io)
-      msg.validate_required_deep!
-      msg
-    end
-
-    def encode_partial(io : IO) : Nil
-      w = Proto::Wire::Writer.new(io)
-      if (_v = real_sampling_frequency)
-        w.write_embedded(1) { |sub| _v.encode_partial(sub) }
-      end
-      write_unknown_fields(w)
-    end
-
-    def encode(io : IO) : Nil
-      validate_required_deep!
-      encode_partial(io)
-    end
-
-    def ==(other : self) : Bool
-      return false unless real_sampling_frequency == other.real_sampling_frequency
-      true
-    end
-  end
-  class GetDeviceSettingsRequest
-    include Proto::Message
-
-
-    def self.decode_partial(io : IO) : self
-      msg = new
-      reader = Proto::Wire::Reader.new(io)
-      while tag = reader.read_tag
-        fn, wt = tag
-        case fn
-        else
-          msg.capture_unknown_field(reader, fn, wt)
-        end
-      end
-      msg
-    end
-
-    def self.decode(io : IO) : self
-      msg = decode_partial(io)
-      msg
-    end
-
-    def encode_partial(io : IO) : Nil
-      w = Proto::Wire::Writer.new(io)
-      write_unknown_fields(w)
-    end
-
-    def encode(io : IO) : Nil
-      encode_partial(io)
-    end
-
-    def ==(other : self) : Bool
-      true
-    end
-  end
-  class GetDeviceSettingsResponse
-    include Proto::Message
-
-    property settings : MinknowApi::PromethionDevice::DeviceSettings? = nil
-
-    def has_settings? : Bool
-      !settings.nil?
-    end
-
-    def clear_settings : Nil
-      self.settings = nil
-    end
-
-    def validate_required! : Nil
-    end
-
-    def validate_required_deep! : Nil
-      validate_required!
-      settings.try &.validate_required_deep!
-    end
-
-
-    def self.decode_partial(io : IO) : self
-      msg = new
-      reader = Proto::Wire::Reader.new(io)
-      while tag = reader.read_tag
-        fn, wt = tag
-        case fn
-        when 1
-          msg.settings = MinknowApi::PromethionDevice::DeviceSettings.decode_partial(reader.read_embedded)
-        else
-          msg.capture_unknown_field(reader, fn, wt)
-        end
-      end
-      msg
-    end
-
-    def self.decode(io : IO) : self
-      msg = decode_partial(io)
-      msg.validate_required_deep!
-      msg
-    end
-
-    def encode_partial(io : IO) : Nil
-      w = Proto::Wire::Writer.new(io)
-      if (_v = settings)
-        w.write_embedded(1) { |sub| _v.encode_partial(sub) }
-      end
-      write_unknown_fields(w)
-    end
-
-    def encode(io : IO) : Nil
-      validate_required_deep!
-      encode_partial(io)
-    end
-
-    def ==(other : self) : Bool
-      return false unless settings == other.settings
-      true
-    end
-  end
-  class ChangePixelBlockSettingsRequest
-    include Proto::Message
-
-    class PixelBlocksEntry
+    class ChangeDeviceSettingsRequest
       include Proto::Message
 
-      property key : UInt32 = 0
-      property value : MinknowApi::PromethionDevice::PixelBlockSettings? = nil
+      property settings : MinknowApi::PromethionDevice::DeviceSettings? = nil
 
-      def has_value? : Bool
-        !value.nil?
+      def has_settings? : Bool
+        !settings.nil?
       end
 
-      def clear_value : Nil
-        self.value = nil
+      def clear_settings : Nil
+        self.settings = nil
       end
 
       def validate_required! : Nil
@@ -1269,9 +1031,8 @@ module PromethionDevice
 
       def validate_required_deep! : Nil
         validate_required!
-        value.try &.validate_required_deep!
+        settings.try &.validate_required_deep!
       end
-
 
       def self.decode_partial(io : IO) : self
         msg = new
@@ -1280,9 +1041,7 @@ module PromethionDevice
           fn, wt = tag
           case fn
           when 1
-            msg.key = reader.read_uint32
-          when 2
-            msg.value = MinknowApi::PromethionDevice::PixelBlockSettings.decode_partial(reader.read_embedded)
+            msg.settings = MinknowApi::PromethionDevice::DeviceSettings.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -1298,12 +1057,8 @@ module PromethionDevice
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if key != 0
-          w.write_tag(1, Proto::WireType::VARINT)
-          w.write_uint32(key)
-        end
-        if (_v = value)
-          w.write_embedded(2) { |sub| _v.encode_partial(sub) }
+        if _v = settings
+          w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
       end
@@ -1314,168 +1069,22 @@ module PromethionDevice
       end
 
       def ==(other : self) : Bool
-        return false unless key == other.key
-        return false unless value == other.value
+        return false unless settings == other.settings
         true
       end
     end
-    property pixel_blocks : Hash(UInt32, MinknowApi::PromethionDevice::PixelBlockSettings) = {} of UInt32 => MinknowApi::PromethionDevice::PixelBlockSettings
-    property pixel_block_default : MinknowApi::PromethionDevice::PixelBlockSettings? = nil
 
-    def has_pixel_block_default? : Bool
-      !pixel_block_default.nil?
-    end
-
-    def clear_pixel_block_default : Nil
-      self.pixel_block_default = nil
-    end
-
-    def validate_required! : Nil
-    end
-
-    def validate_required_deep! : Nil
-      validate_required!
-      pixel_blocks.each_value do |value|
-        value.validate_required_deep!
-      end
-      pixel_block_default.try &.validate_required_deep!
-    end
-
-
-    def self.decode_partial(io : IO) : self
-      msg = new
-      reader = Proto::Wire::Reader.new(io)
-      while tag = reader.read_tag
-        fn, wt = tag
-        case fn
-        when 1
-          entry = MinknowApi::PromethionDevice::ChangePixelBlockSettingsRequest::PixelBlocksEntry.decode_partial(reader.read_embedded)
-          msg.pixel_blocks[entry.key] = entry.value
-        when 2
-          msg.pixel_block_default = MinknowApi::PromethionDevice::PixelBlockSettings.decode_partial(reader.read_embedded)
-        else
-          msg.capture_unknown_field(reader, fn, wt)
-        end
-      end
-      msg
-    end
-
-    def self.decode(io : IO) : self
-      msg = decode_partial(io)
-      msg.validate_required_deep!
-      msg
-    end
-
-    def encode_partial(io : IO) : Nil
-      w = Proto::Wire::Writer.new(io)
-      pixel_blocks.each do |k, v|
-        entry = MinknowApi::PromethionDevice::ChangePixelBlockSettingsRequest::PixelBlocksEntry.new
-        entry.key = k
-        entry.value = v
-        w.write_embedded(1) { |sub| entry.encode_partial(sub) }
-      end
-      if (_v = pixel_block_default)
-        w.write_embedded(2) { |sub| _v.encode_partial(sub) }
-      end
-      write_unknown_fields(w)
-    end
-
-    def encode(io : IO) : Nil
-      validate_required_deep!
-      encode_partial(io)
-    end
-
-    def ==(other : self) : Bool
-      return false unless pixel_blocks == other.pixel_blocks
-      return false unless pixel_block_default == other.pixel_block_default
-      true
-    end
-  end
-  class ChangePixelBlockSettingsResponse
-    include Proto::Message
-
-
-    def self.decode_partial(io : IO) : self
-      msg = new
-      reader = Proto::Wire::Reader.new(io)
-      while tag = reader.read_tag
-        fn, wt = tag
-        case fn
-        else
-          msg.capture_unknown_field(reader, fn, wt)
-        end
-      end
-      msg
-    end
-
-    def self.decode(io : IO) : self
-      msg = decode_partial(io)
-      msg
-    end
-
-    def encode_partial(io : IO) : Nil
-      w = Proto::Wire::Writer.new(io)
-      write_unknown_fields(w)
-    end
-
-    def encode(io : IO) : Nil
-      encode_partial(io)
-    end
-
-    def ==(other : self) : Bool
-      true
-    end
-  end
-  class GetPixelBlockSettingsRequest
-    include Proto::Message
-
-
-    def self.decode_partial(io : IO) : self
-      msg = new
-      reader = Proto::Wire::Reader.new(io)
-      while tag = reader.read_tag
-        fn, wt = tag
-        case fn
-        else
-          msg.capture_unknown_field(reader, fn, wt)
-        end
-      end
-      msg
-    end
-
-    def self.decode(io : IO) : self
-      msg = decode_partial(io)
-      msg
-    end
-
-    def encode_partial(io : IO) : Nil
-      w = Proto::Wire::Writer.new(io)
-      write_unknown_fields(w)
-    end
-
-    def encode(io : IO) : Nil
-      encode_partial(io)
-    end
-
-    def ==(other : self) : Bool
-      true
-    end
-  end
-  class GetPixelBlockSettingsResponse
-    include Proto::Message
-
-    class PixelBlocksEntry
+    class ChangeDeviceSettingsResponse
       include Proto::Message
 
-      property key : UInt32 = 0
-      property value : MinknowApi::PromethionDevice::PixelBlockSettings? = nil
+      property real_sampling_frequency : Google::Protobuf::Int32Value? = nil
 
-      def has_value? : Bool
-        !value.nil?
+      def has_real_sampling_frequency? : Bool
+        !real_sampling_frequency.nil?
       end
 
-      def clear_value : Nil
-        self.value = nil
+      def clear_real_sampling_frequency : Nil
+        self.real_sampling_frequency = nil
       end
 
       def validate_required! : Nil
@@ -1483,9 +1092,8 @@ module PromethionDevice
 
       def validate_required_deep! : Nil
         validate_required!
-        value.try &.validate_required_deep!
+        real_sampling_frequency.try &.validate_required_deep!
       end
-
 
       def self.decode_partial(io : IO) : self
         msg = new
@@ -1494,9 +1102,7 @@ module PromethionDevice
           fn, wt = tag
           case fn
           when 1
-            msg.key = reader.read_uint32
-          when 2
-            msg.value = MinknowApi::PromethionDevice::PixelBlockSettings.decode_partial(reader.read_embedded)
+            msg.real_sampling_frequency = Google::Protobuf::Int32Value.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -1512,12 +1118,8 @@ module PromethionDevice
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if key != 0
-          w.write_tag(1, Proto::WireType::VARINT)
-          w.write_uint32(key)
-        end
-        if (_v = value)
-          w.write_embedded(2) { |sub| _v.encode_partial(sub) }
+        if _v = real_sampling_frequency
+          w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
       end
@@ -1528,82 +1130,57 @@ module PromethionDevice
       end
 
       def ==(other : self) : Bool
-        return false unless key == other.key
-        return false unless value == other.value
+        return false unless real_sampling_frequency == other.real_sampling_frequency
         true
       end
     end
-    property pixel_blocks : Hash(UInt32, MinknowApi::PromethionDevice::PixelBlockSettings) = {} of UInt32 => MinknowApi::PromethionDevice::PixelBlockSettings
 
-    def validate_required! : Nil
-    end
-
-    def validate_required_deep! : Nil
-      validate_required!
-      pixel_blocks.each_value do |value|
-        value.validate_required_deep!
-      end
-    end
-
-
-    def self.decode_partial(io : IO) : self
-      msg = new
-      reader = Proto::Wire::Reader.new(io)
-      while tag = reader.read_tag
-        fn, wt = tag
-        case fn
-        when 1
-          entry = MinknowApi::PromethionDevice::GetPixelBlockSettingsResponse::PixelBlocksEntry.decode_partial(reader.read_embedded)
-          msg.pixel_blocks[entry.key] = entry.value
-        else
-          msg.capture_unknown_field(reader, fn, wt)
-        end
-      end
-      msg
-    end
-
-    def self.decode(io : IO) : self
-      msg = decode_partial(io)
-      msg.validate_required_deep!
-      msg
-    end
-
-    def encode_partial(io : IO) : Nil
-      w = Proto::Wire::Writer.new(io)
-      pixel_blocks.each do |k, v|
-        entry = MinknowApi::PromethionDevice::GetPixelBlockSettingsResponse::PixelBlocksEntry.new
-        entry.key = k
-        entry.value = v
-        w.write_embedded(1) { |sub| entry.encode_partial(sub) }
-      end
-      write_unknown_fields(w)
-    end
-
-    def encode(io : IO) : Nil
-      validate_required_deep!
-      encode_partial(io)
-    end
-
-    def ==(other : self) : Bool
-      return false unless pixel_blocks == other.pixel_blocks
-      true
-    end
-  end
-  class ChangePixelSettingsRequest
-    include Proto::Message
-
-    class PixelsEntry
+    class GetDeviceSettingsRequest
       include Proto::Message
 
-      property key : UInt32 = 0
-      property value : MinknowApi::PromethionDevice::PixelSettings? = nil
-
-      def has_value? : Bool
-        !value.nil?
+      def self.decode_partial(io : IO) : self
+        msg = new
+        reader = Proto::Wire::Reader.new(io)
+        while tag = reader.read_tag
+          fn, wt = tag
+          case fn
+          else
+            msg.capture_unknown_field(reader, fn, wt)
+          end
+        end
+        msg
       end
 
-      def clear_value : Nil
-        self.value = nil
+      def self.decode(io : IO) : self
+        msg = decode_partial(io)
+        msg
+      end
+
+      def encode_partial(io : IO) : Nil
+        w = Proto::Wire::Writer.new(io)
+        write_unknown_fields(w)
+      end
+
+      def encode(io : IO) : Nil
+        encode_partial(io)
+      end
+
+      def ==(other : self) : Bool
+        true
+      end
+    end
+
+    class GetDeviceSettingsResponse
+      include Proto::Message
+
+      property settings : MinknowApi::PromethionDevice::DeviceSettings? = nil
+
+      def has_settings? : Bool
+        !settings.nil?
+      end
+
+      def clear_settings : Nil
+        self.settings = nil
       end
 
       def validate_required! : Nil
@@ -1611,9 +1188,8 @@ module PromethionDevice
 
       def validate_required_deep! : Nil
         validate_required!
-        value.try &.validate_required_deep!
+        settings.try &.validate_required_deep!
       end
-
 
       def self.decode_partial(io : IO) : self
         msg = new
@@ -1622,9 +1198,7 @@ module PromethionDevice
           fn, wt = tag
           case fn
           when 1
-            msg.key = reader.read_uint32
-          when 2
-            msg.value = MinknowApi::PromethionDevice::PixelSettings.decode_partial(reader.read_embedded)
+            msg.settings = MinknowApi::PromethionDevice::DeviceSettings.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -1640,11 +1214,150 @@ module PromethionDevice
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if key != 0
-          w.write_tag(1, Proto::WireType::VARINT)
-          w.write_uint32(key)
+        if _v = settings
+          w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = value)
+        write_unknown_fields(w)
+      end
+
+      def encode(io : IO) : Nil
+        validate_required_deep!
+        encode_partial(io)
+      end
+
+      def ==(other : self) : Bool
+        return false unless settings == other.settings
+        true
+      end
+    end
+
+    class ChangePixelBlockSettingsRequest
+      include Proto::Message
+
+      class PixelBlocksEntry
+        include Proto::Message
+
+        property key : UInt32 = 0
+        property value : MinknowApi::PromethionDevice::PixelBlockSettings? = nil
+
+        def has_value? : Bool
+          !value.nil?
+        end
+
+        def clear_value : Nil
+          self.value = nil
+        end
+
+        def validate_required! : Nil
+        end
+
+        def validate_required_deep! : Nil
+          validate_required!
+          value.try &.validate_required_deep!
+        end
+
+        def self.decode_partial(io : IO) : self
+          msg = new
+          reader = Proto::Wire::Reader.new(io)
+          while tag = reader.read_tag
+            fn, wt = tag
+            case fn
+            when 1
+              msg.key = reader.read_uint32
+            when 2
+              msg.value = MinknowApi::PromethionDevice::PixelBlockSettings.decode_partial(reader.read_embedded)
+            else
+              msg.capture_unknown_field(reader, fn, wt)
+            end
+          end
+          msg
+        end
+
+        def self.decode(io : IO) : self
+          msg = decode_partial(io)
+          msg.validate_required_deep!
+          msg
+        end
+
+        def encode_partial(io : IO) : Nil
+          w = Proto::Wire::Writer.new(io)
+          if key != 0
+            w.write_tag(1, Proto::WireType::VARINT)
+            w.write_uint32(key)
+          end
+          if _v = value
+            w.write_embedded(2) { |sub| _v.encode_partial(sub) }
+          end
+          write_unknown_fields(w)
+        end
+
+        def encode(io : IO) : Nil
+          validate_required_deep!
+          encode_partial(io)
+        end
+
+        def ==(other : self) : Bool
+          return false unless key == other.key
+          return false unless value == other.value
+          true
+        end
+      end
+
+      property pixel_blocks : Hash(UInt32, MinknowApi::PromethionDevice::PixelBlockSettings) = {} of UInt32 => MinknowApi::PromethionDevice::PixelBlockSettings
+      property pixel_block_default : MinknowApi::PromethionDevice::PixelBlockSettings? = nil
+
+      def has_pixel_block_default? : Bool
+        !pixel_block_default.nil?
+      end
+
+      def clear_pixel_block_default : Nil
+        self.pixel_block_default = nil
+      end
+
+      def validate_required! : Nil
+      end
+
+      def validate_required_deep! : Nil
+        validate_required!
+        pixel_blocks.each_value do |value|
+          value.validate_required_deep!
+        end
+        pixel_block_default.try &.validate_required_deep!
+      end
+
+      def self.decode_partial(io : IO) : self
+        msg = new
+        reader = Proto::Wire::Reader.new(io)
+        while tag = reader.read_tag
+          fn, wt = tag
+          case fn
+          when 1
+            entry = MinknowApi::PromethionDevice::ChangePixelBlockSettingsRequest::PixelBlocksEntry.decode_partial(reader.read_embedded)
+            msg.pixel_blocks[entry.key] = entry.value
+          when 2
+            msg.pixel_block_default = MinknowApi::PromethionDevice::PixelBlockSettings.decode_partial(reader.read_embedded)
+          else
+            msg.capture_unknown_field(reader, fn, wt)
+          end
+        end
+        msg
+      end
+
+      def self.decode(io : IO) : self
+        msg = decode_partial(io)
+        msg.validate_required_deep!
+        msg
+      end
+
+      def encode_partial(io : IO) : Nil
+        w = Proto::Wire::Writer.new(io)
+        pixel_blocks.each do |k, v|
+          entry = MinknowApi::PromethionDevice::ChangePixelBlockSettingsRequest::PixelBlocksEntry.new
+          entry.key = k
+          entry.value = v
+          w.write_embedded(1) { |sub| entry.encode_partial(sub) }
+        end
+        if _v = pixel_block_default
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -1656,426 +1369,698 @@ module PromethionDevice
       end
 
       def ==(other : self) : Bool
-        return false unless key == other.key
-        return false unless value == other.value
+        return false unless pixel_blocks == other.pixel_blocks
+        return false unless pixel_block_default == other.pixel_block_default
         true
       end
     end
-    property pixels : Hash(UInt32, MinknowApi::PromethionDevice::PixelSettings) = {} of UInt32 => MinknowApi::PromethionDevice::PixelSettings
-    property pixel_default : MinknowApi::PromethionDevice::PixelSettings? = nil
 
-    def has_pixel_default? : Bool
-      !pixel_default.nil?
-    end
+    class ChangePixelBlockSettingsResponse
+      include Proto::Message
 
-    def clear_pixel_default : Nil
-      self.pixel_default = nil
-    end
-
-    def validate_required! : Nil
-    end
-
-    def validate_required_deep! : Nil
-      validate_required!
-      pixels.each_value do |value|
-        value.validate_required_deep!
-      end
-      pixel_default.try &.validate_required_deep!
-    end
-
-
-    def self.decode_partial(io : IO) : self
-      msg = new
-      reader = Proto::Wire::Reader.new(io)
-      while tag = reader.read_tag
-        fn, wt = tag
-        case fn
-        when 1
-          entry = MinknowApi::PromethionDevice::ChangePixelSettingsRequest::PixelsEntry.decode_partial(reader.read_embedded)
-          msg.pixels[entry.key] = entry.value
-        when 2
-          msg.pixel_default = MinknowApi::PromethionDevice::PixelSettings.decode_partial(reader.read_embedded)
-        else
-          msg.capture_unknown_field(reader, fn, wt)
-        end
-      end
-      msg
-    end
-
-    def self.decode(io : IO) : self
-      msg = decode_partial(io)
-      msg.validate_required_deep!
-      msg
-    end
-
-    def encode_partial(io : IO) : Nil
-      w = Proto::Wire::Writer.new(io)
-      pixels.each do |k, v|
-        entry = MinknowApi::PromethionDevice::ChangePixelSettingsRequest::PixelsEntry.new
-        entry.key = k
-        entry.value = v
-        w.write_embedded(1) { |sub| entry.encode_partial(sub) }
-      end
-      if (_v = pixel_default)
-        w.write_embedded(2) { |sub| _v.encode_partial(sub) }
-      end
-      write_unknown_fields(w)
-    end
-
-    def encode(io : IO) : Nil
-      validate_required_deep!
-      encode_partial(io)
-    end
-
-    def ==(other : self) : Bool
-      return false unless pixels == other.pixels
-      return false unless pixel_default == other.pixel_default
-      true
-    end
-  end
-  class ChangePixelSettingsResponse
-    include Proto::Message
-
-
-    def self.decode_partial(io : IO) : self
-      msg = new
-      reader = Proto::Wire::Reader.new(io)
-      while tag = reader.read_tag
-        fn, wt = tag
-        case fn
-        else
-          msg.capture_unknown_field(reader, fn, wt)
-        end
-      end
-      msg
-    end
-
-    def self.decode(io : IO) : self
-      msg = decode_partial(io)
-      msg
-    end
-
-    def encode_partial(io : IO) : Nil
-      w = Proto::Wire::Writer.new(io)
-      write_unknown_fields(w)
-    end
-
-    def encode(io : IO) : Nil
-      encode_partial(io)
-    end
-
-    def ==(other : self) : Bool
-      true
-    end
-  end
-  class GetPixelSettingsRequest
-    include Proto::Message
-
-    property pixels : Array(UInt32) = [] of UInt32
-
-    def self.decode_partial(io : IO) : self
-      msg = new
-      reader = Proto::Wire::Reader.new(io)
-      while tag = reader.read_tag
-        fn, wt = tag
-        case fn
-        when 1
-          if wt == Proto::WireType::LENGTH_DELIMITED
-            reader.read_packed_varint { |v| msg.pixels << v.to_u32! }
+      def self.decode_partial(io : IO) : self
+        msg = new
+        reader = Proto::Wire::Reader.new(io)
+        while tag = reader.read_tag
+          fn, wt = tag
+          case fn
           else
-            msg.pixels << reader.read_uint32
+            msg.capture_unknown_field(reader, fn, wt)
           end
-        else
-          msg.capture_unknown_field(reader, fn, wt)
+        end
+        msg
+      end
+
+      def self.decode(io : IO) : self
+        msg = decode_partial(io)
+        msg
+      end
+
+      def encode_partial(io : IO) : Nil
+        w = Proto::Wire::Writer.new(io)
+        write_unknown_fields(w)
+      end
+
+      def encode(io : IO) : Nil
+        encode_partial(io)
+      end
+
+      def ==(other : self) : Bool
+        true
+      end
+    end
+
+    class GetPixelBlockSettingsRequest
+      include Proto::Message
+
+      def self.decode_partial(io : IO) : self
+        msg = new
+        reader = Proto::Wire::Reader.new(io)
+        while tag = reader.read_tag
+          fn, wt = tag
+          case fn
+          else
+            msg.capture_unknown_field(reader, fn, wt)
+          end
+        end
+        msg
+      end
+
+      def self.decode(io : IO) : self
+        msg = decode_partial(io)
+        msg
+      end
+
+      def encode_partial(io : IO) : Nil
+        w = Proto::Wire::Writer.new(io)
+        write_unknown_fields(w)
+      end
+
+      def encode(io : IO) : Nil
+        encode_partial(io)
+      end
+
+      def ==(other : self) : Bool
+        true
+      end
+    end
+
+    class GetPixelBlockSettingsResponse
+      include Proto::Message
+
+      class PixelBlocksEntry
+        include Proto::Message
+
+        property key : UInt32 = 0
+        property value : MinknowApi::PromethionDevice::PixelBlockSettings? = nil
+
+        def has_value? : Bool
+          !value.nil?
+        end
+
+        def clear_value : Nil
+          self.value = nil
+        end
+
+        def validate_required! : Nil
+        end
+
+        def validate_required_deep! : Nil
+          validate_required!
+          value.try &.validate_required_deep!
+        end
+
+        def self.decode_partial(io : IO) : self
+          msg = new
+          reader = Proto::Wire::Reader.new(io)
+          while tag = reader.read_tag
+            fn, wt = tag
+            case fn
+            when 1
+              msg.key = reader.read_uint32
+            when 2
+              msg.value = MinknowApi::PromethionDevice::PixelBlockSettings.decode_partial(reader.read_embedded)
+            else
+              msg.capture_unknown_field(reader, fn, wt)
+            end
+          end
+          msg
+        end
+
+        def self.decode(io : IO) : self
+          msg = decode_partial(io)
+          msg.validate_required_deep!
+          msg
+        end
+
+        def encode_partial(io : IO) : Nil
+          w = Proto::Wire::Writer.new(io)
+          if key != 0
+            w.write_tag(1, Proto::WireType::VARINT)
+            w.write_uint32(key)
+          end
+          if _v = value
+            w.write_embedded(2) { |sub| _v.encode_partial(sub) }
+          end
+          write_unknown_fields(w)
+        end
+
+        def encode(io : IO) : Nil
+          validate_required_deep!
+          encode_partial(io)
+        end
+
+        def ==(other : self) : Bool
+          return false unless key == other.key
+          return false unless value == other.value
+          true
         end
       end
-      msg
-    end
 
-    def self.decode(io : IO) : self
-      msg = decode_partial(io)
-      msg
-    end
+      property pixel_blocks : Hash(UInt32, MinknowApi::PromethionDevice::PixelBlockSettings) = {} of UInt32 => MinknowApi::PromethionDevice::PixelBlockSettings
 
-    def encode_partial(io : IO) : Nil
-      w = Proto::Wire::Writer.new(io)
-      w.write_packed(1) do |buf|
-        sub = Proto::Wire::Writer.new(buf)
-        pixels.each { |item| sub.write_uint32(item) }
+      def validate_required! : Nil
       end
-      write_unknown_fields(w)
-    end
 
-    def encode(io : IO) : Nil
-      encode_partial(io)
-    end
-
-    def ==(other : self) : Bool
-      return false unless pixels == other.pixels
-      true
-    end
-  end
-  class GetPixelSettingsResponse
-    include Proto::Message
-
-    property pixels : Array(MinknowApi::PromethionDevice::PixelSettings) = [] of MinknowApi::PromethionDevice::PixelSettings
-
-    def validate_required! : Nil
-    end
-
-    def validate_required_deep! : Nil
-      validate_required!
-      pixels.each do |item|
-        item.validate_required_deep!
-      end
-    end
-
-
-    def self.decode_partial(io : IO) : self
-      msg = new
-      reader = Proto::Wire::Reader.new(io)
-      while tag = reader.read_tag
-        fn, wt = tag
-        case fn
-        when 1
-          msg.pixels << MinknowApi::PromethionDevice::PixelSettings.decode_partial(reader.read_embedded)
-        else
-          msg.capture_unknown_field(reader, fn, wt)
+      def validate_required_deep! : Nil
+        validate_required!
+        pixel_blocks.each_value do |value|
+          value.validate_required_deep!
         end
       end
-      msg
-    end
 
-    def self.decode(io : IO) : self
-      msg = decode_partial(io)
-      msg.validate_required_deep!
-      msg
-    end
-
-    def encode_partial(io : IO) : Nil
-      w = Proto::Wire::Writer.new(io)
-      pixels.each do |item|
-        w.write_embedded(1) { |sub| item.encode_partial(sub) }
+      def self.decode_partial(io : IO) : self
+        msg = new
+        reader = Proto::Wire::Reader.new(io)
+        while tag = reader.read_tag
+          fn, wt = tag
+          case fn
+          when 1
+            entry = MinknowApi::PromethionDevice::GetPixelBlockSettingsResponse::PixelBlocksEntry.decode_partial(reader.read_embedded)
+            msg.pixel_blocks[entry.key] = entry.value
+          else
+            msg.capture_unknown_field(reader, fn, wt)
+          end
+        end
+        msg
       end
-      write_unknown_fields(w)
+
+      def self.decode(io : IO) : self
+        msg = decode_partial(io)
+        msg.validate_required_deep!
+        msg
+      end
+
+      def encode_partial(io : IO) : Nil
+        w = Proto::Wire::Writer.new(io)
+        pixel_blocks.each do |k, v|
+          entry = MinknowApi::PromethionDevice::GetPixelBlockSettingsResponse::PixelBlocksEntry.new
+          entry.key = k
+          entry.value = v
+          w.write_embedded(1) { |sub| entry.encode_partial(sub) }
+        end
+        write_unknown_fields(w)
+      end
+
+      def encode(io : IO) : Nil
+        validate_required_deep!
+        encode_partial(io)
+      end
+
+      def ==(other : self) : Bool
+        return false unless pixel_blocks == other.pixel_blocks
+        true
+      end
     end
 
-    def encode(io : IO) : Nil
-      validate_required_deep!
-      encode_partial(io)
-    end
+    class ChangePixelSettingsRequest
+      include Proto::Message
 
-    def ==(other : self) : Bool
-      return false unless pixels == other.pixels
-      true
-    end
-  end
-  class StreamTemperatureRequest
-    include Proto::Message
+      class PixelsEntry
+        include Proto::Message
 
-    property period_seconds : UInt32 = 0
+        property key : UInt32 = 0
+        property value : MinknowApi::PromethionDevice::PixelSettings? = nil
 
-    def self.decode_partial(io : IO) : self
-      msg = new
-      reader = Proto::Wire::Reader.new(io)
-      while tag = reader.read_tag
-        fn, wt = tag
-        case fn
-        when 1
-          msg.period_seconds = reader.read_uint32
-        else
-          msg.capture_unknown_field(reader, fn, wt)
+        def has_value? : Bool
+          !value.nil?
+        end
+
+        def clear_value : Nil
+          self.value = nil
+        end
+
+        def validate_required! : Nil
+        end
+
+        def validate_required_deep! : Nil
+          validate_required!
+          value.try &.validate_required_deep!
+        end
+
+        def self.decode_partial(io : IO) : self
+          msg = new
+          reader = Proto::Wire::Reader.new(io)
+          while tag = reader.read_tag
+            fn, wt = tag
+            case fn
+            when 1
+              msg.key = reader.read_uint32
+            when 2
+              msg.value = MinknowApi::PromethionDevice::PixelSettings.decode_partial(reader.read_embedded)
+            else
+              msg.capture_unknown_field(reader, fn, wt)
+            end
+          end
+          msg
+        end
+
+        def self.decode(io : IO) : self
+          msg = decode_partial(io)
+          msg.validate_required_deep!
+          msg
+        end
+
+        def encode_partial(io : IO) : Nil
+          w = Proto::Wire::Writer.new(io)
+          if key != 0
+            w.write_tag(1, Proto::WireType::VARINT)
+            w.write_uint32(key)
+          end
+          if _v = value
+            w.write_embedded(2) { |sub| _v.encode_partial(sub) }
+          end
+          write_unknown_fields(w)
+        end
+
+        def encode(io : IO) : Nil
+          validate_required_deep!
+          encode_partial(io)
+        end
+
+        def ==(other : self) : Bool
+          return false unless key == other.key
+          return false unless value == other.value
+          true
         end
       end
-      msg
-    end
 
-    def self.decode(io : IO) : self
-      msg = decode_partial(io)
-      msg
-    end
+      property pixels : Hash(UInt32, MinknowApi::PromethionDevice::PixelSettings) = {} of UInt32 => MinknowApi::PromethionDevice::PixelSettings
+      property pixel_default : MinknowApi::PromethionDevice::PixelSettings? = nil
 
-    def encode_partial(io : IO) : Nil
-      w = Proto::Wire::Writer.new(io)
-      if period_seconds != 0
-        w.write_tag(1, Proto::WireType::VARINT)
-        w.write_uint32(period_seconds)
+      def has_pixel_default? : Bool
+        !pixel_default.nil?
       end
-      write_unknown_fields(w)
-    end
 
-    def encode(io : IO) : Nil
-      encode_partial(io)
-    end
-
-    def ==(other : self) : Bool
-      return false unless period_seconds == other.period_seconds
-      true
-    end
-  end
-  class GetTemperatureResponse
-    include Proto::Message
-
-    property flowcell_temperature : Google::Protobuf::FloatValue? = nil
-    property chamber_temperature : Google::Protobuf::FloatValue? = nil
-    property pixel_block_temperature : Array(Google::Protobuf::FloatValue) = [] of Google::Protobuf::FloatValue
-    property target_temperature : Google::Protobuf::FloatValue? = nil
-
-    def has_flowcell_temperature? : Bool
-      !flowcell_temperature.nil?
-    end
-
-    def clear_flowcell_temperature : Nil
-      self.flowcell_temperature = nil
-    end
-
-    def has_chamber_temperature? : Bool
-      !chamber_temperature.nil?
-    end
-
-    def clear_chamber_temperature : Nil
-      self.chamber_temperature = nil
-    end
-
-    def has_target_temperature? : Bool
-      !target_temperature.nil?
-    end
-
-    def clear_target_temperature : Nil
-      self.target_temperature = nil
-    end
-
-    def validate_required! : Nil
-    end
-
-    def validate_required_deep! : Nil
-      validate_required!
-      flowcell_temperature.try &.validate_required_deep!
-      chamber_temperature.try &.validate_required_deep!
-      pixel_block_temperature.each do |item|
-        item.validate_required_deep!
+      def clear_pixel_default : Nil
+        self.pixel_default = nil
       end
-      target_temperature.try &.validate_required_deep!
+
+      def validate_required! : Nil
+      end
+
+      def validate_required_deep! : Nil
+        validate_required!
+        pixels.each_value do |value|
+          value.validate_required_deep!
+        end
+        pixel_default.try &.validate_required_deep!
+      end
+
+      def self.decode_partial(io : IO) : self
+        msg = new
+        reader = Proto::Wire::Reader.new(io)
+        while tag = reader.read_tag
+          fn, wt = tag
+          case fn
+          when 1
+            entry = MinknowApi::PromethionDevice::ChangePixelSettingsRequest::PixelsEntry.decode_partial(reader.read_embedded)
+            msg.pixels[entry.key] = entry.value
+          when 2
+            msg.pixel_default = MinknowApi::PromethionDevice::PixelSettings.decode_partial(reader.read_embedded)
+          else
+            msg.capture_unknown_field(reader, fn, wt)
+          end
+        end
+        msg
+      end
+
+      def self.decode(io : IO) : self
+        msg = decode_partial(io)
+        msg.validate_required_deep!
+        msg
+      end
+
+      def encode_partial(io : IO) : Nil
+        w = Proto::Wire::Writer.new(io)
+        pixels.each do |k, v|
+          entry = MinknowApi::PromethionDevice::ChangePixelSettingsRequest::PixelsEntry.new
+          entry.key = k
+          entry.value = v
+          w.write_embedded(1) { |sub| entry.encode_partial(sub) }
+        end
+        if _v = pixel_default
+          w.write_embedded(2) { |sub| _v.encode_partial(sub) }
+        end
+        write_unknown_fields(w)
+      end
+
+      def encode(io : IO) : Nil
+        validate_required_deep!
+        encode_partial(io)
+      end
+
+      def ==(other : self) : Bool
+        return false unless pixels == other.pixels
+        return false unless pixel_default == other.pixel_default
+        true
+      end
     end
 
+    class ChangePixelSettingsResponse
+      include Proto::Message
 
-    def self.decode_partial(io : IO) : self
-      msg = new
-      reader = Proto::Wire::Reader.new(io)
-      while tag = reader.read_tag
-        fn, wt = tag
-        case fn
-        when 1
-          msg.flowcell_temperature = Google::Protobuf::FloatValue.decode_partial(reader.read_embedded)
-        when 2
-          msg.chamber_temperature = Google::Protobuf::FloatValue.decode_partial(reader.read_embedded)
-        when 3
-          msg.pixel_block_temperature << Google::Protobuf::FloatValue.decode_partial(reader.read_embedded)
-        when 4
-          msg.target_temperature = Google::Protobuf::FloatValue.decode_partial(reader.read_embedded)
-        else
-          msg.capture_unknown_field(reader, fn, wt)
+      def self.decode_partial(io : IO) : self
+        msg = new
+        reader = Proto::Wire::Reader.new(io)
+        while tag = reader.read_tag
+          fn, wt = tag
+          case fn
+          else
+            msg.capture_unknown_field(reader, fn, wt)
+          end
+        end
+        msg
+      end
+
+      def self.decode(io : IO) : self
+        msg = decode_partial(io)
+        msg
+      end
+
+      def encode_partial(io : IO) : Nil
+        w = Proto::Wire::Writer.new(io)
+        write_unknown_fields(w)
+      end
+
+      def encode(io : IO) : Nil
+        encode_partial(io)
+      end
+
+      def ==(other : self) : Bool
+        true
+      end
+    end
+
+    class GetPixelSettingsRequest
+      include Proto::Message
+
+      property pixels : Array(UInt32) = [] of UInt32
+
+      def self.decode_partial(io : IO) : self
+        msg = new
+        reader = Proto::Wire::Reader.new(io)
+        while tag = reader.read_tag
+          fn, wt = tag
+          case fn
+          when 1
+            if wt == Proto::WireType::LENGTH_DELIMITED
+              reader.read_packed_varint { |v| msg.pixels << v.to_u32! }
+            else
+              msg.pixels << reader.read_uint32
+            end
+          else
+            msg.capture_unknown_field(reader, fn, wt)
+          end
+        end
+        msg
+      end
+
+      def self.decode(io : IO) : self
+        msg = decode_partial(io)
+        msg
+      end
+
+      def encode_partial(io : IO) : Nil
+        w = Proto::Wire::Writer.new(io)
+        w.write_packed(1) do |buf|
+          sub = Proto::Wire::Writer.new(buf)
+          pixels.each { |item| sub.write_uint32(item) }
+        end
+        write_unknown_fields(w)
+      end
+
+      def encode(io : IO) : Nil
+        encode_partial(io)
+      end
+
+      def ==(other : self) : Bool
+        return false unless pixels == other.pixels
+        true
+      end
+    end
+
+    class GetPixelSettingsResponse
+      include Proto::Message
+
+      property pixels : Array(MinknowApi::PromethionDevice::PixelSettings) = [] of MinknowApi::PromethionDevice::PixelSettings
+
+      def validate_required! : Nil
+      end
+
+      def validate_required_deep! : Nil
+        validate_required!
+        pixels.each do |item|
+          item.validate_required_deep!
         end
       end
-      msg
+
+      def self.decode_partial(io : IO) : self
+        msg = new
+        reader = Proto::Wire::Reader.new(io)
+        while tag = reader.read_tag
+          fn, wt = tag
+          case fn
+          when 1
+            msg.pixels << MinknowApi::PromethionDevice::PixelSettings.decode_partial(reader.read_embedded)
+          else
+            msg.capture_unknown_field(reader, fn, wt)
+          end
+        end
+        msg
+      end
+
+      def self.decode(io : IO) : self
+        msg = decode_partial(io)
+        msg.validate_required_deep!
+        msg
+      end
+
+      def encode_partial(io : IO) : Nil
+        w = Proto::Wire::Writer.new(io)
+        pixels.each do |item|
+          w.write_embedded(1) { |sub| item.encode_partial(sub) }
+        end
+        write_unknown_fields(w)
+      end
+
+      def encode(io : IO) : Nil
+        validate_required_deep!
+        encode_partial(io)
+      end
+
+      def ==(other : self) : Bool
+        return false unless pixels == other.pixels
+        true
+      end
     end
 
-    def self.decode(io : IO) : self
-      msg = decode_partial(io)
-      msg.validate_required_deep!
-      msg
+    class StreamTemperatureRequest
+      include Proto::Message
+
+      property period_seconds : UInt32 = 0
+
+      def self.decode_partial(io : IO) : self
+        msg = new
+        reader = Proto::Wire::Reader.new(io)
+        while tag = reader.read_tag
+          fn, wt = tag
+          case fn
+          when 1
+            msg.period_seconds = reader.read_uint32
+          else
+            msg.capture_unknown_field(reader, fn, wt)
+          end
+        end
+        msg
+      end
+
+      def self.decode(io : IO) : self
+        msg = decode_partial(io)
+        msg
+      end
+
+      def encode_partial(io : IO) : Nil
+        w = Proto::Wire::Writer.new(io)
+        if period_seconds != 0
+          w.write_tag(1, Proto::WireType::VARINT)
+          w.write_uint32(period_seconds)
+        end
+        write_unknown_fields(w)
+      end
+
+      def encode(io : IO) : Nil
+        encode_partial(io)
+      end
+
+      def ==(other : self) : Bool
+        return false unless period_seconds == other.period_seconds
+        true
+      end
     end
 
-    def encode_partial(io : IO) : Nil
-      w = Proto::Wire::Writer.new(io)
-      if (_v = flowcell_temperature)
-        w.write_embedded(1) { |sub| _v.encode_partial(sub) }
+    class GetTemperatureResponse
+      include Proto::Message
+
+      property flowcell_temperature : Google::Protobuf::FloatValue? = nil
+      property chamber_temperature : Google::Protobuf::FloatValue? = nil
+      property pixel_block_temperature : Array(Google::Protobuf::FloatValue) = [] of Google::Protobuf::FloatValue
+      property target_temperature : Google::Protobuf::FloatValue? = nil
+
+      def has_flowcell_temperature? : Bool
+        !flowcell_temperature.nil?
       end
-      if (_v = chamber_temperature)
-        w.write_embedded(2) { |sub| _v.encode_partial(sub) }
+
+      def clear_flowcell_temperature : Nil
+        self.flowcell_temperature = nil
       end
-      pixel_block_temperature.each do |item|
-        w.write_embedded(3) { |sub| item.encode_partial(sub) }
+
+      def has_chamber_temperature? : Bool
+        !chamber_temperature.nil?
       end
-      if (_v = target_temperature)
-        w.write_embedded(4) { |sub| _v.encode_partial(sub) }
+
+      def clear_chamber_temperature : Nil
+        self.chamber_temperature = nil
       end
-      write_unknown_fields(w)
+
+      def has_target_temperature? : Bool
+        !target_temperature.nil?
+      end
+
+      def clear_target_temperature : Nil
+        self.target_temperature = nil
+      end
+
+      def validate_required! : Nil
+      end
+
+      def validate_required_deep! : Nil
+        validate_required!
+        flowcell_temperature.try &.validate_required_deep!
+        chamber_temperature.try &.validate_required_deep!
+        pixel_block_temperature.each do |item|
+          item.validate_required_deep!
+        end
+        target_temperature.try &.validate_required_deep!
+      end
+
+      def self.decode_partial(io : IO) : self
+        msg = new
+        reader = Proto::Wire::Reader.new(io)
+        while tag = reader.read_tag
+          fn, wt = tag
+          case fn
+          when 1
+            msg.flowcell_temperature = Google::Protobuf::FloatValue.decode_partial(reader.read_embedded)
+          when 2
+            msg.chamber_temperature = Google::Protobuf::FloatValue.decode_partial(reader.read_embedded)
+          when 3
+            msg.pixel_block_temperature << Google::Protobuf::FloatValue.decode_partial(reader.read_embedded)
+          when 4
+            msg.target_temperature = Google::Protobuf::FloatValue.decode_partial(reader.read_embedded)
+          else
+            msg.capture_unknown_field(reader, fn, wt)
+          end
+        end
+        msg
+      end
+
+      def self.decode(io : IO) : self
+        msg = decode_partial(io)
+        msg.validate_required_deep!
+        msg
+      end
+
+      def encode_partial(io : IO) : Nil
+        w = Proto::Wire::Writer.new(io)
+        if _v = flowcell_temperature
+          w.write_embedded(1) { |sub| _v.encode_partial(sub) }
+        end
+        if _v = chamber_temperature
+          w.write_embedded(2) { |sub| _v.encode_partial(sub) }
+        end
+        pixel_block_temperature.each do |item|
+          w.write_embedded(3) { |sub| item.encode_partial(sub) }
+        end
+        if _v = target_temperature
+          w.write_embedded(4) { |sub| _v.encode_partial(sub) }
+        end
+        write_unknown_fields(w)
+      end
+
+      def encode(io : IO) : Nil
+        validate_required_deep!
+        encode_partial(io)
+      end
+
+      def ==(other : self) : Bool
+        return false unless flowcell_temperature == other.flowcell_temperature
+        return false unless chamber_temperature == other.chamber_temperature
+        return false unless pixel_block_temperature == other.pixel_block_temperature
+        return false unless target_temperature == other.target_temperature
+        true
+      end
     end
 
-    def encode(io : IO) : Nil
-      validate_required_deep!
-      encode_partial(io)
-    end
-
-    def ==(other : self) : Bool
-      return false unless flowcell_temperature == other.flowcell_temperature
-      return false unless chamber_temperature == other.chamber_temperature
-      return false unless pixel_block_temperature == other.pixel_block_temperature
-      return false unless target_temperature == other.target_temperature
-      true
+    module PromethionDeviceService
+      METHODS = [
+        {
+          name:             "change_device_settings",
+          request_type:     ".minknow_api.promethion_device.ChangeDeviceSettingsRequest",
+          response_type:    ".minknow_api.promethion_device.ChangeDeviceSettingsResponse",
+          client_streaming: false,
+          server_streaming: false,
+          path:             "/minknow_api.promethion_device.PromethionDeviceService/change_device_settings",
+        },
+        {
+          name:             "get_device_settings",
+          request_type:     ".minknow_api.promethion_device.GetDeviceSettingsRequest",
+          response_type:    ".minknow_api.promethion_device.GetDeviceSettingsResponse",
+          client_streaming: false,
+          server_streaming: false,
+          path:             "/minknow_api.promethion_device.PromethionDeviceService/get_device_settings",
+        },
+        {
+          name:             "change_pixel_block_settings",
+          request_type:     ".minknow_api.promethion_device.ChangePixelBlockSettingsRequest",
+          response_type:    ".minknow_api.promethion_device.ChangePixelBlockSettingsResponse",
+          client_streaming: false,
+          server_streaming: false,
+          path:             "/minknow_api.promethion_device.PromethionDeviceService/change_pixel_block_settings",
+        },
+        {
+          name:             "get_pixel_block_settings",
+          request_type:     ".minknow_api.promethion_device.GetPixelBlockSettingsRequest",
+          response_type:    ".minknow_api.promethion_device.GetPixelBlockSettingsResponse",
+          client_streaming: false,
+          server_streaming: false,
+          path:             "/minknow_api.promethion_device.PromethionDeviceService/get_pixel_block_settings",
+        },
+        {
+          name:             "change_pixel_settings",
+          request_type:     ".minknow_api.promethion_device.ChangePixelSettingsRequest",
+          response_type:    ".minknow_api.promethion_device.ChangePixelSettingsResponse",
+          client_streaming: false,
+          server_streaming: false,
+          path:             "/minknow_api.promethion_device.PromethionDeviceService/change_pixel_settings",
+        },
+        {
+          name:             "get_pixel_settings",
+          request_type:     ".minknow_api.promethion_device.GetPixelSettingsRequest",
+          response_type:    ".minknow_api.promethion_device.GetPixelSettingsResponse",
+          client_streaming: false,
+          server_streaming: false,
+          path:             "/minknow_api.promethion_device.PromethionDeviceService/get_pixel_settings",
+        },
+        {
+          name:             "stream_temperature",
+          request_type:     ".minknow_api.promethion_device.StreamTemperatureRequest",
+          response_type:    ".minknow_api.promethion_device.GetTemperatureResponse",
+          client_streaming: false,
+          server_streaming: true,
+          path:             "/minknow_api.promethion_device.PromethionDeviceService/stream_temperature",
+        },
+      ] of NamedTuple(name: String, request_type: String, response_type: String, client_streaming: Bool, server_streaming: Bool, path: String)
     end
   end
-  module PromethionDeviceService
-    METHODS = [
-      {
-        name: "change_device_settings",
-        request_type: ".minknow_api.promethion_device.ChangeDeviceSettingsRequest",
-        response_type: ".minknow_api.promethion_device.ChangeDeviceSettingsResponse",
-        client_streaming: false,
-        server_streaming: false,
-        path: "/minknow_api.promethion_device.PromethionDeviceService/change_device_settings",
-      },
-      {
-        name: "get_device_settings",
-        request_type: ".minknow_api.promethion_device.GetDeviceSettingsRequest",
-        response_type: ".minknow_api.promethion_device.GetDeviceSettingsResponse",
-        client_streaming: false,
-        server_streaming: false,
-        path: "/minknow_api.promethion_device.PromethionDeviceService/get_device_settings",
-      },
-      {
-        name: "change_pixel_block_settings",
-        request_type: ".minknow_api.promethion_device.ChangePixelBlockSettingsRequest",
-        response_type: ".minknow_api.promethion_device.ChangePixelBlockSettingsResponse",
-        client_streaming: false,
-        server_streaming: false,
-        path: "/minknow_api.promethion_device.PromethionDeviceService/change_pixel_block_settings",
-      },
-      {
-        name: "get_pixel_block_settings",
-        request_type: ".minknow_api.promethion_device.GetPixelBlockSettingsRequest",
-        response_type: ".minknow_api.promethion_device.GetPixelBlockSettingsResponse",
-        client_streaming: false,
-        server_streaming: false,
-        path: "/minknow_api.promethion_device.PromethionDeviceService/get_pixel_block_settings",
-      },
-      {
-        name: "change_pixel_settings",
-        request_type: ".minknow_api.promethion_device.ChangePixelSettingsRequest",
-        response_type: ".minknow_api.promethion_device.ChangePixelSettingsResponse",
-        client_streaming: false,
-        server_streaming: false,
-        path: "/minknow_api.promethion_device.PromethionDeviceService/change_pixel_settings",
-      },
-      {
-        name: "get_pixel_settings",
-        request_type: ".minknow_api.promethion_device.GetPixelSettingsRequest",
-        response_type: ".minknow_api.promethion_device.GetPixelSettingsResponse",
-        client_streaming: false,
-        server_streaming: false,
-        path: "/minknow_api.promethion_device.PromethionDeviceService/get_pixel_settings",
-      },
-      {
-        name: "stream_temperature",
-        request_type: ".minknow_api.promethion_device.StreamTemperatureRequest",
-        response_type: ".minknow_api.promethion_device.GetTemperatureResponse",
-        client_streaming: false,
-        server_streaming: true,
-        path: "/minknow_api.promethion_device.PromethionDeviceService/stream_temperature",
-      },
-    ] of NamedTuple(name: String, request_type: String, response_type: String, client_streaming: Bool, server_streaming: Bool, path: String)
-  end
-
-end
 end

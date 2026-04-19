@@ -27,8 +27,6 @@ module MinknowApi
         when 4 then HARDWARE_CHECK_FINISHED_WITH_ERROR_PYTHON_EXECUTOR_DID_NOT_START
         when 5 then HARDWARE_CHECK_FINISHED_WITH_ERROR_SCRIPT_ERROR_CODE
         when 6 then HARDWARE_CHECK_FINISHED_WITH_ERROR_LINGERING_RUN
-        else
-          nil
         end
       end
     end
@@ -262,7 +260,7 @@ module MinknowApi
           w.write_tag(2, Proto::WireType::VARINT)
           w.write_int32(device_type.raw)
         end
-        if (_v = hardware_check_result)
+        if _v = hardware_check_result
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
         if !adapter_id.empty?
@@ -424,7 +422,7 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(hardware_check_id)
         end
-        if (_v = hardware_check_script_data)
+        if _v = hardware_check_script_data
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -608,13 +606,13 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(hardware_check_id)
         end
-        if (_v = start_time)
+        if _v = start_time
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = end_time)
+        if _v = end_time
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = hardware_check_script_data)
+        if _v = hardware_check_script_data
           w.write_embedded(4) { |sub| _v.encode_partial(sub) }
         end
         if state.raw != 0
@@ -683,7 +681,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = hardware_check_result)
+        if _v = hardware_check_result
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)

@@ -33,8 +33,6 @@ module MinknowApi
         when  9 then DeviceDataError
         when 10 then ApiRequest
         when 11 then Paused
-        else
-          nil
         end
       end
     end

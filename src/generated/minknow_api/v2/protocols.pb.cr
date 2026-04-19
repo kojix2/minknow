@@ -64,7 +64,7 @@ module MinknowApi
               w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
               w.write_string(flow_cell_position_name)
             end
-            if (_v = settings)
+            if _v = settings
               w.write_embedded(2) { |sub| _v.encode_partial(sub) }
             end
             write_unknown_fields(w)
@@ -221,12 +221,12 @@ module MinknowApi
               w.write_string(flow_cell_position_name)
             end
             if payload_case == PayloadCase::RESPONSE
-              if (_v = response)
+              if _v = response
                 w.write_embedded(2) { |sub| _v.encode_partial(sub) }
               end
             end
             if payload_case == PayloadCase::STATUS
-              if (_v = status)
+              if _v = status
                 w.write_embedded(3) { |sub| _v.encode_partial(sub) }
               end
             end
@@ -353,7 +353,7 @@ module MinknowApi
               w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
               w.write_string(flow_cell_position_name)
             end
-            if (_v = settings)
+            if _v = settings
               w.write_embedded(2) { |sub| _v.encode_partial(sub) }
             end
             write_unknown_fields(w)
@@ -510,12 +510,12 @@ module MinknowApi
               w.write_string(flow_cell_position_name)
             end
             if payload_case == PayloadCase::RESPONSE
-              if (_v = response)
+              if _v = response
                 w.write_embedded(2) { |sub| _v.encode_partial(sub) }
               end
             end
             if payload_case == PayloadCase::STATUS
-              if (_v = status)
+              if _v = status
                 w.write_embedded(3) { |sub| _v.encode_partial(sub) }
               end
             end
@@ -730,12 +730,12 @@ module MinknowApi
               w.write_string(run_id)
             end
             if payload_case == PayloadCase::RESPONSE
-              if (_v = response)
+              if _v = response
                 w.write_embedded(2) { |sub| _v.encode_partial(sub) }
               end
             end
             if payload_case == PayloadCase::STATUS
-              if (_v = status)
+              if _v = status
                 w.write_embedded(3) { |sub| _v.encode_partial(sub) }
               end
             end
@@ -864,10 +864,10 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if (_v = experiment_start_time)
+          if _v = experiment_start_time
             w.write_embedded(1) { |sub| _v.encode_partial(sub) }
           end
-          if (_v = order_direction)
+          if _v = order_direction
             w.write_tag(2, Proto::WireType::VARINT)
             w.write_int32(_v.raw)
           end
@@ -930,7 +930,7 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if (_v = filter_info)
+          if _v = filter_info
             w.write_embedded(1) { |sub| _v.encode_partial(sub) }
           end
           write_unknown_fields(w)

@@ -20,8 +20,6 @@ module MinknowApi
         when 1 then UNTIL_PROTOCOL_END
         when 2 then UNTIL_INSTANCE_END
         when 3 then PERSIST_ACROSS_RESTARTS
-        else
-          nil
         end
       end
     end
@@ -80,7 +78,7 @@ module MinknowApi
             w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
             w.write_string(key)
           end
-          if (_v = value)
+          if _v = value
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
           write_unknown_fields(w)
@@ -373,7 +371,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = value)
+        if _v = value
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -496,7 +494,7 @@ module MinknowApi
             w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
             w.write_string(key)
           end
-          if (_v = value)
+          if _v = value
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
           write_unknown_fields(w)
@@ -676,7 +674,7 @@ module MinknowApi
             w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
             w.write_string(key)
           end
-          if (_v = value)
+          if _v = value
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
           write_unknown_fields(w)

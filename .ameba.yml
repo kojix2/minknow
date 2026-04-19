@@ -1,0 +1,10 @@
+Metrics/CyclomaticComplexity:
+  Excluded:
+    - src/generated/**
+    - src/generated/**/*
+
+Naming/QueryBoolMethods:
+  Excluded:
+    - src/generated/**
+    - src/generated/**/*
+

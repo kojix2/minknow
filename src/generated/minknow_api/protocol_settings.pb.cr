@@ -21,8 +21,6 @@ module MinknowApi
           when 0 then ANY
           when 1 then SYSTEM_SCRIPTS
           when 2 then USER_SCRIPTS
-          else
-            nil
           end
         end
       end
@@ -116,8 +114,6 @@ module MinknowApi
           when 1 then RUN_OPTIONS
           when 2 then BASECALLING
           when 3 then OUTPUT
-          else
-            nil
           end
         end
       end
@@ -156,8 +152,6 @@ module MinknowApi
           when 12 then MBASE
           when 13 then GBASE
           when 14 then MILLIVOLT
-          else
-            nil
           end
         end
       end
@@ -174,8 +168,6 @@ module MinknowApi
           when 1 then HIDDEN
           when 2 then FIXED
           when 3 then REQUIRED
-          else
-            nil
           end
         end
       end
@@ -365,12 +357,12 @@ module MinknowApi
             w.write_bool(bool_value)
           end
           if protocol_setting_value_case == ProtocolSettingValueCase::CHANNELS_VALUE
-            if (_v = channels_value)
+            if _v = channels_value
               w.write_embedded(5) { |sub| _v.encode_partial(sub) }
             end
           end
           if protocol_setting_value_case == ProtocolSettingValueCase::MULTI_STRING_VALUE
-            if (_v = multi_string_value)
+            if _v = multi_string_value
               w.write_embedded(6) { |sub| _v.encode_partial(sub) }
             end
           end
@@ -421,8 +413,6 @@ module MinknowApi
             when 7 then NOT_IN
             when 8 then ENDS_WITH
             when 9 then STARTS_WITH
-            else
-              nil
             end
           end
         end
@@ -476,7 +466,7 @@ module MinknowApi
             w.write_tag(1, Proto::WireType::VARINT)
             w.write_int32(condition.raw)
           end
-          if (_v = value)
+          if _v = value
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
           write_unknown_fields(w)
@@ -654,7 +644,7 @@ module MinknowApi
           w.write_tag(5, Proto::WireType::VARINT)
           w.write_int32(unit.raw)
         end
-        if (_v = default_value)
+        if _v = default_value
           w.write_embedded(6) { |sub| _v.encode_partial(sub) }
         end
         constraints.each do |item|

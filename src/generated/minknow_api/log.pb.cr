@@ -20,8 +20,6 @@ module MinknowApi
         when 1 then MESSAGE_SEVERITY_INFO
         when 2 then MESSAGE_SEVERITY_WARNING
         when 3 then MESSAGE_SEVERITY_ERROR
-        else
-          nil
         end
       end
     end
@@ -42,8 +40,6 @@ module MinknowApi
         when 3 then ADDING_PING_FILES_TO_ARCHIVE
         when 4 then RESTARTING_PING_SERVICE
         when 5 then COMPLETE
-        else
-          nil
         end
       end
     end
@@ -202,7 +198,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = time)
+        if _v = time
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         if severity.raw != 0

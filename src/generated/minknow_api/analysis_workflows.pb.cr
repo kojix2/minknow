@@ -22,8 +22,6 @@ module MinknowApi
           when 1 then POST
           when 2 then PUT
           when 3 then DELETE
-          else
-            nil
           end
         end
       end

@@ -18,8 +18,6 @@ module MinknowApi
             def self.from_raw?(raw : Int32) : self?
               case raw
               when 0 then ONT
-              else
-                nil
               end
             end
           end
@@ -122,7 +120,7 @@ module MinknowApi
               w.write_tag(4, Proto::WireType::LENGTH_DELIMITED)
               w.write_string(item)
             end
-            if (_v = last_used)
+            if _v = last_used
               w.write_embedded(5) { |sub| _v.encode_partial(sub) }
             end
             write_unknown_fields(w)
@@ -157,8 +155,6 @@ module MinknowApi
               when 0 then DEFAULT_RUN_LENGTH_CONDITION
               when 1 then TIME
               when 2 then AVAILABLE_PORES
-              else
-                nil
               end
             end
           end
@@ -173,8 +169,6 @@ module MinknowApi
               when 0 then DEFAULT_TARGET_DATA_CONDITION
               when 1 then ESTIMATED_BASES
               when 2 then PASSED_BASECALLED_BASES
-              else
-                nil
               end
             end
           end
@@ -189,8 +183,6 @@ module MinknowApi
               when 0 then DEFAULT_TARGET_DATA_UNIT
               when 1 then GIGABASES
               when 2 then MEGABASES
-              else
-                nil
               end
             end
           end
@@ -596,7 +588,7 @@ module MinknowApi
               w.write_tag(51, Proto::WireType::VARINT)
               w.write_bool(fail_unaligned_reads)
             end
-            if (_v = preset_meta)
+            if _v = preset_meta
               w.write_embedded(52) { |sub| _v.encode_partial(sub) }
             end
             write_unknown_fields(w)
@@ -756,7 +748,7 @@ module MinknowApi
               w.write_string(preset_string)
             end
             if data_case == DataCase::PRESET_OBJECT
-              if (_v = preset_object)
+              if _v = preset_object
                 w.write_embedded(3) { |sub| _v.encode_partial(sub) }
               end
             end
@@ -859,7 +851,7 @@ module MinknowApi
               w.write_string(preset_string)
             end
             if data_case == DataCase::PRESET_OBJECT
-              if (_v = preset_object)
+              if _v = preset_object
                 w.write_embedded(2) { |sub| _v.encode_partial(sub) }
               end
             end
@@ -1101,7 +1093,7 @@ module MinknowApi
                 w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
                 w.write_string(preset_id)
               end
-              if (_v = preset_meta)
+              if _v = preset_meta
                 w.write_embedded(2) { |sub| _v.encode_partial(sub) }
               end
               write_unknown_fields(w)
@@ -1215,7 +1207,7 @@ module MinknowApi
 
           def encode_partial(io : IO) : Nil
             w = Proto::Wire::Writer.new(io)
-            if (_v = preset_type)
+            if _v = preset_type
               w.write_embedded(1) { |sub| _v.encode_partial(sub) }
             end
             write_unknown_fields(w)
@@ -1320,7 +1312,7 @@ module MinknowApi
 
           def encode_partial(io : IO) : Nil
             w = Proto::Wire::Writer.new(io)
-            if (_v = preset_type)
+            if _v = preset_type
               w.write_embedded(1) { |sub| _v.encode_partial(sub) }
             end
             write_unknown_fields(w)
@@ -1383,8 +1375,6 @@ module MinknowApi
               case raw
               when 0 then PRESET_OBJECT
               when 1 then PRESET_STRING
-              else
-                nil
               end
             end
           end
@@ -1434,7 +1424,7 @@ module MinknowApi
 
           def encode_partial(io : IO) : Nil
             w = Proto::Wire::Writer.new(io)
-            if (_v = preset_type)
+            if _v = preset_type
               w.write_embedded(1) { |sub| _v.encode_partial(sub) }
             end
             if return_type.raw != 0
@@ -1500,7 +1490,7 @@ module MinknowApi
 
           def encode_partial(io : IO) : Nil
             w = Proto::Wire::Writer.new(io)
-            if (_v = preset_type)
+            if _v = preset_type
               w.write_embedded(1) { |sub| _v.encode_partial(sub) }
             end
             write_unknown_fields(w)

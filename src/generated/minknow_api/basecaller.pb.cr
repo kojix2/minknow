@@ -24,8 +24,6 @@ module MinknowApi
         when 1 then STATE_SUCCESS
         when 2 then STATE_ERROR
         when 3 then STATE_CANCELLED
-        else
-          nil
         end
       end
     end
@@ -40,8 +38,6 @@ module MinknowApi
         when 0 then PRESET_ALL_RUNNING
         when 1 then PRESET_MOST_RECENTLY_STARTED
         when 2 then PRESET_ALL
-        else
-          nil
         end
       end
     end
@@ -54,8 +50,6 @@ module MinknowApi
         case raw
         when 0 then SCRIPT
         when 1 then EPI2ME
-        else
-          nil
         end
       end
     end
@@ -196,7 +190,7 @@ module MinknowApi
               w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
               w.write_string(key)
             end
-            if (_v = value)
+            if _v = value
               w.write_embedded(2) { |sub| _v.encode_partial(sub) }
             end
             write_unknown_fields(w)
@@ -321,7 +315,7 @@ module MinknowApi
             w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
             w.write_string(key)
           end
-          if (_v = value)
+          if _v = value
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
           write_unknown_fields(w)
@@ -549,7 +543,7 @@ module MinknowApi
           w.write_string(configuration)
         end
         if basecall_model_case == BasecallModelCase::MODEL_NAMES
-          if (_v = model_names)
+          if _v = model_names
             w.write_embedded(16) { |sub| _v.encode_partial(sub) }
           end
         end
@@ -569,10 +563,10 @@ module MinknowApi
           w.write_tag(7, Proto::WireType::VARINT)
           w.write_bool(recursive)
         end
-        if (_v = barcoding_configuration)
+        if _v = barcoding_configuration
           w.write_embedded(10) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = alignment_configuration)
+        if _v = alignment_configuration
           w.write_embedded(11) { |sub| _v.encode_partial(sub) }
         end
         if min_qscore.to_bits != 0
@@ -583,7 +577,7 @@ module MinknowApi
           w.write_tag(13, Proto::WireType::VARINT)
           w.write_bool(enable_read_splitting)
         end
-        if (_v = min_score_read_splitting)
+        if _v = min_score_read_splitting
           w.write_embedded(14) { |sub| _v.encode_partial(sub) }
         end
         if estimate_poly_a
@@ -674,8 +668,6 @@ module MinknowApi
           case raw
           when 0 then BAM
           when 1 then FASTQ
-          else
-            nil
           end
         end
       end
@@ -760,7 +752,7 @@ module MinknowApi
           w.write_tag(5, Proto::WireType::VARINT)
           w.write_bool(recursive)
         end
-        if (_v = barcoding_configuration)
+        if _v = barcoding_configuration
           w.write_embedded(10) { |sub| _v.encode_partial(sub) }
         end
         if output_format.raw != 0
@@ -903,7 +895,7 @@ module MinknowApi
           w.write_tag(4, Proto::WireType::VARINT)
           w.write_bool(recursive)
         end
-        if (_v = alignment_configuration)
+        if _v = alignment_configuration
           w.write_embedded(6) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -1022,7 +1014,7 @@ module MinknowApi
             w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
             w.write_string(key)
           end
-          if (_v = value)
+          if _v = value
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
           write_unknown_fields(w)
@@ -1297,32 +1289,32 @@ module MinknowApi
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
         if start_request_case == StartRequestCase::START_BASECALLING_REQUEST
-          if (_v = start_basecalling_request)
+          if _v = start_basecalling_request
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
         end
         if start_request_case == StartRequestCase::START_BARCODING_REQUEST
-          if (_v = start_barcoding_request)
+          if _v = start_barcoding_request
             w.write_embedded(3) { |sub| _v.encode_partial(sub) }
           end
         end
         if start_request_case == StartRequestCase::START_ALIGNMENT_REQUEST
-          if (_v = start_alignment_request)
+          if _v = start_alignment_request
             w.write_embedded(4) { |sub| _v.encode_partial(sub) }
           end
         end
         if start_request_case == StartRequestCase::START_POST_PROCESSING_PROTOCOL_REQUEST
-          if (_v = start_post_processing_protocol_request)
+          if _v = start_post_processing_protocol_request
             w.write_embedded(5) { |sub| _v.encode_partial(sub) }
           end
         end
         if start_request_case == StartRequestCase::PROXY_REQUEST
-          if (_v = proxy_request)
+          if _v = proxy_request
             w.write_embedded(6) { |sub| _v.encode_partial(sub) }
           end
         end
         if start_request_case == StartRequestCase::ANALYSIS_WORKFLOW_REQUEST
-          if (_v = analysis_workflow_request)
+          if _v = analysis_workflow_request
             w.write_embedded(7) { |sub| _v.encode_partial(sub) }
           end
         end
@@ -1639,22 +1631,22 @@ module MinknowApi
           w.write_string(id)
         end
         if start_request_oneof_case == StartRequestOneofCase::START_BASECALLING_REQUEST
-          if (_v = start_basecalling_request)
+          if _v = start_basecalling_request
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
         end
         if start_request_oneof_case == StartRequestOneofCase::START_BARCODING_REQUEST
-          if (_v = start_barcoding_request)
+          if _v = start_barcoding_request
             w.write_embedded(11) { |sub| _v.encode_partial(sub) }
           end
         end
         if start_request_oneof_case == StartRequestOneofCase::START_ALIGNMENT_REQUEST
-          if (_v = start_alignment_request)
+          if _v = start_alignment_request
             w.write_embedded(12) { |sub| _v.encode_partial(sub) }
           end
         end
         if start_request_oneof_case == StartRequestOneofCase::START_POST_PROCESSING_PROTOCOL_REQUEST
-          if (_v = start_post_processing_protocol_request)
+          if _v = start_post_processing_protocol_request
             w.write_embedded(13) { |sub| _v.encode_partial(sub) }
           end
         end
@@ -1678,13 +1670,13 @@ module MinknowApi
           w.write_tag(7, Proto::WireType::VARINT)
           w.write_int32(progress_total)
         end
-        if (_v = start_time)
+        if _v = start_time
           w.write_embedded(8) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = end_time)
+        if _v = end_time
           w.write_embedded(9) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = estimated_end_time)
+        if _v = estimated_end_time
           w.write_embedded(10) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -1851,7 +1843,7 @@ module MinknowApi
           w.write_string(id)
         end
         if selection_case == SelectionCase::LIST
-          if (_v = list)
+          if _v = list
             w.write_embedded(3) { |sub| _v.encode_partial(sub) }
           end
         end

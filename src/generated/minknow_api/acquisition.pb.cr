@@ -24,8 +24,6 @@ module MinknowApi
         when 2 then STARTING
         when 3 then PROCESSING
         when 4 then FINISHING
-        else
-          nil
         end
       end
     end
@@ -40,8 +38,6 @@ module MinknowApi
         when 0 then AUTO
         when 1 then DISABLE
         when 2 then FORCE
-        else
-          nil
         end
       end
     end
@@ -56,8 +52,6 @@ module MinknowApi
         when 0 then OTHER_PURPOSE
         when 2 then SEQUENCING
         when 3 then CALIBRATION
-        else
-          nil
         end
       end
     end
@@ -76,8 +70,6 @@ module MinknowApi
         when 2 then ACQUISITION_FINISHING
         when 3 then ACQUISITION_COMPLETED
         when 4 then ACQUISITION_PAUSED
-        else
-          nil
         end
       end
     end
@@ -106,8 +98,6 @@ module MinknowApi
         when 7 then STOPPED_BAD_TEMPERATURE
         when 8 then STOPPED_SHUTDOWN
         when 9 then STOPPED_INTERNAL_ERROR
-        else
-          nil
         end
       end
     end
@@ -130,8 +120,6 @@ module MinknowApi
         when 5 then STARTUP_INITIALISING_DATA_WRITERS
         when 6 then STARTUP_INITIALISING_INTERMEDIATE_DATA_STORAGE
         when 7 then STARTUP_INITIALISING_STATISTICS
-        else
-          nil
         end
       end
     end
@@ -148,8 +136,6 @@ module MinknowApi
         when 1 then FINISHING_PROCESSING_DEVICE_SIGNAL
         when 2 then FINISHING_BASECALLING_READS
         when 3 then FINISHING_SAVING_DATA
-        else
-          nil
         end
       end
     end
@@ -318,8 +304,6 @@ module MinknowApi
           when 0 then STOP_DEFAULT
           when 1 then STOP_KEEP_ALL_DATA
           when 2 then STOP_FINISH_PROCESSING
-          else
-            nil
           end
         end
       end
@@ -717,7 +701,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = raw_per_channel)
+        if _v = raw_per_channel
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -1016,16 +1000,16 @@ module MinknowApi
           w.write_tag(18, Proto::WireType::VARINT)
           w.write_int64(basecalled_fail_bases)
         end
-        if (_v = basecalled_pass_reads_split)
+        if _v = basecalled_pass_reads_split
           w.write_embedded(22) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = basecalled_fail_reads_split)
+        if _v = basecalled_fail_reads_split
           w.write_embedded(23) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = basecalled_pass_bases_split)
+        if _v = basecalled_pass_bases_split
           w.write_embedded(24) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = basecalled_fail_bases_split)
+        if _v = basecalled_fail_bases_split
           w.write_embedded(25) { |sub| _v.encode_partial(sub) }
         end
         if basecalled_samples != 0
@@ -1283,7 +1267,7 @@ module MinknowApi
             w.write_tag(2, Proto::WireType::LENGTH_DELIMITED)
             w.write_string(name)
           end
-          if (_v = style)
+          if _v = style
             w.write_embedded(3) { |sub| _v.encode_partial(sub) }
           end
           if global_order != 0
@@ -1364,7 +1348,7 @@ module MinknowApi
             w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
             w.write_string(name)
           end
-          if (_v = style)
+          if _v = style
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
           states.each do |item|
@@ -1601,7 +1585,7 @@ module MinknowApi
           w.write_string(basecalling_config_filename)
         end
         if basecall_model_case == BasecallModelCase::BASECALLING_MODEL_NAMES
-          if (_v = basecalling_model_names)
+          if _v = basecalling_model_names
             w.write_embedded(25) { |sub| _v.encode_partial(sub) }
           end
         end
@@ -1673,7 +1657,7 @@ module MinknowApi
           w.write_tag(8, Proto::WireType::VARINT)
           w.write_bool(bulk_file_enabled)
         end
-        if (_v = channel_state_info)
+        if _v = channel_state_info
           w.write_embedded(9) { |sub| _v.encode_partial(sub) }
         end
         if events_to_base_ratio.to_bits != 0
@@ -1844,7 +1828,7 @@ module MinknowApi
             w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
             w.write_string(name)
           end
-          if (_v = style)
+          if _v = style
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
           if global_order != 0
@@ -1924,7 +1908,7 @@ module MinknowApi
             w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
             w.write_string(name)
           end
-          if (_v = style)
+          if _v = style
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
           category.each do |item|
@@ -2251,19 +2235,19 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = mux_scan_metadata)
+        if _v = mux_scan_metadata
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         mux_scan_results.each do |item|
           w.write_embedded(2) { |sub| item.encode_partial(sub) }
         end
-        if (_v = target_translocation_speed)
+        if _v = target_translocation_speed
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = target_q_score)
+        if _v = target_q_score
           w.write_embedded(4) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = target_temperature)
+        if _v = target_temperature
           w.write_embedded(5) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -2340,10 +2324,10 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = pause_criteria)
+        if _v = pause_criteria
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = stop_criteria)
+        if _v = stop_criteria
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -2546,7 +2530,7 @@ module MinknowApi
           w.write_tag(12, Proto::WireType::VARINT)
           w.write_int32(startup_state.raw)
         end
-        if (_v = startup_state_estimated_end)
+        if _v = startup_state_estimated_end
           w.write_embedded(13) { |sub| _v.encode_partial(sub) }
         end
         if startup_state_estimated_percent_complete.to_bits != 0
@@ -2569,31 +2553,31 @@ module MinknowApi
           w.write_tag(3, Proto::WireType::VARINT)
           w.write_int32(stop_reason.raw)
         end
-        if (_v = start_time)
+        if _v = start_time
           w.write_embedded(4) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = data_read_start_time)
+        if _v = data_read_start_time
           w.write_embedded(5) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = data_read_end_time)
+        if _v = data_read_end_time
           w.write_embedded(6) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = end_time)
+        if _v = end_time
           w.write_embedded(7) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = yield_summary)
+        if _v = yield_summary
           w.write_embedded(8) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = config_summary)
+        if _v = config_summary
           w.write_embedded(9) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = writer_summary)
+        if _v = writer_summary
           w.write_embedded(11) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = bream_info)
+        if _v = bream_info
           w.write_embedded(15) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = target_run_until_criteria)
+        if _v = target_run_until_criteria
           w.write_embedded(16) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -2787,8 +2771,6 @@ module MinknowApi
           case raw
           when 0 then HDF5
           when 1 then DEVICE
-          else
-            nil
           end
         end
       end
@@ -2803,8 +2785,6 @@ module MinknowApi
           when 0 then UNSPECIFIED
           when 1 then SINGLE_RUN
           when 2 then LOOP
-          else
-            nil
           end
         end
       end
@@ -3063,7 +3043,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = info)
+        if _v = info
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         if overwrite_unset_fields

@@ -57,8 +57,6 @@ module MinknowApi
         when 26 then PROTOCOL_FINISHED_WITH_ERROR_BASECALLER_COMMUNICATION
         when 27 then PROTOCOL_FINISHED_WITH_NO_FLOWCELL_FOR_ACQUISITION
         when 28 then PROTOCOL_FINISHED_WITH_ERROR_BASECALLER_UNAVAILABLE
-        else
-          nil
         end
       end
     end
@@ -95,8 +93,6 @@ module MinknowApi
         when 13 then PHASE_LOW_DISK_SPACE_AUTOMATIC_PAUSE
         when  7 then PHASE_RESUMING
         when  9 then PHASE_COMPLETED
-        else
-          nil
         end
       end
     end
@@ -113,8 +109,6 @@ module MinknowApi
         when 1 then ACTION_PAUSE
         when 2 then ACTION_RESUME
         when 3 then ACTION_TRIGGER_MUX_SCAN
-        else
-          nil
         end
       end
     end
@@ -138,8 +132,6 @@ module MinknowApi
           when 3 then NO_TEMPLATE_CONTROL
           when 4 then POSITIVE_CONTROL_1
           when 5 then POSITIVE_CONTROL_2
-          else
-            nil
           end
         end
       end
@@ -434,10 +426,10 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = protocol_group_id)
+        if _v = protocol_group_id
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = sample_id)
+        if _v = sample_id
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         if pool_output
@@ -447,13 +439,13 @@ module MinknowApi
         barcode_user_info.each do |item|
           w.write_embedded(3) { |sub| item.encode_partial(sub) }
         end
-        if (_v = user_specified_flow_cell_id)
+        if _v = user_specified_flow_cell_id
           w.write_embedded(4) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = user_specified_product_code)
+        if _v = user_specified_product_code
           w.write_embedded(5) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = kit_info)
+        if _v = kit_info
           w.write_embedded(6) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -622,16 +614,16 @@ module MinknowApi
           w.write_tag(2, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(item)
         end
-        if (_v = user_info)
+        if _v = user_info
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = offload_location_info)
+        if _v = offload_location_info
           w.write_embedded(4) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = target_run_until_criteria)
+        if _v = target_run_until_criteria
           w.write_embedded(5) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = analysis_workflow_request)
+        if _v = analysis_workflow_request
           w.write_embedded(7) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -1312,7 +1304,7 @@ module MinknowApi
             w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
             w.write_string(key)
           end
-          if (_v = value)
+          if _v = value
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
           write_unknown_fields(w)
@@ -1398,7 +1390,7 @@ module MinknowApi
           w.write_tag(3, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(name)
         end
-        if (_v = tag_extraction_result)
+        if _v = tag_extraction_result
           w.write_embedded(4) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -1488,8 +1480,6 @@ module MinknowApi
           when 1 then NOTIFY_BEFORE_TERMINATION
           when 2 then NOTIFY_ON_SCRIPT_TERMINATION
           when 3 then NOTIFY_ON_WRITING_COMPLETE
-          else
-            nil
           end
         end
       end
@@ -1874,22 +1864,22 @@ module MinknowApi
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
         if origin_case == OriginCase::USER
-          if (_v = user)
+          if _v = user
             w.write_embedded(1) { |sub| _v.encode_partial(sub) }
           end
         end
         if origin_case == OriginCase::MINKNOW
-          if (_v = minknow)
+          if _v = minknow
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
         end
         if origin_case == OriginCase::PROTOCOL_PHASE_MANAGEMENT
-          if (_v = protocol_phase_management)
+          if _v = protocol_phase_management
             w.write_embedded(3) { |sub| _v.encode_partial(sub) }
           end
         end
         if origin_case == OriginCase::RUN_UNTIL
-          if (_v = run_until)
+          if _v = run_until
             w.write_embedded(4) { |sub| _v.encode_partial(sub) }
           end
         end
@@ -1975,10 +1965,10 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::VARINT)
           w.write_int32(phase.raw)
         end
-        if (_v = timestamp)
+        if _v = timestamp
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = origin)
+        if _v = origin
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -2010,8 +2000,6 @@ module MinknowApi
           when 0 then QUEUED
           when 1 then STARTED
           when 2 then FAILED_TO_START
-          else
-            nil
           end
         end
       end
@@ -2068,7 +2056,7 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(started_id)
         end
-        if (_v = start_request)
+        if _v = start_request
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         if state.raw != 0
@@ -2168,8 +2156,6 @@ module MinknowApi
           when 2 then ScriptError
           when 3 then TemperatureTooLow
           when 4 then TemperatureTooHigh
-          else
-            nil
           end
         end
       end
@@ -2255,8 +2241,6 @@ module MinknowApi
           when 1 then Unknown
           when 2 then ScriptError
           when 3 then CalibrationFailed
-          else
-            nil
           end
         end
       end
@@ -2320,8 +2304,6 @@ module MinknowApi
           when 2 then Succeeded
           when 3 then Failed
           when 4 then Cancelled
-          else
-            nil
           end
         end
       end
@@ -2338,8 +2320,6 @@ module MinknowApi
           when 1 then Unknown
           when 2 then ScriptError
           when 3 then CheckFailed
-          else
-            nil
           end
         end
       end
@@ -2413,10 +2393,10 @@ module MinknowApi
           w.write_tag(2, Proto::WireType::VARINT)
           w.write_int32(failure_reason.raw)
         end
-        if (_v = calibration_results)
+        if _v = calibration_results
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = temperature_results)
+        if _v = temperature_results
           w.write_embedded(4) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -2456,8 +2436,6 @@ module MinknowApi
             when 2 then LOCATION_TYPE_S3
             when 3 then LOCATION_TYPE_LOCAL_MOUNTED_USB_DRIVE
             when 4 then LOCATION_TYPE_LOCAL_MOUNTED_NETWORK_DRIVE
-            else
-              nil
             end
           end
         end
@@ -2513,7 +2491,7 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if (_v = id)
+          if _v = id
             w.write_embedded(1) { |sub| _v.encode_partial(sub) }
           end
           if !name.empty?
@@ -2620,8 +2598,6 @@ module MinknowApi
           when 1 then STABLE
           when 2 then UNSTABLE
           when 3 then MODIFIED
-          else
-            nil
           end
         end
       end
@@ -2640,8 +2616,6 @@ module MinknowApi
           when 2 then PROD
           when 3 then Q_RELEASE
           when 4 then OND_RELEASE
-          else
-            nil
           end
         end
       end
@@ -2778,7 +2752,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = minknow)
+        if _v = minknow
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         if !bream.empty?
@@ -2851,8 +2825,6 @@ module MinknowApi
           when 3 then STOPPED_BY_USER
           when 4 then STOPPED_WITH_ERROR
           when 5 then FAILED_TO_START
-          else
-            nil
           end
         end
       end
@@ -2917,7 +2889,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = request)
+        if _v = request
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         if !workflow_id.empty?
@@ -3018,7 +2990,7 @@ module MinknowApi
             w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
             w.write_string(key)
           end
-          if (_v = value)
+          if _v = value
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
           write_unknown_fields(w)
@@ -3317,7 +3289,7 @@ module MinknowApi
           w.write_tag(11, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(output_path)
         end
-        if (_v = reported_output_path)
+        if _v = reported_output_path
           w.write_tag(24, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(_v)
         end
@@ -3329,7 +3301,7 @@ module MinknowApi
           w.write_tag(16, Proto::WireType::VARINT)
           w.write_int32(phase.raw)
         end
-        if (_v = last_phase_change)
+        if _v = last_phase_change
           w.write_embedded(17) { |sub| _v.encode_partial(sub) }
         end
         phase_history.each do |item|
@@ -3343,50 +3315,50 @@ module MinknowApi
           w.write_tag(19, Proto::WireType::VARINT)
           w.write_bool(can_trigger_mux_scan)
         end
-        if (_v = start_time)
+        if _v = start_time
           w.write_embedded(5) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = script_end_time)
+        if _v = script_end_time
           w.write_embedded(9) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = end_time)
+        if _v = end_time
           w.write_embedded(6) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = stop_origin)
+        if _v = stop_origin
           w.write_embedded(23) { |sub| _v.encode_partial(sub) }
         end
         acquisition_run_ids.each do |item|
           w.write_tag(7, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(item)
         end
-        if (_v = user_info)
+        if _v = user_info
           w.write_embedded(8) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = device)
+        if _v = device
           w.write_embedded(12) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = flow_cell)
+        if _v = flow_cell
           w.write_embedded(13) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = meta_info)
+        if _v = meta_info
           w.write_embedded(14) { |sub| _v.encode_partial(sub) }
         end
         associated_post_processing_analysis.each do |item|
           w.write_embedded(15) { |sub| item.encode_partial(sub) }
         end
-        if (_v = analysis_workflow)
+        if _v = analysis_workflow
           w.write_embedded(27) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = pqc_result)
+        if _v = pqc_result
           w.write_embedded(20) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = hardware_check_result)
+        if _v = hardware_check_result
           w.write_embedded(26) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = external_offload)
+        if _v = external_offload
           w.write_embedded(21) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = software_versions)
+        if _v = software_versions
           w.write_embedded(22) { |sub| _v.encode_partial(sub) }
         end
         if is_protocol_script_restartable
@@ -3443,8 +3415,6 @@ module MinknowApi
         def self.from_raw?(raw : Int32) : self?
           case raw
           when 0 then START_TIME
-          else
-            nil
           end
         end
       end
@@ -3457,8 +3427,6 @@ module MinknowApi
           case raw
           when 0 then DESCENDING
           when 1 then ASCENDING
-          else
-            nil
           end
         end
       end
@@ -3498,7 +3466,7 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if (_v = flow_cell_id)
+          if _v = flow_cell_id
             w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
             w.write_string(_v)
           end
@@ -3550,7 +3518,7 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if (_v = only_succeeded_or_failed)
+          if _v = only_succeeded_or_failed
             w.write_tag(1, Proto::WireType::VARINT)
             w.write_bool(_v)
           end
@@ -3623,10 +3591,10 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if (_v = start_range)
+          if _v = start_range
             w.write_embedded(1) { |sub| _v.encode_partial(sub) }
           end
-          if (_v = end_range)
+          if _v = end_range
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
           write_unknown_fields(w)
@@ -3777,36 +3745,36 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = pqc_filter)
+        if _v = pqc_filter
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = flow_cell_id)
+        if _v = flow_cell_id
           w.write_tag(9, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(_v)
         end
-        if (_v = hardware_check_filter)
+        if _v = hardware_check_filter
           w.write_embedded(4) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = protocol_group_id)
+        if _v = protocol_group_id
           w.write_tag(2, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(_v)
         end
-        if (_v = experiment_start_time)
+        if _v = experiment_start_time
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = count)
+        if _v = count
           w.write_tag(5, Proto::WireType::VARINT)
           w.write_int32(_v)
         end
-        if (_v = offset)
+        if _v = offset
           w.write_tag(6, Proto::WireType::VARINT)
           w.write_int32(_v)
         end
-        if (_v = order_by)
+        if _v = order_by
           w.write_tag(7, Proto::WireType::VARINT)
           w.write_int32(_v.raw)
         end
-        if (_v = order_direction)
+        if _v = order_direction
           w.write_tag(8, Proto::WireType::VARINT)
           w.write_int32(_v.raw)
         end
@@ -3876,7 +3844,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = filter_info)
+        if _v = filter_info
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -4032,7 +4000,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = run_info)
+        if _v = run_info
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -4564,7 +4532,7 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(protocol_group_id)
         end
-        if (_v = start_time)
+        if _v = start_time
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         if pooled_output
@@ -4631,7 +4599,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = filter_info)
+        if _v = filter_info
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -4915,7 +4883,7 @@ module MinknowApi
             w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
             w.write_string(key)
           end
-          if (_v = value)
+          if _v = value
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
           write_unknown_fields(w)
@@ -5064,17 +5032,17 @@ module MinknowApi
           w.write_string(identifier)
         end
         if protocol_identifier_case == ProtocolIdentifierCase::COMPONENTS
-          if (_v = components)
+          if _v = components
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
         end
-        if (_v = user_info)
+        if _v = user_info
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = offload_location_info)
+        if _v = offload_location_info
           w.write_embedded(5) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = target_run_until_criteria)
+        if _v = target_run_until_criteria
           w.write_embedded(6) { |sub| _v.encode_partial(sub) }
         end
         settings.each do |k, v|
@@ -5083,7 +5051,7 @@ module MinknowApi
           entry.value = v
           w.write_embedded(4) { |sub| entry.encode_partial(sub) }
         end
-        if (_v = analysis_workflow_request)
+        if _v = analysis_workflow_request
           w.write_embedded(8) { |sub| _v.encode_partial(sub) }
         end
         if !simulation_source.empty?
@@ -5207,7 +5175,7 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(protocol_run_id)
         end
-        if (_v = pqc_result)
+        if _v = pqc_result
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -5311,7 +5279,7 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(protocol_run_id)
         end
-        if (_v = result)
+        if _v = result
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -5415,7 +5383,7 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(run_id)
         end
-        if (_v = start_request)
+        if _v = start_request
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -5656,7 +5624,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = set_capabilities)
+        if _v = set_capabilities
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         if phase.raw != 0

@@ -33,8 +33,6 @@ module MinknowApi
         when 3 then SplitByAlignment
         when 4 then SplitByEndReason
         when 5 then SplitByBedRegion
-        else
-          nil
         end
       end
     end
@@ -175,10 +173,10 @@ module MinknowApi
           w.write_tag(2, Proto::WireType::VARINT)
           w.write_int32(bucket_value_type.raw)
         end
-        if (_v = plot)
+        if _v = plot
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = outliers)
+        if _v = outliers
           w.write_embedded(4) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -250,7 +248,7 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::VARINT)
           w.write_int32(type_.raw)
         end
-        if (_v = plot)
+        if _v = plot
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -402,7 +400,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = dorado_model_name)
+        if _v = dorado_model_name
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         if duplex_enabled
@@ -578,7 +576,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = acquisition_run_info)
+        if _v = acquisition_run_info
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
         if bucket_size != 0
@@ -612,16 +610,16 @@ module MinknowApi
         basecall_boxplot.each do |item|
           w.write_embedded(9) { |sub| item.encode_partial(sub) }
         end
-        if (_v = run_until_update)
+        if _v = run_until_update
           w.write_embedded(10) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = writer_config)
+        if _v = writer_config
           w.write_embedded(12) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = basecaller_config)
+        if _v = basecaller_config
           w.write_embedded(13) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = basecaller_information)
+        if _v = basecaller_information
           w.write_embedded(15) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -784,10 +782,10 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if (_v = host)
+        if _v = host
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
-        if (_v = protocol_run_info)
+        if _v = protocol_run_info
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
         acquisitions.each do |item|
@@ -796,7 +794,7 @@ module MinknowApi
         user_messages.each do |item|
           w.write_embedded(5) { |sub| item.encode_partial(sub) }
         end
-        if (_v = report_data_generation_time)
+        if _v = report_data_generation_time
           w.write_embedded(6) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
@@ -871,7 +869,7 @@ module MinknowApi
             w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
             w.write_string(position_id)
           end
-          if (_v = location)
+          if _v = location
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
           write_unknown_fields(w)
@@ -1011,7 +1009,7 @@ module MinknowApi
         sequencer_info.each do |item|
           w.write_embedded(1) { |sub| item.encode_partial(sub) }
         end
-        if (_v = hardware_check_result)
+        if _v = hardware_check_result
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
