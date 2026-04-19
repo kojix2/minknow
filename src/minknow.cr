@@ -13,7 +13,7 @@ module Minknow
   class ConnectionConfig
     getter host : String
     getter port : Int32
-    getter tls : Bool
+    getter? tls : Bool
     getter metadata : Hash(String, String)
 
     def initialize(
@@ -26,11 +26,11 @@ module Minknow
     end
 
     def with_port(port : Int32) : self
-      self.class.new(host: host, port: port, tls: tls, metadata: metadata.dup)
+      self.class.new(host: host, port: port, tls: tls?, metadata: metadata.dup)
     end
 
     def address : String
-      scheme = tls ? "https" : "http"
+      scheme = tls? ? "https" : "http"
       "#{scheme}://#{host}:#{port}"
     end
 
