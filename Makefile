@@ -9,14 +9,19 @@ GRPC_PLUGIN ?= lib/grpc/bin/protoc-gen-crystal-grpc
 
 PROTO_FILES := $(shell find $(API_ROOT) -type f -name '*.proto' | sort)
 
-.PHONY: help setup gen-tools gen gen-selected
+.PHONY: help setup gen-tools gen gen-one gen-raw gen-one-raw gen-fmt
 
 help:
 	@echo "Targets:"
 	@echo "  make setup                          Install shard dependencies"
 	@echo "  make gen-tools                      Build protoc plugins"
-	@echo "  make gen                            Generate all minknow_api proto files"
-	@echo "  make gen-selected PROTOS='minknow_api/manager.proto minknow_api/acquisition.proto'"
+	@echo "  make gen                            Generate all proto files and format"
+	@echo "  make gen-one PROTOS='minknow_api/manager.proto minknow_api/acquisition.proto'"
+	@echo "                                      Generate selected proto files and format"
+	@echo "  make gen-raw                        Generate all proto files (no format)"
+	@echo "  make gen-one-raw PROTOS='minknow_api/manager.proto minknow_api/acquisition.proto'"
+	@echo "                                      Generate selected proto files (no format)"
+	@echo "  make gen-fmt                        Format generated Crystal files"
 
 setup: lib/proto/shard.yml lib/grpc/shard.yml
 setup:
@@ -34,13 +39,22 @@ $(GRPC_PLUGIN): lib/grpc/src/protoc-gen-crystal-grpc_main.cr
 	@mkdir -p $(dir $@)
 	crystal build lib/grpc/src/protoc-gen-crystal-grpc_main.cr -o $@
 
-gen: gen-tools
+gen: gen-raw
+	$(MAKE) gen-fmt
+
+gen-one: gen-one-raw
+	$(MAKE) gen-fmt
+
+gen-raw: gen-tools
 	@mkdir -p $(OUT_DIR)
 	protoc --proto_path=$(PROTO_ROOT) --plugin=protoc-gen-crystal=$(PROTO_PLUGIN) --crystal_out=$(OUT_DIR) $(PROTO_FILES)
 	protoc --proto_path=$(PROTO_ROOT) --plugin=protoc-gen-crystal-grpc=$(GRPC_PLUGIN) --crystal-grpc_out=$(OUT_DIR) $(PROTO_FILES)
 
-gen-selected: gen-tools
+gen-one-raw: gen-tools
 	@test -n "$(PROTOS)" || (echo "Specify PROTOS, e.g. PROTOS='minknow_api/manager.proto'"; exit 1)
 	@mkdir -p $(OUT_DIR)
 	protoc --proto_path=$(PROTO_ROOT) --plugin=protoc-gen-crystal=$(PROTO_PLUGIN) --crystal_out=$(OUT_DIR) $(PROTOS)
 	protoc --proto_path=$(PROTO_ROOT) --plugin=protoc-gen-crystal-grpc=$(GRPC_PLUGIN) --crystal-grpc_out=$(OUT_DIR) $(PROTOS)
+
+gen-fmt:
+	crystal tool format $(OUT_DIR)

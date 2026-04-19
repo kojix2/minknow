@@ -41,8 +41,11 @@ Generated files:
 Code generation:
 - Install dependencies: `make setup`
 - Build plugins: `make gen-tools`
-- Generate all: `make gen`
-- Generate selected files: `make gen-selected PROTOS='minknow_api/manager.proto'`
+- Generate all (and format generated files): `make gen`
+- Generate selected files (and format generated files): `make gen-one PROTOS='minknow_api/manager.proto'`
+- Generate all without format: `make gen-raw`
+- Generate selected files without format: `make gen-one-raw PROTOS='minknow_api/manager.proto'`
+- Format only: `make gen-fmt`
 
 Known limitation (current branch):
 - google/protobuf/descriptor.proto generation still needs keyword escaping
