@@ -44,18 +44,23 @@ positions=<N>
 Runs a combined workflow for simulated devices, protocol discovery, and presets lookup.
 
 ```sh
-MINKNOW_CREATE_SIMULATED=true \
-MINKNOW_PRESET_ID=standard_sequencing \
-MINKNOW_HOST=localhost MINKNOW_PORT=9501 \
-crystal run examples/simulated_protocol_preset_workflow.cr
+crystal run examples/simulated_protocol_preset_workflow.cr -- \
+  --host localhost \
+  --port 9501 \
+  --create-simulated true \
+  --preset-id standard_sequencing \
+  --protocol-limit 5
 ```
 
 Optional filters for manager `find_protocols`:
 
 ```sh
-MINKNOW_FLOW_CELL_PRODUCT_CODE=FLO-MIN106
-MINKNOW_SEQUENCING_KIT=SQK-LSK114
+crystal run examples/simulated_protocol_preset_workflow.cr -- \
+  --flow-cell-code FLO-MIN106 \
+  --sequencing-kit SQK-LSK114
 ```
+
+Environment variables are still supported as fallback for backward compatibility.
 
 ## Client Certificate Snippet
 

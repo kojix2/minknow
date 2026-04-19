@@ -1,18 +1,53 @@
 require "colorize"
+require "option_parser"
 require "../src/minknow"
 require "../src/generated/minknow_api/protocol.pb.cr"
 require "../src/generated/minknow_api/protocol.grpc.cr"
 require "../src/generated/minknow_api/ui/sequencing_run/presets.pb.cr"
 require "../src/generated/minknow_api/ui/sequencing_run/presets.grpc.cr"
 
+def parse_bool(value : String, name : String) : Bool
+  case value.downcase
+  when "1", "true", "yes", "on"
+    true
+  when "0", "false", "no", "off"
+    false
+  else
+    raise ArgumentError.new("#{name} must be true/false (or 1/0), got: #{value}")
+  end
+end
+
 host = ENV.fetch("MINKNOW_HOST", "localhost")
 port = ENV.fetch("MINKNOW_PORT", "9501").to_i
-tls = ENV.fetch("MINKNOW_TLS", "true") != "false"
-create_simulated_devices = ENV.fetch("MINKNOW_CREATE_SIMULATED", "false") == "true"
+tls = parse_bool(ENV.fetch("MINKNOW_TLS", "true"), "MINKNOW_TLS")
+create_simulated_devices = parse_bool(ENV.fetch("MINKNOW_CREATE_SIMULATED", "false"), "MINKNOW_CREATE_SIMULATED")
 flow_cell_code = ENV["MINKNOW_FLOW_CELL_PRODUCT_CODE"]?
 sequencing_kit = ENV["MINKNOW_SEQUENCING_KIT"]?
 preset_id = ENV.fetch("MINKNOW_PRESET_ID", "standard_sequencing")
 protocol_limit = ENV.fetch("MINKNOW_PROTOCOL_LIMIT", "5").to_i
+
+OptionParser.parse do |parser|
+  parser.banner = "Usage: crystal run examples/simulated_protocol_preset_workflow.cr -- [options]"
+
+  parser.on("--host HOST", "Manager host (default: MINKNOW_HOST or localhost)") { |value| host = value }
+  parser.on("--port PORT", "Manager port (default: MINKNOW_PORT or 9501)") { |value| port = value.to_i }
+  parser.on("--tls BOOL", "Use TLS true/false (default: MINKNOW_TLS or true)") { |value| tls = parse_bool(value, "--tls") }
+  parser.on("--create-simulated BOOL", "Create simulated devices true/false (default: MINKNOW_CREATE_SIMULATED or false)") do |value|
+    create_simulated_devices = parse_bool(value, "--create-simulated")
+  end
+  parser.on("--flow-cell-code CODE", "Filter find_protocols by flow cell product code") { |value| flow_cell_code = value }
+  parser.on("--sequencing-kit KIT", "Filter find_protocols by sequencing kit") { |value| sequencing_kit = value }
+  parser.on("--preset-id ID", "Preset ID for preset/get_start_protocol (default: MINKNOW_PRESET_ID or standard_sequencing)") { |value| preset_id = value }
+  parser.on("--protocol-limit N", "Maximum protocols to print per section (default: MINKNOW_PROTOCOL_LIMIT or 5)") { |value| protocol_limit = value.to_i }
+  parser.on("-h", "--help", "Show this help") do
+    puts parser
+    exit 0
+  end
+end
+
+if protocol_limit <= 0
+  raise ArgumentError.new("--protocol-limit must be > 0")
+end
 
 LABEL_WIDTH = 34
 
@@ -26,6 +61,10 @@ end
 
 def bool_word(value : Bool) : String
   value ? "yes" : "no"
+end
+
+def value_or_any(value : String?) : String
+  value || "(any)"
 end
 
 def format_tag_value(value : MinknowApi::Protocol::ProtocolInfo::TagValue) : String
@@ -144,8 +183,8 @@ begin
   row("manager", "#{host}:#{port}")
   row("tls", bool_word(tls))
   row("create simulated devices", bool_word(create_simulated_devices))
-  row("find_protocols flow cell", flow_cell_code || "(any)")
-  row("find_protocols sequencing kit", sequencing_kit || "(any)")
+  row("find_protocols flow cell", value_or_any(flow_cell_code))
+  row("find_protocols sequencing kit", value_or_any(sequencing_kit))
   row("preset id", preset_id)
   puts
 
