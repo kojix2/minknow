@@ -82,6 +82,6 @@ begin
 rescue ex
   STDERR.puts "Failed to query MinKNOW Manager at #{host}:#{port} (tls=#{tls})"
   STDERR.puts ex.message || ex.class.name
-  STDERR.puts "Check MINKNOW_HOST, MINKNOW_PORT, MINKNOW_TLS, MINKNOW_TRUSTED_CA, and MINKNOW_AUTH_TOKEN if the handshake or authentication fails."
+  STDERR.puts "Check MINKNOW_HOST, MINKNOW_PORT, MINKNOW_TLS, MINKNOW_TRUSTED_CA, MINKNOW_AUTH_TOKEN, MINKNOW_API_CLIENT_CERTIFICATE_CHAIN, and MINKNOW_API_CLIENT_KEY if the handshake or authentication fails."
   exit 1
 end

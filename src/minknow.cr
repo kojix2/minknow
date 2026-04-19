@@ -30,6 +30,8 @@ module Minknow
     getter? tls : Bool
     getter metadata : Hash(String, String)
     getter ca_certificate_path : String?
+    getter client_certificate_chain_path : String?
+    getter client_private_key_path : String?
     getter authentication_token : String?
     getter protocol_token : String?
     getter auto_local_auth : Bool?
@@ -41,6 +43,8 @@ module Minknow
       @tls : Bool = true,
       metadata : Hash(String, String)? = nil,
       @ca_certificate_path : String? = nil,
+      @client_certificate_chain_path : String? = ENV["MINKNOW_API_CLIENT_CERTIFICATE_CHAIN"]?,
+      @client_private_key_path : String? = ENV["MINKNOW_API_CLIENT_KEY"]?,
       @authentication_token : String? = ENV["MINKNOW_AUTH_TOKEN"]?,
       @protocol_token : String? = ENV["PROTOCOL_TOKEN"]?,
       @auto_local_auth : Bool? = nil,
@@ -56,6 +60,8 @@ module Minknow
         tls: tls?,
         metadata: metadata.dup,
         ca_certificate_path: ca_certificate_path,
+        client_certificate_chain_path: client_certificate_chain_path,
+        client_private_key_path: client_private_key_path,
         authentication_token: authentication_token,
         protocol_token: protocol_token,
         auto_local_auth: auto_local_auth,
@@ -84,6 +90,8 @@ module Minknow
         tls: true,
         metadata: metadata.dup,
         ca_certificate_path: ca_certificate_path,
+        client_certificate_chain_path: client_certificate_chain_path,
+        client_private_key_path: client_private_key_path,
         authentication_token: nil,
         protocol_token: nil,
         auto_local_auth: false,
@@ -138,6 +146,10 @@ module Minknow
       combined
     end
 
+    def client_certificate_configured? : Bool
+      !!resolved_client_certificate_paths
+    end
+
     def tls_context : OpenSSL::SSL::Context::Client?
       return nil unless tls?
 
@@ -146,6 +158,12 @@ module Minknow
         if cert_path = resolved_ca_certificate_path
           context.ca_certificates = cert_path
           context.verify_mode = OpenSSL::SSL::VerifyMode::PEER
+        end
+
+        if cert_paths = resolved_client_certificate_paths
+          certificate_chain_path, private_key_path = cert_paths
+          context.certificate_chain = certificate_chain_path
+          context.private_key = private_key_path
         end
       end
     end
@@ -183,6 +201,29 @@ module Minknow
       default_ca_certificate_paths.find do |candidate|
         File.file?(candidate)
       end
+    end
+
+    private def resolved_client_certificate_paths : Tuple(String, String)?
+      certificate_chain = client_certificate_chain_path || ENV["MINKNOW_API_CLIENT_CERTIFICATE_CHAIN"]?
+      private_key = client_private_key_path || ENV["MINKNOW_API_CLIENT_KEY"]?
+
+      if certificate_chain.nil? && private_key.nil?
+        return nil
+      end
+
+      unless certificate_chain && private_key
+        raise ArgumentError.new("MINKNOW_API_CLIENT_CERTIFICATE_CHAIN and MINKNOW_API_CLIENT_KEY must be set together")
+      end
+
+      unless File.file?(certificate_chain)
+        raise ArgumentError.new("client certificate chain file not found: #{certificate_chain}")
+      end
+
+      unless File.file?(private_key)
+        raise ArgumentError.new("client private key file not found: #{private_key}")
+      end
+
+      {certificate_chain, private_key}
     end
 
     private def default_ca_certificate_paths : Array(String)

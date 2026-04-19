@@ -23,6 +23,29 @@ Run `shards install`
 require "minknow"
 ```
 
+`Minknow::ConnectionConfig` resolves MinKNOW connectivity in this order:
+
+- Uses TLS by default against the manager port.
+- Loads the trusted CA from `MINKNOW_TRUSTED_CA` when set, otherwise tries MinKNOW's default install paths.
+- Loads a client certificate from `MINKNOW_API_CLIENT_CERTIFICATE_CHAIN` and `MINKNOW_API_CLIENT_KEY` when both are set.
+- Uses `MINKNOW_AUTH_TOKEN` as a `local-auth` token when provided.
+- Otherwise, for localhost connections, fetches the local auth token path from MinKNOW and injects `local-auth` automatically.
+- Adds `PROTOCOL_TOKEN` as `protocol-auth` metadata when present.
+
+Common environment variables:
+
+```text
+MINKNOW_HOST=localhost
+MINKNOW_PORT=9501
+MINKNOW_TLS=true
+MINKNOW_TRUSTED_CA=/var/lib/minknow/data/rpc-certs/minknow/ca.crt
+MINKNOW_AUTH_TOKEN=<developer-or-local-token>
+MINKNOW_API_CLIENT_CERTIFICATE_CHAIN=/path/to/client-chain.pem
+MINKNOW_API_CLIENT_KEY=/path/to/client-key.pem
+PROTOCOL_TOKEN=<protocol-token>
+MINKNOW_API_USE_LOCAL_TOKEN=0|1
+```
+
 Example:
 
 ```sh
@@ -35,6 +58,25 @@ Expected output shape:
 positions=<N>
 <position_name>    host=<host>    secure_port=<port_or_n/a>
 ```
+
+Client certificate example:
+
+```crystal
+require "minknow"
+
+config = Minknow::ConnectionConfig.new(
+  host: "localhost",
+  port: 9501,
+  tls: true,
+  client_certificate_chain_path: "/path/to/client-chain.pem",
+  client_private_key_path: "/path/to/client-key.pem",
+)
+
+manager = Minknow::Manager.new(config)
+puts manager.get_version_info.minknow.try(&.full) || "n/a"
+```
+
+For local MinKNOW installations, `examples/manager_info.cr` is a better smoke test than `examples/list_devices.cr` because it succeeds even when no sequencing device is attached.
 
 ## Development
 
