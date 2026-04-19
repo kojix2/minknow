@@ -1,6 +1,9 @@
 # minknow.cr
 
-[MinKNOW API](https://github.com/nanoporetech/minknow_api) for [Crystal](https://crystal-lang.org/)
+[![test](https://github.com/kojix2/minknow/actions/workflows/test.yml/badge.svg)](https://github.com/kojix2/minknow/actions/workflows/test.yml)
+[![Lines of Code](https://img.shields.io/endpoint?url=https%3A%2F%2Ftokei.kojix2.net%2Fbadge%2Fgithub%2Fkojix2%2Fminknow%2Flines)](https://tokei.kojix2.net/github/kojix2/minknow)
+
+🧬🎛️ [MinKNOW API](https://github.com/nanoporetech/minknow_api) for [Crystal](https://crystal-lang.org/)
 
 ## Installation
 
@@ -36,23 +39,15 @@ positions=<N>
 ## Development
 
 Generated files:
-- MinKNOW protobuf/gRPC outputs are kept under src/generated.
+- MinKNOW protobuf/gRPC outputs are kept under `src/generated`.
 
 Code generation:
-- Install dependencies: `make setup`
-- Build plugins: `make gen-tools`
-- Generate all (and format generated files): `make gen`
-- Generate selected files (and format generated files): `make gen-one PROTOS='minknow_api/manager.proto'`
-- Generate all without format: `make gen-raw`
-- Generate selected files without format: `make gen-one-raw PROTOS='minknow_api/manager.proto'`
-- Format only: `make gen-fmt`
 
-Known limitation (current branch):
-- google/protobuf/descriptor.proto generation still needs keyword escaping
-  hardening in proto.cr.
-- A temporary placeholder file may be used at
-  src/generated/google/protobuf/descriptor.pb.cr
-  to unblock compilation while finishing that generator work.
+```
+make setup
+make gen-tools
+make gen
+```
 
 ## Development
 
