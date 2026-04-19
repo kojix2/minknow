@@ -7,7 +7,7 @@ API_ROOT := $(PROTO_ROOT)/minknow_api
 PROTO_PLUGIN ?= lib/proto/bin/protoc-gen-crystal
 GRPC_PLUGIN ?= lib/grpc/bin/protoc-gen-crystal-grpc
 
-PROTO_FILES := $(shell find $(API_ROOT) -type f -name '*.proto' | sort)
+PROTO_FILES := $(shell find $(API_ROOT) $(PROTO_ROOT)/util -type f -name '*.proto' | sort)
 
 .PHONY: help setup gen-tools gen gen-one gen-raw gen-one-raw gen-fmt
 
