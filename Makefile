@@ -19,18 +19,18 @@ help:
 	@echo "  make gen-selected PROTOS='minknow_api/manager.proto minknow_api/acquisition.proto'"
 
 setup: lib/proto/shard.yml lib/grpc/shard.yml
+setup:
+	@if [[ ! -f lib/proto/shard.yml || ! -f lib/grpc/shard.yml || shard.yml -nt lib/proto/shard.yml || shard.lock -nt lib/proto/shard.yml || shard.yml -nt lib/grpc/shard.yml || shard.lock -nt lib/grpc/shard.yml ]]; then \
+		shards install; \
+	fi
 
+gen-tools: setup $(PROTO_PLUGIN) $(GRPC_PLUGIN)
 
-lib/proto/shard.yml lib/grpc/shard.yml: shard.yml shard.lock
-	shards install
-
-gen-tools: $(PROTO_PLUGIN) $(GRPC_PLUGIN)
-
-$(PROTO_PLUGIN): lib/proto/shard.yml lib/proto/src/protoc-gen-crystal_main.cr
+$(PROTO_PLUGIN): lib/proto/src/protoc-gen-crystal_main.cr
 	@mkdir -p $(dir $@)
 	crystal build lib/proto/src/protoc-gen-crystal_main.cr -o $@
 
-$(GRPC_PLUGIN): lib/grpc/shard.yml lib/grpc/src/protoc-gen-crystal-grpc_main.cr
+$(GRPC_PLUGIN): lib/grpc/src/protoc-gen-crystal-grpc_main.cr
 	@mkdir -p $(dir $@)
 	crystal build lib/grpc/src/protoc-gen-crystal-grpc_main.cr -o $@
 
