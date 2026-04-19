@@ -3,6 +3,9 @@ require "json"
 require "proto"
 require "./generated/minknow_api/manager.pb.cr"
 require "./generated/minknow_api/manager.grpc.cr"
+require "./minknow/instance_service"
+require "./minknow/device_service"
+require "./minknow/protocol_service"
 
 module Minknow
   class Error < Exception; end
@@ -269,20 +272,32 @@ module Minknow
     def initialize(@position : FlowCellPosition, @config : ConnectionConfig)
     end
 
+    def channel : GRPC::Channel
+      @channel ||= config.channel
+    end
+
+    def ctx : GRPC::ClientContext
+      @ctx ||= config.client_context
+    end
+
     def endpoint : String
       "#{config.host}:#{config.port}"
     end
 
-    def instance : ServiceHandle
-      @instance ||= ServiceHandle.new(:instance, config)
+    def instance : InstanceService
+      @instance ||= InstanceService.new(channel, ctx)
+    end
+
+    def device : DeviceService
+      @device ||= DeviceService.new(channel, ctx)
+    end
+
+    def protocol : ProtocolService
+      @protocol ||= ProtocolService.new(channel, ctx)
     end
 
     def data : ServiceHandle
       @data ||= ServiceHandle.new(:data, config)
-    end
-
-    def device : ServiceHandle
-      @device ||= ServiceHandle.new(:device, config)
     end
   end
 
