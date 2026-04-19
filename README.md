@@ -38,6 +38,12 @@ positions=<N>
 Generated files:
 - MinKNOW protobuf/gRPC outputs are kept under src/generated.
 
+Code generation:
+- Install dependencies: `make setup`
+- Build plugins: `make gen-tools`
+- Generate all: `make gen`
+- Generate selected files: `make gen-selected PROTOS='minknow_api/manager.proto'`
+
 Known limitation (current branch):
 - google/protobuf/descriptor.proto generation still needs keyword escaping
   hardening in proto.cr.
