@@ -38,6 +38,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -54,6 +55,9 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.client_state << reader.read_string
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -82,6 +86,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless client_state == other.client_state
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -117,6 +122,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -133,6 +139,9 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.server_state = reader.read_string
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -161,6 +170,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless server_state == other.server_state
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -196,6 +206,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -231,6 +242,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -300,16 +312,34 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.flow_cell_id = reader.read_string
           when 2
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.product_code = reader.read_string
           when 3
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.asic_id_str = reader.read_string
           when 4
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.adapter_id = reader.read_string
           when 5
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.use_count = reader.read_uint32
           when 6
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.flow_cell_partner = reader.read_string
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -363,6 +393,7 @@ module MinknowApi
         return false unless adapter_id == other.adapter_id
         return false unless use_count == other.use_count
         return false unless flow_cell_partner == other.flow_cell_partner
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -398,6 +429,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -449,12 +481,24 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.frame_loss_duration = Google::Protobuf::Duration.decode_partial(reader.read_embedded)
           when 3
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.start_frame = reader.read_uint64
           when 4
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.start_section = reader.read_uint64
           when 5
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.repeats = reader.read_uint64
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -499,6 +543,7 @@ module MinknowApi
         return false unless start_frame == other.start_frame
         return false unless start_section == other.start_section
         return false unless repeats == other.repeats
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -534,6 +579,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end

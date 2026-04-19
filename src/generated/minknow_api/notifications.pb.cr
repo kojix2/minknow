@@ -37,8 +37,14 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.key = reader.read_string
             when 2
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.value = reader.read_string
             else
               msg.capture_unknown_field(reader, fn, wt)
@@ -72,11 +78,12 @@ module MinknowApi
         def ==(other : self) : Bool
           return false unless key == other.key
           return false unless value == other.value
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
 
-      property type_ : Proto::OpenEnum(MinknowApi::Notifications::NotificationContent::Type) = Proto::OpenEnum(MinknowApi::Notifications::NotificationContent::Type).new(0)
+      property type_ : Proto::OpenEnum(NotificationContent::Type) = Proto::OpenEnum(NotificationContent::Type).new(0)
       property notification_text : String = ""
       property notification_code : String = ""
       property extra_data : Hash(String, String) = {} of String => String
@@ -88,14 +95,27 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            _raw = reader.read_int32
-            msg.type_ = Proto::OpenEnum(MinknowApi::Notifications::NotificationContent::Type).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.type_ = Proto::OpenEnum(NotificationContent::Type).new(_raw)
           when 2
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.notification_text = reader.read_string
           when 3
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.notification_code = reader.read_string
           when 4
-            entry = MinknowApi::Notifications::NotificationContent::ExtraDataEntry.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            entry = NotificationContent::ExtraDataEntry.decode_partial(reader.read_embedded)
             msg.extra_data[entry.key] = entry.value
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -124,7 +144,7 @@ module MinknowApi
           w.write_string(notification_code)
         end
         extra_data.each do |k, v|
-          entry = MinknowApi::Notifications::NotificationContent::ExtraDataEntry.new
+          entry = NotificationContent::ExtraDataEntry.new
           entry.key = k
           entry.value = v
           w.write_embedded(4) { |sub| entry.encode_partial(sub) }
@@ -141,6 +161,7 @@ module MinknowApi
         return false unless notification_text == other.notification_text
         return false unless notification_code == other.notification_code
         return false unless extra_data == other.extra_data
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -152,7 +173,7 @@ module MinknowApi
       property created_at : Google::Protobuf::Timestamp? = nil
       property last_updated_at : Google::Protobuf::Timestamp? = nil
       property read : Bool = false
-      property content : MinknowApi::Notifications::NotificationContent? = nil
+      property content : NotificationContent? = nil
 
       def has_created_at? : Bool
         !created_at.nil?
@@ -195,15 +216,30 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.id = reader.read_string
           when 2
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.created_at = Google::Protobuf::Timestamp.decode_partial(reader.read_embedded)
           when 3
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.last_updated_at = Google::Protobuf::Timestamp.decode_partial(reader.read_embedded)
           when 4
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.read = reader.read_bool
           when 5
-            msg.content = MinknowApi::Notifications::NotificationContent.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.content = NotificationContent.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -250,6 +286,7 @@ module MinknowApi
         return false unless last_updated_at == other.last_updated_at
         return false unless read == other.read
         return false unless content == other.content
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -266,6 +303,9 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.include_updates_for_existing = reader.read_bool
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -294,6 +334,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless include_updates_for_existing == other.include_updates_for_existing
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -301,7 +342,7 @@ module MinknowApi
     class StreamNotificationsResponse
       include Proto::Message
 
-      property notifications : Array(MinknowApi::Notifications::Notification) = [] of MinknowApi::Notifications::Notification
+      property notifications : Array(Notification) = [] of Notification
 
       def validate_required! : Nil
       end
@@ -320,7 +361,10 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.notifications << MinknowApi::Notifications::Notification.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.notifications << Notification.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -349,6 +393,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless notifications == other.notifications
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -365,6 +410,9 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.ids << reader.read_string
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -393,6 +441,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless ids == other.ids
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -428,6 +477,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -435,7 +485,7 @@ module MinknowApi
     class CreateNotificationRequest
       include Proto::Message
 
-      property content : MinknowApi::Notifications::NotificationContent? = nil
+      property content : NotificationContent? = nil
 
       def has_content? : Bool
         !content.nil?
@@ -460,7 +510,10 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.content = MinknowApi::Notifications::NotificationContent.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.content = NotificationContent.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -489,6 +542,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless content == other.content
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -496,7 +550,7 @@ module MinknowApi
     class CreateNotificationResponse
       include Proto::Message
 
-      property notification : MinknowApi::Notifications::Notification? = nil
+      property notification : Notification? = nil
 
       def has_notification? : Bool
         !notification.nil?
@@ -521,7 +575,10 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.notification = MinknowApi::Notifications::Notification.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.notification = Notification.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -550,6 +607,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless notification == other.notification
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end

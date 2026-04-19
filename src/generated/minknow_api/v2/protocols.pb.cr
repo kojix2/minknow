@@ -42,8 +42,14 @@ module MinknowApi
               fn, wt = tag
               case fn
               when 1
+                unless wt == Proto::WireType::LENGTH_DELIMITED
+                  raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+                end
                 msg.flow_cell_position_name = reader.read_string
               when 2
+                unless wt == Proto::WireType::LENGTH_DELIMITED
+                  raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+                end
                 msg.settings = MinknowApi::Protocol::BeginProtocolRequest.decode_partial(reader.read_embedded)
               else
                 msg.capture_unknown_field(reader, fn, wt)
@@ -78,11 +84,12 @@ module MinknowApi
           def ==(other : self) : Bool
             return false unless flow_cell_position_name == other.flow_cell_position_name
             return false unless settings == other.settings
+            return false unless unknown_fields == other.unknown_fields
             true
           end
         end
 
-        property requests : Array(MinknowApi::V2::Protocol::BeginProtocolsRequest::IndividualRequest) = [] of MinknowApi::V2::Protocol::BeginProtocolsRequest::IndividualRequest
+        property requests : Array(BeginProtocolsRequest::IndividualRequest) = [] of BeginProtocolsRequest::IndividualRequest
 
         def validate_required! : Nil
         end
@@ -101,7 +108,10 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              msg.requests << MinknowApi::V2::Protocol::BeginProtocolsRequest::IndividualRequest.decode_partial(reader.read_embedded)
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
+              msg.requests << BeginProtocolsRequest::IndividualRequest.decode_partial(reader.read_embedded)
             else
               msg.capture_unknown_field(reader, fn, wt)
             end
@@ -130,6 +140,7 @@ module MinknowApi
 
         def ==(other : self) : Bool
           return false unless requests == other.requests
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
@@ -196,10 +207,19 @@ module MinknowApi
               fn, wt = tag
               case fn
               when 1
+                unless wt == Proto::WireType::LENGTH_DELIMITED
+                  raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+                end
                 msg.flow_cell_position_name = reader.read_string
               when 2
+                unless wt == Proto::WireType::LENGTH_DELIMITED
+                  raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+                end
                 msg.response = MinknowApi::Protocol::BeginProtocolResponse.decode_partial(reader.read_embedded)
               when 3
+                unless wt == Proto::WireType::LENGTH_DELIMITED
+                  raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+                end
                 msg.status = Google::Rpc::Status.decode_partial(reader.read_embedded)
               else
                 msg.capture_unknown_field(reader, fn, wt)
@@ -243,11 +263,12 @@ module MinknowApi
             return false unless flow_cell_position_name == other.flow_cell_position_name
             return false unless response == other.response
             return false unless status == other.status
+            return false unless unknown_fields == other.unknown_fields
             true
           end
         end
 
-        property responses : Array(MinknowApi::V2::Protocol::BeginProtocolsResponse::IndividualResponse) = [] of MinknowApi::V2::Protocol::BeginProtocolsResponse::IndividualResponse
+        property responses : Array(BeginProtocolsResponse::IndividualResponse) = [] of BeginProtocolsResponse::IndividualResponse
 
         def validate_required! : Nil
         end
@@ -266,7 +287,10 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              msg.responses << MinknowApi::V2::Protocol::BeginProtocolsResponse::IndividualResponse.decode_partial(reader.read_embedded)
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
+              msg.responses << BeginProtocolsResponse::IndividualResponse.decode_partial(reader.read_embedded)
             else
               msg.capture_unknown_field(reader, fn, wt)
             end
@@ -295,6 +319,7 @@ module MinknowApi
 
         def ==(other : self) : Bool
           return false unless responses == other.responses
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
@@ -331,8 +356,14 @@ module MinknowApi
               fn, wt = tag
               case fn
               when 1
+                unless wt == Proto::WireType::LENGTH_DELIMITED
+                  raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+                end
                 msg.flow_cell_position_name = reader.read_string
               when 2
+                unless wt == Proto::WireType::LENGTH_DELIMITED
+                  raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+                end
                 msg.settings = MinknowApi::Protocol::StartProtocolRequest.decode_partial(reader.read_embedded)
               else
                 msg.capture_unknown_field(reader, fn, wt)
@@ -367,11 +398,12 @@ module MinknowApi
           def ==(other : self) : Bool
             return false unless flow_cell_position_name == other.flow_cell_position_name
             return false unless settings == other.settings
+            return false unless unknown_fields == other.unknown_fields
             true
           end
         end
 
-        property requests : Array(MinknowApi::V2::Protocol::StartProtocolsRequest::IndividualRequest) = [] of MinknowApi::V2::Protocol::StartProtocolsRequest::IndividualRequest
+        property requests : Array(StartProtocolsRequest::IndividualRequest) = [] of StartProtocolsRequest::IndividualRequest
 
         def validate_required! : Nil
         end
@@ -390,7 +422,10 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              msg.requests << MinknowApi::V2::Protocol::StartProtocolsRequest::IndividualRequest.decode_partial(reader.read_embedded)
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
+              msg.requests << StartProtocolsRequest::IndividualRequest.decode_partial(reader.read_embedded)
             else
               msg.capture_unknown_field(reader, fn, wt)
             end
@@ -419,6 +454,7 @@ module MinknowApi
 
         def ==(other : self) : Bool
           return false unless requests == other.requests
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
@@ -485,10 +521,19 @@ module MinknowApi
               fn, wt = tag
               case fn
               when 1
+                unless wt == Proto::WireType::LENGTH_DELIMITED
+                  raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+                end
                 msg.flow_cell_position_name = reader.read_string
               when 2
+                unless wt == Proto::WireType::LENGTH_DELIMITED
+                  raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+                end
                 msg.response = MinknowApi::Protocol::StartProtocolResponse.decode_partial(reader.read_embedded)
               when 3
+                unless wt == Proto::WireType::LENGTH_DELIMITED
+                  raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+                end
                 msg.status = Google::Rpc::Status.decode_partial(reader.read_embedded)
               else
                 msg.capture_unknown_field(reader, fn, wt)
@@ -532,11 +577,12 @@ module MinknowApi
             return false unless flow_cell_position_name == other.flow_cell_position_name
             return false unless response == other.response
             return false unless status == other.status
+            return false unless unknown_fields == other.unknown_fields
             true
           end
         end
 
-        property responses : Array(MinknowApi::V2::Protocol::StartProtocolsResponse::IndividualResponse) = [] of MinknowApi::V2::Protocol::StartProtocolsResponse::IndividualResponse
+        property responses : Array(StartProtocolsResponse::IndividualResponse) = [] of StartProtocolsResponse::IndividualResponse
 
         def validate_required! : Nil
         end
@@ -555,7 +601,10 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              msg.responses << MinknowApi::V2::Protocol::StartProtocolsResponse::IndividualResponse.decode_partial(reader.read_embedded)
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
+              msg.responses << StartProtocolsResponse::IndividualResponse.decode_partial(reader.read_embedded)
             else
               msg.capture_unknown_field(reader, fn, wt)
             end
@@ -584,6 +633,7 @@ module MinknowApi
 
         def ==(other : self) : Bool
           return false unless responses == other.responses
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
@@ -610,6 +660,9 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.requests << MinknowApi::Protocol::StopProtocolRequest.decode_partial(reader.read_embedded)
             else
               msg.capture_unknown_field(reader, fn, wt)
@@ -639,6 +692,7 @@ module MinknowApi
 
         def ==(other : self) : Bool
           return false unless requests == other.requests
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
@@ -705,10 +759,19 @@ module MinknowApi
               fn, wt = tag
               case fn
               when 1
+                unless wt == Proto::WireType::LENGTH_DELIMITED
+                  raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+                end
                 msg.run_id = reader.read_string
               when 2
+                unless wt == Proto::WireType::LENGTH_DELIMITED
+                  raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+                end
                 msg.response = MinknowApi::Protocol::StopProtocolResponse.decode_partial(reader.read_embedded)
               when 3
+                unless wt == Proto::WireType::LENGTH_DELIMITED
+                  raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+                end
                 msg.status = Google::Rpc::Status.decode_partial(reader.read_embedded)
               else
                 msg.capture_unknown_field(reader, fn, wt)
@@ -752,11 +815,12 @@ module MinknowApi
             return false unless run_id == other.run_id
             return false unless response == other.response
             return false unless status == other.status
+            return false unless unknown_fields == other.unknown_fields
             true
           end
         end
 
-        property responses : Array(MinknowApi::V2::Protocol::StopProtocolsResponse::IndividualResponse) = [] of MinknowApi::V2::Protocol::StopProtocolsResponse::IndividualResponse
+        property responses : Array(StopProtocolsResponse::IndividualResponse) = [] of StopProtocolsResponse::IndividualResponse
 
         def validate_required! : Nil
         end
@@ -775,7 +839,10 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              msg.responses << MinknowApi::V2::Protocol::StopProtocolsResponse::IndividualResponse.decode_partial(reader.read_embedded)
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
+              msg.responses << StopProtocolsResponse::IndividualResponse.decode_partial(reader.read_embedded)
             else
               msg.capture_unknown_field(reader, fn, wt)
             end
@@ -804,6 +871,7 @@ module MinknowApi
 
         def ==(other : self) : Bool
           return false unless responses == other.responses
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
@@ -845,9 +913,16 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.experiment_start_time = MinknowApi::Protocol::FilteringInfo::TimeFilter.decode_partial(reader.read_embedded)
             when 2
-              _raw = reader.read_int32
+              unless wt == Proto::WireType::VARINT
+                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
+              end
+              _raw_u64 = reader.read_uint64
+              _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
               msg.order_direction = Proto::OpenEnum(MinknowApi::Protocol::FilteringInfo::OrderDirection).new(_raw)
             else
               msg.capture_unknown_field(reader, fn, wt)
@@ -882,6 +957,7 @@ module MinknowApi
         def ==(other : self) : Bool
           return false unless experiment_start_time == other.experiment_start_time
           return false unless order_direction == other.order_direction
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
@@ -889,7 +965,7 @@ module MinknowApi
       class ListGroupIdsRequest
         include Proto::Message
 
-        property filter_info : MinknowApi::V2::Protocol::GroupFilteringInfo? = nil
+        property filter_info : GroupFilteringInfo? = nil
 
         def has_filter_info? : Bool
           !filter_info.nil?
@@ -914,7 +990,10 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              msg.filter_info = MinknowApi::V2::Protocol::GroupFilteringInfo.decode_partial(reader.read_embedded)
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
+              msg.filter_info = GroupFilteringInfo.decode_partial(reader.read_embedded)
             else
               msg.capture_unknown_field(reader, fn, wt)
             end
@@ -943,6 +1022,7 @@ module MinknowApi
 
         def ==(other : self) : Bool
           return false unless filter_info == other.filter_info
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end

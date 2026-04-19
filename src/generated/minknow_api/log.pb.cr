@@ -56,6 +56,9 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.include_old_messages = reader.read_bool
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -84,6 +87,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless include_old_messages == other.include_old_messages
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -104,8 +108,14 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.key = reader.read_string
             when 2
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.value = reader.read_string
             else
               msg.capture_unknown_field(reader, fn, wt)
@@ -139,12 +149,13 @@ module MinknowApi
         def ==(other : self) : Bool
           return false unless key == other.key
           return false unless value == other.value
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
 
       property time : Google::Protobuf::Timestamp? = nil
-      property severity : Proto::OpenEnum(MinknowApi::Log::Severity) = Proto::OpenEnum(MinknowApi::Log::Severity).new(0)
+      property severity : Proto::OpenEnum(Severity) = Proto::OpenEnum(Severity).new(0)
       property identifier : String = ""
       property user_message : String = ""
       property extra_data : Hash(String, String) = {} of String => String
@@ -172,16 +183,32 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.time = Google::Protobuf::Timestamp.decode_partial(reader.read_embedded)
           when 2
-            _raw = reader.read_int32
-            msg.severity = Proto::OpenEnum(MinknowApi::Log::Severity).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.severity = Proto::OpenEnum(Severity).new(_raw)
           when 3
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.identifier = reader.read_string
           when 4
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.user_message = reader.read_string
           when 5
-            entry = MinknowApi::Log::UserMessage::ExtraDataEntry.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            entry = UserMessage::ExtraDataEntry.decode_partial(reader.read_embedded)
             msg.extra_data[entry.key] = entry.value
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -214,7 +241,7 @@ module MinknowApi
           w.write_string(user_message)
         end
         extra_data.each do |k, v|
-          entry = MinknowApi::Log::UserMessage::ExtraDataEntry.new
+          entry = UserMessage::ExtraDataEntry.new
           entry.key = k
           entry.value = v
           w.write_embedded(5) { |sub| entry.encode_partial(sub) }
@@ -233,6 +260,7 @@ module MinknowApi
         return false unless identifier == other.identifier
         return false unless user_message == other.user_message
         return false unless extra_data == other.extra_data
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -253,8 +281,14 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.key = reader.read_string
             when 2
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.value = reader.read_string
             else
               msg.capture_unknown_field(reader, fn, wt)
@@ -288,11 +322,12 @@ module MinknowApi
         def ==(other : self) : Bool
           return false unless key == other.key
           return false unless value == other.value
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
 
-      property severity : Proto::OpenEnum(MinknowApi::Log::Severity) = Proto::OpenEnum(MinknowApi::Log::Severity).new(0)
+      property severity : Proto::OpenEnum(Severity) = Proto::OpenEnum(Severity).new(0)
       property identifier : String = ""
       property user_message : String = ""
       property extra_data : Hash(String, String) = {} of String => String
@@ -304,14 +339,27 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 2
-            _raw = reader.read_int32
-            msg.severity = Proto::OpenEnum(MinknowApi::Log::Severity).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.severity = Proto::OpenEnum(Severity).new(_raw)
           when 3
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.identifier = reader.read_string
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.user_message = reader.read_string
           when 4
-            entry = MinknowApi::Log::SendUserMessageRequest::ExtraDataEntry.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            entry = SendUserMessageRequest::ExtraDataEntry.decode_partial(reader.read_embedded)
             msg.extra_data[entry.key] = entry.value
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -340,7 +388,7 @@ module MinknowApi
           w.write_string(user_message)
         end
         extra_data.each do |k, v|
-          entry = MinknowApi::Log::SendUserMessageRequest::ExtraDataEntry.new
+          entry = SendUserMessageRequest::ExtraDataEntry.new
           entry.key = k
           entry.value = v
           w.write_embedded(4) { |sub| entry.encode_partial(sub) }
@@ -357,6 +405,7 @@ module MinknowApi
         return false unless identifier == other.identifier
         return false unless user_message == other.user_message
         return false unless extra_data == other.extra_data
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -392,6 +441,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -409,8 +459,14 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.ping_data = reader.read_string
           when 2
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.days_until_expiry = reader.read_uint64
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -444,6 +500,7 @@ module MinknowApi
       def ==(other : self) : Bool
         return false unless ping_data == other.ping_data
         return false unless days_until_expiry == other.days_until_expiry
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -479,6 +536,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -496,8 +554,14 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.collected_ping_file = reader.read_string
           when 2
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.include_previously_colleced_pings = reader.read_bool
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -531,6 +595,7 @@ module MinknowApi
       def ==(other : self) : Bool
         return false unless collected_ping_file == other.collected_ping_file
         return false unless include_previously_colleced_pings == other.include_previously_colleced_pings
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -538,7 +603,7 @@ module MinknowApi
     class CollectPingsResponse
       include Proto::Message
 
-      property stage : Proto::OpenEnum(MinknowApi::Log::CollectPingsStage) = Proto::OpenEnum(MinknowApi::Log::CollectPingsStage).new(0)
+      property stage : Proto::OpenEnum(CollectPingsStage) = Proto::OpenEnum(CollectPingsStage).new(0)
 
       def self.decode_partial(io : IO) : self
         msg = new
@@ -547,8 +612,12 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            _raw = reader.read_int32
-            msg.stage = Proto::OpenEnum(MinknowApi::Log::CollectPingsStage).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.stage = Proto::OpenEnum(CollectPingsStage).new(_raw)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -576,6 +645,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless stage == other.stage
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end

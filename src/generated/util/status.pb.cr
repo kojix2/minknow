@@ -11,7 +11,7 @@ module Google
     class Status
       include Proto::Message
 
-      property code : Proto::OpenEnum(Google::Rpc::Code) = Proto::OpenEnum(Google::Rpc::Code).new(0)
+      property code : Proto::OpenEnum(Code) = Proto::OpenEnum(Code).new(0)
       property message : String = ""
       property details : Array(Google::Protobuf::Any) = [] of Google::Protobuf::Any
 
@@ -32,11 +32,21 @@ module Google
           fn, wt = tag
           case fn
           when 1
-            _raw = reader.read_int32
-            msg.code = Proto::OpenEnum(Google::Rpc::Code).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.code = Proto::OpenEnum(Code).new(_raw)
           when 2
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.message = reader.read_string
           when 3
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.details << Google::Protobuf::Any.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -76,6 +86,7 @@ module Google
         return false unless code == other.code
         return false unless message == other.message
         return false unless details == other.details
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end

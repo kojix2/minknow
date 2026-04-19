@@ -149,8 +149,14 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.key = reader.read_string
             when 2
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.value = reader.read_string
             else
               msg.capture_unknown_field(reader, fn, wt)
@@ -184,6 +190,7 @@ module MinknowApi
         def ==(other : self) : Bool
           return false unless key == other.key
           return false unless value == other.value
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
@@ -192,7 +199,7 @@ module MinknowApi
       property barcode_name_internal : String = ""
       property lamp_barcode_id : String = ""
       property alias_ : String = ""
-      property type_ : Proto::OpenEnum(MinknowApi::Protocol::BarcodeUserData::SampleType) = Proto::OpenEnum(MinknowApi::Protocol::BarcodeUserData::SampleType).new(0)
+      property type_ : Proto::OpenEnum(BarcodeUserData::SampleType) = Proto::OpenEnum(BarcodeUserData::SampleType).new(0)
       property passenger_info : Hash(String, String) = {} of String => String
 
       def self.decode_partial(io : IO) : self
@@ -202,18 +209,37 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.barcode_name = reader.read_string
           when 5
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.barcode_name_internal = reader.read_string
           when 2
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.lamp_barcode_id = reader.read_string
           when 3
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.alias_ = reader.read_string
           when 4
-            _raw = reader.read_int32
-            msg.type_ = Proto::OpenEnum(MinknowApi::Protocol::BarcodeUserData::SampleType).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.type_ = Proto::OpenEnum(BarcodeUserData::SampleType).new(_raw)
           when 6
-            entry = MinknowApi::Protocol::BarcodeUserData::PassengerInfoEntry.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            entry = BarcodeUserData::PassengerInfoEntry.decode_partial(reader.read_embedded)
             msg.passenger_info[entry.key] = entry.value
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -250,7 +276,7 @@ module MinknowApi
           w.write_int32(type_.raw)
         end
         passenger_info.each do |k, v|
-          entry = MinknowApi::Protocol::BarcodeUserData::PassengerInfoEntry.new
+          entry = BarcodeUserData::PassengerInfoEntry.new
           entry.key = k
           entry.value = v
           w.write_embedded(6) { |sub| entry.encode_partial(sub) }
@@ -269,6 +295,7 @@ module MinknowApi
         return false unless alias_ == other.alias_
         return false unless type_ == other.type_
         return false unless passenger_info == other.passenger_info
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -286,8 +313,14 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.sequencing_kit = reader.read_string
           when 2
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.barcode_expansion_kits << reader.read_string
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -321,6 +354,7 @@ module MinknowApi
       def ==(other : self) : Bool
         return false unless sequencing_kit == other.sequencing_kit
         return false unless barcode_expansion_kits == other.barcode_expansion_kits
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -331,10 +365,10 @@ module MinknowApi
       property protocol_group_id : Google::Protobuf::StringValue? = nil
       property sample_id : Google::Protobuf::StringValue? = nil
       property pool_output : Bool = false
-      property barcode_user_info : Array(MinknowApi::Protocol::BarcodeUserData) = [] of MinknowApi::Protocol::BarcodeUserData
+      property barcode_user_info : Array(BarcodeUserData) = [] of BarcodeUserData
       property user_specified_flow_cell_id : Google::Protobuf::StringValue? = nil
       property user_specified_product_code : Google::Protobuf::StringValue? = nil
-      property kit_info : MinknowApi::Protocol::KitInfo? = nil
+      property kit_info : KitInfo? = nil
 
       def has_protocol_group_id? : Bool
         !protocol_group_id.nil?
@@ -398,19 +432,40 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.protocol_group_id = Google::Protobuf::StringValue.decode_partial(reader.read_embedded)
           when 2
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.sample_id = Google::Protobuf::StringValue.decode_partial(reader.read_embedded)
           when 7
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 7: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.pool_output = reader.read_bool
           when 3
-            msg.barcode_user_info << MinknowApi::Protocol::BarcodeUserData.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.barcode_user_info << BarcodeUserData.decode_partial(reader.read_embedded)
           when 4
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.user_specified_flow_cell_id = Google::Protobuf::StringValue.decode_partial(reader.read_embedded)
           when 5
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.user_specified_product_code = Google::Protobuf::StringValue.decode_partial(reader.read_embedded)
           when 6
-            msg.kit_info = MinknowApi::Protocol::KitInfo.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.kit_info = KitInfo.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -464,6 +519,7 @@ module MinknowApi
         return false unless user_specified_flow_cell_id == other.user_specified_flow_cell_id
         return false unless user_specified_product_code == other.user_specified_product_code
         return false unless kit_info == other.kit_info
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -481,8 +537,14 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.offload_location_ids << reader.read_string
           when 2
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.offload_location_path = reader.read_string
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -516,6 +578,7 @@ module MinknowApi
       def ==(other : self) : Bool
         return false unless offload_location_ids == other.offload_location_ids
         return false unless offload_location_path == other.offload_location_path
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -525,8 +588,8 @@ module MinknowApi
 
       property identifier : String = ""
       property args : Array(String) = [] of String
-      property user_info : MinknowApi::Protocol::ProtocolRunUserInfo? = nil
-      property offload_location_info : MinknowApi::Protocol::OffloadLocationInfo? = nil
+      property user_info : ProtocolRunUserInfo? = nil
+      property offload_location_info : OffloadLocationInfo? = nil
       property target_run_until_criteria : MinknowApi::Acquisition::TargetRunUntilCriteria? = nil
       property analysis_workflow_request : MinknowApi::AnalysisWorkflows::AnalysisWorkflowRequest? = nil
 
@@ -580,16 +643,34 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.identifier = reader.read_string
           when 2
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.args << reader.read_string
           when 3
-            msg.user_info = MinknowApi::Protocol::ProtocolRunUserInfo.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.user_info = ProtocolRunUserInfo.decode_partial(reader.read_embedded)
           when 4
-            msg.offload_location_info = MinknowApi::Protocol::OffloadLocationInfo.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.offload_location_info = OffloadLocationInfo.decode_partial(reader.read_embedded)
           when 5
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.target_run_until_criteria = MinknowApi::Acquisition::TargetRunUntilCriteria.decode_partial(reader.read_embedded)
           when 7
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 7: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.analysis_workflow_request = MinknowApi::AnalysisWorkflows::AnalysisWorkflowRequest.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -641,6 +722,7 @@ module MinknowApi
         return false unless offload_location_info == other.offload_location_info
         return false unless target_run_until_criteria == other.target_run_until_criteria
         return false unless analysis_workflow_request == other.analysis_workflow_request
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -657,6 +739,9 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.run_id = reader.read_string
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -685,6 +770,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless run_id == other.run_id
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -702,9 +788,16 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 2
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.protocol_run_id = reader.read_string
           when 1
-            _raw = reader.read_int32
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.data_action_on_stop = Proto::OpenEnum(MinknowApi::Acquisition::StopRequest::DataAction).new(_raw)
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -738,6 +831,7 @@ module MinknowApi
       def ==(other : self) : Bool
         return false unless protocol_run_id == other.protocol_run_id
         return false unless data_action_on_stop == other.data_action_on_stop
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -773,6 +867,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -789,6 +884,9 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.protocol_run_id = reader.read_string
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -817,6 +915,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless protocol_run_id == other.protocol_run_id
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -852,6 +951,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -868,6 +968,9 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.protocol_run_id = reader.read_string
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -896,6 +999,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless protocol_run_id == other.protocol_run_id
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -931,6 +1035,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -966,6 +1071,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -1001,6 +1107,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -1017,6 +1124,9 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.force_reload = reader.read_bool
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -1045,6 +1155,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless force_reload == other.force_reload
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -1133,16 +1244,34 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.string_value = reader.read_string
             when 2
+              unless wt == Proto::WireType::VARINT
+                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
+              end
               msg.bool_value = reader.read_bool
             when 3
+              unless wt == Proto::WireType::VARINT
+                raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::VARINT, got " + wt.to_s)
+              end
               msg.int_value = reader.read_int64
             when 4
+              unless wt == Proto::WireType::FIXED64
+                raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::FIXED64, got " + wt.to_s)
+              end
               msg.double_value = reader.read_double
             when 5
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.array_value = reader.read_string
             when 6
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.object_value = reader.read_string
             else
               msg.capture_unknown_field(reader, fn, wt)
@@ -1197,6 +1326,7 @@ module MinknowApi
           return false unless double_value == other.double_value
           return false unless array_value == other.array_value
           return false unless object_value == other.object_value
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
@@ -1214,8 +1344,14 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
+              unless wt == Proto::WireType::VARINT
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
+              end
               msg.success = reader.read_bool
             when 2
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.error_report = reader.read_string
             else
               msg.capture_unknown_field(reader, fn, wt)
@@ -1249,6 +1385,7 @@ module MinknowApi
         def ==(other : self) : Bool
           return false unless success == other.success
           return false unless error_report == other.error_report
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
@@ -1257,7 +1394,7 @@ module MinknowApi
         include Proto::Message
 
         property key : String = ""
-        property value : MinknowApi::Protocol::ProtocolInfo::TagValue? = nil
+        property value : ProtocolInfo::TagValue? = nil
 
         def has_value? : Bool
           !value.nil?
@@ -1282,9 +1419,15 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.key = reader.read_string
             when 2
-              msg.value = MinknowApi::Protocol::ProtocolInfo::TagValue.decode_partial(reader.read_embedded)
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
+              msg.value = ProtocolInfo::TagValue.decode_partial(reader.read_embedded)
             else
               msg.capture_unknown_field(reader, fn, wt)
             end
@@ -1318,14 +1461,15 @@ module MinknowApi
         def ==(other : self) : Bool
           return false unless key == other.key
           return false unless value == other.value
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
 
       property identifier : String = ""
-      property tags : Hash(String, MinknowApi::Protocol::ProtocolInfo::TagValue) = {} of String => MinknowApi::Protocol::ProtocolInfo::TagValue
+      property tags : Hash(String, ProtocolInfo::TagValue) = {} of String => ProtocolInfo::TagValue
       property name : String = ""
-      property tag_extraction_result : MinknowApi::Protocol::ProtocolInfo::TagExtractionResult? = nil
+      property tag_extraction_result : ProtocolInfo::TagExtractionResult? = nil
 
       def has_tag_extraction_result? : Bool
         !tag_extraction_result.nil?
@@ -1353,14 +1497,26 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.identifier = reader.read_string
           when 2
-            entry = MinknowApi::Protocol::ProtocolInfo::TagsEntry.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            entry = ProtocolInfo::TagsEntry.decode_partial(reader.read_embedded)
             msg.tags[entry.key] = entry.value
           when 3
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.name = reader.read_string
           when 4
-            msg.tag_extraction_result = MinknowApi::Protocol::ProtocolInfo::TagExtractionResult.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.tag_extraction_result = ProtocolInfo::TagExtractionResult.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -1381,7 +1537,7 @@ module MinknowApi
           w.write_string(identifier)
         end
         tags.each do |k, v|
-          entry = MinknowApi::Protocol::ProtocolInfo::TagsEntry.new
+          entry = ProtocolInfo::TagsEntry.new
           entry.key = k
           entry.value = v
           w.write_embedded(2) { |sub| entry.encode_partial(sub) }
@@ -1406,6 +1562,7 @@ module MinknowApi
         return false unless tags == other.tags
         return false unless name == other.name
         return false unless tag_extraction_result == other.tag_extraction_result
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -1413,7 +1570,7 @@ module MinknowApi
     class ListProtocolsResponse
       include Proto::Message
 
-      property protocols : Array(MinknowApi::Protocol::ProtocolInfo) = [] of MinknowApi::Protocol::ProtocolInfo
+      property protocols : Array(ProtocolInfo) = [] of ProtocolInfo
 
       def validate_required! : Nil
       end
@@ -1432,7 +1589,10 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.protocols << MinknowApi::Protocol::ProtocolInfo.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.protocols << ProtocolInfo.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -1461,6 +1621,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless protocols == other.protocols
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -1485,7 +1646,7 @@ module MinknowApi
       end
 
       property run_id : String = ""
-      property state : Proto::OpenEnum(MinknowApi::Protocol::WaitForFinishedRequest::NotificationState) = Proto::OpenEnum(MinknowApi::Protocol::WaitForFinishedRequest::NotificationState).new(0)
+      property state : Proto::OpenEnum(WaitForFinishedRequest::NotificationState) = Proto::OpenEnum(WaitForFinishedRequest::NotificationState).new(0)
       property timeout : Float32 = 0.0_f32
 
       def self.decode_partial(io : IO) : self
@@ -1495,11 +1656,21 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.run_id = reader.read_string
           when 2
-            _raw = reader.read_int32
-            msg.state = Proto::OpenEnum(MinknowApi::Protocol::WaitForFinishedRequest::NotificationState).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.state = Proto::OpenEnum(WaitForFinishedRequest::NotificationState).new(_raw)
           when 3
+            unless wt == Proto::WireType::FIXED32
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::FIXED32, got " + wt.to_s)
+            end
             msg.timeout = reader.read_float
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -1538,6 +1709,7 @@ module MinknowApi
         return false unless run_id == other.run_id
         return false unless state == other.state
         return false unless timeout == other.timeout
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -1554,6 +1726,9 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.run_id = reader.read_string
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -1582,6 +1757,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless run_id == other.run_id
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -1601,6 +1777,9 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.identity = reader.read_string
             else
               msg.capture_unknown_field(reader, fn, wt)
@@ -1629,6 +1808,7 @@ module MinknowApi
 
         def ==(other : self) : Bool
           return false unless identity == other.identity
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
@@ -1645,6 +1825,9 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.cause = reader.read_string
             else
               msg.capture_unknown_field(reader, fn, wt)
@@ -1673,6 +1856,7 @@ module MinknowApi
 
         def ==(other : self) : Bool
           return false unless cause == other.cause
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
@@ -1708,6 +1892,7 @@ module MinknowApi
         end
 
         def ==(other : self) : Bool
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
@@ -1724,6 +1909,9 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.criteria = reader.read_string
             else
               msg.capture_unknown_field(reader, fn, wt)
@@ -1752,6 +1940,7 @@ module MinknowApi
 
         def ==(other : self) : Bool
           return false unless criteria == other.criteria
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
@@ -1766,10 +1955,10 @@ module MinknowApi
 
       getter origin_case : OriginCase = OriginCase::NONE
 
-      getter user : MinknowApi::Protocol::RequestOrigin::User? = nil
-      getter minknow : MinknowApi::Protocol::RequestOrigin::MinKNOW? = nil
-      getter protocol_phase_management : MinknowApi::Protocol::RequestOrigin::ProtocolPhaseManagement? = nil
-      getter run_until : MinknowApi::Protocol::RequestOrigin::RunUntil? = nil
+      getter user : RequestOrigin::User? = nil
+      getter minknow : RequestOrigin::MinKNOW? = nil
+      getter protocol_phase_management : RequestOrigin::ProtocolPhaseManagement? = nil
+      getter run_until : RequestOrigin::RunUntil? = nil
 
       def clear_origin : Nil
         @user = nil
@@ -1779,7 +1968,7 @@ module MinknowApi
         @origin_case = OriginCase::NONE
       end
 
-      def user=(value : MinknowApi::Protocol::RequestOrigin::User?) : MinknowApi::Protocol::RequestOrigin::User?
+      def user=(value : RequestOrigin::User?) : RequestOrigin::User?
         if value.nil?
           clear_origin
           return value
@@ -1790,7 +1979,7 @@ module MinknowApi
         value
       end
 
-      def minknow=(value : MinknowApi::Protocol::RequestOrigin::MinKNOW?) : MinknowApi::Protocol::RequestOrigin::MinKNOW?
+      def minknow=(value : RequestOrigin::MinKNOW?) : RequestOrigin::MinKNOW?
         if value.nil?
           clear_origin
           return value
@@ -1801,7 +1990,7 @@ module MinknowApi
         value
       end
 
-      def protocol_phase_management=(value : MinknowApi::Protocol::RequestOrigin::ProtocolPhaseManagement?) : MinknowApi::Protocol::RequestOrigin::ProtocolPhaseManagement?
+      def protocol_phase_management=(value : RequestOrigin::ProtocolPhaseManagement?) : RequestOrigin::ProtocolPhaseManagement?
         if value.nil?
           clear_origin
           return value
@@ -1812,7 +2001,7 @@ module MinknowApi
         value
       end
 
-      def run_until=(value : MinknowApi::Protocol::RequestOrigin::RunUntil?) : MinknowApi::Protocol::RequestOrigin::RunUntil?
+      def run_until=(value : RequestOrigin::RunUntil?) : RequestOrigin::RunUntil?
         if value.nil?
           clear_origin
           return value
@@ -1841,13 +2030,25 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.user = MinknowApi::Protocol::RequestOrigin::User.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.user = RequestOrigin::User.decode_partial(reader.read_embedded)
           when 2
-            msg.minknow = MinknowApi::Protocol::RequestOrigin::MinKNOW.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.minknow = RequestOrigin::MinKNOW.decode_partial(reader.read_embedded)
           when 3
-            msg.protocol_phase_management = MinknowApi::Protocol::RequestOrigin::ProtocolPhaseManagement.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.protocol_phase_management = RequestOrigin::ProtocolPhaseManagement.decode_partial(reader.read_embedded)
           when 4
-            msg.run_until = MinknowApi::Protocol::RequestOrigin::RunUntil.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.run_until = RequestOrigin::RunUntil.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -1897,6 +2098,7 @@ module MinknowApi
         return false unless minknow == other.minknow
         return false unless protocol_phase_management == other.protocol_phase_management
         return false unless run_until == other.run_until
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -1904,9 +2106,9 @@ module MinknowApi
     class ProtocolPhaseSnapshot
       include Proto::Message
 
-      property phase : Proto::OpenEnum(MinknowApi::Protocol::ProtocolPhase) = Proto::OpenEnum(MinknowApi::Protocol::ProtocolPhase).new(0)
+      property phase : Proto::OpenEnum(ProtocolPhase) = Proto::OpenEnum(ProtocolPhase).new(0)
       property timestamp : Google::Protobuf::Timestamp? = nil
-      property origin : MinknowApi::Protocol::RequestOrigin? = nil
+      property origin : RequestOrigin? = nil
 
       def has_timestamp? : Bool
         !timestamp.nil?
@@ -1940,12 +2142,22 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            _raw = reader.read_int32
-            msg.phase = Proto::OpenEnum(MinknowApi::Protocol::ProtocolPhase).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.phase = Proto::OpenEnum(ProtocolPhase).new(_raw)
           when 2
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.timestamp = Google::Protobuf::Timestamp.decode_partial(reader.read_embedded)
           when 3
-            msg.origin = MinknowApi::Protocol::RequestOrigin.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.origin = RequestOrigin.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -1983,6 +2195,7 @@ module MinknowApi
         return false unless phase == other.phase
         return false unless timestamp == other.timestamp
         return false unless origin == other.origin
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -2006,7 +2219,7 @@ module MinknowApi
 
       property started_id : String = ""
       property start_request : MinknowApi::Basecaller::StartRequest? = nil
-      property state : Proto::OpenEnum(MinknowApi::Protocol::AssociatedPostProcessingAnalysis::State) = Proto::OpenEnum(MinknowApi::Protocol::AssociatedPostProcessingAnalysis::State).new(0)
+      property state : Proto::OpenEnum(AssociatedPostProcessingAnalysis::State) = Proto::OpenEnum(AssociatedPostProcessingAnalysis::State).new(0)
 
       def has_start_request? : Bool
         !start_request.nil?
@@ -2031,12 +2244,22 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.started_id = reader.read_string
           when 2
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.start_request = MinknowApi::Basecaller::StartRequest.decode_partial(reader.read_embedded)
           when 3
-            _raw = reader.read_int32
-            msg.state = Proto::OpenEnum(MinknowApi::Protocol::AssociatedPostProcessingAnalysis::State).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.state = Proto::OpenEnum(AssociatedPostProcessingAnalysis::State).new(_raw)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -2075,6 +2298,7 @@ module MinknowApi
         return false unless started_id == other.started_id
         return false unless start_request == other.start_request
         return false unless state == other.state
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -2093,10 +2317,19 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.flow_cell_id = reader.read_string
           when 2
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.passed = reader.read_bool
           when 3
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.total_pore_count = reader.read_uint32
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -2135,6 +2368,7 @@ module MinknowApi
         return false unless flow_cell_id == other.flow_cell_id
         return false unless passed == other.passed
         return false unless total_pore_count == other.total_pore_count
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -2160,7 +2394,7 @@ module MinknowApi
         end
       end
 
-      property failure_reason : Proto::OpenEnum(MinknowApi::Protocol::HardwareCheckTemperatureResults::HardwareCheckTemperatureFailureReason) = Proto::OpenEnum(MinknowApi::Protocol::HardwareCheckTemperatureResults::HardwareCheckTemperatureFailureReason).new(0)
+      property failure_reason : Proto::OpenEnum(HardwareCheckTemperatureResults::HardwareCheckTemperatureFailureReason) = Proto::OpenEnum(HardwareCheckTemperatureResults::HardwareCheckTemperatureFailureReason).new(0)
       property target_temperature : Float32 = 0.0_f32
       property mean_heatsink_temperature : Float32 = 0.0_f32
       property temperature_tolerance : Float32 = 0.0_f32
@@ -2172,13 +2406,26 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            _raw = reader.read_int32
-            msg.failure_reason = Proto::OpenEnum(MinknowApi::Protocol::HardwareCheckTemperatureResults::HardwareCheckTemperatureFailureReason).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.failure_reason = Proto::OpenEnum(HardwareCheckTemperatureResults::HardwareCheckTemperatureFailureReason).new(_raw)
           when 2
+            unless wt == Proto::WireType::FIXED32
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::FIXED32, got " + wt.to_s)
+            end
             msg.target_temperature = reader.read_float
           when 3
+            unless wt == Proto::WireType::FIXED32
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::FIXED32, got " + wt.to_s)
+            end
             msg.mean_heatsink_temperature = reader.read_float
           when 4
+            unless wt == Proto::WireType::FIXED32
+              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::FIXED32, got " + wt.to_s)
+            end
             msg.temperature_tolerance = reader.read_float
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -2222,6 +2469,7 @@ module MinknowApi
         return false unless target_temperature == other.target_temperature
         return false unless mean_heatsink_temperature == other.mean_heatsink_temperature
         return false unless temperature_tolerance == other.temperature_tolerance
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -2245,7 +2493,7 @@ module MinknowApi
         end
       end
 
-      property failure_reason : Proto::OpenEnum(MinknowApi::Protocol::HardwareCheckCalibrationResults::HardwareCheckCalibrationFailureReason) = Proto::OpenEnum(MinknowApi::Protocol::HardwareCheckCalibrationResults::HardwareCheckCalibrationFailureReason).new(0)
+      property failure_reason : Proto::OpenEnum(HardwareCheckCalibrationResults::HardwareCheckCalibrationFailureReason) = Proto::OpenEnum(HardwareCheckCalibrationResults::HardwareCheckCalibrationFailureReason).new(0)
 
       def self.decode_partial(io : IO) : self
         msg = new
@@ -2254,8 +2502,12 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            _raw = reader.read_int32
-            msg.failure_reason = Proto::OpenEnum(MinknowApi::Protocol::HardwareCheckCalibrationResults::HardwareCheckCalibrationFailureReason).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.failure_reason = Proto::OpenEnum(HardwareCheckCalibrationResults::HardwareCheckCalibrationFailureReason).new(_raw)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -2283,6 +2535,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless failure_reason == other.failure_reason
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -2324,10 +2577,10 @@ module MinknowApi
         end
       end
 
-      property status : Proto::OpenEnum(MinknowApi::Protocol::HardwareCheckResult::HardwareCheckStatus) = Proto::OpenEnum(MinknowApi::Protocol::HardwareCheckResult::HardwareCheckStatus).new(0)
-      property failure_reason : Proto::OpenEnum(MinknowApi::Protocol::HardwareCheckResult::HardwareCheckFailureReason) = Proto::OpenEnum(MinknowApi::Protocol::HardwareCheckResult::HardwareCheckFailureReason).new(0)
-      property calibration_results : MinknowApi::Protocol::HardwareCheckCalibrationResults? = nil
-      property temperature_results : MinknowApi::Protocol::HardwareCheckTemperatureResults? = nil
+      property status : Proto::OpenEnum(HardwareCheckResult::HardwareCheckStatus) = Proto::OpenEnum(HardwareCheckResult::HardwareCheckStatus).new(0)
+      property failure_reason : Proto::OpenEnum(HardwareCheckResult::HardwareCheckFailureReason) = Proto::OpenEnum(HardwareCheckResult::HardwareCheckFailureReason).new(0)
+      property calibration_results : HardwareCheckCalibrationResults? = nil
+      property temperature_results : HardwareCheckTemperatureResults? = nil
 
       def has_calibration_results? : Bool
         !calibration_results.nil?
@@ -2361,15 +2614,29 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            _raw = reader.read_int32
-            msg.status = Proto::OpenEnum(MinknowApi::Protocol::HardwareCheckResult::HardwareCheckStatus).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.status = Proto::OpenEnum(HardwareCheckResult::HardwareCheckStatus).new(_raw)
           when 2
-            _raw = reader.read_int32
-            msg.failure_reason = Proto::OpenEnum(MinknowApi::Protocol::HardwareCheckResult::HardwareCheckFailureReason).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.failure_reason = Proto::OpenEnum(HardwareCheckResult::HardwareCheckFailureReason).new(_raw)
           when 3
-            msg.calibration_results = MinknowApi::Protocol::HardwareCheckCalibrationResults.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.calibration_results = HardwareCheckCalibrationResults.decode_partial(reader.read_embedded)
           when 4
-            msg.temperature_results = MinknowApi::Protocol::HardwareCheckTemperatureResults.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.temperature_results = HardwareCheckTemperatureResults.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -2412,6 +2679,7 @@ module MinknowApi
         return false unless failure_reason == other.failure_reason
         return false unless calibration_results == other.calibration_results
         return false unless temperature_results == other.temperature_results
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -2443,7 +2711,7 @@ module MinknowApi
         property id : Google::Protobuf::StringValue? = nil
         property name : String = ""
         property path : String = ""
-        property location_type : Proto::OpenEnum(MinknowApi::Protocol::ExternalOffload::OffloadLocation::LocationType) = Proto::OpenEnum(MinknowApi::Protocol::ExternalOffload::OffloadLocation::LocationType).new(0)
+        property location_type : Proto::OpenEnum(ExternalOffload::OffloadLocation::LocationType) = Proto::OpenEnum(ExternalOffload::OffloadLocation::LocationType).new(0)
 
         def has_id? : Bool
           !id.nil?
@@ -2468,14 +2736,27 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.id = Google::Protobuf::StringValue.decode_partial(reader.read_embedded)
             when 2
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.name = reader.read_string
             when 3
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.path = reader.read_string
             when 4
-              _raw = reader.read_int32
-              msg.location_type = Proto::OpenEnum(MinknowApi::Protocol::ExternalOffload::OffloadLocation::LocationType).new(_raw)
+              unless wt == Proto::WireType::VARINT
+                raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::VARINT, got " + wt.to_s)
+              end
+              _raw_u64 = reader.read_uint64
+              _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+              msg.location_type = Proto::OpenEnum(ExternalOffload::OffloadLocation::LocationType).new(_raw)
             else
               msg.capture_unknown_field(reader, fn, wt)
             end
@@ -2519,12 +2800,13 @@ module MinknowApi
           return false unless name == other.name
           return false unless path == other.path
           return false unless location_type == other.location_type
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
 
       property offload_ids : Array(String) = [] of String
-      property offload_locations : Array(MinknowApi::Protocol::ExternalOffload::OffloadLocation) = [] of MinknowApi::Protocol::ExternalOffload::OffloadLocation
+      property offload_locations : Array(ExternalOffload::OffloadLocation) = [] of ExternalOffload::OffloadLocation
 
       def validate_required! : Nil
       end
@@ -2543,9 +2825,15 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.offload_ids << reader.read_string
           when 2
-            msg.offload_locations << MinknowApi::Protocol::ExternalOffload::OffloadLocation.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.offload_locations << ExternalOffload::OffloadLocation.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -2579,6 +2867,7 @@ module MinknowApi
       def ==(other : self) : Bool
         return false unless offload_ids == other.offload_ids
         return false unless offload_locations == other.offload_locations
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -2635,12 +2924,24 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
+              unless wt == Proto::WireType::VARINT
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
+              end
               msg.major = reader.read_int32
             when 2
+              unless wt == Proto::WireType::VARINT
+                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
+              end
               msg.minor = reader.read_int32
             when 3
+              unless wt == Proto::WireType::VARINT
+                raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::VARINT, got " + wt.to_s)
+              end
               msg.patch = reader.read_int32
             when 4
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.full = reader.read_string
             else
               msg.capture_unknown_field(reader, fn, wt)
@@ -2684,16 +2985,17 @@ module MinknowApi
           return false unless minor == other.minor
           return false unless patch == other.patch
           return false unless full == other.full
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
 
-      property minknow : MinknowApi::Protocol::GetVersionInfoResponse::MinknowVersion? = nil
+      property minknow : GetVersionInfoResponse::MinknowVersion? = nil
       property bream : String = ""
       property distribution_version : String = ""
-      property distribution_status : Proto::OpenEnum(MinknowApi::Protocol::GetVersionInfoResponse::DistributionStatus) = Proto::OpenEnum(MinknowApi::Protocol::GetVersionInfoResponse::DistributionStatus).new(0)
+      property distribution_status : Proto::OpenEnum(GetVersionInfoResponse::DistributionStatus) = Proto::OpenEnum(GetVersionInfoResponse::DistributionStatus).new(0)
       property protocol_configuration : String = ""
-      property installation_type : Proto::OpenEnum(MinknowApi::Protocol::GetVersionInfoResponse::InstallationType) = Proto::OpenEnum(MinknowApi::Protocol::GetVersionInfoResponse::InstallationType).new(0)
+      property installation_type : Proto::OpenEnum(GetVersionInfoResponse::InstallationType) = Proto::OpenEnum(GetVersionInfoResponse::InstallationType).new(0)
       property basecaller_build_version : String = ""
       property basecaller_connected_version : String = ""
 
@@ -2720,22 +3022,48 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.minknow = MinknowApi::Protocol::GetVersionInfoResponse::MinknowVersion.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.minknow = GetVersionInfoResponse::MinknowVersion.decode_partial(reader.read_embedded)
           when 2
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.bream = reader.read_string
           when 3
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.distribution_version = reader.read_string
           when 4
-            _raw = reader.read_int32
-            msg.distribution_status = Proto::OpenEnum(MinknowApi::Protocol::GetVersionInfoResponse::DistributionStatus).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.distribution_status = Proto::OpenEnum(GetVersionInfoResponse::DistributionStatus).new(_raw)
           when 5
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.protocol_configuration = reader.read_string
           when 6
-            _raw = reader.read_int32
-            msg.installation_type = Proto::OpenEnum(MinknowApi::Protocol::GetVersionInfoResponse::InstallationType).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.installation_type = Proto::OpenEnum(GetVersionInfoResponse::InstallationType).new(_raw)
           when 9
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 9: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.basecaller_build_version = reader.read_string
           when 10
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 10: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.basecaller_connected_version = reader.read_string
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -2800,6 +3128,7 @@ module MinknowApi
         return false unless installation_type == other.installation_type
         return false unless basecaller_build_version == other.basecaller_build_version
         return false unless basecaller_connected_version == other.basecaller_connected_version
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -2833,7 +3162,7 @@ module MinknowApi
       property workflow_id : String = ""
       property workflow_name : String = ""
       property workflow_version : String = ""
-      property workflow_status : Proto::OpenEnum(MinknowApi::Protocol::AnalysisWorkflowInfo::Status) = Proto::OpenEnum(MinknowApi::Protocol::AnalysisWorkflowInfo::Status).new(0)
+      property workflow_status : Proto::OpenEnum(AnalysisWorkflowInfo::Status) = Proto::OpenEnum(AnalysisWorkflowInfo::Status).new(0)
       property workflow_stop_reason : String = ""
       property report_names : Array(String) = [] of String
 
@@ -2860,19 +3189,41 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.request = MinknowApi::AnalysisWorkflows::AnalysisWorkflowRequest.decode_partial(reader.read_embedded)
           when 2
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.workflow_id = reader.read_string
           when 3
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.workflow_name = reader.read_string
           when 4
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.workflow_version = reader.read_string
           when 5
-            _raw = reader.read_int32
-            msg.workflow_status = Proto::OpenEnum(MinknowApi::Protocol::AnalysisWorkflowInfo::Status).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.workflow_status = Proto::OpenEnum(AnalysisWorkflowInfo::Status).new(_raw)
           when 6
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.workflow_stop_reason = reader.read_string
           when 7
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 7: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.report_names << reader.read_string
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -2932,6 +3283,7 @@ module MinknowApi
         return false unless workflow_status == other.workflow_status
         return false unless workflow_stop_reason == other.workflow_stop_reason
         return false unless report_names == other.report_names
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -2968,8 +3320,14 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.key = reader.read_string
             when 2
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.value = MinknowApi::ProtocolSettings::ProtocolSetting::ProtocolSettingValue.decode_partial(reader.read_embedded)
             else
               msg.capture_unknown_field(reader, fn, wt)
@@ -3004,6 +3362,7 @@ module MinknowApi
         def ==(other : self) : Bool
           return false unless key == other.key
           return false unless value == other.value
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
@@ -3014,27 +3373,27 @@ module MinknowApi
       property settings : Hash(String, MinknowApi::ProtocolSettings::ProtocolSetting::ProtocolSettingValue) = {} of String => MinknowApi::ProtocolSettings::ProtocolSetting::ProtocolSettingValue
       property output_path : String = ""
       property reported_output_path : String? = nil
-      property state : Proto::OpenEnum(MinknowApi::Protocol::ProtocolState) = Proto::OpenEnum(MinknowApi::Protocol::ProtocolState).new(0)
-      property phase : Proto::OpenEnum(MinknowApi::Protocol::ProtocolPhase) = Proto::OpenEnum(MinknowApi::Protocol::ProtocolPhase).new(0)
+      property state : Proto::OpenEnum(ProtocolState) = Proto::OpenEnum(ProtocolState).new(0)
+      property phase : Proto::OpenEnum(ProtocolPhase) = Proto::OpenEnum(ProtocolPhase).new(0)
       property last_phase_change : Google::Protobuf::Timestamp? = nil
-      property phase_history : Array(MinknowApi::Protocol::ProtocolPhaseSnapshot) = [] of MinknowApi::Protocol::ProtocolPhaseSnapshot
+      property phase_history : Array(ProtocolPhaseSnapshot) = [] of ProtocolPhaseSnapshot
       property can_pause : Bool = false
       property can_trigger_mux_scan : Bool = false
       property start_time : Google::Protobuf::Timestamp? = nil
       property script_end_time : Google::Protobuf::Timestamp? = nil
       property end_time : Google::Protobuf::Timestamp? = nil
-      property stop_origin : MinknowApi::Protocol::RequestOrigin? = nil
+      property stop_origin : RequestOrigin? = nil
       property acquisition_run_ids : Array(String) = [] of String
-      property user_info : MinknowApi::Protocol::ProtocolRunUserInfo? = nil
+      property user_info : ProtocolRunUserInfo? = nil
       property device : MinknowApi::Device::GetDeviceInfoResponse? = nil
       property flow_cell : MinknowApi::Device::GetFlowCellInfoResponse? = nil
-      property meta_info : MinknowApi::Protocol::ProtocolInfo? = nil
-      property associated_post_processing_analysis : Array(MinknowApi::Protocol::AssociatedPostProcessingAnalysis) = [] of MinknowApi::Protocol::AssociatedPostProcessingAnalysis
-      property analysis_workflow : MinknowApi::Protocol::AnalysisWorkflowInfo? = nil
-      property pqc_result : MinknowApi::Protocol::PlatformQcResult? = nil
-      property hardware_check_result : MinknowApi::Protocol::HardwareCheckResult? = nil
-      property external_offload : MinknowApi::Protocol::ExternalOffload? = nil
-      property software_versions : MinknowApi::Protocol::GetVersionInfoResponse? = nil
+      property meta_info : ProtocolInfo? = nil
+      property associated_post_processing_analysis : Array(AssociatedPostProcessingAnalysis) = [] of AssociatedPostProcessingAnalysis
+      property analysis_workflow : AnalysisWorkflowInfo? = nil
+      property pqc_result : PlatformQcResult? = nil
+      property hardware_check_result : HardwareCheckResult? = nil
+      property external_offload : ExternalOffload? = nil
+      property software_versions : GetVersionInfoResponse? = nil
       property is_protocol_script_restartable : Bool = false
 
       def has_reported_output_path? : Bool
@@ -3194,63 +3553,149 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.run_id = reader.read_string
           when 2
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.protocol_id = reader.read_string
           when 3
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.args << reader.read_string
           when 25
-            entry = MinknowApi::Protocol::ProtocolRunInfo::SettingsEntry.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 25: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            entry = ProtocolRunInfo::SettingsEntry.decode_partial(reader.read_embedded)
             msg.settings[entry.key] = entry.value
           when 11
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 11: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.output_path = reader.read_string
           when 24
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 24: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.reported_output_path = reader.read_string
           when 4
-            _raw = reader.read_int32
-            msg.state = Proto::OpenEnum(MinknowApi::Protocol::ProtocolState).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.state = Proto::OpenEnum(ProtocolState).new(_raw)
           when 16
-            _raw = reader.read_int32
-            msg.phase = Proto::OpenEnum(MinknowApi::Protocol::ProtocolPhase).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 16: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.phase = Proto::OpenEnum(ProtocolPhase).new(_raw)
           when 17
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 17: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.last_phase_change = Google::Protobuf::Timestamp.decode_partial(reader.read_embedded)
           when 28
-            msg.phase_history << MinknowApi::Protocol::ProtocolPhaseSnapshot.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 28: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.phase_history << ProtocolPhaseSnapshot.decode_partial(reader.read_embedded)
           when 18
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 18: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.can_pause = reader.read_bool
           when 19
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 19: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.can_trigger_mux_scan = reader.read_bool
           when 5
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.start_time = Google::Protobuf::Timestamp.decode_partial(reader.read_embedded)
           when 9
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 9: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.script_end_time = Google::Protobuf::Timestamp.decode_partial(reader.read_embedded)
           when 6
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.end_time = Google::Protobuf::Timestamp.decode_partial(reader.read_embedded)
           when 23
-            msg.stop_origin = MinknowApi::Protocol::RequestOrigin.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 23: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.stop_origin = RequestOrigin.decode_partial(reader.read_embedded)
           when 7
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 7: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.acquisition_run_ids << reader.read_string
           when 8
-            msg.user_info = MinknowApi::Protocol::ProtocolRunUserInfo.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 8: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.user_info = ProtocolRunUserInfo.decode_partial(reader.read_embedded)
           when 12
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 12: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.device = MinknowApi::Device::GetDeviceInfoResponse.decode_partial(reader.read_embedded)
           when 13
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 13: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.flow_cell = MinknowApi::Device::GetFlowCellInfoResponse.decode_partial(reader.read_embedded)
           when 14
-            msg.meta_info = MinknowApi::Protocol::ProtocolInfo.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 14: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.meta_info = ProtocolInfo.decode_partial(reader.read_embedded)
           when 15
-            msg.associated_post_processing_analysis << MinknowApi::Protocol::AssociatedPostProcessingAnalysis.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 15: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.associated_post_processing_analysis << AssociatedPostProcessingAnalysis.decode_partial(reader.read_embedded)
           when 27
-            msg.analysis_workflow = MinknowApi::Protocol::AnalysisWorkflowInfo.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 27: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.analysis_workflow = AnalysisWorkflowInfo.decode_partial(reader.read_embedded)
           when 20
-            msg.pqc_result = MinknowApi::Protocol::PlatformQcResult.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 20: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.pqc_result = PlatformQcResult.decode_partial(reader.read_embedded)
           when 26
-            msg.hardware_check_result = MinknowApi::Protocol::HardwareCheckResult.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 26: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.hardware_check_result = HardwareCheckResult.decode_partial(reader.read_embedded)
           when 21
-            msg.external_offload = MinknowApi::Protocol::ExternalOffload.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 21: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.external_offload = ExternalOffload.decode_partial(reader.read_embedded)
           when 22
-            msg.software_versions = MinknowApi::Protocol::GetVersionInfoResponse.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 22: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.software_versions = GetVersionInfoResponse.decode_partial(reader.read_embedded)
           when 29
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 29: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.is_protocol_script_restartable = reader.read_bool
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -3280,7 +3725,7 @@ module MinknowApi
           w.write_string(item)
         end
         settings.each do |k, v|
-          entry = MinknowApi::Protocol::ProtocolRunInfo::SettingsEntry.new
+          entry = ProtocolRunInfo::SettingsEntry.new
           entry.key = k
           entry.value = v
           w.write_embedded(25) { |sub| entry.encode_partial(sub) }
@@ -3402,6 +3847,7 @@ module MinknowApi
         return false unless external_offload == other.external_offload
         return false unless software_versions == other.software_versions
         return false unless is_protocol_script_restartable == other.is_protocol_script_restartable
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -3451,6 +3897,9 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.flow_cell_id = reader.read_string
             else
               msg.capture_unknown_field(reader, fn, wt)
@@ -3479,6 +3928,7 @@ module MinknowApi
 
         def ==(other : self) : Bool
           return false unless flow_cell_id == other.flow_cell_id
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
@@ -3503,6 +3953,9 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
+              unless wt == Proto::WireType::VARINT
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
+              end
               msg.only_succeeded_or_failed = reader.read_bool
             else
               msg.capture_unknown_field(reader, fn, wt)
@@ -3531,6 +3984,7 @@ module MinknowApi
 
         def ==(other : self) : Bool
           return false unless only_succeeded_or_failed == other.only_succeeded_or_failed
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
@@ -3573,8 +4027,14 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.start_range = Google::Protobuf::Timestamp.decode_partial(reader.read_embedded)
             when 2
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.end_range = Google::Protobuf::Timestamp.decode_partial(reader.read_embedded)
             else
               msg.capture_unknown_field(reader, fn, wt)
@@ -3608,19 +4068,20 @@ module MinknowApi
         def ==(other : self) : Bool
           return false unless start_range == other.start_range
           return false unless end_range == other.end_range
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
 
-      property pqc_filter : MinknowApi::Protocol::FilteringInfo::PlatformQcFilter? = nil
+      property pqc_filter : FilteringInfo::PlatformQcFilter? = nil
       property flow_cell_id : String? = nil
-      property hardware_check_filter : MinknowApi::Protocol::FilteringInfo::HardwareCheckFilter? = nil
+      property hardware_check_filter : FilteringInfo::HardwareCheckFilter? = nil
       property protocol_group_id : String? = nil
-      property experiment_start_time : MinknowApi::Protocol::FilteringInfo::TimeFilter? = nil
+      property experiment_start_time : FilteringInfo::TimeFilter? = nil
       property count : Int32? = nil
       property offset : Int32? = nil
-      property order_by : Proto::OpenEnum(MinknowApi::Protocol::FilteringInfo::OrderBy)? = nil
-      property order_direction : Proto::OpenEnum(MinknowApi::Protocol::FilteringInfo::OrderDirection)? = nil
+      property order_by : Proto::OpenEnum(FilteringInfo::OrderBy)? = nil
+      property order_direction : Proto::OpenEnum(FilteringInfo::OrderDirection)? = nil
 
       def has_pqc_filter? : Bool
         !pqc_filter.nil?
@@ -3711,25 +4172,54 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.pqc_filter = MinknowApi::Protocol::FilteringInfo::PlatformQcFilter.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.pqc_filter = FilteringInfo::PlatformQcFilter.decode_partial(reader.read_embedded)
           when 9
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 9: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.flow_cell_id = reader.read_string
           when 4
-            msg.hardware_check_filter = MinknowApi::Protocol::FilteringInfo::HardwareCheckFilter.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.hardware_check_filter = FilteringInfo::HardwareCheckFilter.decode_partial(reader.read_embedded)
           when 2
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.protocol_group_id = reader.read_string
           when 3
-            msg.experiment_start_time = MinknowApi::Protocol::FilteringInfo::TimeFilter.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.experiment_start_time = FilteringInfo::TimeFilter.decode_partial(reader.read_embedded)
           when 5
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.count = reader.read_int32
           when 6
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.offset = reader.read_int32
           when 7
-            _raw = reader.read_int32
-            msg.order_by = Proto::OpenEnum(MinknowApi::Protocol::FilteringInfo::OrderBy).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 7: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.order_by = Proto::OpenEnum(FilteringInfo::OrderBy).new(_raw)
           when 8
-            _raw = reader.read_int32
-            msg.order_direction = Proto::OpenEnum(MinknowApi::Protocol::FilteringInfo::OrderDirection).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 8: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.order_direction = Proto::OpenEnum(FilteringInfo::OrderDirection).new(_raw)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -3796,6 +4286,7 @@ module MinknowApi
         return false unless offset == other.offset
         return false unless order_by == other.order_by
         return false unless order_direction == other.order_direction
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -3803,7 +4294,7 @@ module MinknowApi
     class ListProtocolRunsRequest
       include Proto::Message
 
-      property filter_info : MinknowApi::Protocol::FilteringInfo? = nil
+      property filter_info : FilteringInfo? = nil
 
       def has_filter_info? : Bool
         !filter_info.nil?
@@ -3828,7 +4319,10 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.filter_info = MinknowApi::Protocol::FilteringInfo.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.filter_info = FilteringInfo.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -3857,6 +4351,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless filter_info == other.filter_info
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -3875,10 +4370,19 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.run_ids << reader.read_string
           when 2
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.total_count = reader.read_int32
           when 3
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.offset = reader.read_int32
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -3917,6 +4421,7 @@ module MinknowApi
         return false unless run_ids == other.run_ids
         return false unless total_count == other.total_count
         return false unless offset == other.offset
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -3952,6 +4457,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -3959,7 +4465,7 @@ module MinknowApi
     class GetCurrentProtocolRunResponse
       include Proto::Message
 
-      property run_info : MinknowApi::Protocol::ProtocolRunInfo? = nil
+      property run_info : ProtocolRunInfo? = nil
 
       def has_run_info? : Bool
         !run_info.nil?
@@ -3984,7 +4490,10 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 3
-            msg.run_info = MinknowApi::Protocol::ProtocolRunInfo.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.run_info = ProtocolRunInfo.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -4013,6 +4522,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless run_info == other.run_info
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -4048,6 +4558,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -4083,6 +4594,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -4103,8 +4615,14 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.key = reader.read_string
             when 2
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.value = reader.read_string
             else
               msg.capture_unknown_field(reader, fn, wt)
@@ -4138,6 +4656,7 @@ module MinknowApi
         def ==(other : self) : Bool
           return false unless key == other.key
           return false unless value == other.value
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
@@ -4151,7 +4670,10 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            entry = MinknowApi::Protocol::GetContextInfoResponse::ContextInfoEntry.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            entry = GetContextInfoResponse::ContextInfoEntry.decode_partial(reader.read_embedded)
             msg.context_info[entry.key] = entry.value
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -4168,7 +4690,7 @@ module MinknowApi
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
         context_info.each do |k, v|
-          entry = MinknowApi::Protocol::GetContextInfoResponse::ContextInfoEntry.new
+          entry = GetContextInfoResponse::ContextInfoEntry.new
           entry.key = k
           entry.value = v
           w.write_embedded(1) { |sub| entry.encode_partial(sub) }
@@ -4182,6 +4704,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless context_info == other.context_info
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -4202,8 +4725,14 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.key = reader.read_string
             when 2
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.value = reader.read_string
             else
               msg.capture_unknown_field(reader, fn, wt)
@@ -4237,6 +4766,7 @@ module MinknowApi
         def ==(other : self) : Bool
           return false unless key == other.key
           return false unless value == other.value
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
@@ -4250,7 +4780,10 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            entry = MinknowApi::Protocol::SetContextInfoRequest::ContextInfoEntry.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            entry = SetContextInfoRequest::ContextInfoEntry.decode_partial(reader.read_embedded)
             msg.context_info[entry.key] = entry.value
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -4267,7 +4800,7 @@ module MinknowApi
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
         context_info.each do |k, v|
-          entry = MinknowApi::Protocol::SetContextInfoRequest::ContextInfoEntry.new
+          entry = SetContextInfoRequest::ContextInfoEntry.new
           entry.key = k
           entry.value = v
           w.write_embedded(1) { |sub| entry.encode_partial(sub) }
@@ -4281,6 +4814,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless context_info == other.context_info
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -4316,6 +4850,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -4351,6 +4886,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -4367,6 +4903,9 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.purpose = reader.read_string
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -4395,6 +4934,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless purpose == other.purpose
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -4411,6 +4951,9 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.purpose = reader.read_string
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -4439,6 +4982,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless purpose == other.purpose
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -4474,6 +5018,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -4508,10 +5053,19 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.protocol_group_id = reader.read_string
           when 2
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.start_time = Google::Protobuf::Timestamp.decode_partial(reader.read_embedded)
           when 3
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.pooled_output = reader.read_bool
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -4551,6 +5105,7 @@ module MinknowApi
         return false unless protocol_group_id == other.protocol_group_id
         return false unless start_time == other.start_time
         return false unless pooled_output == other.pooled_output
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -4558,7 +5113,7 @@ module MinknowApi
     class ListProtocolGroupIdsRequest
       include Proto::Message
 
-      property filter_info : MinknowApi::Protocol::FilteringInfo? = nil
+      property filter_info : FilteringInfo? = nil
 
       def has_filter_info? : Bool
         !filter_info.nil?
@@ -4583,7 +5138,10 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.filter_info = MinknowApi::Protocol::FilteringInfo.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.filter_info = FilteringInfo.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -4612,6 +5170,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless filter_info == other.filter_info
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -4619,7 +5178,7 @@ module MinknowApi
     class ListProtocolGroupIdsResponse
       include Proto::Message
 
-      property protocol_group_ids_info : Array(MinknowApi::Protocol::ProtocolGroupIdInfo) = [] of MinknowApi::Protocol::ProtocolGroupIdInfo
+      property protocol_group_ids_info : Array(ProtocolGroupIdInfo) = [] of ProtocolGroupIdInfo
 
       def validate_required! : Nil
       end
@@ -4638,7 +5197,10 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 2
-            msg.protocol_group_ids_info << MinknowApi::Protocol::ProtocolGroupIdInfo.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.protocol_group_ids_info << ProtocolGroupIdInfo.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -4667,6 +5229,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless protocol_group_ids_info == other.protocol_group_ids_info
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -4702,6 +5265,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -4718,6 +5282,9 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.run_id = reader.read_string
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -4746,6 +5313,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless run_id == other.run_id
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -4781,6 +5349,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -4797,6 +5366,9 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.run_id = reader.read_string
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -4825,6 +5397,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless run_id == other.run_id
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -4861,8 +5434,14 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.key = reader.read_string
             when 2
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
               msg.value = MinknowApi::ProtocolSettings::ProtocolSetting::ProtocolSettingValue.decode_partial(reader.read_embedded)
             else
               msg.capture_unknown_field(reader, fn, wt)
@@ -4897,6 +5476,7 @@ module MinknowApi
         def ==(other : self) : Bool
           return false unless key == other.key
           return false unless value == other.value
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
@@ -4911,8 +5491,8 @@ module MinknowApi
 
       getter identifier : String = ""
       getter components : MinknowApi::ProtocolSettings::ProtocolIdentifierComponents? = nil
-      property user_info : MinknowApi::Protocol::ProtocolRunUserInfo? = nil
-      property offload_location_info : MinknowApi::Protocol::OffloadLocationInfo? = nil
+      property user_info : ProtocolRunUserInfo? = nil
+      property offload_location_info : OffloadLocationInfo? = nil
       property target_run_until_criteria : MinknowApi::Acquisition::TargetRunUntilCriteria? = nil
       property settings : Hash(String, MinknowApi::ProtocolSettings::ProtocolSetting::ProtocolSettingValue) = {} of String => MinknowApi::ProtocolSettings::ProtocolSetting::ProtocolSettingValue
       property analysis_workflow_request : MinknowApi::AnalysisWorkflows::AnalysisWorkflowRequest? = nil
@@ -4996,21 +5576,45 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.identifier = reader.read_string
           when 2
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.components = MinknowApi::ProtocolSettings::ProtocolIdentifierComponents.decode_partial(reader.read_embedded)
           when 3
-            msg.user_info = MinknowApi::Protocol::ProtocolRunUserInfo.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.user_info = ProtocolRunUserInfo.decode_partial(reader.read_embedded)
           when 5
-            msg.offload_location_info = MinknowApi::Protocol::OffloadLocationInfo.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.offload_location_info = OffloadLocationInfo.decode_partial(reader.read_embedded)
           when 6
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.target_run_until_criteria = MinknowApi::Acquisition::TargetRunUntilCriteria.decode_partial(reader.read_embedded)
           when 4
-            entry = MinknowApi::Protocol::BeginProtocolRequest::SettingsEntry.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            entry = BeginProtocolRequest::SettingsEntry.decode_partial(reader.read_embedded)
             msg.settings[entry.key] = entry.value
           when 8
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 8: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.analysis_workflow_request = MinknowApi::AnalysisWorkflows::AnalysisWorkflowRequest.decode_partial(reader.read_embedded)
           when 9
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 9: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.simulation_source = reader.read_string
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -5046,7 +5650,7 @@ module MinknowApi
           w.write_embedded(6) { |sub| _v.encode_partial(sub) }
         end
         settings.each do |k, v|
-          entry = MinknowApi::Protocol::BeginProtocolRequest::SettingsEntry.new
+          entry = BeginProtocolRequest::SettingsEntry.new
           entry.key = k
           entry.value = v
           w.write_embedded(4) { |sub| entry.encode_partial(sub) }
@@ -5076,6 +5680,7 @@ module MinknowApi
         return false unless settings == other.settings
         return false unless analysis_workflow_request == other.analysis_workflow_request
         return false unless simulation_source == other.simulation_source
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -5092,6 +5697,9 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.run_id = reader.read_string
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -5120,6 +5728,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless run_id == other.run_id
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -5128,7 +5737,7 @@ module MinknowApi
       include Proto::Message
 
       property protocol_run_id : String = ""
-      property pqc_result : MinknowApi::Protocol::PlatformQcResult? = nil
+      property pqc_result : PlatformQcResult? = nil
 
       def has_pqc_result? : Bool
         !pqc_result.nil?
@@ -5153,9 +5762,15 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.protocol_run_id = reader.read_string
           when 2
-            msg.pqc_result = MinknowApi::Protocol::PlatformQcResult.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.pqc_result = PlatformQcResult.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -5189,6 +5804,7 @@ module MinknowApi
       def ==(other : self) : Bool
         return false unless protocol_run_id == other.protocol_run_id
         return false unless pqc_result == other.pqc_result
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -5224,6 +5840,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -5232,7 +5849,7 @@ module MinknowApi
       include Proto::Message
 
       property protocol_run_id : String = ""
-      property result : MinknowApi::Protocol::HardwareCheckResult? = nil
+      property result : HardwareCheckResult? = nil
 
       def has_result? : Bool
         !result.nil?
@@ -5257,9 +5874,15 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.protocol_run_id = reader.read_string
           when 2
-            msg.result = MinknowApi::Protocol::HardwareCheckResult.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.result = HardwareCheckResult.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -5293,6 +5916,7 @@ module MinknowApi
       def ==(other : self) : Bool
         return false unless protocol_run_id == other.protocol_run_id
         return false unless result == other.result
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -5328,6 +5952,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -5361,8 +5986,14 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.run_id = reader.read_string
           when 2
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.start_request = MinknowApi::Basecaller::StartRequest.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -5397,6 +6028,7 @@ module MinknowApi
       def ==(other : self) : Bool
         return false unless run_id == other.run_id
         return false unless start_request == other.start_request
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -5413,6 +6045,9 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.id = reader.read_string
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -5441,6 +6076,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless id == other.id
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -5457,6 +6093,9 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.protocol_ids << reader.read_string
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -5485,6 +6124,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless protocol_ids == other.protocol_ids
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -5520,6 +6160,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -5540,8 +6181,14 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
+              unless wt == Proto::WireType::VARINT
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
+              end
               msg.can_pause = reader.read_bool
             when 2
+              unless wt == Proto::WireType::VARINT
+                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
+              end
               msg.can_trigger_mux_scan = reader.read_bool
             else
               msg.capture_unknown_field(reader, fn, wt)
@@ -5575,12 +6222,13 @@ module MinknowApi
         def ==(other : self) : Bool
           return false unless can_pause == other.can_pause
           return false unless can_trigger_mux_scan == other.can_trigger_mux_scan
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
 
-      property set_capabilities : MinknowApi::Protocol::ProtocolPhaseManagementRequest::Capabilities? = nil
-      property phase : Proto::OpenEnum(MinknowApi::Protocol::ProtocolPhase) = Proto::OpenEnum(MinknowApi::Protocol::ProtocolPhase).new(0)
+      property set_capabilities : ProtocolPhaseManagementRequest::Capabilities? = nil
+      property phase : Proto::OpenEnum(ProtocolPhase) = Proto::OpenEnum(ProtocolPhase).new(0)
 
       def has_set_capabilities? : Bool
         !set_capabilities.nil?
@@ -5605,10 +6253,17 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.set_capabilities = MinknowApi::Protocol::ProtocolPhaseManagementRequest::Capabilities.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.set_capabilities = ProtocolPhaseManagementRequest::Capabilities.decode_partial(reader.read_embedded)
           when 2
-            _raw = reader.read_int32
-            msg.phase = Proto::OpenEnum(MinknowApi::Protocol::ProtocolPhase).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.phase = Proto::OpenEnum(ProtocolPhase).new(_raw)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -5642,6 +6297,7 @@ module MinknowApi
       def ==(other : self) : Bool
         return false unless set_capabilities == other.set_capabilities
         return false unless phase == other.phase
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -5649,7 +6305,7 @@ module MinknowApi
     class ProtocolPhaseManagementResponse
       include Proto::Message
 
-      property action : Proto::OpenEnum(MinknowApi::Protocol::Action) = Proto::OpenEnum(MinknowApi::Protocol::Action).new(0)
+      property action : Proto::OpenEnum(Action) = Proto::OpenEnum(Action).new(0)
 
       def self.decode_partial(io : IO) : self
         msg = new
@@ -5658,8 +6314,12 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            _raw = reader.read_int32
-            msg.action = Proto::OpenEnum(MinknowApi::Protocol::Action).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.action = Proto::OpenEnum(Action).new(_raw)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -5687,6 +6347,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless action == other.action
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -5704,8 +6365,14 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.protocol_run_id = reader.read_string
           when 2
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.include_input_data = reader.read_bool
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -5739,6 +6406,7 @@ module MinknowApi
       def ==(other : self) : Bool
         return false unless protocol_run_id == other.protocol_run_id
         return false unless include_input_data == other.include_input_data
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -5759,14 +6427,29 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.protocol_run_id = reader.read_string
           when 2
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.report_data = reader.read_string
           when 3
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.remaining_length = reader.read_int32
           when 4
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.input_data = reader.read_string
           when 5
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.remaining_input_length = reader.read_int32
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -5815,6 +6498,7 @@ module MinknowApi
         return false unless remaining_length == other.remaining_length
         return false unless input_data == other.input_data
         return false unless remaining_input_length == other.remaining_input_length
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -5850,6 +6534,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -5867,8 +6552,14 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.protocol_ids << reader.read_string
           when 2
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.acquisition_ids << reader.read_string
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -5902,6 +6593,7 @@ module MinknowApi
       def ==(other : self) : Bool
         return false unless protocol_ids == other.protocol_ids
         return false unless acquisition_ids == other.acquisition_ids
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -5919,8 +6611,14 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.protocol_run_id = reader.read_string
           when 2
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.is_restartable = reader.read_bool
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -5954,6 +6652,7 @@ module MinknowApi
       def ==(other : self) : Bool
         return false unless protocol_run_id == other.protocol_run_id
         return false unless is_restartable == other.is_restartable
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -5989,6 +6688,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end

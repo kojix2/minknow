@@ -24,12 +24,20 @@ module MinknowApi
           when 1
             if wt == Proto::WireType::LENGTH_DELIMITED
               reader.read_packed_double { |v| msg.voltages << v }
-            else
+            elsif wt == Proto::WireType::FIXED64
               msg.voltages << reader.read_double
+            else
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED or Proto::WireType::FIXED64, got " + wt.to_s)
             end
           when 2
+            unless wt == Proto::WireType::FIXED64
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::FIXED64, got " + wt.to_s)
+            end
             msg.frequency = reader.read_double
           when 3
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.precise_waveform = reader.read_bool
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -68,6 +76,7 @@ module MinknowApi
         return false unless voltages == other.voltages
         return false unless frequency == other.frequency
         return false unless precise_waveform == other.precise_waveform
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -86,11 +95,11 @@ module MinknowApi
       property sampling_frequency : Google::Protobuf::Int32Value? = nil
       property ramp_voltage : Google::Protobuf::DoubleValue? = nil
       getter bias_voltage : Float64 = 0.0_f64
-      getter bias_voltage_waveform : MinknowApi::PromethionDevice::WaveformSettings? = nil
+      getter bias_voltage_waveform : WaveformSettings? = nil
       property saturation_control_enabled : Google::Protobuf::BoolValue? = nil
       property fast_calibration_enabled : Google::Protobuf::BoolValue? = nil
       property temperature_target : Google::Protobuf::FloatValue? = nil
-      property timings : MinknowApi::PromethionDevice::TimingEnginePeriods? = nil
+      property timings : TimingEnginePeriods? = nil
 
       def clear_bias_voltage_setting : Nil
         @bias_voltage = 0.0_f64
@@ -105,7 +114,7 @@ module MinknowApi
         value
       end
 
-      def bias_voltage_waveform=(value : MinknowApi::PromethionDevice::WaveformSettings?) : MinknowApi::PromethionDevice::WaveformSettings?
+      def bias_voltage_waveform=(value : WaveformSettings?) : WaveformSettings?
         if value.nil?
           clear_bias_voltage_setting
           return value
@@ -185,21 +194,45 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.sampling_frequency = Google::Protobuf::Int32Value.decode_partial(reader.read_embedded)
           when 2
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.ramp_voltage = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
           when 3
+            unless wt == Proto::WireType::FIXED64
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::FIXED64, got " + wt.to_s)
+            end
             msg.bias_voltage = reader.read_double
           when 4
-            msg.bias_voltage_waveform = MinknowApi::PromethionDevice::WaveformSettings.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.bias_voltage_waveform = WaveformSettings.decode_partial(reader.read_embedded)
           when 5
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.saturation_control_enabled = Google::Protobuf::BoolValue.decode_partial(reader.read_embedded)
           when 6
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.fast_calibration_enabled = Google::Protobuf::BoolValue.decode_partial(reader.read_embedded)
           when 7
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 7: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.temperature_target = Google::Protobuf::FloatValue.decode_partial(reader.read_embedded)
           when 8
-            msg.timings = MinknowApi::PromethionDevice::TimingEnginePeriods.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 8: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.timings = TimingEnginePeriods.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -260,6 +293,7 @@ module MinknowApi
         return false unless fast_calibration_enabled == other.fast_calibration_enabled
         return false unless temperature_target == other.temperature_target
         return false unless timings == other.timings
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -412,30 +446,69 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.rst1 = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
           when 2
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.rst1_cds1 = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
           when 3
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.cds1 = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
           when 4
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.cds1_data = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
           when 5
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.data = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
           when 6
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.data_rst2 = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
           when 7
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 7: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.rst2 = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
           when 8
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 8: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.rst2_cds2 = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
           when 9
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 9: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.cds2 = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
           when 10
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 10: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.cds2_sh = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
           when 11
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 11: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.sh = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
           when 12
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 12: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.sh_rst1 = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
           when 13
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 13: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.use_default_values = Google::Protobuf::BoolValue.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -513,6 +586,7 @@ module MinknowApi
         return false unless sh == other.sh
         return false unless sh_rst1 == other.sh_rst1
         return false unless use_default_values == other.use_default_values
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -555,8 +629,14 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.regen_current_voltage_clamp = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
           when 2
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.unblock_voltage = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -590,6 +670,7 @@ module MinknowApi
       def ==(other : self) : Bool
         return false unless regen_current_voltage_clamp == other.regen_current_voltage_clamp
         return false unless unblock_voltage == other.unblock_voltage
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -784,8 +865,8 @@ module MinknowApi
           end
         end
 
-        property input_well : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::InputWell::InputConfig) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::InputWell::InputConfig).new(0)
-        property regeneration_well : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::InputWell::InputConfig) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::InputWell::InputConfig).new(0)
+        property input_well : Proto::OpenEnum(PixelSettings::InputWell::InputConfig) = Proto::OpenEnum(PixelSettings::InputWell::InputConfig).new(0)
+        property regeneration_well : Proto::OpenEnum(PixelSettings::InputWell::InputConfig) = Proto::OpenEnum(PixelSettings::InputWell::InputConfig).new(0)
 
         def self.decode_partial(io : IO) : self
           msg = new
@@ -794,11 +875,19 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              _raw = reader.read_int32
-              msg.input_well = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::InputWell::InputConfig).new(_raw)
+              unless wt == Proto::WireType::VARINT
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
+              end
+              _raw_u64 = reader.read_uint64
+              _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+              msg.input_well = Proto::OpenEnum(PixelSettings::InputWell::InputConfig).new(_raw)
             when 2
-              _raw = reader.read_int32
-              msg.regeneration_well = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::InputWell::InputConfig).new(_raw)
+              unless wt == Proto::WireType::VARINT
+                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
+              end
+              _raw_u64 = reader.read_uint64
+              _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+              msg.regeneration_well = Proto::OpenEnum(PixelSettings::InputWell::InputConfig).new(_raw)
             else
               msg.capture_unknown_field(reader, fn, wt)
             end
@@ -831,22 +920,23 @@ module MinknowApi
         def ==(other : self) : Bool
           return false unless input_well == other.input_well
           return false unless regeneration_well == other.regeneration_well
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
 
-      property input : MinknowApi::PromethionDevice::PixelSettings::InputWell? = nil
-      property overload_mode : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::OverloadMode) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::OverloadMode).new(0)
-      property cutoff_frequency : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::LowPassFilter) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::LowPassFilter).new(0)
-      property gain_multiplier : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::GainMultiplier) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::GainMultiplier).new(0)
-      property gain_capacitor : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::GainCapacitor) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::GainCapacitor).new(0)
-      property calibration_mode : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::CalibrationMode) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::CalibrationMode).new(0)
-      property unblock_voltage : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::UnblockMode) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::UnblockMode).new(0)
+      property input : PixelSettings::InputWell? = nil
+      property overload_mode : Proto::OpenEnum(PixelSettings::OverloadMode) = Proto::OpenEnum(PixelSettings::OverloadMode).new(0)
+      property cutoff_frequency : Proto::OpenEnum(PixelSettings::LowPassFilter) = Proto::OpenEnum(PixelSettings::LowPassFilter).new(0)
+      property gain_multiplier : Proto::OpenEnum(PixelSettings::GainMultiplier) = Proto::OpenEnum(PixelSettings::GainMultiplier).new(0)
+      property gain_capacitor : Proto::OpenEnum(PixelSettings::GainCapacitor) = Proto::OpenEnum(PixelSettings::GainCapacitor).new(0)
+      property calibration_mode : Proto::OpenEnum(PixelSettings::CalibrationMode) = Proto::OpenEnum(PixelSettings::CalibrationMode).new(0)
+      property unblock_voltage : Proto::OpenEnum(PixelSettings::UnblockMode) = Proto::OpenEnum(PixelSettings::UnblockMode).new(0)
       property current_inverted : Google::Protobuf::BoolValue? = nil
       property membrane_simulation_enabled : Google::Protobuf::BoolValue? = nil
-      property regeneration_current : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::RegenerationCurrent) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::RegenerationCurrent).new(0)
+      property regeneration_current : Proto::OpenEnum(PixelSettings::RegenerationCurrent) = Proto::OpenEnum(PixelSettings::RegenerationCurrent).new(0)
       property regeneration_current_test_enabled : Google::Protobuf::BoolValue? = nil
-      property bias_current : Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::BiasCurrent) = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::BiasCurrent).new(0)
+      property bias_current : Proto::OpenEnum(PixelSettings::BiasCurrent) = Proto::OpenEnum(PixelSettings::BiasCurrent).new(0)
 
       def has_input? : Bool
         !input.nil?
@@ -898,37 +988,81 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.input = MinknowApi::PromethionDevice::PixelSettings::InputWell.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.input = PixelSettings::InputWell.decode_partial(reader.read_embedded)
           when 2
-            _raw = reader.read_int32
-            msg.overload_mode = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::OverloadMode).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.overload_mode = Proto::OpenEnum(PixelSettings::OverloadMode).new(_raw)
           when 3
-            _raw = reader.read_int32
-            msg.cutoff_frequency = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::LowPassFilter).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.cutoff_frequency = Proto::OpenEnum(PixelSettings::LowPassFilter).new(_raw)
           when 4
-            _raw = reader.read_int32
-            msg.gain_multiplier = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::GainMultiplier).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.gain_multiplier = Proto::OpenEnum(PixelSettings::GainMultiplier).new(_raw)
           when 5
-            _raw = reader.read_int32
-            msg.gain_capacitor = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::GainCapacitor).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.gain_capacitor = Proto::OpenEnum(PixelSettings::GainCapacitor).new(_raw)
           when 6
-            _raw = reader.read_int32
-            msg.calibration_mode = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::CalibrationMode).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.calibration_mode = Proto::OpenEnum(PixelSettings::CalibrationMode).new(_raw)
           when 7
-            _raw = reader.read_int32
-            msg.unblock_voltage = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::UnblockMode).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 7: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.unblock_voltage = Proto::OpenEnum(PixelSettings::UnblockMode).new(_raw)
           when 8
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 8: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.current_inverted = Google::Protobuf::BoolValue.decode_partial(reader.read_embedded)
           when 9
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 9: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.membrane_simulation_enabled = Google::Protobuf::BoolValue.decode_partial(reader.read_embedded)
           when 10
-            _raw = reader.read_int32
-            msg.regeneration_current = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::RegenerationCurrent).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 10: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.regeneration_current = Proto::OpenEnum(PixelSettings::RegenerationCurrent).new(_raw)
           when 11
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 11: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.regeneration_current_test_enabled = Google::Protobuf::BoolValue.decode_partial(reader.read_embedded)
           when 12
-            _raw = reader.read_int32
-            msg.bias_current = Proto::OpenEnum(MinknowApi::PromethionDevice::PixelSettings::BiasCurrent).new(_raw)
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 12: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.bias_current = Proto::OpenEnum(PixelSettings::BiasCurrent).new(_raw)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -1009,6 +1143,7 @@ module MinknowApi
         return false unless regeneration_current == other.regeneration_current
         return false unless regeneration_current_test_enabled == other.regeneration_current_test_enabled
         return false unless bias_current == other.bias_current
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -1016,7 +1151,7 @@ module MinknowApi
     class ChangeDeviceSettingsRequest
       include Proto::Message
 
-      property settings : MinknowApi::PromethionDevice::DeviceSettings? = nil
+      property settings : DeviceSettings? = nil
 
       def has_settings? : Bool
         !settings.nil?
@@ -1041,7 +1176,10 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.settings = MinknowApi::PromethionDevice::DeviceSettings.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.settings = DeviceSettings.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -1070,6 +1208,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless settings == other.settings
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -1102,6 +1241,9 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.real_sampling_frequency = Google::Protobuf::Int32Value.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -1131,6 +1273,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless real_sampling_frequency == other.real_sampling_frequency
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -1166,6 +1309,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -1173,7 +1317,7 @@ module MinknowApi
     class GetDeviceSettingsResponse
       include Proto::Message
 
-      property settings : MinknowApi::PromethionDevice::DeviceSettings? = nil
+      property settings : DeviceSettings? = nil
 
       def has_settings? : Bool
         !settings.nil?
@@ -1198,7 +1342,10 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.settings = MinknowApi::PromethionDevice::DeviceSettings.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.settings = DeviceSettings.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -1227,6 +1374,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless settings == other.settings
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -1238,7 +1386,7 @@ module MinknowApi
         include Proto::Message
 
         property key : UInt32 = 0
-        property value : MinknowApi::PromethionDevice::PixelBlockSettings? = nil
+        property value : PixelBlockSettings? = nil
 
         def has_value? : Bool
           !value.nil?
@@ -1263,9 +1411,15 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
+              unless wt == Proto::WireType::VARINT
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
+              end
               msg.key = reader.read_uint32
             when 2
-              msg.value = MinknowApi::PromethionDevice::PixelBlockSettings.decode_partial(reader.read_embedded)
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
+              msg.value = PixelBlockSettings.decode_partial(reader.read_embedded)
             else
               msg.capture_unknown_field(reader, fn, wt)
             end
@@ -1299,12 +1453,13 @@ module MinknowApi
         def ==(other : self) : Bool
           return false unless key == other.key
           return false unless value == other.value
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
 
-      property pixel_blocks : Hash(UInt32, MinknowApi::PromethionDevice::PixelBlockSettings) = {} of UInt32 => MinknowApi::PromethionDevice::PixelBlockSettings
-      property pixel_block_default : MinknowApi::PromethionDevice::PixelBlockSettings? = nil
+      property pixel_blocks : Hash(UInt32, PixelBlockSettings) = {} of UInt32 => PixelBlockSettings
+      property pixel_block_default : PixelBlockSettings? = nil
 
       def has_pixel_block_default? : Bool
         !pixel_block_default.nil?
@@ -1332,10 +1487,16 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            entry = MinknowApi::PromethionDevice::ChangePixelBlockSettingsRequest::PixelBlocksEntry.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            entry = ChangePixelBlockSettingsRequest::PixelBlocksEntry.decode_partial(reader.read_embedded)
             msg.pixel_blocks[entry.key] = entry.value
           when 2
-            msg.pixel_block_default = MinknowApi::PromethionDevice::PixelBlockSettings.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.pixel_block_default = PixelBlockSettings.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -1352,7 +1513,7 @@ module MinknowApi
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
         pixel_blocks.each do |k, v|
-          entry = MinknowApi::PromethionDevice::ChangePixelBlockSettingsRequest::PixelBlocksEntry.new
+          entry = ChangePixelBlockSettingsRequest::PixelBlocksEntry.new
           entry.key = k
           entry.value = v
           w.write_embedded(1) { |sub| entry.encode_partial(sub) }
@@ -1371,6 +1532,7 @@ module MinknowApi
       def ==(other : self) : Bool
         return false unless pixel_blocks == other.pixel_blocks
         return false unless pixel_block_default == other.pixel_block_default
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -1406,6 +1568,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -1441,6 +1604,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -1452,7 +1616,7 @@ module MinknowApi
         include Proto::Message
 
         property key : UInt32 = 0
-        property value : MinknowApi::PromethionDevice::PixelBlockSettings? = nil
+        property value : PixelBlockSettings? = nil
 
         def has_value? : Bool
           !value.nil?
@@ -1477,9 +1641,15 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
+              unless wt == Proto::WireType::VARINT
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
+              end
               msg.key = reader.read_uint32
             when 2
-              msg.value = MinknowApi::PromethionDevice::PixelBlockSettings.decode_partial(reader.read_embedded)
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
+              msg.value = PixelBlockSettings.decode_partial(reader.read_embedded)
             else
               msg.capture_unknown_field(reader, fn, wt)
             end
@@ -1513,11 +1683,12 @@ module MinknowApi
         def ==(other : self) : Bool
           return false unless key == other.key
           return false unless value == other.value
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
 
-      property pixel_blocks : Hash(UInt32, MinknowApi::PromethionDevice::PixelBlockSettings) = {} of UInt32 => MinknowApi::PromethionDevice::PixelBlockSettings
+      property pixel_blocks : Hash(UInt32, PixelBlockSettings) = {} of UInt32 => PixelBlockSettings
 
       def validate_required! : Nil
       end
@@ -1536,7 +1707,10 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            entry = MinknowApi::PromethionDevice::GetPixelBlockSettingsResponse::PixelBlocksEntry.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            entry = GetPixelBlockSettingsResponse::PixelBlocksEntry.decode_partial(reader.read_embedded)
             msg.pixel_blocks[entry.key] = entry.value
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -1554,7 +1728,7 @@ module MinknowApi
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
         pixel_blocks.each do |k, v|
-          entry = MinknowApi::PromethionDevice::GetPixelBlockSettingsResponse::PixelBlocksEntry.new
+          entry = GetPixelBlockSettingsResponse::PixelBlocksEntry.new
           entry.key = k
           entry.value = v
           w.write_embedded(1) { |sub| entry.encode_partial(sub) }
@@ -1569,6 +1743,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless pixel_blocks == other.pixel_blocks
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -1580,7 +1755,7 @@ module MinknowApi
         include Proto::Message
 
         property key : UInt32 = 0
-        property value : MinknowApi::PromethionDevice::PixelSettings? = nil
+        property value : PixelSettings? = nil
 
         def has_value? : Bool
           !value.nil?
@@ -1605,9 +1780,15 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
+              unless wt == Proto::WireType::VARINT
+                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
+              end
               msg.key = reader.read_uint32
             when 2
-              msg.value = MinknowApi::PromethionDevice::PixelSettings.decode_partial(reader.read_embedded)
+              unless wt == Proto::WireType::LENGTH_DELIMITED
+                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+              end
+              msg.value = PixelSettings.decode_partial(reader.read_embedded)
             else
               msg.capture_unknown_field(reader, fn, wt)
             end
@@ -1641,12 +1822,13 @@ module MinknowApi
         def ==(other : self) : Bool
           return false unless key == other.key
           return false unless value == other.value
+          return false unless unknown_fields == other.unknown_fields
           true
         end
       end
 
-      property pixels : Hash(UInt32, MinknowApi::PromethionDevice::PixelSettings) = {} of UInt32 => MinknowApi::PromethionDevice::PixelSettings
-      property pixel_default : MinknowApi::PromethionDevice::PixelSettings? = nil
+      property pixels : Hash(UInt32, PixelSettings) = {} of UInt32 => PixelSettings
+      property pixel_default : PixelSettings? = nil
 
       def has_pixel_default? : Bool
         !pixel_default.nil?
@@ -1674,10 +1856,16 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            entry = MinknowApi::PromethionDevice::ChangePixelSettingsRequest::PixelsEntry.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            entry = ChangePixelSettingsRequest::PixelsEntry.decode_partial(reader.read_embedded)
             msg.pixels[entry.key] = entry.value
           when 2
-            msg.pixel_default = MinknowApi::PromethionDevice::PixelSettings.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.pixel_default = PixelSettings.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -1694,7 +1882,7 @@ module MinknowApi
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
         pixels.each do |k, v|
-          entry = MinknowApi::PromethionDevice::ChangePixelSettingsRequest::PixelsEntry.new
+          entry = ChangePixelSettingsRequest::PixelsEntry.new
           entry.key = k
           entry.value = v
           w.write_embedded(1) { |sub| entry.encode_partial(sub) }
@@ -1713,6 +1901,7 @@ module MinknowApi
       def ==(other : self) : Bool
         return false unless pixels == other.pixels
         return false unless pixel_default == other.pixel_default
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -1748,6 +1937,7 @@ module MinknowApi
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -1766,8 +1956,10 @@ module MinknowApi
           when 1
             if wt == Proto::WireType::LENGTH_DELIMITED
               reader.read_packed_varint { |v| msg.pixels << v.to_u32! }
-            else
+            elsif wt == Proto::WireType::VARINT
               msg.pixels << reader.read_uint32
+            else
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED or Proto::WireType::VARINT, got " + wt.to_s)
             end
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -1796,6 +1988,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless pixels == other.pixels
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -1803,7 +1996,7 @@ module MinknowApi
     class GetPixelSettingsResponse
       include Proto::Message
 
-      property pixels : Array(MinknowApi::PromethionDevice::PixelSettings) = [] of MinknowApi::PromethionDevice::PixelSettings
+      property pixels : Array(PixelSettings) = [] of PixelSettings
 
       def validate_required! : Nil
       end
@@ -1822,7 +2015,10 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.pixels << MinknowApi::PromethionDevice::PixelSettings.decode_partial(reader.read_embedded)
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
+            msg.pixels << PixelSettings.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -1851,6 +2047,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless pixels == other.pixels
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -1867,6 +2064,9 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::VARINT
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
+            end
             msg.period_seconds = reader.read_uint32
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -1895,6 +2095,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless period_seconds == other.period_seconds
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -1951,12 +2152,24 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.flowcell_temperature = Google::Protobuf::FloatValue.decode_partial(reader.read_embedded)
           when 2
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.chamber_temperature = Google::Protobuf::FloatValue.decode_partial(reader.read_embedded)
           when 3
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.pixel_block_temperature << Google::Protobuf::FloatValue.decode_partial(reader.read_embedded)
           when 4
+            unless wt == Proto::WireType::LENGTH_DELIMITED
+              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
+            end
             msg.target_temperature = Google::Protobuf::FloatValue.decode_partial(reader.read_embedded)
           else
             msg.capture_unknown_field(reader, fn, wt)
@@ -1998,6 +2211,7 @@ module MinknowApi
         return false unless chamber_temperature == other.chamber_temperature
         return false unless pixel_block_temperature == other.pixel_block_temperature
         return false unless target_temperature == other.target_temperature
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
