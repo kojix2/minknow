@@ -1123,7 +1123,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if mean_basecall_speed.to_bits != 0
+        if !mean_basecall_speed.zero? || mean_basecall_speed.sign_bit < 0
           w.write_tag(1, Proto::WireType::FIXED32)
           w.write_float(mean_basecall_speed)
         end
@@ -1177,11 +1177,11 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if n50.to_bits != 0
+        if !n50.zero? || n50.sign_bit < 0
           w.write_tag(1, Proto::WireType::FIXED32)
           w.write_float(n50)
         end
-        if estimated_n50.to_bits != 0
+        if !estimated_n50.zero? || estimated_n50.sign_bit < 0
           w.write_tag(2, Proto::WireType::FIXED32)
           w.write_float(estimated_n50)
         end
@@ -1246,7 +1246,7 @@ module MinknowApi
               w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
               w.write_string(key)
             end
-            if value.to_bits != 0
+            if !value.zero? || value.sign_bit < 0
               w.write_tag(2, Proto::WireType::FIXED32)
               w.write_float(value)
             end

@@ -122,11 +122,11 @@ module MinknowApi
           w.write_tag(3, Proto::WireType::VARINT)
           w.write_uint32(window_size)
         end
-        if threshold.to_bits != 0
+        if !threshold.zero? || threshold.sign_bit < 0
           w.write_tag(5, Proto::WireType::FIXED64)
           w.write_double(threshold)
         end
-        if peak_height.to_bits != 0
+        if !peak_height.zero? || peak_height.sign_bit < 0
           w.write_tag(9, Proto::WireType::FIXED64)
           w.write_double(peak_height)
         end
@@ -395,7 +395,7 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::VARINT)
           w.write_int32(mode.raw)
         end
-        if minimum_delta_mean.to_bits != 0
+        if !minimum_delta_mean.zero? || minimum_delta_mean.sign_bit < 0
           w.write_tag(2, Proto::WireType::FIXED64)
           w.write_double(minimum_delta_mean)
         end
@@ -1903,43 +1903,43 @@ module MinknowApi
           sub = Proto::Wire::Writer.new(buf)
           quantile_weights_scale.each { |item| sub.write_float(item) }
         end
-        if tracking_alpha.to_bits != 0
+        if !tracking_alpha.zero? || tracking_alpha.sign_bit < 0
           w.write_tag(4, Proto::WireType::FIXED32)
           w.write_float(tracking_alpha)
         end
-        if alpha_number_estimates_decay.to_bits != 0
+        if !alpha_number_estimates_decay.zero? || alpha_number_estimates_decay.sign_bit < 0
           w.write_tag(5, Proto::WireType::FIXED32)
           w.write_float(alpha_number_estimates_decay)
         end
-        if quantile_maxdiff.to_bits != 0
+        if !quantile_maxdiff.zero? || quantile_maxdiff.sign_bit < 0
           w.write_tag(10, Proto::WireType::FIXED32)
           w.write_float(quantile_maxdiff)
         end
-        if trust_limit_fraction.to_bits != 0
+        if !trust_limit_fraction.zero? || trust_limit_fraction.sign_bit < 0
           w.write_tag(6, Proto::WireType::FIXED32)
           w.write_float(trust_limit_fraction)
         end
-        if diff_threshold.to_bits != 0
+        if !diff_threshold.zero? || diff_threshold.sign_bit < 0
           w.write_tag(7, Proto::WireType::FIXED32)
           w.write_float(diff_threshold)
         end
-        if emission_threshold.to_bits != 0
+        if !emission_threshold.zero? || emission_threshold.sign_bit < 0
           w.write_tag(8, Proto::WireType::FIXED32)
           w.write_float(emission_threshold)
         end
-        if dacs_breakpoint.to_bits != 0
+        if !dacs_breakpoint.zero? || dacs_breakpoint.sign_bit < 0
           w.write_tag(9, Proto::WireType::FIXED32)
           w.write_float(dacs_breakpoint)
         end
-        if conductance_factor_scale.to_bits != 0
+        if !conductance_factor_scale.zero? || conductance_factor_scale.sign_bit < 0
           w.write_tag(11, Proto::WireType::FIXED32)
           w.write_float(conductance_factor_scale)
         end
-        if conductance_factor_shift.to_bits != 0
+        if !conductance_factor_shift.zero? || conductance_factor_shift.sign_bit < 0
           w.write_tag(12, Proto::WireType::FIXED32)
           w.write_float(conductance_factor_shift)
         end
-        if q90_q10_to_normal.to_bits != 0
+        if !q90_q10_to_normal.zero? || q90_q10_to_normal.sign_bit < 0
           w.write_tag(13, Proto::WireType::FIXED32)
           w.write_float(q90_q10_to_normal)
         end
@@ -2126,7 +2126,9 @@ module MinknowApi
               raise Proto::DecodeError.new("wire type mismatch for field 7: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
             end
             entry = AnalysisConfiguration::ChannelStatesEntry.decode_partial(reader.read_embedded)
-            msg.channel_states[entry.key] = entry.value
+            if value = entry.value
+              msg.channel_states[entry.key] = value
+            end
           when 8
             unless wt == Proto::WireType::LENGTH_DELIMITED
               raise Proto::DecodeError.new("wire type mismatch for field 8: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
@@ -4091,7 +4093,9 @@ module MinknowApi
                 raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
               end
               entry = PoreTypeConfiguration::ChannelWellPoreTypeConfigurations::PoreTypesEntry.decode_partial(reader.read_embedded)
-              msg.pore_types[entry.key] = entry.value
+              if value = entry.value
+                msg.pore_types[entry.key] = value
+              end
             else
               msg.capture_unknown_field(reader, fn, wt)
             end
@@ -6523,7 +6527,7 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if conductance_scan_voltage.to_bits != 0
+          if !conductance_scan_voltage.zero? || conductance_scan_voltage.sign_bit < 0
             w.write_tag(1, Proto::WireType::FIXED32)
             w.write_float(conductance_scan_voltage)
           end
@@ -6596,7 +6600,7 @@ module MinknowApi
             w.write_tag(2, Proto::WireType::VARINT)
             w.write_uint32(well)
           end
-          if selected_default.to_bits != 0
+          if !selected_default.zero? || selected_default.sign_bit < 0
             w.write_tag(3, Proto::WireType::FIXED32)
             w.write_float(selected_default)
           end

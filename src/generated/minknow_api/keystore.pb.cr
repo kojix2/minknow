@@ -127,7 +127,9 @@ module MinknowApi
               raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
             end
             entry = StoreRequest::ValuesEntry.decode_partial(reader.read_embedded)
-            msg.values[entry.key] = entry.value
+            if value = entry.value
+              msg.values[entry.key] = value
+            end
           when 2
             unless wt == Proto::WireType::VARINT
               raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
@@ -581,7 +583,9 @@ module MinknowApi
               raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
             end
             entry = GetResponse::ValuesEntry.decode_partial(reader.read_embedded)
-            msg.values[entry.key] = entry.value
+            if value = entry.value
+              msg.values[entry.key] = value
+            end
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -780,7 +784,9 @@ module MinknowApi
               raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
             end
             entry = WatchResponse::ValuesEntry.decode_partial(reader.read_embedded)
-            msg.values[entry.key] = entry.value
+            if value = entry.value
+              msg.values[entry.key] = value
+            end
           when 2
             unless wt == Proto::WireType::LENGTH_DELIMITED
               raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)

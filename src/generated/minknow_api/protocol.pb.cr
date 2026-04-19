@@ -1506,7 +1506,9 @@ module MinknowApi
               raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
             end
             entry = ProtocolInfo::TagsEntry.decode_partial(reader.read_embedded)
-            msg.tags[entry.key] = entry.value
+            if value = entry.value
+              msg.tags[entry.key] = value
+            end
           when 3
             unless wt == Proto::WireType::LENGTH_DELIMITED
               raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
@@ -1694,7 +1696,7 @@ module MinknowApi
           w.write_tag(2, Proto::WireType::VARINT)
           w.write_int32(state.raw)
         end
-        if timeout.to_bits != 0
+        if !timeout.zero? || timeout.sign_bit < 0
           w.write_tag(3, Proto::WireType::FIXED32)
           w.write_float(timeout)
         end
@@ -2445,15 +2447,15 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::VARINT)
           w.write_int32(failure_reason.raw)
         end
-        if target_temperature.to_bits != 0
+        if !target_temperature.zero? || target_temperature.sign_bit < 0
           w.write_tag(2, Proto::WireType::FIXED32)
           w.write_float(target_temperature)
         end
-        if mean_heatsink_temperature.to_bits != 0
+        if !mean_heatsink_temperature.zero? || mean_heatsink_temperature.sign_bit < 0
           w.write_tag(3, Proto::WireType::FIXED32)
           w.write_float(mean_heatsink_temperature)
         end
-        if temperature_tolerance.to_bits != 0
+        if !temperature_tolerance.zero? || temperature_tolerance.sign_bit < 0
           w.write_tag(4, Proto::WireType::FIXED32)
           w.write_float(temperature_tolerance)
         end
@@ -3572,7 +3574,9 @@ module MinknowApi
               raise Proto::DecodeError.new("wire type mismatch for field 25: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
             end
             entry = ProtocolRunInfo::SettingsEntry.decode_partial(reader.read_embedded)
-            msg.settings[entry.key] = entry.value
+            if value = entry.value
+              msg.settings[entry.key] = value
+            end
           when 11
             unless wt == Proto::WireType::LENGTH_DELIMITED
               raise Proto::DecodeError.new("wire type mismatch for field 11: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
@@ -5605,7 +5609,9 @@ module MinknowApi
               raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
             end
             entry = BeginProtocolRequest::SettingsEntry.decode_partial(reader.read_embedded)
-            msg.settings[entry.key] = entry.value
+            if value = entry.value
+              msg.settings[entry.key] = value
+            end
           when 8
             unless wt == Proto::WireType::LENGTH_DELIMITED
               raise Proto::DecodeError.new("wire type mismatch for field 8: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)

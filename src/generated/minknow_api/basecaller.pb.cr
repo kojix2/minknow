@@ -243,7 +243,9 @@ module MinknowApi
                 raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
               end
               entry = ListConfigsByKitResponse::PerFlowCell::KitConfigsEntry.decode_partial(reader.read_embedded)
-              msg.kit_configs[entry.key] = entry.value
+              if value = entry.value
+                msg.kit_configs[entry.key] = value
+              end
             else
               msg.capture_unknown_field(reader, fn, wt)
             end
@@ -379,7 +381,9 @@ module MinknowApi
               raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
             end
             entry = ListConfigsByKitResponse::FlowCellConfigsEntry.decode_partial(reader.read_embedded)
-            msg.flow_cell_configs[entry.key] = entry.value
+            if value = entry.value
+              msg.flow_cell_configs[entry.key] = value
+            end
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -641,7 +645,7 @@ module MinknowApi
         if _v = alignment_configuration
           w.write_embedded(11) { |sub| _v.encode_partial(sub) }
         end
-        if min_qscore.to_bits != 0
+        if !min_qscore.zero? || min_qscore.sign_bit < 0
           w.write_tag(15, Proto::WireType::FIXED64)
           w.write_double(min_qscore)
         end
@@ -1228,7 +1232,9 @@ module MinknowApi
               raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
             end
             entry = StartPostProcessingProtocolRequest::SettingValuesEntry.decode_partial(reader.read_embedded)
-            msg.setting_values[entry.key] = entry.value
+            if value = entry.value
+              msg.setting_values[entry.key] = value
+            end
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -2829,7 +2835,7 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(id)
         end
-        if progress.to_bits != 0
+        if !progress.zero? || progress.sign_bit < 0
           w.write_tag(2, Proto::WireType::FIXED32)
           w.write_float(progress)
         end

@@ -44,11 +44,11 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if min.to_bits != 0
+        if !min.zero? || min.sign_bit < 0
           w.write_tag(5, Proto::WireType::FIXED32)
           w.write_float(min)
         end
-        if max.to_bits != 0
+        if !max.zero? || max.sign_bit < 0
           w.write_tag(6, Proto::WireType::FIXED32)
           w.write_float(max)
         end

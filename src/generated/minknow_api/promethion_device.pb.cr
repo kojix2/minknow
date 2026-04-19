@@ -57,7 +57,7 @@ module MinknowApi
           sub = Proto::Wire::Writer.new(buf)
           voltages.each { |item| sub.write_double(item) }
         end
-        if frequency.to_bits != 0
+        if !frequency.zero? || frequency.sign_bit < 0
           w.write_tag(2, Proto::WireType::FIXED64)
           w.write_double(frequency)
         end
@@ -1491,7 +1491,9 @@ module MinknowApi
               raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
             end
             entry = ChangePixelBlockSettingsRequest::PixelBlocksEntry.decode_partial(reader.read_embedded)
-            msg.pixel_blocks[entry.key] = entry.value
+            if value = entry.value
+              msg.pixel_blocks[entry.key] = value
+            end
           when 2
             unless wt == Proto::WireType::LENGTH_DELIMITED
               raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
@@ -1711,7 +1713,9 @@ module MinknowApi
               raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
             end
             entry = GetPixelBlockSettingsResponse::PixelBlocksEntry.decode_partial(reader.read_embedded)
-            msg.pixel_blocks[entry.key] = entry.value
+            if value = entry.value
+              msg.pixel_blocks[entry.key] = value
+            end
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -1860,7 +1864,9 @@ module MinknowApi
               raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
             end
             entry = ChangePixelSettingsRequest::PixelsEntry.decode_partial(reader.read_embedded)
-            msg.pixels[entry.key] = entry.value
+            if value = entry.value
+              msg.pixels[entry.key] = value
+            end
           when 2
             unless wt == Proto::WireType::LENGTH_DELIMITED
               raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)

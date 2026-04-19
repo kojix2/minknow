@@ -2256,7 +2256,9 @@ module MinknowApi
               raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
             end
             entry = GetBarcodeKitInfoResponse::BarcodeKitInfoEntry.decode_partial(reader.read_embedded)
-            msg.barcode_kit_info[entry.key] = entry.value
+            if value = entry.value
+              msg.barcode_kit_info[entry.key] = value
+            end
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -3369,7 +3371,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if estimated_load_time_seconds.to_bits != 0
+        if !estimated_load_time_seconds.zero? || estimated_load_time_seconds.sign_bit < 0
           w.write_tag(1, Proto::WireType::FIXED32)
           w.write_float(estimated_load_time_seconds)
         end
@@ -6447,7 +6449,7 @@ module MinknowApi
             w.write_tag(4, Proto::WireType::LENGTH_DELIMITED)
             w.write_string(variant)
           end
-          if default_q_score_cutoff.to_bits != 0
+          if !default_q_score_cutoff.zero? || default_q_score_cutoff.sign_bit < 0
             w.write_tag(5, Proto::WireType::FIXED32)
             w.write_float(default_q_score_cutoff)
           end

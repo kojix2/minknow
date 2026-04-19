@@ -564,7 +564,7 @@ module MinknowApi
               w.write_tag(1, Proto::WireType::VARINT)
               w.write_int32(run_length_condition.raw)
             end
-            if run_length_hours.to_bits != 0
+            if !run_length_hours.zero? || run_length_hours.sign_bit < 0
               w.write_tag(2, Proto::WireType::FIXED32)
               w.write_float(run_length_hours)
             end
@@ -620,7 +620,7 @@ module MinknowApi
               w.write_tag(15, Proto::WireType::LENGTH_DELIMITED)
               w.write_string(barcode_balancing_barcode_selection)
             end
-            if mux_scan_period.to_bits != 0
+            if !mux_scan_period.zero? || mux_scan_period.sign_bit < 0
               w.write_tag(16, Proto::WireType::FIXED32)
               w.write_float(mux_scan_period)
             end

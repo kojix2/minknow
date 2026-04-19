@@ -941,7 +941,7 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::VARINT)
           w.write_uint64(samples_since_start)
         end
-        if seconds_since_start.to_bits != 0
+        if !seconds_since_start.zero? || seconds_since_start.sign_bit < 0
           w.write_tag(2, Proto::WireType::FIXED64)
           w.write_double(seconds_since_start)
         end
@@ -1212,7 +1212,7 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::VARINT)
           w.write_uint64(samples_since_start)
         end
-        if seconds_since_start.to_bits != 0
+        if !seconds_since_start.zero? || seconds_since_start.sign_bit < 0
           w.write_tag(2, Proto::WireType::FIXED64)
           w.write_double(seconds_since_start)
         end
@@ -1290,7 +1290,7 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if duration.to_bits != 0
+          if !duration.zero? || duration.sign_bit < 0
             w.write_tag(1, Proto::WireType::FIXED64)
             w.write_double(duration)
           end
@@ -1934,11 +1934,11 @@ module MinknowApi
             w.write_tag(7, Proto::WireType::LENGTH_DELIMITED)
             w.write_bytes(raw_data)
           end
-          if median_before.to_bits != 0
+          if !median_before.zero? || median_before.sign_bit < 0
             w.write_tag(8, Proto::WireType::FIXED32)
             w.write_float(median_before)
           end
-          if median.to_bits != 0
+          if !median.zero? || median.sign_bit < 0
             w.write_tag(9, Proto::WireType::FIXED32)
             w.write_float(median)
           end
@@ -2163,7 +2163,9 @@ module MinknowApi
               raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
             end
             entry = GetLiveReadsResponse::ChannelsEntry.decode_partial(reader.read_embedded)
-            msg.channels[entry.key] = entry.value
+            if value = entry.value
+              msg.channels[entry.key] = value
+            end
           when 5
             unless wt == Proto::WireType::LENGTH_DELIMITED
               raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
@@ -2188,7 +2190,7 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::VARINT)
           w.write_uint64(samples_since_start)
         end
-        if seconds_since_start.to_bits != 0
+        if !seconds_since_start.zero? || seconds_since_start.sign_bit < 0
           w.write_tag(2, Proto::WireType::FIXED64)
           w.write_double(seconds_since_start)
         end
@@ -2686,47 +2688,47 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if min.to_bits != 0
+          if !min.zero? || min.sign_bit < 0
             w.write_tag(1, Proto::WireType::FIXED64)
             w.write_double(min)
           end
-          if max.to_bits != 0
+          if !max.zero? || max.sign_bit < 0
             w.write_tag(2, Proto::WireType::FIXED64)
             w.write_double(max)
           end
-          if mean.to_bits != 0
+          if !mean.zero? || mean.sign_bit < 0
             w.write_tag(3, Proto::WireType::FIXED64)
             w.write_double(mean)
           end
-          if s_d.to_bits != 0
+          if !s_d.zero? || s_d.sign_bit < 0
             w.write_tag(4, Proto::WireType::FIXED64)
             w.write_double(s_d)
           end
-          if median.to_bits != 0
+          if !median.zero? || median.sign_bit < 0
             w.write_tag(6, Proto::WireType::FIXED64)
             w.write_double(median)
           end
-          if q_5.to_bits != 0
+          if !q_5.zero? || q_5.sign_bit < 0
             w.write_tag(7, Proto::WireType::FIXED64)
             w.write_double(q_5)
           end
-          if q_10.to_bits != 0
+          if !q_10.zero? || q_10.sign_bit < 0
             w.write_tag(8, Proto::WireType::FIXED64)
             w.write_double(q_10)
           end
-          if q_25.to_bits != 0
+          if !q_25.zero? || q_25.sign_bit < 0
             w.write_tag(9, Proto::WireType::FIXED64)
             w.write_double(q_25)
           end
-          if q_75.to_bits != 0
+          if !q_75.zero? || q_75.sign_bit < 0
             w.write_tag(10, Proto::WireType::FIXED64)
             w.write_double(q_75)
           end
-          if q_90.to_bits != 0
+          if !q_90.zero? || q_90.sign_bit < 0
             w.write_tag(11, Proto::WireType::FIXED64)
             w.write_double(q_90)
           end
-          if q_95.to_bits != 0
+          if !q_95.zero? || q_95.sign_bit < 0
             w.write_tag(12, Proto::WireType::FIXED64)
             w.write_double(q_95)
           end
@@ -2796,15 +2798,15 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if median_sd.to_bits != 0
+          if !median_sd.zero? || median_sd.sign_bit < 0
             w.write_tag(1, Proto::WireType::FIXED64)
             w.write_double(median_sd)
           end
-          if median.to_bits != 0
+          if !median.zero? || median.sign_bit < 0
             w.write_tag(2, Proto::WireType::FIXED64)
             w.write_double(median)
           end
-          if range.to_bits != 0
+          if !range.zero? || range.sign_bit < 0
             w.write_tag(3, Proto::WireType::FIXED64)
             w.write_double(range)
           end
@@ -2926,7 +2928,7 @@ module MinknowApi
             w.write_tag(4, Proto::WireType::VARINT)
             w.write_uint64(samples_duration)
           end
-          if seconds_duration.to_bits != 0
+          if !seconds_duration.zero? || seconds_duration.sign_bit < 0
             w.write_tag(5, Proto::WireType::FIXED64)
             w.write_double(seconds_duration)
           end
@@ -3076,7 +3078,9 @@ module MinknowApi
                 raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
               end
               entry = GetReadStatisticsResponse::PerConfigurationData::ClassificationsEntry.decode_partial(reader.read_embedded)
-              msg.classifications[entry.key] = entry.value
+              if value = entry.value
+                msg.classifications[entry.key] = value
+              end
             when 3
               unless wt == Proto::WireType::LENGTH_DELIMITED
                 raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
@@ -3198,7 +3202,7 @@ module MinknowApi
             w.write_tag(2, Proto::WireType::VARINT)
             w.write_uint64(samples_since_start)
           end
-          if seconds_since_start.to_bits != 0
+          if !seconds_since_start.zero? || seconds_since_start.sign_bit < 0
             w.write_tag(3, Proto::WireType::FIXED64)
             w.write_double(seconds_since_start)
           end
@@ -3206,7 +3210,7 @@ module MinknowApi
             w.write_tag(4, Proto::WireType::VARINT)
             w.write_uint64(samples_duration)
           end
-          if seconds_duration.to_bits != 0
+          if !seconds_duration.zero? || seconds_duration.sign_bit < 0
             w.write_tag(5, Proto::WireType::FIXED64)
             w.write_double(seconds_duration)
           end
@@ -3286,7 +3290,7 @@ module MinknowApi
           w.write_tag(2, Proto::WireType::VARINT)
           w.write_uint64(samples_since_start)
         end
-        if seconds_since_start.to_bits != 0
+        if !seconds_since_start.zero? || seconds_since_start.sign_bit < 0
           w.write_tag(3, Proto::WireType::FIXED64)
           w.write_double(seconds_since_start)
         end

@@ -1020,7 +1020,9 @@ module MinknowApi
               raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
             end
             entry = ChangeChannelSettingsRequest::ChannelsEntry.decode_partial(reader.read_embedded)
-            msg.channels[entry.key] = entry.value
+            if value = entry.value
+              msg.channels[entry.key] = value
+            end
           when 2
             unless wt == Proto::WireType::LENGTH_DELIMITED
               raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)

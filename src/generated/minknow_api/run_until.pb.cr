@@ -111,7 +111,9 @@ module MinknowApi
               raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
             end
             entry = CriteriaValues::CriteriaEntry.decode_partial(reader.read_embedded)
-            msg.criteria[entry.key] = entry.value
+            if value = entry.value
+              msg.criteria[entry.key] = value
+            end
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -745,7 +747,9 @@ module MinknowApi
                 raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
               end
               entry = EstimatedTimeRemainingUpdate::EstimatedTimes::EstimatedTimesEntry.decode_partial(reader.read_embedded)
-              msg.estimated_times[entry.key] = entry.value
+              if value = entry.value
+                msg.estimated_times[entry.key] = value
+              end
             else
               msg.capture_unknown_field(reader, fn, wt)
             end

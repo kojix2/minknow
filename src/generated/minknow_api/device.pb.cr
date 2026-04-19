@@ -1838,7 +1838,7 @@ module MinknowApi
             w.write_tag(3, Proto::WireType::VARINT)
             w.write_uint32(min_stable_duration)
           end
-          if tolerance.to_bits != 0
+          if !tolerance.zero? || tolerance.sign_bit < 0
             w.write_tag(2, Proto::WireType::FIXED32)
             w.write_float(tolerance)
           end
@@ -1894,11 +1894,11 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if min.to_bits != 0
+          if !min.zero? || min.sign_bit < 0
             w.write_tag(1, Proto::WireType::FIXED32)
             w.write_float(min)
           end
-          if max.to_bits != 0
+          if !max.zero? || max.sign_bit < 0
             w.write_tag(2, Proto::WireType::FIXED32)
             w.write_float(max)
           end
@@ -1982,7 +1982,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if temperature.to_bits != 0
+        if !temperature.zero? || temperature.sign_bit < 0
           w.write_tag(1, Proto::WireType::FIXED32)
           w.write_float(temperature)
         end
@@ -3117,7 +3117,9 @@ module MinknowApi
               raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
             end
             entry = SetChannelConfigurationRequest::ChannelConfigurationsEntry.decode_partial(reader.read_embedded)
-            msg.channel_configurations[entry.key] = entry.value
+            if value = entry.value
+              msg.channel_configurations[entry.key] = value
+            end
           else
             msg.capture_unknown_field(reader, fn, wt)
           end
@@ -4154,7 +4156,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if bias_voltage.to_bits != 0
+        if !bias_voltage.zero? || bias_voltage.sign_bit < 0
           w.write_tag(1, Proto::WireType::FIXED64)
           w.write_double(bias_voltage)
         end
@@ -4202,7 +4204,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if bias_voltage.to_bits != 0
+        if !bias_voltage.zero? || bias_voltage.sign_bit < 0
           w.write_tag(1, Proto::WireType::FIXED64)
           w.write_double(bias_voltage)
         end

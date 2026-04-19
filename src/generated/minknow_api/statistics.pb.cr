@@ -521,7 +521,9 @@ module MinknowApi
               raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
             end
             entry = StreamDutyTimeResponse::ChannelStatesEntry.decode_partial(reader.read_embedded)
-            msg.channel_states[entry.key] = entry.value
+            if value = entry.value
+              msg.channel_states[entry.key] = value
+            end
           when 3
             if wt == Proto::WireType::LENGTH_DELIMITED
               reader.read_packed_float { |v| msg.pore_occupancy << v }
@@ -797,7 +799,7 @@ module MinknowApi
           w.write_tag(5, Proto::WireType::VARINT)
           w.write_int32(bucket_value_type.raw)
         end
-        if discard_outlier_percent.to_bits != 0
+        if !discard_outlier_percent.zero? || discard_outlier_percent.sign_bit < 0
           w.write_tag(6, Proto::WireType::FIXED32)
           w.write_float(discard_outlier_percent)
         end
@@ -954,7 +956,7 @@ module MinknowApi
             sub = Proto::Wire::Writer.new(buf)
             bucket_values.each { |item| sub.write_uint64(item) }
           end
-          if n50.to_bits != 0
+          if !n50.zero? || n50.sign_bit < 0
             w.write_tag(2, Proto::WireType::FIXED32)
             w.write_float(n50)
           end
@@ -1168,11 +1170,11 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if estimated_n50.to_bits != 0
+          if !estimated_n50.zero? || estimated_n50.sign_bit < 0
             w.write_tag(1, Proto::WireType::FIXED32)
             w.write_float(estimated_n50)
           end
-          if basecalled_n50.to_bits != 0
+          if !basecalled_n50.zero? || basecalled_n50.sign_bit < 0
             w.write_tag(2, Proto::WireType::FIXED32)
             w.write_float(basecalled_n50)
           end
@@ -1588,11 +1590,11 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if start.to_bits != 0
+          if !start.zero? || start.sign_bit < 0
             w.write_tag(1, Proto::WireType::FIXED32)
             w.write_float(start)
           end
-          if end_.to_bits != 0
+          if !end_.zero? || end_.sign_bit < 0
             w.write_tag(2, Proto::WireType::FIXED32)
             w.write_float(end_)
           end
@@ -1674,7 +1676,7 @@ module MinknowApi
             sub = Proto::Wire::Writer.new(buf)
             bucket_values.each { |item| sub.write_uint64(item) }
           end
-          if modal_q_score.to_bits != 0
+          if !modal_q_score.zero? || modal_q_score.sign_bit < 0
             w.write_tag(3, Proto::WireType::FIXED32)
             w.write_float(modal_q_score)
           end
@@ -2028,11 +2030,11 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if start.to_bits != 0
+          if !start.zero? || start.sign_bit < 0
             w.write_tag(1, Proto::WireType::FIXED32)
             w.write_float(start)
           end
-          if end_.to_bits != 0
+          if !end_.zero? || end_.sign_bit < 0
             w.write_tag(2, Proto::WireType::FIXED32)
             w.write_float(end_)
           end
@@ -2114,7 +2116,7 @@ module MinknowApi
             sub = Proto::Wire::Writer.new(buf)
             bucket_values.each { |item| sub.write_uint64(item) }
           end
-          if modal_q_accuracy.to_bits != 0
+          if !modal_q_accuracy.zero? || modal_q_accuracy.sign_bit < 0
             w.write_tag(3, Proto::WireType::FIXED32)
             w.write_float(modal_q_accuracy)
           end
@@ -3214,11 +3216,11 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if minimum.to_bits != 0
+          if !minimum.zero? || minimum.sign_bit < 0
             w.write_tag(1, Proto::WireType::FIXED32)
             w.write_float(minimum)
           end
-          if maximum.to_bits != 0
+          if !maximum.zero? || maximum.sign_bit < 0
             w.write_tag(2, Proto::WireType::FIXED32)
             w.write_float(maximum)
           end
@@ -3273,11 +3275,11 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if asic_temperature.to_bits != 0
+          if !asic_temperature.zero? || asic_temperature.sign_bit < 0
             w.write_tag(1, Proto::WireType::FIXED64)
             w.write_double(asic_temperature)
           end
-          if heatsink_temperature.to_bits != 0
+          if !heatsink_temperature.zero? || heatsink_temperature.sign_bit < 0
             w.write_tag(2, Proto::WireType::FIXED64)
             w.write_double(heatsink_temperature)
           end
@@ -3332,11 +3334,11 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if flowcell_temperature.to_bits != 0
+          if !flowcell_temperature.zero? || flowcell_temperature.sign_bit < 0
             w.write_tag(1, Proto::WireType::FIXED64)
             w.write_double(flowcell_temperature)
           end
-          if chamber_temperature.to_bits != 0
+          if !chamber_temperature.zero? || chamber_temperature.sign_bit < 0
             w.write_tag(2, Proto::WireType::FIXED64)
             w.write_double(chamber_temperature)
           end
@@ -3391,11 +3393,11 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if asic_temperature.to_bits != 0
+          if !asic_temperature.zero? || asic_temperature.sign_bit < 0
             w.write_tag(1, Proto::WireType::FIXED64)
             w.write_double(asic_temperature)
           end
-          if instrument_temperature.to_bits != 0
+          if !instrument_temperature.zero? || instrument_temperature.sign_bit < 0
             w.write_tag(2, Proto::WireType::FIXED64)
             w.write_double(instrument_temperature)
           end
@@ -3670,7 +3672,7 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::VARINT)
           w.write_uint64(acquisition_index)
         end
-        if bias_voltage.to_bits != 0
+        if !bias_voltage.zero? || bias_voltage.sign_bit < 0
           w.write_tag(2, Proto::WireType::FIXED64)
           w.write_double(bias_voltage)
         end
@@ -3979,23 +3981,23 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if min.to_bits != 0
+          if !min.zero? || min.sign_bit < 0
             w.write_tag(1, Proto::WireType::FIXED32)
             w.write_float(min)
           end
-          if q25.to_bits != 0
+          if !q25.zero? || q25.sign_bit < 0
             w.write_tag(2, Proto::WireType::FIXED32)
             w.write_float(q25)
           end
-          if q50.to_bits != 0
+          if !q50.zero? || q50.sign_bit < 0
             w.write_tag(3, Proto::WireType::FIXED32)
             w.write_float(q50)
           end
-          if q75.to_bits != 0
+          if !q75.zero? || q75.sign_bit < 0
             w.write_tag(4, Proto::WireType::FIXED32)
             w.write_float(q75)
           end
-          if max.to_bits != 0
+          if !max.zero? || max.sign_bit < 0
             w.write_tag(5, Proto::WireType::FIXED32)
             w.write_float(max)
           end
@@ -4003,15 +4005,15 @@ module MinknowApi
             w.write_tag(6, Proto::WireType::VARINT)
             w.write_uint64(count)
           end
-          if lower_full_width_half_maximum.to_bits != 0
+          if !lower_full_width_half_maximum.zero? || lower_full_width_half_maximum.sign_bit < 0
             w.write_tag(7, Proto::WireType::FIXED32)
             w.write_float(lower_full_width_half_maximum)
           end
-          if mode.to_bits != 0
+          if !mode.zero? || mode.sign_bit < 0
             w.write_tag(8, Proto::WireType::FIXED32)
             w.write_float(mode)
           end
-          if upper_full_width_half_maximum.to_bits != 0
+          if !upper_full_width_half_maximum.zero? || upper_full_width_half_maximum.sign_bit < 0
             w.write_tag(9, Proto::WireType::FIXED32)
             w.write_float(upper_full_width_half_maximum)
           end

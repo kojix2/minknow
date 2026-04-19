@@ -1126,11 +1126,11 @@ module MinknowApi
           w.write_tag(1, Proto::WireType::VARINT)
           w.write_int64(read_count)
         end
-        if fraction_basecalled.to_bits != 0
+        if !fraction_basecalled.zero? || fraction_basecalled.sign_bit < 0
           w.write_tag(20, Proto::WireType::FIXED32)
           w.write_float(fraction_basecalled)
         end
-        if fraction_skipped.to_bits != 0
+        if !fraction_skipped.zero? || fraction_skipped.sign_bit < 0
           w.write_tag(21, Proto::WireType::FIXED32)
           w.write_float(fraction_skipped)
         end
@@ -1202,7 +1202,7 @@ module MinknowApi
           w.write_tag(17, Proto::WireType::VARINT)
           w.write_int64(alignment_deletions)
         end
-        if alignment_coverage.to_bits != 0
+        if !alignment_coverage.zero? || alignment_coverage.sign_bit < 0
           w.write_tag(19, Proto::WireType::FIXED32)
           w.write_float(alignment_coverage)
         end
@@ -1942,7 +1942,7 @@ module MinknowApi
         if _v = channel_state_info
           w.write_embedded(9) { |sub| _v.encode_partial(sub) }
         end
-        if events_to_base_ratio.to_bits != 0
+        if !events_to_base_ratio.zero? || events_to_base_ratio.sign_bit < 0
           w.write_tag(10, Proto::WireType::FIXED32)
           w.write_float(events_to_base_ratio)
         end
@@ -2287,7 +2287,7 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if auto_mux_scan_period_hours.to_bits != 0
+        if !auto_mux_scan_period_hours.zero? || auto_mux_scan_period_hours.sign_bit < 0
           w.write_tag(1, Proto::WireType::FIXED32)
           w.write_float(auto_mux_scan_period_hours)
         end
@@ -2470,11 +2470,11 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if minimum.to_bits != 0
+          if !minimum.zero? || minimum.sign_bit < 0
             w.write_tag(1, Proto::WireType::FIXED64)
             w.write_double(minimum)
           end
-          if maximum.to_bits != 0
+          if !maximum.zero? || maximum.sign_bit < 0
             w.write_tag(2, Proto::WireType::FIXED64)
             w.write_double(maximum)
           end
@@ -2952,7 +2952,7 @@ module MinknowApi
         if _v = startup_state_estimated_end
           w.write_embedded(13) { |sub| _v.encode_partial(sub) }
         end
-        if startup_state_estimated_percent_complete.to_bits != 0
+        if !startup_state_estimated_percent_complete.zero? || startup_state_estimated_percent_complete.sign_bit < 0
           w.write_tag(14, Proto::WireType::FIXED32)
           w.write_float(startup_state_estimated_percent_complete)
         end
@@ -2964,7 +2964,7 @@ module MinknowApi
           w.write_tag(10, Proto::WireType::VARINT)
           w.write_int32(finishing_state.raw)
         end
-        if finishing_state_percent_complete.to_bits != 0
+        if !finishing_state_percent_complete.zero? || finishing_state_percent_complete.sign_bit < 0
           w.write_tag(17, Proto::WireType::FIXED32)
           w.write_float(finishing_state_percent_complete)
         end
@@ -3277,7 +3277,7 @@ module MinknowApi
           w.write_tag(3, Proto::WireType::VARINT)
           w.write_int32(hdf_mode.raw)
         end
-        if sample_rate_scale_factor.to_bits != 0
+        if !sample_rate_scale_factor.zero? || sample_rate_scale_factor.sign_bit < 0
           w.write_tag(4, Proto::WireType::FIXED32)
           w.write_float(sample_rate_scale_factor)
         end
@@ -3434,7 +3434,7 @@ module MinknowApi
           w.write_tag(3, Proto::WireType::VARINT)
           w.write_int32(playback_mode.raw)
         end
-        if sample_rate_scale_factor.to_bits != 0
+        if !sample_rate_scale_factor.zero? || sample_rate_scale_factor.sign_bit < 0
           w.write_tag(4, Proto::WireType::FIXED32)
           w.write_float(sample_rate_scale_factor)
         end
