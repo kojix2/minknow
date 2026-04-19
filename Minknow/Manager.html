@@ -6013,7 +6013,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/minknow/blob/6072be71e68903420d6a5ad44ef919ae8fcb2770/src/minknow.cr#L93" target="_blank">
+      <a href="https://github.com/kojix2/minknow/blob/a98f36a49e17b352a751767ee0b1232df28091ed/src/minknow.cr#L250" target="_blank">
         minknow.cr
       </a>
     
@@ -6079,12 +6079,37 @@
       </li>
     
       <li class="entry-summary">
+        <a href="#describe_host%28ctx%3AGRPC%3A%3AClientContext%3Dconfig.client_context%29%3AMinknowApi%3A%3AManager%3A%3ADescribeHostResponse-instance-method" class="signature"><strong>#describe_host</strong>(ctx : GRPC::ClientContext = config.client_context) : MinknowApi::Manager::DescribeHostResponse</a>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#fetch_flow_cell_positions%28ctx%3AGRPC%3A%3AClientContext%3Dconfig.client_context%29%3AArray%28FlowCellPosition%29-instance-method" class="signature"><strong>#fetch_flow_cell_positions</strong>(ctx : GRPC::ClientContext = config.client_context) : Array(FlowCellPosition)</a>
         
       </li>
     
       <li class="entry-summary">
         <a href="#flow_cell_positions%3AArray%28FlowCellPosition%29-instance-method" class="signature"><strong>#flow_cell_positions</strong> : Array(FlowCellPosition)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#get_default_output_directories%28ctx%3AGRPC%3A%3AClientContext%3Dconfig.client_context%29%3AMinknowApi%3A%3AInstance%3A%3AOutputDirectories-instance-method" class="signature"><strong>#get_default_output_directories</strong>(ctx : GRPC::ClientContext = config.client_context) : MinknowApi::Instance::OutputDirectories</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#get_disk_space_info%28ctx%3AGRPC%3A%3AClientContext%3Dconfig.client_context%29%3AMinknowApi%3A%3AManager%3A%3AGetDiskSpaceInfoResponse-instance-method" class="signature"><strong>#get_disk_space_info</strong>(ctx : GRPC::ClientContext = config.client_context) : MinknowApi::Manager::GetDiskSpaceInfoResponse</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#get_version_info%28ctx%3AGRPC%3A%3AClientContext%3Dconfig.client_context%29%3AMinknowApi%3A%3AInstance%3A%3AGetVersionInfoResponse-instance-method" class="signature"><strong>#get_version_info</strong>(ctx : GRPC::ClientContext = config.client_context) : MinknowApi::Instance::GetVersionInfoResponse</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#local_authentication_token_path%28ctx%3AGRPC%3A%3AClientContext%3DGRPC%3A%3AClientContext.new%29%3AString%7CNil-instance-method" class="signature"><strong>#local_authentication_token_path</strong>(ctx : GRPC::ClientContext = <span class="t">GRPC</span><span class="t">::</span><span class="t">ClientContext</span>.new) : String | Nil</a>
         
       </li>
     
@@ -6148,7 +6173,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/6072be71e68903420d6a5ad44ef919ae8fcb2770/src/minknow.cr#L96" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/a98f36a49e17b352a751767ee0b1232df28091ed/src/minknow.cr#L255" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6180,7 +6205,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/6072be71e68903420d6a5ad44ef919ae8fcb2770/src/minknow.cr#L100" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/a98f36a49e17b352a751767ee0b1232df28091ed/src/minknow.cr#L259" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6196,7 +6221,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/6072be71e68903420d6a5ad44ef919ae8fcb2770/src/minknow.cr#L104" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/a98f36a49e17b352a751767ee0b1232df28091ed/src/minknow.cr#L263" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6212,7 +6237,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/6072be71e68903420d6a5ad44ef919ae8fcb2770/src/minknow.cr#L94" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/a98f36a49e17b352a751767ee0b1232df28091ed/src/minknow.cr#L251" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6228,7 +6253,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/6072be71e68903420d6a5ad44ef919ae8fcb2770/src/minknow.cr#L131" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/a98f36a49e17b352a751767ee0b1232df28091ed/src/minknow.cr#L317" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="describe_host(ctx:GRPC::ClientContext=config.client_context):MinknowApi::Manager::DescribeHostResponse-instance-method">
+      <div class="signature">
+        
+        def <strong>describe_host</strong>(ctx : GRPC::ClientContext = config.client_context) : <a href="../MinknowApi/Manager/DescribeHostResponse.html">MinknowApi::Manager::DescribeHostResponse</a>
+
+        <a class="method-permalink" href="#describe_host%28ctx%3AGRPC%3A%3AClientContext%3Dconfig.client_context%29%3AMinknowApi%3A%3AManager%3A%3ADescribeHostResponse-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/minknow/blob/a98f36a49e17b352a751767ee0b1232df28091ed/src/minknow.cr#L285" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6244,7 +6285,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/6072be71e68903420d6a5ad44ef919ae8fcb2770/src/minknow.cr#L112" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/a98f36a49e17b352a751767ee0b1232df28091ed/src/minknow.cr#L271" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6260,7 +6301,71 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/6072be71e68903420d6a5ad44ef919ae8fcb2770/src/minknow.cr#L108" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/a98f36a49e17b352a751767ee0b1232df28091ed/src/minknow.cr#L267" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="get_default_output_directories(ctx:GRPC::ClientContext=config.client_context):MinknowApi::Instance::OutputDirectories-instance-method">
+      <div class="signature">
+        
+        def <strong>get_default_output_directories</strong>(ctx : GRPC::ClientContext = config.client_context) : <a href="../MinknowApi/Instance/OutputDirectories.html">MinknowApi::Instance::OutputDirectories</a>
+
+        <a class="method-permalink" href="#get_default_output_directories%28ctx%3AGRPC%3A%3AClientContext%3Dconfig.client_context%29%3AMinknowApi%3A%3AInstance%3A%3AOutputDirectories-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/minknow/blob/a98f36a49e17b352a751767ee0b1232df28091ed/src/minknow.cr#L300" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="get_disk_space_info(ctx:GRPC::ClientContext=config.client_context):MinknowApi::Manager::GetDiskSpaceInfoResponse-instance-method">
+      <div class="signature">
+        
+        def <strong>get_disk_space_info</strong>(ctx : GRPC::ClientContext = config.client_context) : <a href="../MinknowApi/Manager/GetDiskSpaceInfoResponse.html">MinknowApi::Manager::GetDiskSpaceInfoResponse</a>
+
+        <a class="method-permalink" href="#get_disk_space_info%28ctx%3AGRPC%3A%3AClientContext%3Dconfig.client_context%29%3AMinknowApi%3A%3AManager%3A%3AGetDiskSpaceInfoResponse-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/minknow/blob/a98f36a49e17b352a751767ee0b1232df28091ed/src/minknow.cr#L295" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="get_version_info(ctx:GRPC::ClientContext=config.client_context):MinknowApi::Instance::GetVersionInfoResponse-instance-method">
+      <div class="signature">
+        
+        def <strong>get_version_info</strong>(ctx : GRPC::ClientContext = config.client_context) : <a href="../MinknowApi/Instance/GetVersionInfoResponse.html">MinknowApi::Instance::GetVersionInfoResponse</a>
+
+        <a class="method-permalink" href="#get_version_info%28ctx%3AGRPC%3A%3AClientContext%3Dconfig.client_context%29%3AMinknowApi%3A%3AInstance%3A%3AGetVersionInfoResponse-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/minknow/blob/a98f36a49e17b352a751767ee0b1232df28091ed/src/minknow.cr#L290" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="local_authentication_token_path(ctx:GRPC::ClientContext=GRPC::ClientContext.new):String|Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>local_authentication_token_path</strong>(ctx : GRPC::ClientContext = <span class="t">GRPC</span><span class="t">::</span><span class="t">ClientContext</span>.new) : String | Nil
+
+        <a class="method-permalink" href="#local_authentication_token_path%28ctx%3AGRPC%3A%3AClientContext%3DGRPC%3A%3AClientContext.new%29%3AString%7CNil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/minknow/blob/a98f36a49e17b352a751767ee0b1232df28091ed/src/minknow.cr#L305" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6276,7 +6381,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/6072be71e68903420d6a5ad44ef919ae8fcb2770/src/minknow.cr#L126" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/a98f36a49e17b352a751767ee0b1232df28091ed/src/minknow.cr#L312" target="_blank">View source</a>]
         
       </div>
     </div>
