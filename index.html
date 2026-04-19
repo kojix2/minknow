@@ -5978,7 +5978,9 @@
     <use href="#octicon-link"/>
   </svg>
 </a>minknow.cr</h1>
-<p><a href="https://github.com/nanoporetech/minknow_api">MinKNOW API</a> for <a href="https://crystal-lang.org/">Crystal</a></p>
+<p><a href="https://github.com/kojix2/minknow/actions/workflows/test.yml"><img src="https://github.com/kojix2/minknow/actions/workflows/test.yml/badge.svg" alt="test" /></a>
+<a href="https://tokei.kojix2.net/github/kojix2/minknow"><img src="https://img.shields.io/endpoint?url=https://tokei.kojix2.net/badge/github/kojix2/minknow/lines" alt="Lines of Code" /></a></p>
+<p>🧬🎛️ <a href="https://github.com/nanoporetech/minknow_api">MinKNOW API</a> for <a href="https://crystal-lang.org/">Crystal</a></p>
 <h2><a id="installation" class="anchor" href="#installation">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
@@ -6007,26 +6009,12 @@
 </a>Development</h2>
 <p>Generated files:</p>
 <ul>
-<li>MinKNOW protobuf/gRPC outputs are kept under src/generated.</li>
+<li>MinKNOW protobuf/gRPC outputs are kept under <code>src/generated</code>.</li>
 </ul>
 <p>Code generation:</p>
-<ul>
-<li>Install dependencies: <code>make setup</code></li>
-<li>Build plugins: <code>make gen-tools</code></li>
-<li>Generate all (and format generated files): <code>make gen</code></li>
-<li>Generate selected files (and format generated files): <code>make gen-one PROTOS='minknow_api/manager.proto'</code></li>
-<li>Generate all without format: <code>make gen-raw</code></li>
-<li>Generate selected files without format: <code>make gen-one-raw PROTOS='minknow_api/manager.proto'</code></li>
-<li>Format only: <code>make gen-fmt</code></li>
-</ul>
-<p>Known limitation (current branch):</p>
-<ul>
-<li>google/protobuf/descriptor.proto generation still needs keyword escaping
-hardening in proto.cr.</li>
-<li>A temporary placeholder file may be used at
-src/generated/google/protobuf/descriptor.pb.cr
-to unblock compilation while finishing that generator work.</li>
-</ul>
+<pre><code class="language-crystal">make setup
+make gen<span class="o">-</span>tools
+make gen</code></pre>
 <h2><a id="development-1" class="anchor" href="#development-1">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
