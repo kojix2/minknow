@@ -58,49 +58,32 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 19
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 19: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(19, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.type_ = Proto::OpenEnum(EventDetection::DetectionType).new(_raw)
           when 3
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
             msg.window_size = reader.read_uint32
           when 5
-            unless wt == Proto::WireType::FIXED64
-              raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::FIXED64, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(5, wt, Proto::WireType::FIXED64)
             msg.threshold = reader.read_double
           when 9
-            unless wt == Proto::WireType::FIXED64
-              raise Proto::DecodeError.new("wire type mismatch for field 9: expected Proto::WireType::FIXED64, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(9, wt, Proto::WireType::FIXED64)
             msg.peak_height = reader.read_double
           when 16
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 16: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.events_to_base_ratio = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
+            msg.events_to_base_ratio = reader.read_embedded(16, wt) { |sub| Google::Protobuf::DoubleValue.decode_partial(sub) }
           when 17
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 17: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(17, wt, Proto::WireType::VARINT)
             msg.break_on_mux_changes = reader.read_bool
           when 18
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 18: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(18, wt, Proto::WireType::VARINT)
             msg.max_mux_change_back_shift = reader.read_uint32
           when 20
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 20: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(20, wt, Proto::WireType::VARINT)
             msg.force_detect_events_when_disconnected = reader.read_bool
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -305,79 +288,41 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.mode = Proto::OpenEnum(ReadDetectionParams::ReadDetectionMode).new(_raw)
           when 2
-            unless wt == Proto::WireType::FIXED64
-              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::FIXED64, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(2, wt, Proto::WireType::FIXED64)
             msg.minimum_delta_mean = reader.read_double
           when 3
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
             msg.look_back = reader.read_uint32
           when 4
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.break_reads_after_events = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
+            msg.break_reads_after_events = reader.read_embedded(4, wt) { |sub| Google::Protobuf::UInt32Value.decode_partial(sub) }
           when 5
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.break_reads_after_seconds = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
+            msg.break_reads_after_seconds = reader.read_embedded(5, wt) { |sub| Google::Protobuf::DoubleValue.decode_partial(sub) }
           when 6
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(6, wt, Proto::WireType::VARINT)
             msg.break_reads_on_mux_changes = reader.read_bool
           when 7
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 7: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.open_pore_min = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
+            msg.open_pore_min = reader.read_embedded(7, wt) { |sub| Google::Protobuf::DoubleValue.decode_partial(sub) }
           when 8
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 8: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.open_pore_max = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
+            msg.open_pore_max = reader.read_embedded(8, wt) { |sub| Google::Protobuf::DoubleValue.decode_partial(sub) }
           when 9
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 9: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.open_pore_default = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
+            msg.open_pore_default = reader.read_embedded(9, wt) { |sub| Google::Protobuf::DoubleValue.decode_partial(sub) }
           when 10
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 10: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.open_pore_seconds_required = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
+            msg.open_pore_seconds_required = reader.read_embedded(10, wt) { |sub| Google::Protobuf::DoubleValue.decode_partial(sub) }
           when 11
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 11: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.selected_min = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
+            msg.selected_min = reader.read_embedded(11, wt) { |sub| Google::Protobuf::DoubleValue.decode_partial(sub) }
           when 12
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 12: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.selected_max = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
+            msg.selected_max = reader.read_embedded(12, wt) { |sub| Google::Protobuf::DoubleValue.decode_partial(sub) }
           when 13
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 13: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.selected_default = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
+            msg.selected_default = reader.read_embedded(13, wt) { |sub| Google::Protobuf::DoubleValue.decode_partial(sub) }
           when 14
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 14: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.selected_seconds_required = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
+            msg.selected_seconds_required = reader.read_embedded(14, wt) { |sub| Google::Protobuf::DoubleValue.decode_partial(sub) }
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -481,32 +426,22 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             msg.read_length_min = reader.read_uint32
           when 2
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
             msg.read_length_max = reader.read_uint32
           when 3
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
             msg.event_count_min = reader.read_uint32
           when 4
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(4, wt, Proto::WireType::VARINT)
             msg.event_count_max = reader.read_uint32
           when 5
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(5, wt, Proto::WireType::VARINT)
             msg.skip_rejected_reads = reader.read_bool
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -584,12 +519,10 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 2
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.rules_in_execution_order << reader.read_string
             else
-              msg.capture_unknown_field(reader, fn, wt)
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
           msg
@@ -698,37 +631,19 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.median = Google::Protobuf::FloatValue.decode_partial(reader.read_embedded)
+              msg.median = reader.read_embedded(1, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
             when 2
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.median_sd = Google::Protobuf::FloatValue.decode_partial(reader.read_embedded)
+              msg.median_sd = reader.read_embedded(2, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
             when 3
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.range = Google::Protobuf::FloatValue.decode_partial(reader.read_embedded)
+              msg.range = reader.read_embedded(3, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
             when 4
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.median_dwell = Google::Protobuf::FloatValue.decode_partial(reader.read_embedded)
+              msg.median_dwell = reader.read_embedded(4, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
             when 5
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.dwell_sd = Google::Protobuf::FloatValue.decode_partial(reader.read_embedded)
+              msg.dwell_sd = reader.read_embedded(5, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
             when 6
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.read_chunks_required_for_ewma = Google::Protobuf::Int32Value.decode_partial(reader.read_embedded)
+              msg.read_chunks_required_for_ewma = reader.read_embedded(6, wt) { |sub| Google::Protobuf::Int32Value.decode_partial(sub) }
             else
-              msg.capture_unknown_field(reader, fn, wt)
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
           msg
@@ -911,94 +826,49 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.scheme_module = Proto::OpenEnum(ReadClassificationParams::Scheme).new(_raw)
           when 2
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.max_sample_size = Google::Protobuf::UInt64Value.decode_partial(reader.read_embedded)
+            msg.max_sample_size = reader.read_embedded(2, wt) { |sub| Google::Protobuf::UInt64Value.decode_partial(sub) }
           when 3
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(3, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.selected_classifications << reader.read_string
           when 6
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(6, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.open_pore_classifications << reader.read_string
           when 7
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 7: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.open_pore_ewma_weight = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
+            msg.open_pore_ewma_weight = reader.read_embedded(7, wt) { |sub| Google::Protobuf::DoubleValue.decode_partial(sub) }
           when 8
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 8: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.open_pore_ignore_after_reset_seconds = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
+            msg.open_pore_ignore_after_reset_seconds = reader.read_embedded(8, wt) { |sub| Google::Protobuf::DoubleValue.decode_partial(sub) }
           when 14
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 14: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.selected_ewma_weight = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
+            msg.selected_ewma_weight = reader.read_embedded(14, wt) { |sub| Google::Protobuf::DoubleValue.decode_partial(sub) }
           when 15
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 15: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.selected_ignore_after_reset_seconds = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
+            msg.selected_ignore_after_reset_seconds = reader.read_embedded(15, wt) { |sub| Google::Protobuf::DoubleValue.decode_partial(sub) }
           when 4
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(4, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.classification_strategy = reader.read_string
           when 5
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.parameters = ReadClassificationParams::Parameters.decode_partial(reader.read_embedded)
+            msg.parameters = reader.read_embedded(5, wt) { |sub| ReadClassificationParams::Parameters.decode_partial(sub) }
           when 9
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 9: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.selected_classifications_fraction_required = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
+            msg.selected_classifications_fraction_required = reader.read_embedded(9, wt) { |sub| Google::Protobuf::DoubleValue.decode_partial(sub) }
           when 10
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 10: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.selected_classifications_chunks_required = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
+            msg.selected_classifications_chunks_required = reader.read_embedded(10, wt) { |sub| Google::Protobuf::UInt32Value.decode_partial(sub) }
           when 11
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 11: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.merge_selected_classifications = Google::Protobuf::BoolValue.decode_partial(reader.read_embedded)
+            msg.merge_selected_classifications = reader.read_embedded(11, wt) { |sub| Google::Protobuf::BoolValue.decode_partial(sub) }
           when 12
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 12: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.max_read_length_before_selected_decision_seconds = Google::Protobuf::UInt64Value.decode_partial(reader.read_embedded)
+            msg.max_read_length_before_selected_decision_seconds = reader.read_embedded(12, wt) { |sub| Google::Protobuf::UInt64Value.decode_partial(sub) }
           when 13
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 13: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.metrics_ewma = ReadClassificationParams::MetricsEwma.decode_partial(reader.read_embedded)
+            msg.metrics_ewma = reader.read_embedded(13, wt) { |sub| ReadClassificationParams::MetricsEwma.decode_partial(sub) }
           when 16
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 16: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(16, wt, Proto::WireType::VARINT)
             msg.disable_reset_selected_tracker_on_mux_change = reader.read_bool
           when 17
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 17: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(17, wt, Proto::WireType::VARINT)
             msg.disable_reset_open_pore_tracker_on_mux_change = reader.read_bool
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -1122,32 +992,22 @@ module MinknowApi
               fn, wt = tag
               case fn
               when 1
-                unless wt == Proto::WireType::VARINT
-                  raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
-                end
+                reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
                 msg.reset_on_mux_change = reader.read_int32
               when 2
-                unless wt == Proto::WireType::VARINT
-                  raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
-                end
+                reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
                 msg.reset_on_well_change = reader.read_int32
               when 3
-                unless wt == Proto::WireType::VARINT
-                  raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::VARINT, got " + wt.to_s)
-                end
+                reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
                 msg.latch = reader.read_int32
               when 4
-                unless wt == Proto::WireType::VARINT
-                  raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::VARINT, got " + wt.to_s)
-                end
+                reader.expect_wire_type!(4, wt, Proto::WireType::VARINT)
                 msg.reset_on_effective_mux_change = reader.read_int32
               when 5
-                unless wt == Proto::WireType::VARINT
-                  raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::VARINT, got " + wt.to_s)
-                end
+                reader.expect_wire_type!(5, wt, Proto::WireType::VARINT)
                 msg.reset_on_effective_well_change = reader.read_int32
               else
-                msg.capture_unknown_field(reader, fn, wt)
+                msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
               end
             end
             msg
@@ -1214,17 +1074,13 @@ module MinknowApi
                 fn, wt = tag
                 case fn
                 when 1
-                  unless wt == Proto::WireType::VARINT
-                    raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
-                  end
+                  reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
                   msg.lower_pa = reader.read_int32
                 when 2
-                  unless wt == Proto::WireType::VARINT
-                    raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
-                  end
+                  reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
                   msg.upper_pa = reader.read_int32
                 else
-                  msg.capture_unknown_field(reader, fn, wt)
+                  msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
                 end
               end
               msg
@@ -1285,12 +1141,9 @@ module MinknowApi
               fn, wt = tag
               case fn
               when 1
-                unless wt == Proto::WireType::LENGTH_DELIMITED
-                  raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-                end
-                msg.range = ChannelStates::Logic::Ranges::Range.decode_partial(reader.read_embedded)
+                msg.range = reader.read_embedded(1, wt) { |sub| ChannelStates::Logic::Ranges::Range.decode_partial(sub) }
               else
-                msg.capture_unknown_field(reader, fn, wt)
+                msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
               end
             end
             msg
@@ -1361,37 +1214,23 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.criteria = reader.read_string
             when 3
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
               msg.rank = reader.read_int32
             when 4
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(4, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.pattern = reader.read_string
             when 5
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(5, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.classification = reader.read_string
             when 6
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.ranges = ChannelStates::Logic::Ranges.decode_partial(reader.read_embedded)
+              msg.ranges = reader.read_embedded(6, wt) { |sub| ChannelStates::Logic::Ranges.decode_partial(sub) }
             when 7
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 7: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.behaviour = ChannelStates::Logic::Behaviour.decode_partial(reader.read_embedded)
+              msg.behaviour = reader.read_embedded(7, wt) { |sub| ChannelStates::Logic::Behaviour.decode_partial(sub) }
             else
-              msg.capture_unknown_field(reader, fn, wt)
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
           msg
@@ -1477,22 +1316,15 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.order = Google::Protobuf::UInt32Value.decode_partial(reader.read_embedded)
+              msg.order = reader.read_embedded(1, wt) { |sub| Google::Protobuf::UInt32Value.decode_partial(sub) }
             when 2
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.label = reader.read_string
             when 3
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(3, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.colour = reader.read_string
             else
-              msg.capture_unknown_field(reader, fn, wt)
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
           msg
@@ -1564,22 +1396,15 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.name = reader.read_string
             when 2
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.style = ChannelStates::Style.decode_partial(reader.read_embedded)
+              msg.style = reader.read_embedded(2, wt) { |sub| ChannelStates::Style.decode_partial(sub) }
             when 3
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(3, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.description = reader.read_string
             else
-              msg.capture_unknown_field(reader, fn, wt)
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
           msg
@@ -1667,27 +1492,16 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 2
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.group = ChannelStates::Group.decode_partial(reader.read_embedded)
+            msg.group = reader.read_embedded(2, wt) { |sub| ChannelStates::Group.decode_partial(sub) }
           when 5
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(5, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.description = reader.read_string
           when 3
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.logic = ChannelStates::Logic.decode_partial(reader.read_embedded)
+            msg.logic = reader.read_embedded(3, wt) { |sub| ChannelStates::Logic.decode_partial(sub) }
           when 4
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.style = ChannelStates::Style.decode_partial(reader.read_embedded)
+            msg.style = reader.read_embedded(4, wt) { |sub| ChannelStates::Style.decode_partial(sub) }
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -1744,12 +1558,10 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.run_id = reader.read_string
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -1804,81 +1616,55 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 3
-            if wt == Proto::WireType::LENGTH_DELIMITED
+            if reader.packed_wire_type?(3, wt, Proto::WireType::FIXED32)
               reader.read_packed_float { |v| msg.quantile_locations << v }
-            elsif wt == Proto::WireType::FIXED32
-              msg.quantile_locations << reader.read_float
             else
-              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED or Proto::WireType::FIXED32, got " + wt.to_s)
+              msg.quantile_locations << reader.read_float
             end
           when 1
-            if wt == Proto::WireType::LENGTH_DELIMITED
+            if reader.packed_wire_type?(1, wt, Proto::WireType::FIXED32)
               reader.read_packed_float { |v| msg.quantile_weights_shift << v }
-            elsif wt == Proto::WireType::FIXED32
-              msg.quantile_weights_shift << reader.read_float
             else
-              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED or Proto::WireType::FIXED32, got " + wt.to_s)
+              msg.quantile_weights_shift << reader.read_float
             end
           when 2
-            if wt == Proto::WireType::LENGTH_DELIMITED
+            if reader.packed_wire_type?(2, wt, Proto::WireType::FIXED32)
               reader.read_packed_float { |v| msg.quantile_weights_scale << v }
-            elsif wt == Proto::WireType::FIXED32
-              msg.quantile_weights_scale << reader.read_float
             else
-              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED or Proto::WireType::FIXED32, got " + wt.to_s)
+              msg.quantile_weights_scale << reader.read_float
             end
           when 4
-            unless wt == Proto::WireType::FIXED32
-              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::FIXED32, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(4, wt, Proto::WireType::FIXED32)
             msg.tracking_alpha = reader.read_float
           when 5
-            unless wt == Proto::WireType::FIXED32
-              raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::FIXED32, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(5, wt, Proto::WireType::FIXED32)
             msg.alpha_number_estimates_decay = reader.read_float
           when 10
-            unless wt == Proto::WireType::FIXED32
-              raise Proto::DecodeError.new("wire type mismatch for field 10: expected Proto::WireType::FIXED32, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(10, wt, Proto::WireType::FIXED32)
             msg.quantile_maxdiff = reader.read_float
           when 6
-            unless wt == Proto::WireType::FIXED32
-              raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::FIXED32, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(6, wt, Proto::WireType::FIXED32)
             msg.trust_limit_fraction = reader.read_float
           when 7
-            unless wt == Proto::WireType::FIXED32
-              raise Proto::DecodeError.new("wire type mismatch for field 7: expected Proto::WireType::FIXED32, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(7, wt, Proto::WireType::FIXED32)
             msg.diff_threshold = reader.read_float
           when 8
-            unless wt == Proto::WireType::FIXED32
-              raise Proto::DecodeError.new("wire type mismatch for field 8: expected Proto::WireType::FIXED32, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(8, wt, Proto::WireType::FIXED32)
             msg.emission_threshold = reader.read_float
           when 9
-            unless wt == Proto::WireType::FIXED32
-              raise Proto::DecodeError.new("wire type mismatch for field 9: expected Proto::WireType::FIXED32, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(9, wt, Proto::WireType::FIXED32)
             msg.dacs_breakpoint = reader.read_float
           when 11
-            unless wt == Proto::WireType::FIXED32
-              raise Proto::DecodeError.new("wire type mismatch for field 11: expected Proto::WireType::FIXED32, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(11, wt, Proto::WireType::FIXED32)
             msg.conductance_factor_scale = reader.read_float
           when 12
-            unless wt == Proto::WireType::FIXED32
-              raise Proto::DecodeError.new("wire type mismatch for field 12: expected Proto::WireType::FIXED32, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(12, wt, Proto::WireType::FIXED32)
             msg.conductance_factor_shift = reader.read_float
           when 13
-            unless wt == Proto::WireType::FIXED32
-              raise Proto::DecodeError.new("wire type mismatch for field 13: expected Proto::WireType::FIXED32, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(13, wt, Proto::WireType::FIXED32)
             msg.q90_q10_to_normal = reader.read_float
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -2001,17 +1787,12 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.key = reader.read_string
             when 2
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.value = ChannelStates.decode_partial(reader.read_embedded)
+              msg.value = reader.read_embedded(2, wt) { |sub| ChannelStates.decode_partial(sub) }
             else
-              msg.capture_unknown_field(reader, fn, wt)
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
           msg
@@ -2107,35 +1888,20 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.event_detection = EventDetection.decode_partial(reader.read_embedded)
+            msg.event_detection = reader.read_embedded(1, wt) { |sub| EventDetection.decode_partial(sub) }
           when 2
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.read_detection = ReadDetectionParams.decode_partial(reader.read_embedded)
+            msg.read_detection = reader.read_embedded(2, wt) { |sub| ReadDetectionParams.decode_partial(sub) }
           when 4
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.read_classification = ReadClassificationParams.decode_partial(reader.read_embedded)
+            msg.read_classification = reader.read_embedded(4, wt) { |sub| ReadClassificationParams.decode_partial(sub) }
           when 7
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 7: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            entry = AnalysisConfiguration::ChannelStatesEntry.decode_partial(reader.read_embedded)
+            entry = reader.read_embedded(7, wt) { |sub| AnalysisConfiguration::ChannelStatesEntry.decode_partial(sub) }
             if value = entry.value
               msg.channel_states[entry.key] = value
             end
           when 8
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 8: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.read_scaling = ReadScalingParams.decode_partial(reader.read_embedded)
+            msg.read_scaling = reader.read_embedded(8, wt) { |sub| ReadScalingParams.decode_partial(sub) }
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -2196,7 +1962,7 @@ module MinknowApi
           fn, wt = tag
           case fn
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -2232,7 +1998,7 @@ module MinknowApi
           fn, wt = tag
           case fn
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -2268,7 +2034,7 @@ module MinknowApi
           fn, wt = tag
           case fn
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -2306,12 +2072,10 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             msg.enable = reader.read_bool
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -2352,7 +2116,7 @@ module MinknowApi
           fn, wt = tag
           case fn
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -2388,7 +2152,7 @@ module MinknowApi
           fn, wt = tag
           case fn
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -2431,22 +2195,16 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.label = reader.read_string
             when 2
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.description = reader.read_string
             when 3
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(3, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.colour = reader.read_string
             else
-              msg.capture_unknown_field(reader, fn, wt)
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
           msg
@@ -2518,27 +2276,18 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
               msg.id = reader.read_uint32
             when 2
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.name = reader.read_string
             when 3
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.style = GetChannelStatesDescResponse::Style.decode_partial(reader.read_embedded)
+              msg.style = reader.read_embedded(3, wt) { |sub| GetChannelStatesDescResponse::Style.decode_partial(sub) }
             when 4
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(4, wt, Proto::WireType::VARINT)
               msg.global_order = reader.read_uint32
             else
-              msg.capture_unknown_field(reader, fn, wt)
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
           msg
@@ -2618,22 +2367,14 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.name = reader.read_string
             when 2
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.style = GetChannelStatesDescResponse::Style.decode_partial(reader.read_embedded)
+              msg.style = reader.read_embedded(2, wt) { |sub| GetChannelStatesDescResponse::Style.decode_partial(sub) }
             when 3
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.states << GetChannelStatesDescResponse::ChannelState.decode_partial(reader.read_embedded)
+              msg.states << reader.read_embedded(3, wt) { |sub| GetChannelStatesDescResponse::ChannelState.decode_partial(sub) }
             else
-              msg.capture_unknown_field(reader, fn, wt)
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
           msg
@@ -2693,12 +2434,9 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.groups << GetChannelStatesDescResponse::Group.decode_partial(reader.read_embedded)
+            msg.groups << reader.read_embedded(1, wt) { |sub| GetChannelStatesDescResponse::Group.decode_partial(sub) }
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -2740,7 +2478,7 @@ module MinknowApi
           fn, wt = tag
           case fn
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -2779,17 +2517,13 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             msg.analysis_enabled = reader.read_bool
           when 2
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
             msg.basecalling_enabled = reader.read_bool
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -2840,27 +2574,19 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.barcoding_kits << reader.read_string
           when 2
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
             msg.trim_barcodes = reader.read_bool
           when 3
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
             msg.require_barcodes_both_ends = reader.read_bool
           when 9
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 9: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(9, wt, Proto::WireType::VARINT)
             msg.ignore_unspecified_barcodes = reader.read_bool
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -2937,27 +2663,18 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.reference_files << reader.read_string
           when 2
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.bed_file = reader.read_string
           when 3
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.minimum_coverage = Google::Protobuf::FloatValue.decode_partial(reader.read_embedded)
+            msg.minimum_coverage = reader.read_embedded(3, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
           when 4
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(4, wt, Proto::WireType::VARINT)
             msg.aggregate_statistics_for_multiple_bed_hits = reader.read_bool
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -3053,27 +2770,16 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.lamp_kit = reader.read_string
           when 2
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.min_score_barcodes = Google::Protobuf::FloatValue.decode_partial(reader.read_embedded)
+            msg.min_score_barcodes = reader.read_embedded(2, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
           when 3
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.min_score_masks = Google::Protobuf::FloatValue.decode_partial(reader.read_embedded)
+            msg.min_score_masks = reader.read_embedded(3, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
           when 4
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.min_score_targets = Google::Protobuf::FloatValue.decode_partial(reader.read_embedded)
+            msg.min_score_targets = reader.read_embedded(4, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -3179,27 +2885,15 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.min_qscore = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
+              msg.min_qscore = reader.read_embedded(1, wt) { |sub| Google::Protobuf::DoubleValue.decode_partial(sub) }
             when 4
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.min_bases = Google::Protobuf::UInt64Value.decode_partial(reader.read_embedded)
+              msg.min_bases = reader.read_embedded(4, wt) { |sub| Google::Protobuf::UInt64Value.decode_partial(sub) }
             when 5
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.max_bases = Google::Protobuf::UInt64Value.decode_partial(reader.read_embedded)
+              msg.max_bases = reader.read_embedded(5, wt) { |sub| Google::Protobuf::UInt64Value.decode_partial(sub) }
             when 7
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 7: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.min_duplex_qscore = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
+              msg.min_duplex_qscore = reader.read_embedded(7, wt) { |sub| Google::Protobuf::DoubleValue.decode_partial(sub) }
             else
-              msg.capture_unknown_field(reader, fn, wt)
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
           msg
@@ -3291,22 +2985,13 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.min_qscore = Google::Protobuf::DoubleValue.decode_partial(reader.read_embedded)
+              msg.min_qscore = reader.read_embedded(1, wt) { |sub| Google::Protobuf::DoubleValue.decode_partial(sub) }
             when 2
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.min_bases = Google::Protobuf::UInt64Value.decode_partial(reader.read_embedded)
+              msg.min_bases = reader.read_embedded(2, wt) { |sub| Google::Protobuf::UInt64Value.decode_partial(sub) }
             when 3
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.max_bases = Google::Protobuf::UInt64Value.decode_partial(reader.read_embedded)
+              msg.max_bases = reader.read_embedded(3, wt) { |sub| Google::Protobuf::UInt64Value.decode_partial(sub) }
             else
-              msg.capture_unknown_field(reader, fn, wt)
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
           msg
@@ -3360,22 +3045,16 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.simplex_model = reader.read_string
             when 2
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.modified_models << reader.read_string
             when 3
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(3, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.stereo_model = reader.read_string
             else
-              msg.capture_unknown_field(reader, fn, wt)
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
           msg
@@ -3531,72 +3210,39 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 2
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
             msg.enable = reader.read_bool
           when 1
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.config_filename = reader.read_string
           when 12
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 12: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.model_names = BasecallerConfiguration::ModelNames.decode_partial(reader.read_embedded)
+            msg.model_names = reader.read_embedded(12, wt) { |sub| BasecallerConfiguration::ModelNames.decode_partial(sub) }
           when 10
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 10: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(10, wt, Proto::WireType::VARINT)
             msg.align_filter = reader.read_bool
           when 3
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.read_filtering = BasecallerConfiguration::ReadFiltering.decode_partial(reader.read_embedded)
+            msg.read_filtering = reader.read_embedded(3, wt) { |sub| BasecallerConfiguration::ReadFiltering.decode_partial(sub) }
           when 4
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.barcoding_configuration = BarcodingConfiguration.decode_partial(reader.read_embedded)
+            msg.barcoding_configuration = reader.read_embedded(4, wt) { |sub| BarcodingConfiguration.decode_partial(sub) }
           when 5
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.target_filtering = BasecallerConfiguration::TargetFiltering.decode_partial(reader.read_embedded)
+            msg.target_filtering = reader.read_embedded(5, wt) { |sub| BasecallerConfiguration::TargetFiltering.decode_partial(sub) }
           when 6
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.alignment_configuration = AlignmentConfiguration.decode_partial(reader.read_embedded)
+            msg.alignment_configuration = reader.read_embedded(6, wt) { |sub| AlignmentConfiguration.decode_partial(sub) }
           when 7
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 7: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.lamp_configuration = LampConfiguration.decode_partial(reader.read_embedded)
+            msg.lamp_configuration = reader.read_embedded(7, wt) { |sub| LampConfiguration.decode_partial(sub) }
           when 8
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 8: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(8, wt, Proto::WireType::VARINT)
             msg.enable_read_splitting = reader.read_bool
           when 9
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 9: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.min_score_read_splitting = Google::Protobuf::FloatValue.decode_partial(reader.read_embedded)
+            msg.min_score_read_splitting = reader.read_embedded(9, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
           when 11
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 11: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(11, wt, Proto::WireType::VARINT)
             msg.estimate_poly_a = reader.read_bool
           when 13
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 13: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(13, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.poly_a_config_path = reader.read_string
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -3713,12 +3359,9 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.configs = BasecallerConfiguration.decode_partial(reader.read_embedded)
+            msg.configs = reader.read_embedded(1, wt) { |sub| BasecallerConfiguration.decode_partial(sub) }
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -3760,7 +3403,7 @@ module MinknowApi
           fn, wt = tag
           case fn
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -3798,12 +3441,10 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.run_id = reader.read_string
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -3844,7 +3485,7 @@ module MinknowApi
           fn, wt = tag
           case fn
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -3886,17 +3527,13 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
               msg.channel = reader.read_uint32
             when 2
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
               msg.well = reader.read_uint32
             else
-              msg.capture_unknown_field(reader, fn, wt)
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
           msg
@@ -3957,12 +3594,9 @@ module MinknowApi
               fn, wt = tag
               case fn
               when 1
-                unless wt == Proto::WireType::LENGTH_DELIMITED
-                  raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-                end
-                msg.channel_well << PoreTypeConfiguration::ChannelWell.decode_partial(reader.read_embedded)
+                msg.channel_well << reader.read_embedded(1, wt) { |sub| PoreTypeConfiguration::ChannelWell.decode_partial(sub) }
               else
-                msg.capture_unknown_field(reader, fn, wt)
+                msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
               end
             end
             msg
@@ -4023,17 +3657,12 @@ module MinknowApi
               fn, wt = tag
               case fn
               when 1
-                unless wt == Proto::WireType::LENGTH_DELIMITED
-                  raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-                end
+                reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
                 msg.key = reader.read_string
               when 2
-                unless wt == Proto::WireType::LENGTH_DELIMITED
-                  raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-                end
-                msg.value = PoreTypeConfiguration::ChannelWellPoreTypeConfigurations::ChannelWellList.decode_partial(reader.read_embedded)
+                msg.value = reader.read_embedded(2, wt) { |sub| PoreTypeConfiguration::ChannelWellPoreTypeConfigurations::ChannelWellList.decode_partial(sub) }
               else
-                msg.capture_unknown_field(reader, fn, wt)
+                msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
               end
             end
             msg
@@ -4089,15 +3718,12 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              entry = PoreTypeConfiguration::ChannelWellPoreTypeConfigurations::PoreTypesEntry.decode_partial(reader.read_embedded)
+              entry = reader.read_embedded(1, wt) { |sub| PoreTypeConfiguration::ChannelWellPoreTypeConfigurations::PoreTypesEntry.decode_partial(sub) }
               if value = entry.value
                 msg.pore_types[entry.key] = value
               end
             else
-              msg.capture_unknown_field(reader, fn, wt)
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
           msg
@@ -4182,17 +3808,12 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.global_pore_type = reader.read_string
           when 2
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.channel_well_pore_types = PoreTypeConfiguration::ChannelWellPoreTypeConfigurations.decode_partial(reader.read_embedded)
+            msg.channel_well_pore_types = reader.read_embedded(2, wt) { |sub| PoreTypeConfiguration::ChannelWellPoreTypeConfigurations.decode_partial(sub) }
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -4242,7 +3863,7 @@ module MinknowApi
           fn, wt = tag
           case fn
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -4300,15 +3921,13 @@ module MinknowApi
               fn, wt = tag
               case fn
               when 1
-                if wt == Proto::WireType::LENGTH_DELIMITED
+                if reader.packed_wire_type?(1, wt, Proto::WireType::VARINT)
                   reader.read_packed_varint { |v| msg.channels << v.to_i32! }
-                elsif wt == Proto::WireType::VARINT
-                  msg.channels << reader.read_int32
                 else
-                  raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED or Proto::WireType::VARINT, got " + wt.to_s)
+                  msg.channels << reader.read_int32
                 end
               else
-                msg.capture_unknown_field(reader, fn, wt)
+                msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
               end
             end
             msg
@@ -4355,17 +3974,13 @@ module MinknowApi
                 fn, wt = tag
                 case fn
                 when 1
-                  unless wt == Proto::WireType::VARINT
-                    raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
-                  end
+                  reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
                   msg.start = reader.read_int32
                 when 2
-                  unless wt == Proto::WireType::VARINT
-                    raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
-                  end
+                  reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
                   msg.end_ = reader.read_int32
                 else
-                  msg.capture_unknown_field(reader, fn, wt)
+                  msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
                 end
               end
               msg
@@ -4420,12 +4035,9 @@ module MinknowApi
               fn, wt = tag
               case fn
               when 1
-                unless wt == Proto::WireType::LENGTH_DELIMITED
-                  raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-                end
-                msg.ranges << WriterConfiguration::ChannelConfiguration::ChannelRanges::ChannelRange.decode_partial(reader.read_embedded)
+                msg.ranges << reader.read_embedded(1, wt) { |sub| WriterConfiguration::ChannelConfiguration::ChannelRanges::ChannelRange.decode_partial(sub) }
               else
-                msg.capture_unknown_field(reader, fn, wt)
+                msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
               end
             end
             msg
@@ -4522,22 +4134,14 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
               msg.all_channels = reader.read_bool
             when 2
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.specific_channels = WriterConfiguration::ChannelConfiguration::ChannelList.decode_partial(reader.read_embedded)
+              msg.specific_channels = reader.read_embedded(2, wt) { |sub| WriterConfiguration::ChannelConfiguration::ChannelList.decode_partial(sub) }
             when 3
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.channel_ranges = WriterConfiguration::ChannelConfiguration::ChannelRanges.decode_partial(reader.read_embedded)
+              msg.channel_ranges = reader.read_embedded(3, wt) { |sub| WriterConfiguration::ChannelConfiguration::ChannelRanges.decode_partial(sub) }
             else
-              msg.capture_unknown_field(reader, fn, wt)
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
           msg
@@ -4713,89 +4317,50 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
               msg.compression_level = reader.read_int32
             when 14
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 14: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(14, wt, Proto::WireType::VARINT)
               _raw_u64 = reader.read_uint64
               _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
               msg.compression_type = Proto::OpenEnum(WriterConfiguration::CompressionType).new(_raw)
             when 2
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.raw = WriterConfiguration::ChannelConfiguration.decode_partial(reader.read_embedded)
+              msg.raw = reader.read_embedded(2, wt) { |sub| WriterConfiguration::ChannelConfiguration.decode_partial(sub) }
             when 3
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.fastq = WriterConfiguration::ChannelConfiguration.decode_partial(reader.read_embedded)
+              msg.fastq = reader.read_embedded(3, wt) { |sub| WriterConfiguration::ChannelConfiguration.decode_partial(sub) }
             when 11
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 11: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.trace_table = WriterConfiguration::ChannelConfiguration.decode_partial(reader.read_embedded)
+              msg.trace_table = reader.read_embedded(11, wt) { |sub| WriterConfiguration::ChannelConfiguration.decode_partial(sub) }
             when 12
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 12: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.move_table = WriterConfiguration::ChannelConfiguration.decode_partial(reader.read_embedded)
+              msg.move_table = reader.read_embedded(12, wt) { |sub| WriterConfiguration::ChannelConfiguration.decode_partial(sub) }
             when 13
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 13: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.modifications_table = WriterConfiguration::ChannelConfiguration.decode_partial(reader.read_embedded)
+              msg.modifications_table = reader.read_embedded(13, wt) { |sub| WriterConfiguration::ChannelConfiguration.decode_partial(sub) }
             when 5
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(5, wt, Proto::WireType::VARINT)
               msg.disable_writing_passed_reads = reader.read_bool
             when 6
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(6, wt, Proto::WireType::VARINT)
               msg.disable_writing_failed_reads = reader.read_bool
             when 7
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 7: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(7, wt, Proto::WireType::VARINT)
               msg.disable_writing_force_skipped_reads = reader.read_bool
             when 8
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 8: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(8, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.file_pattern = reader.read_string
             when 9
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 9: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(9, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.fastq_header_pattern = reader.read_string
             when 10
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 10: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(10, wt, Proto::WireType::VARINT)
               msg.batch_count = reader.read_uint32
             when 15
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 15: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(15, wt, Proto::WireType::VARINT)
               msg.bases_per_batch = reader.read_uint64
             when 17
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 17: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.no_output_based_batching = Google::Protobuf::Empty.decode_partial(reader.read_embedded)
+              msg.no_output_based_batching = reader.read_embedded(17, wt) { |sub| Google::Protobuf::Empty.decode_partial(sub) }
             when 16
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 16: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.batch_duration = Google::Protobuf::Duration.decode_partial(reader.read_embedded)
+              msg.batch_duration = reader.read_embedded(16, wt) { |sub| Google::Protobuf::Duration.decode_partial(sub) }
             else
-              msg.capture_unknown_field(reader, fn, wt)
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
           msg
@@ -4988,62 +4553,37 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.enable = WriterConfiguration::ChannelConfiguration.decode_partial(reader.read_embedded)
+              msg.enable = reader.read_embedded(1, wt) { |sub| WriterConfiguration::ChannelConfiguration.decode_partial(sub) }
             when 2
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.file_pattern = reader.read_string
             when 3
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(3, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.header_pattern = reader.read_string
             when 4
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(4, wt, Proto::WireType::VARINT)
               msg.batch_count = reader.read_uint32
             when 6
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(6, wt, Proto::WireType::VARINT)
               msg.bases_per_batch = reader.read_uint64
             when 11
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 11: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.no_output_based_batching = Google::Protobuf::Empty.decode_partial(reader.read_embedded)
+              msg.no_output_based_batching = reader.read_embedded(11, wt) { |sub| Google::Protobuf::Empty.decode_partial(sub) }
             when 5
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(5, wt, Proto::WireType::VARINT)
               msg.compression = reader.read_bool
             when 7
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 7: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(7, wt, Proto::WireType::VARINT)
               msg.disable_writing_passed_reads = reader.read_bool
             when 8
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 8: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(8, wt, Proto::WireType::VARINT)
               msg.disable_writing_failed_reads = reader.read_bool
             when 9
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 9: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(9, wt, Proto::WireType::VARINT)
               msg.disable_writing_force_skipped_reads = reader.read_bool
             when 10
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 10: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.batch_duration = Google::Protobuf::Duration.decode_partial(reader.read_embedded)
+              msg.batch_duration = reader.read_embedded(10, wt) { |sub| Google::Protobuf::Duration.decode_partial(sub) }
             else
-              msg.capture_unknown_field(reader, fn, wt)
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
           msg
@@ -5214,57 +4754,34 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.enable = WriterConfiguration::ChannelConfiguration.decode_partial(reader.read_embedded)
+              msg.enable = reader.read_embedded(1, wt) { |sub| WriterConfiguration::ChannelConfiguration.decode_partial(sub) }
             when 2
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.file_pattern = reader.read_string
             when 3
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
               msg.batch_count = reader.read_uint32
             when 5
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(5, wt, Proto::WireType::VARINT)
               msg.bases_per_batch = reader.read_uint64
             when 10
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 10: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.no_output_based_batching = Google::Protobuf::Empty.decode_partial(reader.read_embedded)
+              msg.no_output_based_batching = reader.read_embedded(10, wt) { |sub| Google::Protobuf::Empty.decode_partial(sub) }
             when 4
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(4, wt, Proto::WireType::VARINT)
               msg.disable_writing_multiple_alignments = reader.read_bool
             when 6
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(6, wt, Proto::WireType::VARINT)
               msg.disable_writing_passed_reads = reader.read_bool
             when 7
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 7: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(7, wt, Proto::WireType::VARINT)
               msg.disable_writing_failed_reads = reader.read_bool
             when 8
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 8: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(8, wt, Proto::WireType::VARINT)
               msg.disable_writing_force_skipped_reads = reader.read_bool
             when 9
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 9: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.batch_duration = Google::Protobuf::Duration.decode_partial(reader.read_embedded)
+              msg.batch_duration = reader.read_embedded(9, wt) { |sub| Google::Protobuf::Duration.decode_partial(sub) }
             else
-              msg.capture_unknown_field(reader, fn, wt)
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
           msg
@@ -5429,52 +4946,31 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.enable = WriterConfiguration::ChannelConfiguration.decode_partial(reader.read_embedded)
+              msg.enable = reader.read_embedded(1, wt) { |sub| WriterConfiguration::ChannelConfiguration.decode_partial(sub) }
             when 2
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.file_pattern = reader.read_string
             when 3
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
               msg.batch_count = reader.read_uint32
             when 7
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 7: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(7, wt, Proto::WireType::VARINT)
               msg.bases_per_batch = reader.read_uint64
             when 9
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 9: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.no_output_based_batching = Google::Protobuf::Empty.decode_partial(reader.read_embedded)
+              msg.no_output_based_batching = reader.read_embedded(9, wt) { |sub| Google::Protobuf::Empty.decode_partial(sub) }
             when 4
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(4, wt, Proto::WireType::VARINT)
               msg.disable_writing_passed_reads = reader.read_bool
             when 5
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(5, wt, Proto::WireType::VARINT)
               msg.disable_writing_failed_reads = reader.read_bool
             when 6
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(6, wt, Proto::WireType::VARINT)
               msg.disable_writing_force_skipped_reads = reader.read_bool
             when 8
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 8: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.batch_duration = Google::Protobuf::Duration.decode_partial(reader.read_embedded)
+              msg.batch_duration = reader.read_embedded(8, wt) { |sub| Google::Protobuf::Duration.decode_partial(sub) }
             else
-              msg.capture_unknown_field(reader, fn, wt)
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
           msg
@@ -5576,17 +5072,12 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.enable = WriterConfiguration::ChannelConfiguration.decode_partial(reader.read_embedded)
+              msg.enable = reader.read_embedded(1, wt) { |sub| WriterConfiguration::ChannelConfiguration.decode_partial(sub) }
             when 2
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.file_pattern = reader.read_string
             else
-              msg.capture_unknown_field(reader, fn, wt)
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
           msg
@@ -5698,69 +5189,40 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 2
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
               msg.compression_level = reader.read_int32
             when 13
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 13: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(13, wt, Proto::WireType::VARINT)
               _raw_u64 = reader.read_uint64
               _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
               msg.compression_type = Proto::OpenEnum(WriterConfiguration::CompressionType).new(_raw)
             when 14
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 14: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(14, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.file_pattern = reader.read_string
             when 3
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.raw = WriterConfiguration::ChannelConfiguration.decode_partial(reader.read_embedded)
+              msg.raw = reader.read_embedded(3, wt) { |sub| WriterConfiguration::ChannelConfiguration.decode_partial(sub) }
             when 4
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.events = WriterConfiguration::ChannelConfiguration.decode_partial(reader.read_embedded)
+              msg.events = reader.read_embedded(4, wt) { |sub| WriterConfiguration::ChannelConfiguration.decode_partial(sub) }
             when 5
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.reads = WriterConfiguration::ChannelConfiguration.decode_partial(reader.read_embedded)
+              msg.reads = reader.read_embedded(5, wt) { |sub| WriterConfiguration::ChannelConfiguration.decode_partial(sub) }
             when 6
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.multiplex = WriterConfiguration::ChannelConfiguration.decode_partial(reader.read_embedded)
+              msg.multiplex = reader.read_embedded(6, wt) { |sub| WriterConfiguration::ChannelConfiguration.decode_partial(sub) }
             when 7
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 7: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.channel_states = WriterConfiguration::ChannelConfiguration.decode_partial(reader.read_embedded)
+              msg.channel_states = reader.read_embedded(7, wt) { |sub| WriterConfiguration::ChannelConfiguration.decode_partial(sub) }
             when 11
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 11: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(11, wt, Proto::WireType::VARINT)
               msg.device_metadata = reader.read_bool
             when 12
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 12: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(12, wt, Proto::WireType::VARINT)
               msg.device_commands = reader.read_bool
             when 15
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 15: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(15, wt, Proto::WireType::VARINT)
               msg.dynamic_analysis_config = reader.read_bool
             when 16
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 16: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(16, wt, Proto::WireType::VARINT)
               msg.force_all_read_metrics = reader.read_bool
             else
-              msg.capture_unknown_field(reader, fn, wt)
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
           msg
@@ -5865,62 +5327,40 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.pdf_report_file_pattern = reader.read_string
             when 2
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.json_report_file_pattern = reader.read_string
             when 9
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 9: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(9, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.html_report_file_pattern = reader.read_string
             when 8
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 8: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(8, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.markdown_report_file_pattern = reader.read_string
             when 3
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(3, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.duty_time_report_file_pattern = reader.read_string
             when 4
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(4, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.throughput_report_file_pattern = reader.read_string
             when 5
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(5, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.final_summary_report_file_pattern = reader.read_string
             when 6
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(6, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.barcode_alignment_report_file_pattern = reader.read_string
             when 10
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 10: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(10, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.sample_sheet_report_file_pattern = reader.read_string
             when 7
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 7: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(7, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.custom_report_suffix_pattern = reader.read_string
             when 11
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 11: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(11, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.output_hash_file_pattern = reader.read_string
             else
-              msg.capture_unknown_field(reader, fn, wt)
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
           msg
@@ -6096,47 +5536,23 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 2
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.read_fast5 = WriterConfiguration::ReadFast5Configuration.decode_partial(reader.read_embedded)
+            msg.read_fast5 = reader.read_embedded(2, wt) { |sub| WriterConfiguration::ReadFast5Configuration.decode_partial(sub) }
           when 3
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.read_fastq = WriterConfiguration::ReadFastqConfiguration.decode_partial(reader.read_embedded)
+            msg.read_fastq = reader.read_embedded(3, wt) { |sub| WriterConfiguration::ReadFastqConfiguration.decode_partial(sub) }
           when 8
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 8: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.read_bam = WriterConfiguration::ReadBamConfiguration.decode_partial(reader.read_embedded)
+            msg.read_bam = reader.read_embedded(8, wt) { |sub| WriterConfiguration::ReadBamConfiguration.decode_partial(sub) }
           when 10
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 10: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.read_pod5 = WriterConfiguration::ReadPod5Configuration.decode_partial(reader.read_embedded)
+            msg.read_pod5 = reader.read_embedded(10, wt) { |sub| WriterConfiguration::ReadPod5Configuration.decode_partial(sub) }
           when 5
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 5: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.sequencing_summary = WriterConfiguration::SequencingSummaryConfiguration.decode_partial(reader.read_embedded)
+            msg.sequencing_summary = reader.read_embedded(5, wt) { |sub| WriterConfiguration::SequencingSummaryConfiguration.decode_partial(sub) }
           when 6
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 6: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.bulk = WriterConfiguration::BulkConfiguration.decode_partial(reader.read_embedded)
+            msg.bulk = reader.read_embedded(6, wt) { |sub| WriterConfiguration::BulkConfiguration.decode_partial(sub) }
           when 7
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 7: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.report = WriterConfiguration::ReportConfiguration.decode_partial(reader.read_embedded)
+            msg.report = reader.read_embedded(7, wt) { |sub| WriterConfiguration::ReportConfiguration.decode_partial(sub) }
           when 9
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 9: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.read_filters = ReadFilters.decode_partial(reader.read_embedded)
+            msg.read_filters = reader.read_embedded(9, wt) { |sub| ReadFilters.decode_partial(sub) }
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -6206,7 +5622,7 @@ module MinknowApi
           fn, wt = tag
           case fn
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -6244,12 +5660,10 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.run_id = reader.read_string
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -6290,7 +5704,7 @@ module MinknowApi
           fn, wt = tag
           case fn
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -6332,17 +5746,13 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
               msg.key = reader.read_int32
             when 2
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.value = reader.read_string
             else
-              msg.capture_unknown_field(reader, fn, wt)
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
           msg
@@ -6387,13 +5797,10 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            entry = GetReadClassificationsResponse::ReadClassificationsEntry.decode_partial(reader.read_embedded)
+            entry = reader.read_embedded(1, wt) { |sub| GetReadClassificationsResponse::ReadClassificationsEntry.decode_partial(sub) }
             msg.read_classifications[entry.key] = entry.value
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -6444,15 +5851,13 @@ module MinknowApi
               fn, wt = tag
               case fn
               when 1
-                if wt == Proto::WireType::LENGTH_DELIMITED
+                if reader.packed_wire_type?(1, wt, Proto::WireType::FIXED32)
                   reader.read_packed_float { |v| msg.well_conductance << v }
-                elsif wt == Proto::WireType::FIXED32
-                  msg.well_conductance << reader.read_float
                 else
-                  raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED or Proto::WireType::FIXED32, got " + wt.to_s)
+                  msg.well_conductance << reader.read_float
                 end
               else
-                msg.capture_unknown_field(reader, fn, wt)
+                msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
               end
             end
             msg
@@ -6503,17 +5908,12 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              unless wt == Proto::WireType::FIXED32
-                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::FIXED32, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(1, wt, Proto::WireType::FIXED32)
               msg.conductance_scan_voltage = reader.read_float
             when 2
-              unless wt == Proto::WireType::LENGTH_DELIMITED
-                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-              end
-              msg.channel_conductance << DynamicAnalysisConfiguration::ReadScaleTracking::ChannelConductance.decode_partial(reader.read_embedded)
+              msg.channel_conductance << reader.read_embedded(2, wt) { |sub| DynamicAnalysisConfiguration::ReadScaleTracking::ChannelConductance.decode_partial(sub) }
             else
-              msg.capture_unknown_field(reader, fn, wt)
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
           msg
@@ -6564,22 +5964,16 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
               msg.channel = reader.read_uint32
             when 2
-              unless wt == Proto::WireType::VARINT
-                raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
               msg.well = reader.read_uint32
             when 3
-              unless wt == Proto::WireType::FIXED32
-                raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::FIXED32, got " + wt.to_s)
-              end
+              reader.expect_wire_type!(3, wt, Proto::WireType::FIXED32)
               msg.selected_default = reader.read_float
             else
-              msg.capture_unknown_field(reader, fn, wt)
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
           msg
@@ -6651,34 +6045,24 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.read_scale_tracking = DynamicAnalysisConfiguration::ReadScaleTracking.decode_partial(reader.read_embedded)
+            msg.read_scale_tracking = reader.read_embedded(1, wt) { |sub| DynamicAnalysisConfiguration::ReadScaleTracking.decode_partial(sub) }
           when 2
-            unless wt == Proto::WireType::VARINT
-              raise Proto::DecodeError.new("wire type mismatch for field 2: expected Proto::WireType::VARINT, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
             msg.force_veto_all_reads = reader.read_bool
           when 3
-            if wt == Proto::WireType::LENGTH_DELIMITED
+            if reader.packed_wire_type?(3, wt, Proto::WireType::VARINT)
               reader.read_packed_varint do |v|
                 msg.force_veto_end_reasons << Proto::OpenEnum(MinknowApi::ReadEndReason::ReadEndReason).new(Proto::Wire::Reader.int32_from_varint(v))
               end
-            elsif wt == Proto::WireType::VARINT
+            else
               _raw_u64 = reader.read_uint64
               _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
               msg.force_veto_end_reasons << Proto::OpenEnum(MinknowApi::ReadEndReason::ReadEndReason).new(_raw)
-            else
-              raise Proto::DecodeError.new("wire type mismatch for field 3: expected Proto::WireType::LENGTH_DELIMITED or Proto::WireType::VARINT, got " + wt.to_s)
             end
           when 4
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 4: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
-            msg.channel_well_info << DynamicAnalysisConfiguration::ChannelWellInfo.decode_partial(reader.read_embedded)
+            msg.channel_well_info << reader.read_embedded(4, wt) { |sub| DynamicAnalysisConfiguration::ChannelWellInfo.decode_partial(sub) }
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -6734,7 +6118,7 @@ module MinknowApi
           fn, wt = tag
           case fn
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -6770,7 +6154,7 @@ module MinknowApi
           fn, wt = tag
           case fn
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -6806,7 +6190,7 @@ module MinknowApi
           fn, wt = tag
           case fn
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -6844,12 +6228,10 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            unless wt == Proto::WireType::LENGTH_DELIMITED
-              raise Proto::DecodeError.new("wire type mismatch for field 1: expected Proto::WireType::LENGTH_DELIMITED, got " + wt.to_s)
-            end
+            reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.default_variant = reader.read_string
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
