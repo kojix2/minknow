@@ -47,7 +47,7 @@ module Minknow
     end
 
     # Returns info about the current protocol run.
-    def get_current_protocol_run : RunInfo
+    def current_protocol_run : RunInfo
       client.get_current_protocol_run(MinknowApi::Protocol::GetCurrentProtocolRunRequest.new, @ctx)
     end
 
@@ -70,7 +70,7 @@ module Minknow
     end
 
     # Returns context info (user metadata) for the current run.
-    def get_context_info : ContextInfoResponse
+    def context_info : ContextInfoResponse
       client.get_context_info(MinknowApi::Protocol::GetContextInfoRequest.new, @ctx)
     end
 

@@ -20,7 +20,7 @@ module Minknow
     end
 
     # Returns version information about this MinKNOW instance.
-    def get_version_info : VersionInfo
+    def version_info : VersionInfo
       client.get_version_info(
         MinknowApi::Instance::GetVersionInfoRequest.new,
         @ctx
@@ -28,7 +28,7 @@ module Minknow
     end
 
     # Returns the current output directories for this position.
-    def get_output_directories : OutputDirectories
+    def output_directories : OutputDirectories
       client.get_output_directories(
         MinknowApi::Instance::GetOutputDirectoriesRequest.new,
         @ctx
@@ -36,7 +36,7 @@ module Minknow
     end
 
     # Returns the default output directories for this position.
-    def get_default_output_directories : OutputDirectories
+    def default_output_directories : OutputDirectories
       client.get_default_output_directories(
         MinknowApi::Instance::GetDefaultOutputDirectoriesRequest.new,
         @ctx
@@ -44,7 +44,7 @@ module Minknow
     end
 
     # Returns disk space information for this position.
-    def get_disk_space_info : DiskSpaceInfo
+    def disk_space_info : DiskSpaceInfo
       client.get_disk_space_info(
         MinknowApi::Instance::GetDiskSpaceInfoRequest.new,
         @ctx
@@ -52,7 +52,7 @@ module Minknow
     end
 
     # Returns the machine ID for this position.
-    def get_machine_id : MachineId
+    def machine_id : MachineId
       client.get_machine_id(
         MinknowApi::Instance::GetMachineIdRequest.new,
         @ctx

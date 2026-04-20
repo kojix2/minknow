@@ -136,7 +136,7 @@ begin
   print_row("basecalling", format_basecalling_availability(host_info.can_basecall))
   print_row("active basecalling hardware", format_basecalling_hardware(host_info.current_basecalling_hardware))
   hw = host_info.available_basecalling_hardware
-  print_row("available basecalling hardware", hw.empty? ? "n/a" : hw.map { |h| format_basecalling_hardware(h) }.join(" | "))
+  print_row("available basecalling hardware", hw.empty? ? "n/a" : hw.map { |hardware| format_basecalling_hardware(hardware) }.join(" | "))
   puts
   print_section("Version")
   print_row("minknow", format_version(version_info))

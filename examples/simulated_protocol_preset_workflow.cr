@@ -124,7 +124,6 @@ end
 
 def list_protocols_for_position(manager : Minknow::Manager, position : Minknow::FlowCellPosition, protocol_limit : Int32) : Nil
   connection = manager.connect(position)
-  channel : GRPC::Channel? = nil
   channel = connection.config.channel
   protocol_client = MinknowApi::Protocol::ProtocolService::Client.new(channel)
   ctx = connection.config.client_context

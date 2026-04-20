@@ -6,6 +6,8 @@ require "./generated/minknow_api/manager.grpc.cr"
 require "./minknow/instance_service"
 require "./minknow/device_service"
 require "./minknow/protocol_service"
+require "./minknow/data_service"
+require "./minknow/acquisition_service"
 
 module Minknow
   class Error < Exception; end
@@ -269,6 +271,14 @@ module Minknow
     getter position : FlowCellPosition
     getter config : ConnectionConfig
 
+    @channel : GRPC::Channel?
+    @ctx : GRPC::ClientContext?
+    @instance : InstanceService?
+    @device : DeviceService?
+    @protocol : ProtocolService?
+    @data : DataService?
+    @acquisition : AcquisitionService?
+
     def initialize(@position : FlowCellPosition, @config : ConnectionConfig)
     end
 
@@ -296,8 +306,12 @@ module Minknow
       @protocol ||= ProtocolService.new(channel, ctx)
     end
 
-    def data : ServiceHandle
-      @data ||= ServiceHandle.new(:data, config)
+    def data : DataService
+      @data ||= DataService.new(channel, ctx)
+    end
+
+    def acquisition : AcquisitionService
+      @acquisition ||= AcquisitionService.new(channel, ctx)
     end
   end
 

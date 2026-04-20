@@ -8,3 +8,8 @@ Naming/QueryBoolMethods:
     - src/generated/**
     - src/generated/**/*
 
+Lint/Typos:
+  Excluded:
+    - src/generated/**
+    - src/generated/**/*
+

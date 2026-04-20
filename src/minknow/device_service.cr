@@ -22,7 +22,7 @@ module Minknow
     end
 
     # Returns general information about the device attached to this position.
-    def get_device_info : DeviceInfo
+    def device_info : DeviceInfo
       client.get_device_info(
         MinknowApi::Device::GetDeviceInfoRequest.new,
         @ctx
@@ -30,7 +30,7 @@ module Minknow
     end
 
     # Returns the current device state (connected / ready).
-    def get_device_state : DeviceState
+    def device_state : DeviceState
       client.get_device_state(
         MinknowApi::Device::GetDeviceStateRequest.new,
         @ctx
@@ -38,7 +38,7 @@ module Minknow
     end
 
     # Returns information about the flow cell loaded in this position.
-    def get_flow_cell_info : FlowCellInfo
+    def flow_cell_info : FlowCellInfo
       client.get_flow_cell_info(
         MinknowApi::Device::GetFlowCellInfoRequest.new,
         @ctx
@@ -46,7 +46,7 @@ module Minknow
     end
 
     # Returns the channel layout for the attached device.
-    def get_channels_layout : ChannelsLayout
+    def channels_layout : ChannelsLayout
       client.get_channels_layout(
         MinknowApi::Device::GetChannelsLayoutRequest.new,
         @ctx
@@ -54,7 +54,7 @@ module Minknow
     end
 
     # Returns the current calibration for the device.
-    def get_calibration : CalibrationResponse
+    def calibration : CalibrationResponse
       client.get_calibration(
         MinknowApi::Device::GetCalibrationRequest.new,
         @ctx
@@ -62,7 +62,7 @@ module Minknow
     end
 
     # Returns the current temperature reading.
-    def get_temperature : Temperature
+    def temperature : Temperature
       client.get_temperature(
         MinknowApi::Device::GetTemperatureRequest.new,
         @ctx

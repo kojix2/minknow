@@ -29,7 +29,8 @@ describe Minknow do
     connection = manager.connect(position)
 
     connection.endpoint.should eq("localhost:9600")
-    connection.data.name.should eq(:data)
+    connection.data.should be_a(Minknow::DataService)
+    connection.acquisition.should be_a(Minknow::AcquisitionService)
   end
 
   it "builds a gRPC address from config" do
