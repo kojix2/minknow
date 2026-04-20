@@ -62,7 +62,9 @@ module Minknow
     # Convenience: builds an actions-only request from a batch of actions.
     def self.actions_request(actions : Array(Action)) : LiveRequest
       req = LiveRequest.new
-      req.actions = Actions.new(actions: actions)
+      acts = Actions.new
+      acts.actions = actions
+      req.actions = acts
       req
     end
 
@@ -73,12 +75,13 @@ module Minknow
       read_id : String,
       duration : Float64 = 0.1,
     ) : Action
-      action = Action.new(
-        action_id: action_id,
-        channel: channel,
-      )
+      action = Action.new
+      action.action_id = action_id
+      action.channel = channel
       action.id = read_id
-      action.unblock = MinknowApi::Data::GetLiveReadsRequest::UnblockAction.new(duration: duration)
+      unblock = MinknowApi::Data::GetLiveReadsRequest::UnblockAction.new
+      unblock.duration = duration
+      action.unblock = unblock
       action
     end
 
@@ -88,10 +91,9 @@ module Minknow
       channel : UInt32,
       read_id : String,
     ) : Action
-      action = Action.new(
-        action_id: action_id,
-        channel: channel,
-      )
+      action = Action.new
+      action.action_id = action_id
+      action.channel = channel
       action.id = read_id
       action.stop_further_data = MinknowApi::Data::GetLiveReadsRequest::StopFurtherData.new
       action
