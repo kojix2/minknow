@@ -167,6 +167,36 @@
       
         <ul>
   
+  <li class="parent " data-id="minknow/Minknow/AcquisitionService" data-name="minknow::acquisitionservice">
+      <a href="../Minknow/AcquisitionService.html">AcquisitionService</a>
+      
+        <ul>
+  
+  <li class=" " data-id="minknow/Minknow/AcquisitionService/CurrentStatus" data-name="minknow::acquisitionservice::currentstatus">
+      <a href="../Minknow/AcquisitionService/CurrentStatus.html">CurrentStatus</a>
+      
+    </li>
+  
+  <li class=" " data-id="minknow/Minknow/AcquisitionService/ProgressResponse" data-name="minknow::acquisitionservice::progressresponse">
+      <a href="../Minknow/AcquisitionService/ProgressResponse.html">ProgressResponse</a>
+      
+    </li>
+  
+  <li class=" " data-id="minknow/Minknow/AcquisitionService/RawPerChannel" data-name="minknow::acquisitionservice::rawperchannel">
+      <a href="../Minknow/AcquisitionService/RawPerChannel.html">RawPerChannel</a>
+      
+    </li>
+  
+  <li class=" " data-id="minknow/Minknow/AcquisitionService/RunInfo" data-name="minknow::acquisitionservice::runinfo">
+      <a href="../Minknow/AcquisitionService/RunInfo.html">RunInfo</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
   <li class=" " data-id="minknow/Minknow/Connection" data-name="minknow::connection">
       <a href="../Minknow/Connection.html">Connection</a>
       
@@ -174,6 +204,61 @@
   
   <li class=" " data-id="minknow/Minknow/ConnectionConfig" data-name="minknow::connectionconfig">
       <a href="../Minknow/ConnectionConfig.html">ConnectionConfig</a>
+      
+    </li>
+  
+  <li class="parent " data-id="minknow/Minknow/DataService" data-name="minknow::dataservice">
+      <a href="../Minknow/DataService.html">DataService</a>
+      
+        <ul>
+  
+  <li class=" " data-id="minknow/Minknow/DataService/Action" data-name="minknow::dataservice::action">
+      <a href="../Minknow/DataService/Action.html">Action</a>
+      
+    </li>
+  
+  <li class=" " data-id="minknow/Minknow/DataService/ActionResponse" data-name="minknow::dataservice::actionresponse">
+      <a href="../Minknow/DataService/ActionResponse.html">ActionResponse</a>
+      
+    </li>
+  
+  <li class=" " data-id="minknow/Minknow/DataService/Actions" data-name="minknow::dataservice::actions">
+      <a href="../Minknow/DataService/Actions.html">Actions</a>
+      
+    </li>
+  
+  <li class=" " data-id="minknow/Minknow/DataService/DataTypes" data-name="minknow::dataservice::datatypes">
+      <a href="../Minknow/DataService/DataTypes.html">DataTypes</a>
+      
+    </li>
+  
+  <li class=" " data-id="minknow/Minknow/DataService/LiveRequest" data-name="minknow::dataservice::liverequest">
+      <a href="../Minknow/DataService/LiveRequest.html">LiveRequest</a>
+      
+    </li>
+  
+  <li class=" " data-id="minknow/Minknow/DataService/LiveResponse" data-name="minknow::dataservice::liveresponse">
+      <a href="../Minknow/DataService/LiveResponse.html">LiveResponse</a>
+      
+    </li>
+  
+  <li class=" " data-id="minknow/Minknow/DataService/RawDataType" data-name="minknow::dataservice::rawdatatype">
+      <a href="../Minknow/DataService/RawDataType.html">RawDataType</a>
+      
+    </li>
+  
+  <li class=" " data-id="minknow/Minknow/DataService/ReadData" data-name="minknow::dataservice::readdata">
+      <a href="../Minknow/DataService/ReadData.html">ReadData</a>
+      
+    </li>
+  
+  <li class=" " data-id="minknow/Minknow/DataService/StreamSetup" data-name="minknow::dataservice::streamsetup">
+      <a href="../Minknow/DataService/StreamSetup.html">StreamSetup</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -6136,7 +6221,7 @@ info, calibration and temperature. Access via <code><a href="../Minknow/Connecti
   </h2>
   
     
-      <a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/device_service.cr#L9" target="_blank">
+      <a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/device_service.cr#L9" target="_blank">
         minknow/device_service.cr
       </a>
     
@@ -6182,49 +6267,42 @@ info, calibration and temperature. Access via <code><a href="../Minknow/Connecti
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#client%3AMinknowApi%3A%3ADevice%3A%3ADeviceService%3A%3AClient-instance-method" class="signature"><strong>#client</strong> : MinknowApi::Device::DeviceService::Client</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#get_calibration%3ACalibrationResponse-instance-method" class="signature"><strong>#get_calibration</strong> : CalibrationResponse</a>
+        <a href="#calibration%3ACalibrationResponse-instance-method" class="signature"><strong>#calibration</strong> : CalibrationResponse</a>
         
           <div class="summary"><p>Returns the current calibration for the device.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#get_channels_layout%3AChannelsLayout-instance-method" class="signature"><strong>#get_channels_layout</strong> : ChannelsLayout</a>
+        <a href="#channels_layout%3AChannelsLayout-instance-method" class="signature"><strong>#channels_layout</strong> : ChannelsLayout</a>
         
           <div class="summary"><p>Returns the channel layout for the attached device.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#get_device_info%3ADeviceInfo-instance-method" class="signature"><strong>#get_device_info</strong> : DeviceInfo</a>
+        <a href="#client%3AMinknowApi%3A%3ADevice%3A%3ADeviceService%3A%3AClient-instance-method" class="signature"><strong>#client</strong> : MinknowApi::Device::DeviceService::Client</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#device_info%3ADeviceInfo-instance-method" class="signature"><strong>#device_info</strong> : DeviceInfo</a>
         
           <div class="summary"><p>Returns general information about the device attached to this position.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#get_device_state%3ADeviceState-instance-method" class="signature"><strong>#get_device_state</strong> : DeviceState</a>
+        <a href="#device_state%3ADeviceState-instance-method" class="signature"><strong>#device_state</strong> : DeviceState</a>
         
           <div class="summary"><p>Returns the current device state (connected / ready).</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#get_flow_cell_info%3AFlowCellInfo-instance-method" class="signature"><strong>#get_flow_cell_info</strong> : FlowCellInfo</a>
+        <a href="#flow_cell_info%3AFlowCellInfo-instance-method" class="signature"><strong>#flow_cell_info</strong> : FlowCellInfo</a>
         
           <div class="summary"><p>Returns information about the flow cell loaded in this position.</p></div>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#get_temperature%3ATemperature-instance-method" class="signature"><strong>#get_temperature</strong> : Temperature</a>
-        
-          <div class="summary"><p>Returns the current temperature reading.</p></div>
         
       </li>
     
@@ -6246,6 +6324,13 @@ info, calibration and temperature. Access via <code><a href="../Minknow/Connecti
         <a href="#stream_temperature%3AGRPC%3A%3AServerStream%28MinknowApi%3A%3ADevice%3A%3AGetTemperatureResponse%29-instance-method" class="signature"><strong>#stream_temperature</strong> : GRPC::ServerStream(MinknowApi::Device::GetTemperatureResponse)</a>
         
           <div class="summary"><p>Streams temperature changes.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#temperature%3ATemperature-instance-method" class="signature"><strong>#temperature</strong> : Temperature</a>
+        
+          <div class="summary"><p>Returns the current temperature reading.</p></div>
         
       </li>
     
@@ -6304,7 +6389,7 @@ info, calibration and temperature. Access via <code><a href="../Minknow/Connecti
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/device_service.cr#L17" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/device_service.cr#L17" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6325,6 +6410,48 @@ info, calibration and temperature. Access via <code><a href="../Minknow/Connecti
     Instance Method Detail
   </h2>
   
+    <div class="entry-detail" id="calibration:CalibrationResponse-instance-method">
+      <div class="signature">
+        
+        def <strong>calibration</strong> : <a href="../Minknow/DeviceService/CalibrationResponse.html">CalibrationResponse</a>
+
+        <a class="method-permalink" href="#calibration%3ACalibrationResponse-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns the current calibration for the device.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/device_service.cr#L57" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="channels_layout:ChannelsLayout-instance-method">
+      <div class="signature">
+        
+        def <strong>channels_layout</strong> : <a href="../Minknow/DeviceService/ChannelsLayout.html">ChannelsLayout</a>
+
+        <a class="method-permalink" href="#channels_layout%3AChannelsLayout-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns the channel layout for the attached device.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/device_service.cr#L49" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
     <div class="entry-detail" id="client:MinknowApi::Device::DeviceService::Client-instance-method">
       <div class="signature">
         
@@ -6336,59 +6463,17 @@ info, calibration and temperature. Access via <code><a href="../Minknow/Connecti
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/device_service.cr#L20" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/device_service.cr#L20" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="get_calibration:CalibrationResponse-instance-method">
+    <div class="entry-detail" id="device_info:DeviceInfo-instance-method">
       <div class="signature">
         
-        def <strong>get_calibration</strong> : <a href="../Minknow/DeviceService/CalibrationResponse.html">CalibrationResponse</a>
+        def <strong>device_info</strong> : <a href="../Minknow/DeviceService/DeviceInfo.html">DeviceInfo</a>
 
-        <a class="method-permalink" href="#get_calibration%3ACalibrationResponse-instance-method">#</a>
-      </div>
-      
-        <div class="doc">
-          
-          <p>Returns the current calibration for the device.</p>
-        </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/device_service.cr#L57" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="get_channels_layout:ChannelsLayout-instance-method">
-      <div class="signature">
-        
-        def <strong>get_channels_layout</strong> : <a href="../Minknow/DeviceService/ChannelsLayout.html">ChannelsLayout</a>
-
-        <a class="method-permalink" href="#get_channels_layout%3AChannelsLayout-instance-method">#</a>
-      </div>
-      
-        <div class="doc">
-          
-          <p>Returns the channel layout for the attached device.</p>
-        </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/device_service.cr#L49" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="get_device_info:DeviceInfo-instance-method">
-      <div class="signature">
-        
-        def <strong>get_device_info</strong> : <a href="../Minknow/DeviceService/DeviceInfo.html">DeviceInfo</a>
-
-        <a class="method-permalink" href="#get_device_info%3ADeviceInfo-instance-method">#</a>
+        <a class="method-permalink" href="#device_info%3ADeviceInfo-instance-method">#</a>
       </div>
       
         <div class="doc">
@@ -6399,17 +6484,17 @@ info, calibration and temperature. Access via <code><a href="../Minknow/Connecti
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/device_service.cr#L25" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/device_service.cr#L25" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="get_device_state:DeviceState-instance-method">
+    <div class="entry-detail" id="device_state:DeviceState-instance-method">
       <div class="signature">
         
-        def <strong>get_device_state</strong> : <a href="../Minknow/DeviceService/DeviceState.html">DeviceState</a>
+        def <strong>device_state</strong> : <a href="../Minknow/DeviceService/DeviceState.html">DeviceState</a>
 
-        <a class="method-permalink" href="#get_device_state%3ADeviceState-instance-method">#</a>
+        <a class="method-permalink" href="#device_state%3ADeviceState-instance-method">#</a>
       </div>
       
         <div class="doc">
@@ -6420,17 +6505,17 @@ info, calibration and temperature. Access via <code><a href="../Minknow/Connecti
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/device_service.cr#L33" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/device_service.cr#L33" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="get_flow_cell_info:FlowCellInfo-instance-method">
+    <div class="entry-detail" id="flow_cell_info:FlowCellInfo-instance-method">
       <div class="signature">
         
-        def <strong>get_flow_cell_info</strong> : <a href="../Minknow/DeviceService/FlowCellInfo.html">FlowCellInfo</a>
+        def <strong>flow_cell_info</strong> : <a href="../Minknow/DeviceService/FlowCellInfo.html">FlowCellInfo</a>
 
-        <a class="method-permalink" href="#get_flow_cell_info%3AFlowCellInfo-instance-method">#</a>
+        <a class="method-permalink" href="#flow_cell_info%3AFlowCellInfo-instance-method">#</a>
       </div>
       
         <div class="doc">
@@ -6441,28 +6526,7 @@ info, calibration and temperature. Access via <code><a href="../Minknow/Connecti
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/device_service.cr#L41" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="get_temperature:Temperature-instance-method">
-      <div class="signature">
-        
-        def <strong>get_temperature</strong> : <a href="../Minknow/DeviceService/Temperature.html">Temperature</a>
-
-        <a class="method-permalink" href="#get_temperature%3ATemperature-instance-method">#</a>
-      </div>
-      
-        <div class="doc">
-          
-          <p>Returns the current temperature reading.</p>
-        </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/device_service.cr#L65" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/device_service.cr#L41" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6483,7 +6547,7 @@ info, calibration and temperature. Access via <code><a href="../Minknow/Connecti
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/device_service.cr#L73" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/device_service.cr#L73" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6504,7 +6568,7 @@ info, calibration and temperature. Access via <code><a href="../Minknow/Connecti
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/device_service.cr#L81" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/device_service.cr#L81" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6525,7 +6589,28 @@ info, calibration and temperature. Access via <code><a href="../Minknow/Connecti
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/device_service.cr#L89" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/device_service.cr#L89" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="temperature:Temperature-instance-method">
+      <div class="signature">
+        
+        def <strong>temperature</strong> : <a href="../Minknow/DeviceService/Temperature.html">Temperature</a>
+
+        <a class="method-permalink" href="#temperature%3ATemperature-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns the current temperature reading.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/device_service.cr#L65" target="_blank">View source</a>]
         
       </div>
     </div>

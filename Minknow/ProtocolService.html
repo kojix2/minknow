@@ -167,6 +167,36 @@
       
         <ul>
   
+  <li class="parent " data-id="minknow/Minknow/AcquisitionService" data-name="minknow::acquisitionservice">
+      <a href="../Minknow/AcquisitionService.html">AcquisitionService</a>
+      
+        <ul>
+  
+  <li class=" " data-id="minknow/Minknow/AcquisitionService/CurrentStatus" data-name="minknow::acquisitionservice::currentstatus">
+      <a href="../Minknow/AcquisitionService/CurrentStatus.html">CurrentStatus</a>
+      
+    </li>
+  
+  <li class=" " data-id="minknow/Minknow/AcquisitionService/ProgressResponse" data-name="minknow::acquisitionservice::progressresponse">
+      <a href="../Minknow/AcquisitionService/ProgressResponse.html">ProgressResponse</a>
+      
+    </li>
+  
+  <li class=" " data-id="minknow/Minknow/AcquisitionService/RawPerChannel" data-name="minknow::acquisitionservice::rawperchannel">
+      <a href="../Minknow/AcquisitionService/RawPerChannel.html">RawPerChannel</a>
+      
+    </li>
+  
+  <li class=" " data-id="minknow/Minknow/AcquisitionService/RunInfo" data-name="minknow::acquisitionservice::runinfo">
+      <a href="../Minknow/AcquisitionService/RunInfo.html">RunInfo</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
   <li class=" " data-id="minknow/Minknow/Connection" data-name="minknow::connection">
       <a href="../Minknow/Connection.html">Connection</a>
       
@@ -174,6 +204,61 @@
   
   <li class=" " data-id="minknow/Minknow/ConnectionConfig" data-name="minknow::connectionconfig">
       <a href="../Minknow/ConnectionConfig.html">ConnectionConfig</a>
+      
+    </li>
+  
+  <li class="parent " data-id="minknow/Minknow/DataService" data-name="minknow::dataservice">
+      <a href="../Minknow/DataService.html">DataService</a>
+      
+        <ul>
+  
+  <li class=" " data-id="minknow/Minknow/DataService/Action" data-name="minknow::dataservice::action">
+      <a href="../Minknow/DataService/Action.html">Action</a>
+      
+    </li>
+  
+  <li class=" " data-id="minknow/Minknow/DataService/ActionResponse" data-name="minknow::dataservice::actionresponse">
+      <a href="../Minknow/DataService/ActionResponse.html">ActionResponse</a>
+      
+    </li>
+  
+  <li class=" " data-id="minknow/Minknow/DataService/Actions" data-name="minknow::dataservice::actions">
+      <a href="../Minknow/DataService/Actions.html">Actions</a>
+      
+    </li>
+  
+  <li class=" " data-id="minknow/Minknow/DataService/DataTypes" data-name="minknow::dataservice::datatypes">
+      <a href="../Minknow/DataService/DataTypes.html">DataTypes</a>
+      
+    </li>
+  
+  <li class=" " data-id="minknow/Minknow/DataService/LiveRequest" data-name="minknow::dataservice::liverequest">
+      <a href="../Minknow/DataService/LiveRequest.html">LiveRequest</a>
+      
+    </li>
+  
+  <li class=" " data-id="minknow/Minknow/DataService/LiveResponse" data-name="minknow::dataservice::liveresponse">
+      <a href="../Minknow/DataService/LiveResponse.html">LiveResponse</a>
+      
+    </li>
+  
+  <li class=" " data-id="minknow/Minknow/DataService/RawDataType" data-name="minknow::dataservice::rawdatatype">
+      <a href="../Minknow/DataService/RawDataType.html">RawDataType</a>
+      
+    </li>
+  
+  <li class=" " data-id="minknow/Minknow/DataService/ReadData" data-name="minknow::dataservice::readdata">
+      <a href="../Minknow/DataService/ReadData.html">ReadData</a>
+      
+    </li>
+  
+  <li class=" " data-id="minknow/Minknow/DataService/StreamSetup" data-name="minknow::dataservice::streamsetup">
+      <a href="../Minknow/DataService/StreamSetup.html">StreamSetup</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -6136,7 +6221,7 @@ Access via <code><a href="../Minknow/Connection.html#protocol%3AProtocolService-
   </h2>
   
     
-      <a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/protocol_service.cr#L9" target="_blank">
+      <a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/protocol_service.cr#L9" target="_blank">
         minknow/protocol_service.cr
       </a>
     
@@ -6187,14 +6272,14 @@ Access via <code><a href="../Minknow/Connection.html#protocol%3AProtocolService-
       </li>
     
       <li class="entry-summary">
-        <a href="#get_context_info%3AContextInfoResponse-instance-method" class="signature"><strong>#get_context_info</strong> : ContextInfoResponse</a>
+        <a href="#context_info%3AContextInfoResponse-instance-method" class="signature"><strong>#context_info</strong> : ContextInfoResponse</a>
         
           <div class="summary"><p>Returns context info (user metadata) for the current run.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#get_current_protocol_run%3ARunInfo-instance-method" class="signature"><strong>#get_current_protocol_run</strong> : RunInfo</a>
+        <a href="#current_protocol_run%3ARunInfo-instance-method" class="signature"><strong>#current_protocol_run</strong> : RunInfo</a>
         
           <div class="summary"><p>Returns info about the current protocol run.</p></div>
         
@@ -6325,7 +6410,7 @@ Access via <code><a href="../Minknow/Connection.html#protocol%3AProtocolService-
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/protocol_service.cr#L17" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/protocol_service.cr#L17" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6357,17 +6442,17 @@ Access via <code><a href="../Minknow/Connection.html#protocol%3AProtocolService-
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/protocol_service.cr#L20" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/protocol_service.cr#L20" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="get_context_info:ContextInfoResponse-instance-method">
+    <div class="entry-detail" id="context_info:ContextInfoResponse-instance-method">
       <div class="signature">
         
-        def <strong>get_context_info</strong> : <a href="../Minknow/ProtocolService/ContextInfoResponse.html">ContextInfoResponse</a>
+        def <strong>context_info</strong> : <a href="../Minknow/ProtocolService/ContextInfoResponse.html">ContextInfoResponse</a>
 
-        <a class="method-permalink" href="#get_context_info%3AContextInfoResponse-instance-method">#</a>
+        <a class="method-permalink" href="#context_info%3AContextInfoResponse-instance-method">#</a>
       </div>
       
         <div class="doc">
@@ -6378,17 +6463,17 @@ Access via <code><a href="../Minknow/Connection.html#protocol%3AProtocolService-
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/protocol_service.cr#L73" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/protocol_service.cr#L73" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="get_current_protocol_run:RunInfo-instance-method">
+    <div class="entry-detail" id="current_protocol_run:RunInfo-instance-method">
       <div class="signature">
         
-        def <strong>get_current_protocol_run</strong> : <a href="../Minknow/ProtocolService/RunInfo.html">RunInfo</a>
+        def <strong>current_protocol_run</strong> : <a href="../Minknow/ProtocolService/RunInfo.html">RunInfo</a>
 
-        <a class="method-permalink" href="#get_current_protocol_run%3ARunInfo-instance-method">#</a>
+        <a class="method-permalink" href="#current_protocol_run%3ARunInfo-instance-method">#</a>
       </div>
       
         <div class="doc">
@@ -6399,7 +6484,7 @@ Access via <code><a href="../Minknow/Connection.html#protocol%3AProtocolService-
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/protocol_service.cr#L50" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/protocol_service.cr#L50" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6420,7 +6505,7 @@ Access via <code><a href="../Minknow/Connection.html#protocol%3AProtocolService-
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/protocol_service.cr#L55" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/protocol_service.cr#L55" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6441,7 +6526,7 @@ Access via <code><a href="../Minknow/Connection.html#protocol%3AProtocolService-
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/protocol_service.cr#L63" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/protocol_service.cr#L63" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6462,7 +6547,7 @@ Access via <code><a href="../Minknow/Connection.html#protocol%3AProtocolService-
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/protocol_service.cr#L68" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/protocol_service.cr#L68" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6483,7 +6568,7 @@ Access via <code><a href="../Minknow/Connection.html#protocol%3AProtocolService-
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/protocol_service.cr#L35" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/protocol_service.cr#L35" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6504,7 +6589,7 @@ Access via <code><a href="../Minknow/Connection.html#protocol%3AProtocolService-
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/protocol_service.cr#L40" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/protocol_service.cr#L40" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6525,7 +6610,7 @@ Access via <code><a href="../Minknow/Connection.html#protocol%3AProtocolService-
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/protocol_service.cr#L25" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/protocol_service.cr#L25" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6546,7 +6631,7 @@ Access via <code><a href="../Minknow/Connection.html#protocol%3AProtocolService-
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/protocol_service.cr#L30" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/protocol_service.cr#L30" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6567,7 +6652,7 @@ Access via <code><a href="../Minknow/Connection.html#protocol%3AProtocolService-
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/protocol_service.cr#L45" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/protocol_service.cr#L45" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6588,7 +6673,7 @@ Access via <code><a href="../Minknow/Connection.html#protocol%3AProtocolService-
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/protocol_service.cr#L78" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/protocol_service.cr#L78" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6609,7 +6694,7 @@ Access via <code><a href="../Minknow/Connection.html#protocol%3AProtocolService-
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/566c2e786fa963f93d71e671027adea0bf6408be/src/minknow/protocol_service.cr#L89" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/ddad3cb00e5c0622884f1f4b23c400a6e39072bb/src/minknow/protocol_service.cr#L89" target="_blank">View source</a>]
         
       </div>
     </div>
