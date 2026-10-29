@@ -793,7 +793,7 @@ module MinknowApi::HardwareCheck
         req_marshaller = marshaller_for(StartHardwareCheckRequest)
         res_marshaller = marshaller_for(StartHardwareCheckResponse)
         response = @channel.unary_call(FULL_NAME, "start_hardware_check", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(StartHardwareCheckResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -805,7 +805,7 @@ module MinknowApi::HardwareCheck
         req_marshaller = marshaller_for(StopHardwareCheckRequest)
         res_marshaller = marshaller_for(StopHardwareCheckResponse)
         response = @channel.unary_call(FULL_NAME, "stop_hardware_check", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(StopHardwareCheckResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -817,7 +817,7 @@ module MinknowApi::HardwareCheck
         req_marshaller = marshaller_for(UpdateHardwareCheckResultsRequest)
         res_marshaller = marshaller_for(UpdateHardwareCheckResultsResponse)
         response = @channel.unary_call(FULL_NAME, "update_hardware_check_results", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(UpdateHardwareCheckResultsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 

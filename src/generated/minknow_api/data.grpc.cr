@@ -4075,7 +4075,7 @@ module MinknowApi::Data
         req_marshaller = marshaller_for(GetDataTypesRequest)
         res_marshaller = marshaller_for(GetDataTypesResponse)
         response = @channel.unary_call(FULL_NAME, "get_data_types", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(GetDataTypesResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -4119,7 +4119,7 @@ module MinknowApi::Data
         req_marshaller = marshaller_for(ResetChannelStatesRequest)
         res_marshaller = marshaller_for(ResetChannelStatesResponse)
         response = @channel.unary_call(FULL_NAME, "reset_channel_states", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(ResetChannelStatesResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -4131,7 +4131,7 @@ module MinknowApi::Data
         req_marshaller = marshaller_for(LockChannelStatesRequest)
         res_marshaller = marshaller_for(LockChannelStatesResponse)
         response = @channel.unary_call(FULL_NAME, "lock_channel_states", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(LockChannelStatesResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -4143,7 +4143,7 @@ module MinknowApi::Data
         req_marshaller = marshaller_for(UnlockChannelStatesRequest)
         res_marshaller = marshaller_for(UnlockChannelStatesResponse)
         response = @channel.unary_call(FULL_NAME, "unlock_channel_states", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(UnlockChannelStatesResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -4157,7 +4157,7 @@ module MinknowApi::Data
         recv_chan = ::Channel(GetLiveReadsResponse | Exception).new(128)
         spawn do
           begin
-            raw.each { |bytes| recv_chan.send(res_marshaller.decode(bytes)) rescue nil }
+            raw.each { |bytes| recv_chan.send(res_marshaller.decode(bytes)) }
             recv_chan.close
           rescue ex
             recv_chan.send(ex) rescue nil
@@ -4177,7 +4177,7 @@ module MinknowApi::Data
         req_marshaller = marshaller_for(RecordAdaptiveSamplingInformationRequest)
         res_marshaller = marshaller_for(RecordAdaptiveSamplingInformationResponse)
         response = @channel.unary_call(FULL_NAME, "record_adaptive_sampling_information", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(RecordAdaptiveSamplingInformationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -4189,7 +4189,7 @@ module MinknowApi::Data
         req_marshaller = marshaller_for(GetReadStatisticsRequest)
         res_marshaller = marshaller_for(GetReadStatisticsResponse)
         response = @channel.unary_call(FULL_NAME, "get_read_statistics", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(GetReadStatisticsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -4201,7 +4201,7 @@ module MinknowApi::Data
         req_marshaller = marshaller_for(GetExperimentYieldInfoRequest)
         res_marshaller = marshaller_for(GetExperimentYieldInfoResponse)
         response = @channel.unary_call(FULL_NAME, "get_experiment_yield_info", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(GetExperimentYieldInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
     end

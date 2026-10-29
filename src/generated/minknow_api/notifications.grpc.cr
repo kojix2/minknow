@@ -431,7 +431,7 @@ module MinknowApi::Notifications
         req_marshaller = marshaller_for(MarkNotificationsAsReadRequest)
         res_marshaller = marshaller_for(MarkNotificationsAsReadResponse)
         response = @channel.unary_call(FULL_NAME, "mark_notifications_as_read", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(MarkNotificationsAsReadResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -443,7 +443,7 @@ module MinknowApi::Notifications
         req_marshaller = marshaller_for(CreateNotificationRequest)
         res_marshaller = marshaller_for(CreateNotificationResponse)
         response = @channel.unary_call(FULL_NAME, "create_notification", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(CreateNotificationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
     end

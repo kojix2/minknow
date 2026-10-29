@@ -1201,7 +1201,7 @@ module MinknowApi::Instance
         req_marshaller = marshaller_for(GetVersionInfoRequest)
         res_marshaller = marshaller_for(GetVersionInfoResponse)
         response = @channel.unary_call(FULL_NAME, "get_version_info", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(GetVersionInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -1213,7 +1213,7 @@ module MinknowApi::Instance
         req_marshaller = marshaller_for(GetOutputDirectoriesRequest)
         res_marshaller = marshaller_for(OutputDirectories)
         response = @channel.unary_call(FULL_NAME, "get_output_directories", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(OutputDirectories).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -1225,7 +1225,7 @@ module MinknowApi::Instance
         req_marshaller = marshaller_for(GetDefaultOutputDirectoriesRequest)
         res_marshaller = marshaller_for(OutputDirectories)
         response = @channel.unary_call(FULL_NAME, "get_default_output_directories", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(OutputDirectories).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -1237,7 +1237,7 @@ module MinknowApi::Instance
         req_marshaller = marshaller_for(SetOutputDirectoryRequest)
         res_marshaller = marshaller_for(SetOutputDirectoryResponse)
         response = @channel.unary_call(FULL_NAME, "set_output_directory", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(SetOutputDirectoryResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -1249,7 +1249,7 @@ module MinknowApi::Instance
         req_marshaller = marshaller_for(SetReadsDirectoryRequest)
         res_marshaller = marshaller_for(SetReadsDirectoryResponse)
         response = @channel.unary_call(FULL_NAME, "set_reads_directory", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(SetReadsDirectoryResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -1261,7 +1261,7 @@ module MinknowApi::Instance
         req_marshaller = marshaller_for(GetDiskSpaceInfoRequest)
         res_marshaller = marshaller_for(GetDiskSpaceInfoResponse)
         response = @channel.unary_call(FULL_NAME, "get_disk_space_info", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(GetDiskSpaceInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -1289,7 +1289,7 @@ module MinknowApi::Instance
         req_marshaller = marshaller_for(GetMachineIdRequest)
         res_marshaller = marshaller_for(GetMachineIdResponse)
         response = @channel.unary_call(FULL_NAME, "get_machine_id", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(GetMachineIdResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 

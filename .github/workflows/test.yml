@@ -17,24 +17,32 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
+        with:
+          submodules: true
 
       - name: Install Crystal
         uses: crystal-lang/install-crystal@v1
         with:
           crystal: ${{ matrix.crystal }}
 
-      - name: Install libnghttp2 (Ubuntu)
+      - name: Install libnghttp2 and protoc (Ubuntu)
         if: runner.os == 'Linux'
-        run: sudo apt-get install -y libnghttp2-dev
+        run: sudo apt-get install -y libnghttp2-dev protobuf-compiler
 
-      - name: Install libnghttp2 (macOS)
+      - name: Install libnghttp2 and protoc (macOS)
         if: runner.os == 'macOS'
         run: |
-          brew install libnghttp2
+          brew install libnghttp2 protobuf
           echo "LIBRARY_PATH=$(brew --prefix libnghttp2)/lib" >> $GITHUB_ENV
 
       - name: Install shards
-        run: shards install --without-development
+        run: shards install --frozen --without-development
+
+      - name: Check generated files
+        run: |
+          make gen
+          git diff --exit-code -- src/generated
+          test -z "$(git ls-files --others --exclude-standard src/generated)"
 
       - name: Run specs
         run: crystal spec

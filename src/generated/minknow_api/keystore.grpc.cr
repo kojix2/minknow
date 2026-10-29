@@ -584,7 +584,7 @@ module MinknowApi::Keystore
         req_marshaller = marshaller_for(StoreRequest)
         res_marshaller = marshaller_for(StoreResponse)
         response = @channel.unary_call(FULL_NAME, "store", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(StoreResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -596,7 +596,7 @@ module MinknowApi::Keystore
         req_marshaller = marshaller_for(RemoveRequest)
         res_marshaller = marshaller_for(RemoveResponse)
         response = @channel.unary_call(FULL_NAME, "remove", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(RemoveResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -608,7 +608,7 @@ module MinknowApi::Keystore
         req_marshaller = marshaller_for(GetOneRequest)
         res_marshaller = marshaller_for(GetOneResponse)
         response = @channel.unary_call(FULL_NAME, "get_one", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(GetOneResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -620,7 +620,7 @@ module MinknowApi::Keystore
         req_marshaller = marshaller_for(GetRequest)
         res_marshaller = marshaller_for(GetResponse)
         response = @channel.unary_call(FULL_NAME, "get", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(GetResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 

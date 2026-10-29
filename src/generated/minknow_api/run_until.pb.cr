@@ -44,7 +44,17 @@ module MinknowApi
               reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.key = reader.read_string
             when 2
-              msg.value = reader.read_embedded(2, wt) { |sub| Google::Protobuf::Any.decode_partial(sub) }
+              msg.value = reader.read_embedded(2, wt) do |sub|
+                if current = msg.value
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::Any.decode_partial(merged)
+                else
+                  Google::Protobuf::Any.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -103,9 +113,7 @@ module MinknowApi
           case fn
           when 1
             entry = reader.read_embedded(1, wt) { |sub| CriteriaValues::CriteriaEntry.decode_partial(sub) }
-            if value = entry.value
-              msg.criteria[entry.key] = value
-            end
+            msg.criteria[entry.key] = entry.value || Google::Protobuf::Any.new
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -184,9 +192,29 @@ module MinknowApi
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.acquisition_run_id = reader.read_string
           when 2
-            msg.pause_criteria = reader.read_embedded(2, wt) { |sub| CriteriaValues.decode_partial(sub) }
+            msg.pause_criteria = reader.read_embedded(2, wt) do |sub|
+              if current = msg.pause_criteria
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                CriteriaValues.decode_partial(merged)
+              else
+                CriteriaValues.decode_partial(sub)
+              end
+            end
           when 3
-            msg.stop_criteria = reader.read_embedded(3, wt) { |sub| CriteriaValues.decode_partial(sub) }
+            msg.stop_criteria = reader.read_embedded(3, wt) do |sub|
+              if current = msg.stop_criteria
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                CriteriaValues.decode_partial(merged)
+              else
+                CriteriaValues.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -349,9 +377,29 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.pause_criteria = reader.read_embedded(1, wt) { |sub| CriteriaValues.decode_partial(sub) }
+            msg.pause_criteria = reader.read_embedded(1, wt) do |sub|
+              if current = msg.pause_criteria
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                CriteriaValues.decode_partial(merged)
+              else
+                CriteriaValues.decode_partial(sub)
+              end
+            end
           when 2
-            msg.stop_criteria = reader.read_embedded(2, wt) { |sub| CriteriaValues.decode_partial(sub) }
+            msg.stop_criteria = reader.read_embedded(2, wt) do |sub|
+              if current = msg.stop_criteria
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                CriteriaValues.decode_partial(merged)
+              else
+                CriteriaValues.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -466,9 +514,29 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              msg.min_time = reader.read_embedded(1, wt) { |sub| Google::Protobuf::Timestamp.decode_partial(sub) }
+              msg.min_time = reader.read_embedded(1, wt) do |sub|
+                if current = msg.min_time
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::Timestamp.decode_partial(merged)
+                else
+                  Google::Protobuf::Timestamp.decode_partial(sub)
+                end
+              end
             when 2
-              msg.max_time = reader.read_embedded(2, wt) { |sub| Google::Protobuf::Timestamp.decode_partial(sub) }
+              msg.max_time = reader.read_embedded(2, wt) do |sub|
+                if current = msg.max_time
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::Timestamp.decode_partial(merged)
+                else
+                  Google::Protobuf::Timestamp.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -564,9 +632,29 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              msg.not_estimated = reader.read_embedded(1, wt) { |sub| EstimatedTimeRemainingUpdate::NotEstimated.decode_partial(sub) }
+              msg.not_estimated = reader.read_embedded(1, wt) do |sub|
+                if current = msg.not_estimated
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  EstimatedTimeRemainingUpdate::NotEstimated.decode_partial(merged)
+                else
+                  EstimatedTimeRemainingUpdate::NotEstimated.decode_partial(sub)
+                end
+              end
             when 2
-              msg.estimated = reader.read_embedded(2, wt) { |sub| EstimatedTimeRemainingUpdate::Estimated.decode_partial(sub) }
+              msg.estimated = reader.read_embedded(2, wt) do |sub|
+                if current = msg.estimated
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  EstimatedTimeRemainingUpdate::Estimated.decode_partial(merged)
+                else
+                  EstimatedTimeRemainingUpdate::Estimated.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -644,7 +732,17 @@ module MinknowApi
                 reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
                 msg.key = reader.read_string
               when 2
-                msg.value = reader.read_embedded(2, wt) { |sub| EstimatedTimeRemainingUpdate::EstimatedTime.decode_partial(sub) }
+                msg.value = reader.read_embedded(2, wt) do |sub|
+                  if current = msg.value
+                    merged = IO::Memory.new
+                    current.encode_partial(merged)
+                    IO.copy(sub, merged)
+                    merged.rewind
+                    EstimatedTimeRemainingUpdate::EstimatedTime.decode_partial(merged)
+                  else
+                    EstimatedTimeRemainingUpdate::EstimatedTime.decode_partial(sub)
+                  end
+                end
               else
                 msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
               end
@@ -703,9 +801,7 @@ module MinknowApi
             case fn
             when 1
               entry = reader.read_embedded(1, wt) { |sub| EstimatedTimeRemainingUpdate::EstimatedTimes::EstimatedTimesEntry.decode_partial(sub) }
-              if value = entry.value
-                msg.estimated_times[entry.key] = value
-              end
+              msg.estimated_times[entry.key] = entry.value || EstimatedTimeRemainingUpdate::EstimatedTime.new
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -777,9 +873,29 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.pause_estimates = reader.read_embedded(1, wt) { |sub| EstimatedTimeRemainingUpdate::EstimatedTimes.decode_partial(sub) }
+            msg.pause_estimates = reader.read_embedded(1, wt) do |sub|
+              if current = msg.pause_estimates
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                EstimatedTimeRemainingUpdate::EstimatedTimes.decode_partial(merged)
+              else
+                EstimatedTimeRemainingUpdate::EstimatedTimes.decode_partial(sub)
+              end
+            end
           when 2
-            msg.stop_estimates = reader.read_embedded(2, wt) { |sub| EstimatedTimeRemainingUpdate::EstimatedTimes.decode_partial(sub) }
+            msg.stop_estimates = reader.read_embedded(2, wt) do |sub|
+              if current = msg.stop_estimates
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                EstimatedTimeRemainingUpdate::EstimatedTimes.decode_partial(merged)
+              else
+                EstimatedTimeRemainingUpdate::EstimatedTimes.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1000,9 +1116,29 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.started = reader.read_embedded(1, wt) { |sub| ScriptUpdate::Started.decode_partial(sub) }
+            msg.started = reader.read_embedded(1, wt) do |sub|
+              if current = msg.started
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                ScriptUpdate::Started.decode_partial(merged)
+              else
+                ScriptUpdate::Started.decode_partial(sub)
+              end
+            end
           when 2
-            msg.criteria_updated = reader.read_embedded(2, wt) { |sub| ScriptUpdate::CriteriaUpdated.decode_partial(sub) }
+            msg.criteria_updated = reader.read_embedded(2, wt) do |sub|
+              if current = msg.criteria_updated
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                ScriptUpdate::CriteriaUpdated.decode_partial(merged)
+              else
+                ScriptUpdate::CriteriaUpdated.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1190,9 +1326,29 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.invalid_criteria = reader.read_embedded(1, wt) { |sub| ErrorUpdate::InvalidCriteria.decode_partial(sub) }
+            msg.invalid_criteria = reader.read_embedded(1, wt) do |sub|
+              if current = msg.invalid_criteria
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                ErrorUpdate::InvalidCriteria.decode_partial(merged)
+              else
+                ErrorUpdate::InvalidCriteria.decode_partial(sub)
+              end
+            end
           when 15
-            msg.other_error = reader.read_embedded(15, wt) { |sub| ErrorUpdate::OtherError.decode_partial(sub) }
+            msg.other_error = reader.read_embedded(15, wt) do |sub|
+              if current = msg.other_error
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                ErrorUpdate::OtherError.decode_partial(merged)
+              else
+                ErrorUpdate::OtherError.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1307,15 +1463,65 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.estimated_time_remaining_update = reader.read_embedded(1, wt) { |sub| EstimatedTimeRemainingUpdate.decode_partial(sub) }
+            msg.estimated_time_remaining_update = reader.read_embedded(1, wt) do |sub|
+              if current = msg.estimated_time_remaining_update
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                EstimatedTimeRemainingUpdate.decode_partial(merged)
+              else
+                EstimatedTimeRemainingUpdate.decode_partial(sub)
+              end
+            end
           when 2
-            msg.action_update = reader.read_embedded(2, wt) { |sub| ActionUpdate.decode_partial(sub) }
+            msg.action_update = reader.read_embedded(2, wt) do |sub|
+              if current = msg.action_update
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                ActionUpdate.decode_partial(merged)
+              else
+                ActionUpdate.decode_partial(sub)
+              end
+            end
           when 3
-            msg.script_update = reader.read_embedded(3, wt) { |sub| ScriptUpdate.decode_partial(sub) }
+            msg.script_update = reader.read_embedded(3, wt) do |sub|
+              if current = msg.script_update
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                ScriptUpdate.decode_partial(merged)
+              else
+                ScriptUpdate.decode_partial(sub)
+              end
+            end
           when 5
-            msg.current_progress_update = reader.read_embedded(5, wt) { |sub| CriteriaValues.decode_partial(sub) }
+            msg.current_progress_update = reader.read_embedded(5, wt) do |sub|
+              if current = msg.current_progress_update
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                CriteriaValues.decode_partial(merged)
+              else
+                CriteriaValues.decode_partial(sub)
+              end
+            end
           when 14
-            msg.error_update = reader.read_embedded(14, wt) { |sub| ErrorUpdate.decode_partial(sub) }
+            msg.error_update = reader.read_embedded(14, wt) do |sub|
+              if current = msg.error_update
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                ErrorUpdate.decode_partial(merged)
+              else
+                ErrorUpdate.decode_partial(sub)
+              end
+            end
           when 15
             msg.other << reader.read_embedded(15, wt) { |sub| Google::Protobuf::Any.decode_partial(sub) }
           else
@@ -1403,7 +1609,17 @@ module MinknowApi
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.acquisition_run_id = reader.read_string
           when 2
-            msg.update = reader.read_embedded(2, wt) { |sub| Update.decode_partial(sub) }
+            msg.update = reader.read_embedded(2, wt) do |sub|
+              if current = msg.update
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Update.decode_partial(merged)
+              else
+                Update.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1575,9 +1791,29 @@ module MinknowApi
             reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             msg.idx = reader.read_uint64
           when 2
-            msg.time = reader.read_embedded(2, wt) { |sub| Google::Protobuf::Timestamp.decode_partial(sub) }
+            msg.time = reader.read_embedded(2, wt) do |sub|
+              if current = msg.time
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::Timestamp.decode_partial(merged)
+              else
+                Google::Protobuf::Timestamp.decode_partial(sub)
+              end
+            end
           when 3
-            msg.update = reader.read_embedded(3, wt) { |sub| Update.decode_partial(sub) }
+            msg.update = reader.read_embedded(3, wt) do |sub|
+              if current = msg.update
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Update.decode_partial(merged)
+              else
+                Update.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end

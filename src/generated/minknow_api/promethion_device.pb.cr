@@ -13,7 +13,10 @@ module MinknowApi
 
       property voltages : Array(Float64) = [] of Float64
       property frequency : Float64 = 0.0_f64
+      # ameba:disable Naming/QueryBoolMethods
       property precise_waveform : Bool = false
+
+      # ameba:enable Naming/QueryBoolMethods
 
       def self.decode_partial(io : IO) : self
         msg = new
@@ -188,22 +191,92 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.sampling_frequency = reader.read_embedded(1, wt) { |sub| Google::Protobuf::Int32Value.decode_partial(sub) }
+            msg.sampling_frequency = reader.read_embedded(1, wt) do |sub|
+              if current = msg.sampling_frequency
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::Int32Value.decode_partial(merged)
+              else
+                Google::Protobuf::Int32Value.decode_partial(sub)
+              end
+            end
           when 2
-            msg.ramp_voltage = reader.read_embedded(2, wt) { |sub| Google::Protobuf::DoubleValue.decode_partial(sub) }
+            msg.ramp_voltage = reader.read_embedded(2, wt) do |sub|
+              if current = msg.ramp_voltage
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::DoubleValue.decode_partial(merged)
+              else
+                Google::Protobuf::DoubleValue.decode_partial(sub)
+              end
+            end
           when 3
             reader.expect_wire_type!(3, wt, Proto::WireType::FIXED64)
             msg.bias_voltage = reader.read_double
           when 4
-            msg.bias_voltage_waveform = reader.read_embedded(4, wt) { |sub| WaveformSettings.decode_partial(sub) }
+            msg.bias_voltage_waveform = reader.read_embedded(4, wt) do |sub|
+              if current = msg.bias_voltage_waveform
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                WaveformSettings.decode_partial(merged)
+              else
+                WaveformSettings.decode_partial(sub)
+              end
+            end
           when 5
-            msg.saturation_control_enabled = reader.read_embedded(5, wt) { |sub| Google::Protobuf::BoolValue.decode_partial(sub) }
+            msg.saturation_control_enabled = reader.read_embedded(5, wt) do |sub|
+              if current = msg.saturation_control_enabled
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::BoolValue.decode_partial(merged)
+              else
+                Google::Protobuf::BoolValue.decode_partial(sub)
+              end
+            end
           when 6
-            msg.fast_calibration_enabled = reader.read_embedded(6, wt) { |sub| Google::Protobuf::BoolValue.decode_partial(sub) }
+            msg.fast_calibration_enabled = reader.read_embedded(6, wt) do |sub|
+              if current = msg.fast_calibration_enabled
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::BoolValue.decode_partial(merged)
+              else
+                Google::Protobuf::BoolValue.decode_partial(sub)
+              end
+            end
           when 7
-            msg.temperature_target = reader.read_embedded(7, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
+            msg.temperature_target = reader.read_embedded(7, wt) do |sub|
+              if current = msg.temperature_target
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::FloatValue.decode_partial(merged)
+              else
+                Google::Protobuf::FloatValue.decode_partial(sub)
+              end
+            end
           when 8
-            msg.timings = reader.read_embedded(8, wt) { |sub| TimingEnginePeriods.decode_partial(sub) }
+            msg.timings = reader.read_embedded(8, wt) do |sub|
+              if current = msg.timings
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                TimingEnginePeriods.decode_partial(merged)
+              else
+                TimingEnginePeriods.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -417,31 +490,161 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.rst1 = reader.read_embedded(1, wt) { |sub| Google::Protobuf::UInt32Value.decode_partial(sub) }
+            msg.rst1 = reader.read_embedded(1, wt) do |sub|
+              if current = msg.rst1
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::UInt32Value.decode_partial(merged)
+              else
+                Google::Protobuf::UInt32Value.decode_partial(sub)
+              end
+            end
           when 2
-            msg.rst1_cds1 = reader.read_embedded(2, wt) { |sub| Google::Protobuf::UInt32Value.decode_partial(sub) }
+            msg.rst1_cds1 = reader.read_embedded(2, wt) do |sub|
+              if current = msg.rst1_cds1
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::UInt32Value.decode_partial(merged)
+              else
+                Google::Protobuf::UInt32Value.decode_partial(sub)
+              end
+            end
           when 3
-            msg.cds1 = reader.read_embedded(3, wt) { |sub| Google::Protobuf::UInt32Value.decode_partial(sub) }
+            msg.cds1 = reader.read_embedded(3, wt) do |sub|
+              if current = msg.cds1
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::UInt32Value.decode_partial(merged)
+              else
+                Google::Protobuf::UInt32Value.decode_partial(sub)
+              end
+            end
           when 4
-            msg.cds1_data = reader.read_embedded(4, wt) { |sub| Google::Protobuf::UInt32Value.decode_partial(sub) }
+            msg.cds1_data = reader.read_embedded(4, wt) do |sub|
+              if current = msg.cds1_data
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::UInt32Value.decode_partial(merged)
+              else
+                Google::Protobuf::UInt32Value.decode_partial(sub)
+              end
+            end
           when 5
-            msg.data = reader.read_embedded(5, wt) { |sub| Google::Protobuf::UInt32Value.decode_partial(sub) }
+            msg.data = reader.read_embedded(5, wt) do |sub|
+              if current = msg.data
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::UInt32Value.decode_partial(merged)
+              else
+                Google::Protobuf::UInt32Value.decode_partial(sub)
+              end
+            end
           when 6
-            msg.data_rst2 = reader.read_embedded(6, wt) { |sub| Google::Protobuf::UInt32Value.decode_partial(sub) }
+            msg.data_rst2 = reader.read_embedded(6, wt) do |sub|
+              if current = msg.data_rst2
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::UInt32Value.decode_partial(merged)
+              else
+                Google::Protobuf::UInt32Value.decode_partial(sub)
+              end
+            end
           when 7
-            msg.rst2 = reader.read_embedded(7, wt) { |sub| Google::Protobuf::UInt32Value.decode_partial(sub) }
+            msg.rst2 = reader.read_embedded(7, wt) do |sub|
+              if current = msg.rst2
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::UInt32Value.decode_partial(merged)
+              else
+                Google::Protobuf::UInt32Value.decode_partial(sub)
+              end
+            end
           when 8
-            msg.rst2_cds2 = reader.read_embedded(8, wt) { |sub| Google::Protobuf::UInt32Value.decode_partial(sub) }
+            msg.rst2_cds2 = reader.read_embedded(8, wt) do |sub|
+              if current = msg.rst2_cds2
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::UInt32Value.decode_partial(merged)
+              else
+                Google::Protobuf::UInt32Value.decode_partial(sub)
+              end
+            end
           when 9
-            msg.cds2 = reader.read_embedded(9, wt) { |sub| Google::Protobuf::UInt32Value.decode_partial(sub) }
+            msg.cds2 = reader.read_embedded(9, wt) do |sub|
+              if current = msg.cds2
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::UInt32Value.decode_partial(merged)
+              else
+                Google::Protobuf::UInt32Value.decode_partial(sub)
+              end
+            end
           when 10
-            msg.cds2_sh = reader.read_embedded(10, wt) { |sub| Google::Protobuf::UInt32Value.decode_partial(sub) }
+            msg.cds2_sh = reader.read_embedded(10, wt) do |sub|
+              if current = msg.cds2_sh
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::UInt32Value.decode_partial(merged)
+              else
+                Google::Protobuf::UInt32Value.decode_partial(sub)
+              end
+            end
           when 11
-            msg.sh = reader.read_embedded(11, wt) { |sub| Google::Protobuf::UInt32Value.decode_partial(sub) }
+            msg.sh = reader.read_embedded(11, wt) do |sub|
+              if current = msg.sh
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::UInt32Value.decode_partial(merged)
+              else
+                Google::Protobuf::UInt32Value.decode_partial(sub)
+              end
+            end
           when 12
-            msg.sh_rst1 = reader.read_embedded(12, wt) { |sub| Google::Protobuf::UInt32Value.decode_partial(sub) }
+            msg.sh_rst1 = reader.read_embedded(12, wt) do |sub|
+              if current = msg.sh_rst1
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::UInt32Value.decode_partial(merged)
+              else
+                Google::Protobuf::UInt32Value.decode_partial(sub)
+              end
+            end
           when 13
-            msg.use_default_values = reader.read_embedded(13, wt) { |sub| Google::Protobuf::BoolValue.decode_partial(sub) }
+            msg.use_default_values = reader.read_embedded(13, wt) do |sub|
+              if current = msg.use_default_values
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::BoolValue.decode_partial(merged)
+              else
+                Google::Protobuf::BoolValue.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -561,9 +764,29 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.regen_current_voltage_clamp = reader.read_embedded(1, wt) { |sub| Google::Protobuf::DoubleValue.decode_partial(sub) }
+            msg.regen_current_voltage_clamp = reader.read_embedded(1, wt) do |sub|
+              if current = msg.regen_current_voltage_clamp
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::DoubleValue.decode_partial(merged)
+              else
+                Google::Protobuf::DoubleValue.decode_partial(sub)
+              end
+            end
           when 2
-            msg.unblock_voltage = reader.read_embedded(2, wt) { |sub| Google::Protobuf::DoubleValue.decode_partial(sub) }
+            msg.unblock_voltage = reader.read_embedded(2, wt) do |sub|
+              if current = msg.unblock_voltage
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::DoubleValue.decode_partial(merged)
+              else
+                Google::Protobuf::DoubleValue.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -910,7 +1133,17 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.input = reader.read_embedded(1, wt) { |sub| PixelSettings::InputWell.decode_partial(sub) }
+            msg.input = reader.read_embedded(1, wt) do |sub|
+              if current = msg.input
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                PixelSettings::InputWell.decode_partial(merged)
+              else
+                PixelSettings::InputWell.decode_partial(sub)
+              end
+            end
           when 2
             reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
@@ -942,16 +1175,46 @@ module MinknowApi
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.unblock_voltage = Proto::OpenEnum(PixelSettings::UnblockMode).new(_raw)
           when 8
-            msg.current_inverted = reader.read_embedded(8, wt) { |sub| Google::Protobuf::BoolValue.decode_partial(sub) }
+            msg.current_inverted = reader.read_embedded(8, wt) do |sub|
+              if current = msg.current_inverted
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::BoolValue.decode_partial(merged)
+              else
+                Google::Protobuf::BoolValue.decode_partial(sub)
+              end
+            end
           when 9
-            msg.membrane_simulation_enabled = reader.read_embedded(9, wt) { |sub| Google::Protobuf::BoolValue.decode_partial(sub) }
+            msg.membrane_simulation_enabled = reader.read_embedded(9, wt) do |sub|
+              if current = msg.membrane_simulation_enabled
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::BoolValue.decode_partial(merged)
+              else
+                Google::Protobuf::BoolValue.decode_partial(sub)
+              end
+            end
           when 10
             reader.expect_wire_type!(10, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.regeneration_current = Proto::OpenEnum(PixelSettings::RegenerationCurrent).new(_raw)
           when 11
-            msg.regeneration_current_test_enabled = reader.read_embedded(11, wt) { |sub| Google::Protobuf::BoolValue.decode_partial(sub) }
+            msg.regeneration_current_test_enabled = reader.read_embedded(11, wt) do |sub|
+              if current = msg.regeneration_current_test_enabled
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::BoolValue.decode_partial(merged)
+              else
+                Google::Protobuf::BoolValue.decode_partial(sub)
+              end
+            end
           when 12
             reader.expect_wire_type!(12, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
@@ -1070,7 +1333,17 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.settings = reader.read_embedded(1, wt) { |sub| DeviceSettings.decode_partial(sub) }
+            msg.settings = reader.read_embedded(1, wt) do |sub|
+              if current = msg.settings
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                DeviceSettings.decode_partial(merged)
+              else
+                DeviceSettings.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1132,7 +1405,17 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.real_sampling_frequency = reader.read_embedded(1, wt) { |sub| Google::Protobuf::Int32Value.decode_partial(sub) }
+            msg.real_sampling_frequency = reader.read_embedded(1, wt) do |sub|
+              if current = msg.real_sampling_frequency
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::Int32Value.decode_partial(merged)
+              else
+                Google::Protobuf::Int32Value.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1230,7 +1513,17 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.settings = reader.read_embedded(1, wt) { |sub| DeviceSettings.decode_partial(sub) }
+            msg.settings = reader.read_embedded(1, wt) do |sub|
+              if current = msg.settings
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                DeviceSettings.decode_partial(merged)
+              else
+                DeviceSettings.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1299,7 +1592,17 @@ module MinknowApi
               reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
               msg.key = reader.read_uint32
             when 2
-              msg.value = reader.read_embedded(2, wt) { |sub| PixelBlockSettings.decode_partial(sub) }
+              msg.value = reader.read_embedded(2, wt) do |sub|
+                if current = msg.value
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  PixelBlockSettings.decode_partial(merged)
+                else
+                  PixelBlockSettings.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -1368,11 +1671,19 @@ module MinknowApi
           case fn
           when 1
             entry = reader.read_embedded(1, wt) { |sub| ChangePixelBlockSettingsRequest::PixelBlocksEntry.decode_partial(sub) }
-            if value = entry.value
-              msg.pixel_blocks[entry.key] = value
-            end
+            msg.pixel_blocks[entry.key] = entry.value || PixelBlockSettings.new
           when 2
-            msg.pixel_block_default = reader.read_embedded(2, wt) { |sub| PixelBlockSettings.decode_partial(sub) }
+            msg.pixel_block_default = reader.read_embedded(2, wt) do |sub|
+              if current = msg.pixel_block_default
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                PixelBlockSettings.decode_partial(merged)
+              else
+                PixelBlockSettings.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1520,7 +1831,17 @@ module MinknowApi
               reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
               msg.key = reader.read_uint32
             when 2
-              msg.value = reader.read_embedded(2, wt) { |sub| PixelBlockSettings.decode_partial(sub) }
+              msg.value = reader.read_embedded(2, wt) do |sub|
+                if current = msg.value
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  PixelBlockSettings.decode_partial(merged)
+                else
+                  PixelBlockSettings.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -1579,9 +1900,7 @@ module MinknowApi
           case fn
           when 1
             entry = reader.read_embedded(1, wt) { |sub| GetPixelBlockSettingsResponse::PixelBlocksEntry.decode_partial(sub) }
-            if value = entry.value
-              msg.pixel_blocks[entry.key] = value
-            end
+            msg.pixel_blocks[entry.key] = entry.value || PixelBlockSettings.new
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1653,7 +1972,17 @@ module MinknowApi
               reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
               msg.key = reader.read_uint32
             when 2
-              msg.value = reader.read_embedded(2, wt) { |sub| PixelSettings.decode_partial(sub) }
+              msg.value = reader.read_embedded(2, wt) do |sub|
+                if current = msg.value
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  PixelSettings.decode_partial(merged)
+                else
+                  PixelSettings.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -1722,11 +2051,19 @@ module MinknowApi
           case fn
           when 1
             entry = reader.read_embedded(1, wt) { |sub| ChangePixelSettingsRequest::PixelsEntry.decode_partial(sub) }
-            if value = entry.value
-              msg.pixels[entry.key] = value
-            end
+            msg.pixels[entry.key] = entry.value || PixelSettings.new
           when 2
-            msg.pixel_default = reader.read_embedded(2, wt) { |sub| PixelSettings.decode_partial(sub) }
+            msg.pixel_default = reader.read_embedded(2, wt) do |sub|
+              if current = msg.pixel_default
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                PixelSettings.decode_partial(merged)
+              else
+                PixelSettings.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -2006,13 +2343,43 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.flowcell_temperature = reader.read_embedded(1, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
+            msg.flowcell_temperature = reader.read_embedded(1, wt) do |sub|
+              if current = msg.flowcell_temperature
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::FloatValue.decode_partial(merged)
+              else
+                Google::Protobuf::FloatValue.decode_partial(sub)
+              end
+            end
           when 2
-            msg.chamber_temperature = reader.read_embedded(2, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
+            msg.chamber_temperature = reader.read_embedded(2, wt) do |sub|
+              if current = msg.chamber_temperature
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::FloatValue.decode_partial(merged)
+              else
+                Google::Protobuf::FloatValue.decode_partial(sub)
+              end
+            end
           when 3
             msg.pixel_block_temperature << reader.read_embedded(3, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
           when 4
-            msg.target_temperature = reader.read_embedded(4, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
+            msg.target_temperature = reader.read_embedded(4, wt) do |sub|
+              if current = msg.target_temperature
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::FloatValue.decode_partial(merged)
+              else
+                Google::Protobuf::FloatValue.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end

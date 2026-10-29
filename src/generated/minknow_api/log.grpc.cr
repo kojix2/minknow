@@ -533,7 +533,7 @@ module MinknowApi::Log
         req_marshaller = marshaller_for(SendUserMessageRequest)
         res_marshaller = marshaller_for(SendUserMessageResponse)
         response = @channel.unary_call(FULL_NAME, "send_user_message", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(SendUserMessageResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -545,7 +545,7 @@ module MinknowApi::Log
         req_marshaller = marshaller_for(SendPingRequest)
         res_marshaller = marshaller_for(SendPingResponse)
         response = @channel.unary_call(FULL_NAME, "send_ping", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(SendPingResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 

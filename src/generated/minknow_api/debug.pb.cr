@@ -339,27 +339,27 @@ module MinknowApi
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if _v = flow_cell_id
+        unless (_v = flow_cell_id).nil?
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(_v)
         end
-        if _v = product_code
+        unless (_v = product_code).nil?
           w.write_tag(2, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(_v)
         end
-        if _v = asic_id_str
+        unless (_v = asic_id_str).nil?
           w.write_tag(3, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(_v)
         end
-        if _v = adapter_id
+        unless (_v = adapter_id).nil?
           w.write_tag(4, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(_v)
         end
-        if _v = use_count
+        unless (_v = use_count).nil?
           w.write_tag(5, Proto::WireType::VARINT)
           w.write_uint32(_v)
         end
-        if _v = flow_cell_partner
+        unless (_v = flow_cell_partner).nil?
           w.write_tag(6, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(_v)
         end
@@ -465,7 +465,17 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.frame_loss_duration = reader.read_embedded(1, wt) { |sub| Google::Protobuf::Duration.decode_partial(sub) }
+            msg.frame_loss_duration = reader.read_embedded(1, wt) do |sub|
+              if current = msg.frame_loss_duration
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::Duration.decode_partial(merged)
+              else
+                Google::Protobuf::Duration.decode_partial(sub)
+              end
+            end
           when 3
             reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
             msg.start_frame = reader.read_uint64
@@ -497,11 +507,11 @@ module MinknowApi
           w.write_tag(3, Proto::WireType::VARINT)
           w.write_uint64(start_frame)
         end
-        if _v = start_section
+        unless (_v = start_section).nil?
           w.write_tag(4, Proto::WireType::VARINT)
           w.write_uint64(_v)
         end
-        if _v = repeats
+        unless (_v = repeats).nil?
           w.write_tag(5, Proto::WireType::VARINT)
           w.write_uint64(_v)
         end

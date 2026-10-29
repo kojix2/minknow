@@ -93,7 +93,17 @@ module MinknowApi
                 reader.expect_wire_type!(4, wt, Proto::WireType::LENGTH_DELIMITED)
                 msg.kits << reader.read_string
               when 5
-                msg.last_used = reader.read_embedded(5, wt) { |sub| Google::Protobuf::Timestamp.decode_partial(sub) }
+                msg.last_used = reader.read_embedded(5, wt) do |sub|
+                  if current = msg.last_used
+                    merged = IO::Memory.new
+                    current.encode_partial(merged)
+                    IO.copy(sub, merged)
+                    merged.rewind
+                    Google::Protobuf::Timestamp.decode_partial(merged)
+                  else
+                    Google::Protobuf::Timestamp.decode_partial(sub)
+                  end
+                end
               else
                 msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
               end
@@ -198,52 +208,104 @@ module MinknowApi
           property target_data_condition : Proto::OpenEnum(Preset::TargetDataCondition) = Proto::OpenEnum(Preset::TargetDataCondition).new(0)
           property target_data_value : UInt64 = 0
           property target_data_unit : Proto::OpenEnum(Preset::TargetDataUnit) = Proto::OpenEnum(Preset::TargetDataUnit).new(0)
+          # ameba:disable Naming/QueryBoolMethods
           property adaptive_sampling_enabled : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
+          # ameba:disable Naming/QueryBoolMethods
           property enrich_deplete_adaptive_sampling_enabled : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
+          # ameba:disable Naming/QueryBoolMethods
           property should_enrich_adaptive_sampling_ref : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
           property enrich_deplete_adaptive_sampling_ref_file : String = ""
           property enrich_deplete_adaptive_sampling_bed_file : String = ""
           property adaptive_sampling_channel_start : UInt32 = 0
           property adaptive_sampling_channel_end : UInt32 = 0
+          # ameba:disable Naming/QueryBoolMethods
           property barcode_balancing_enabled : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
+          # ameba:disable Naming/QueryBoolMethods
           property barcode_balancing_custom_barcodes : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
           property barcode_balancing_barcode_selection : String = ""
           property mux_scan_period : Float32 = 0.0_f32
+          # ameba:disable Naming/QueryBoolMethods
           property reserved_pores : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
           property simulated_playback_file_path : String = ""
+          # ameba:disable Naming/QueryBoolMethods
           property basecalling_enabled : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
+          # ameba:disable Naming/QueryBoolMethods
           property modified_basecalling_enabled : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
+          # ameba:disable Naming/QueryBoolMethods
           property duplex_basecalling_enabled : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
           property basecall_model : String = ""
           property modified_basecalling_context : String = ""
           property duplex_basecalling_model : String = ""
+          # ameba:disable Naming/QueryBoolMethods
           property barcoding_enabled : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
+          # ameba:disable Naming/QueryBoolMethods
           property trim_barcodes_enabled : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
+          # ameba:disable Naming/QueryBoolMethods
           property require_barcodes_both_ends : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
+          # ameba:disable Naming/QueryBoolMethods
           property has_custom_barcodes_selection : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
           property custom_barcodes_selection : String = ""
+          # ameba:disable Naming/QueryBoolMethods
           property alignment_enabled : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
           property alignment_ref_file : String = ""
           property alignment_bed_file : String = ""
+          # ameba:disable Naming/QueryBoolMethods
           property fastq_enabled : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
+          # ameba:disable Naming/QueryBoolMethods
           property bam_enabled : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
+          # ameba:disable Naming/QueryBoolMethods
           property fastq_data_compression : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
+          # ameba:disable Naming/QueryBoolMethods
           property fast5_enabled : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
+          # ameba:disable Naming/QueryBoolMethods
           property pod5_enabled : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
+          # ameba:disable Naming/QueryBoolMethods
           property split_output_files_by_barcode : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
           property basecalled_output_period : UInt32 = 0
+          # ameba:disable Naming/QueryBoolMethods
           property bulk_file_enabled : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
+          # ameba:disable Naming/QueryBoolMethods
           property bulk_file_events_enabled : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
+          # ameba:disable Naming/QueryBoolMethods
           property bulk_file_read_table_enabled : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
+          # ameba:disable Naming/QueryBoolMethods
           property bulk_file_raw_enabled : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
           property bulk_file_events : String = ""
           property bulk_file_read_table : String = ""
           property bulk_file_raw : String = ""
+          # ameba:disable Naming/QueryBoolMethods
           property read_filtering_enabled : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
           property read_filtering_min_qscore : UInt32 = 0
           property read_filtering_min_readlength : UInt64 = 0
           property read_filtering_max_readlength : UInt64 = 0
+          # ameba:disable Naming/QueryBoolMethods
           property fail_unaligned_reads : Bool = false
+          # ameba:enable Naming/QueryBoolMethods
           property preset_meta : PresetMeta? = nil
 
           def has_preset_meta? : Bool
@@ -428,7 +490,17 @@ module MinknowApi
                 reader.expect_wire_type!(51, wt, Proto::WireType::VARINT)
                 msg.fail_unaligned_reads = reader.read_bool
               when 52
-                msg.preset_meta = reader.read_embedded(52, wt) { |sub| PresetMeta.decode_partial(sub) }
+                msg.preset_meta = reader.read_embedded(52, wt) do |sub|
+                  if current = msg.preset_meta
+                    merged = IO::Memory.new
+                    current.encode_partial(merged)
+                    IO.copy(sub, merged)
+                    merged.rewind
+                    PresetMeta.decode_partial(merged)
+                  else
+                    PresetMeta.decode_partial(sub)
+                  end
+                end
               else
                 msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
               end
@@ -786,7 +858,17 @@ module MinknowApi
                 reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
                 msg.preset_string = reader.read_string
               when 3
-                msg.preset_object = reader.read_embedded(3, wt) { |sub| Preset.decode_partial(sub) }
+                msg.preset_object = reader.read_embedded(3, wt) do |sub|
+                  if current = msg.preset_object
+                    merged = IO::Memory.new
+                    current.encode_partial(merged)
+                    IO.copy(sub, merged)
+                    merged.rewind
+                    Preset.decode_partial(merged)
+                  else
+                    Preset.decode_partial(sub)
+                  end
+                end
               else
                 msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
               end
@@ -847,7 +929,10 @@ module MinknowApi
           getter preset_string : String = ""
           getter preset_object : Preset? = nil
           property preset_id : String = ""
+          # ameba:disable Naming/QueryBoolMethods
           property overwrite : Bool = false
+
+          # ameba:enable Naming/QueryBoolMethods
 
           def clear_data : Nil
             @preset_string = ""
@@ -891,7 +976,17 @@ module MinknowApi
                 reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
                 msg.preset_string = reader.read_string
               when 2
-                msg.preset_object = reader.read_embedded(2, wt) { |sub| Preset.decode_partial(sub) }
+                msg.preset_object = reader.read_embedded(2, wt) do |sub|
+                  if current = msg.preset_object
+                    merged = IO::Memory.new
+                    current.encode_partial(merged)
+                    IO.copy(sub, merged)
+                    merged.rewind
+                    Preset.decode_partial(merged)
+                  else
+                    Preset.decode_partial(sub)
+                  end
+                end
               when 3
                 reader.expect_wire_type!(3, wt, Proto::WireType::LENGTH_DELIMITED)
                 msg.preset_id = reader.read_string
@@ -1148,7 +1243,17 @@ module MinknowApi
                   reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
                   msg.preset_id = reader.read_string
                 when 2
-                  msg.preset_meta = reader.read_embedded(2, wt) { |sub| PresetMeta.decode_partial(sub) }
+                  msg.preset_meta = reader.read_embedded(2, wt) do |sub|
+                    if current = msg.preset_meta
+                      merged = IO::Memory.new
+                      current.encode_partial(merged)
+                      IO.copy(sub, merged)
+                      merged.rewind
+                      PresetMeta.decode_partial(merged)
+                    else
+                      PresetMeta.decode_partial(sub)
+                    end
+                  end
                 else
                   msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
                 end
@@ -1268,7 +1373,17 @@ module MinknowApi
               fn, wt = tag
               case fn
               when 1
-                msg.preset_type = reader.read_embedded(1, wt) { |sub| PresetType.decode_partial(sub) }
+                msg.preset_type = reader.read_embedded(1, wt) do |sub|
+                  if current = msg.preset_type
+                    merged = IO::Memory.new
+                    current.encode_partial(merged)
+                    IO.copy(sub, merged)
+                    merged.rewind
+                    PresetType.decode_partial(merged)
+                  else
+                    PresetType.decode_partial(sub)
+                  end
+                end
               else
                 msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
               end
@@ -1305,7 +1420,10 @@ module MinknowApi
         class CheckPresetResponse
           include Proto::Message
 
+          # ameba:disable Naming/QueryBoolMethods
           property is_valid : Bool = false
+
+          # ameba:enable Naming/QueryBoolMethods
 
           def self.decode_partial(io : IO) : self
             msg = new
@@ -1376,7 +1494,17 @@ module MinknowApi
               fn, wt = tag
               case fn
               when 1
-                msg.preset_type = reader.read_embedded(1, wt) { |sub| PresetType.decode_partial(sub) }
+                msg.preset_type = reader.read_embedded(1, wt) do |sub|
+                  if current = msg.preset_type
+                    merged = IO::Memory.new
+                    current.encode_partial(merged)
+                    IO.copy(sub, merged)
+                    merged.rewind
+                    PresetType.decode_partial(merged)
+                  else
+                    PresetType.decode_partial(sub)
+                  end
+                end
               else
                 msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
               end
@@ -1487,7 +1615,17 @@ module MinknowApi
               fn, wt = tag
               case fn
               when 1
-                msg.preset_type = reader.read_embedded(1, wt) { |sub| PresetType.decode_partial(sub) }
+                msg.preset_type = reader.read_embedded(1, wt) do |sub|
+                  if current = msg.preset_type
+                    merged = IO::Memory.new
+                    current.encode_partial(merged)
+                    IO.copy(sub, merged)
+                    merged.rewind
+                    PresetType.decode_partial(merged)
+                  else
+                    PresetType.decode_partial(sub)
+                  end
+                end
               when 2
                 reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
                 _raw_u64 = reader.read_uint64
@@ -1559,7 +1697,17 @@ module MinknowApi
               fn, wt = tag
               case fn
               when 1
-                msg.preset_type = reader.read_embedded(1, wt) { |sub| PresetType.decode_partial(sub) }
+                msg.preset_type = reader.read_embedded(1, wt) do |sub|
+                  if current = msg.preset_type
+                    merged = IO::Memory.new
+                    current.encode_partial(merged)
+                    IO.copy(sub, merged)
+                    merged.rewind
+                    PresetType.decode_partial(merged)
+                  else
+                    PresetType.decode_partial(sub)
+                  end
+                end
               else
                 msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
               end

@@ -159,7 +159,9 @@ module MinknowApi
       property id : String = ""
       property created_at : Google::Protobuf::Timestamp? = nil
       property last_updated_at : Google::Protobuf::Timestamp? = nil
+      # ameba:disable Naming/QueryBoolMethods
       property read : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
       property content : NotificationContent? = nil
 
       def has_created_at? : Bool
@@ -206,14 +208,44 @@ module MinknowApi
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.id = reader.read_string
           when 2
-            msg.created_at = reader.read_embedded(2, wt) { |sub| Google::Protobuf::Timestamp.decode_partial(sub) }
+            msg.created_at = reader.read_embedded(2, wt) do |sub|
+              if current = msg.created_at
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::Timestamp.decode_partial(merged)
+              else
+                Google::Protobuf::Timestamp.decode_partial(sub)
+              end
+            end
           when 3
-            msg.last_updated_at = reader.read_embedded(3, wt) { |sub| Google::Protobuf::Timestamp.decode_partial(sub) }
+            msg.last_updated_at = reader.read_embedded(3, wt) do |sub|
+              if current = msg.last_updated_at
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::Timestamp.decode_partial(merged)
+              else
+                Google::Protobuf::Timestamp.decode_partial(sub)
+              end
+            end
           when 4
             reader.expect_wire_type!(4, wt, Proto::WireType::VARINT)
             msg.read = reader.read_bool
           when 5
-            msg.content = reader.read_embedded(5, wt) { |sub| NotificationContent.decode_partial(sub) }
+            msg.content = reader.read_embedded(5, wt) do |sub|
+              if current = msg.content
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                NotificationContent.decode_partial(merged)
+              else
+                NotificationContent.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -268,7 +300,10 @@ module MinknowApi
     class StreamNotificationsRequest
       include Proto::Message
 
+      # ameba:disable Naming/QueryBoolMethods
       property include_updates_for_existing : Bool = false
+
+      # ameba:enable Naming/QueryBoolMethods
 
       def self.decode_partial(io : IO) : self
         msg = new
@@ -477,7 +512,17 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.content = reader.read_embedded(1, wt) { |sub| NotificationContent.decode_partial(sub) }
+            msg.content = reader.read_embedded(1, wt) do |sub|
+              if current = msg.content
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                NotificationContent.decode_partial(merged)
+              else
+                NotificationContent.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -539,7 +584,17 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.notification = reader.read_embedded(1, wt) { |sub| Notification.decode_partial(sub) }
+            msg.notification = reader.read_embedded(1, wt) do |sub|
+              if current = msg.notification
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Notification.decode_partial(merged)
+              else
+                Notification.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end

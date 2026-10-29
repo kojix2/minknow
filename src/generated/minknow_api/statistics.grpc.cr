@@ -3663,7 +3663,7 @@ module MinknowApi::Statistics
         req_marshaller = marshaller_for(ReadLengthN50Request)
         res_marshaller = marshaller_for(ReadLengthN50Response)
         response = @channel.unary_call(FULL_NAME, "read_length_n50", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(ReadLengthN50Response).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -3675,7 +3675,7 @@ module MinknowApi::Statistics
         req_marshaller = marshaller_for(GetReadLengthTypesRequest)
         res_marshaller = marshaller_for(GetReadLengthTypesResponse)
         response = @channel.unary_call(FULL_NAME, "get_read_length_types", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(GetReadLengthTypesResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 

@@ -59,7 +59,17 @@ module MinknowApi
               reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.key = reader.read_string
             when 2
-              msg.value = reader.read_embedded(2, wt) { |sub| Google::Protobuf::Any.decode_partial(sub) }
+              msg.value = reader.read_embedded(2, wt) do |sub|
+                if current = msg.value
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::Any.decode_partial(merged)
+                else
+                  Google::Protobuf::Any.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -119,9 +129,7 @@ module MinknowApi
           case fn
           when 1
             entry = reader.read_embedded(1, wt) { |sub| StoreRequest::ValuesEntry.decode_partial(sub) }
-            if value = entry.value
-              msg.values[entry.key] = value
-            end
+            msg.values[entry.key] = entry.value || Google::Protobuf::Any.new
           when 2
             reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
@@ -208,7 +216,10 @@ module MinknowApi
       include Proto::Message
 
       property names : Array(String) = [] of String
+      # ameba:disable Naming/QueryBoolMethods
       property allow_missing : Bool = false
+
+      # ameba:enable Naming/QueryBoolMethods
 
       def self.decode_partial(io : IO) : self
         msg = new
@@ -369,7 +380,17 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 2
-            msg.value = reader.read_embedded(2, wt) { |sub| Google::Protobuf::Any.decode_partial(sub) }
+            msg.value = reader.read_embedded(2, wt) do |sub|
+              if current = msg.value
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::Any.decode_partial(merged)
+              else
+                Google::Protobuf::Any.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -407,7 +428,10 @@ module MinknowApi
       include Proto::Message
 
       property names : Array(String) = [] of String
+      # ameba:disable Naming/QueryBoolMethods
       property allow_missing : Bool = false
+
+      # ameba:enable Naming/QueryBoolMethods
 
       def self.decode_partial(io : IO) : self
         msg = new
@@ -493,7 +517,17 @@ module MinknowApi
               reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.key = reader.read_string
             when 2
-              msg.value = reader.read_embedded(2, wt) { |sub| Google::Protobuf::Any.decode_partial(sub) }
+              msg.value = reader.read_embedded(2, wt) do |sub|
+                if current = msg.value
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::Any.decode_partial(merged)
+                else
+                  Google::Protobuf::Any.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -552,9 +586,7 @@ module MinknowApi
           case fn
           when 1
             entry = reader.read_embedded(1, wt) { |sub| GetResponse::ValuesEntry.decode_partial(sub) }
-            if value = entry.value
-              msg.values[entry.key] = value
-            end
+            msg.values[entry.key] = entry.value || Google::Protobuf::Any.new
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -595,7 +627,10 @@ module MinknowApi
       include Proto::Message
 
       property names : Array(String) = [] of String
+      # ameba:disable Naming/QueryBoolMethods
       property allow_missing : Bool = false
+
+      # ameba:enable Naming/QueryBoolMethods
 
       def self.decode_partial(io : IO) : self
         msg = new
@@ -681,7 +716,17 @@ module MinknowApi
               reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.key = reader.read_string
             when 2
-              msg.value = reader.read_embedded(2, wt) { |sub| Google::Protobuf::Any.decode_partial(sub) }
+              msg.value = reader.read_embedded(2, wt) do |sub|
+                if current = msg.value
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::Any.decode_partial(merged)
+                else
+                  Google::Protobuf::Any.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -741,9 +786,7 @@ module MinknowApi
           case fn
           when 1
             entry = reader.read_embedded(1, wt) { |sub| WatchResponse::ValuesEntry.decode_partial(sub) }
-            if value = entry.value
-              msg.values[entry.key] = value
-            end
+            msg.values[entry.key] = entry.value || Google::Protobuf::Any.new
           when 2
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.removed_values << reader.read_string

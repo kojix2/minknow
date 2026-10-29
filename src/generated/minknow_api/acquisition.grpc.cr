@@ -3361,7 +3361,7 @@ module MinknowApi::Acquisition
         req_marshaller = marshaller_for(StartRequest)
         res_marshaller = marshaller_for(StartResponse)
         response = @channel.unary_call(FULL_NAME, "start", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(StartResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -3373,7 +3373,7 @@ module MinknowApi::Acquisition
         req_marshaller = marshaller_for(StopRequest)
         res_marshaller = marshaller_for(StopResponse)
         response = @channel.unary_call(FULL_NAME, "stop", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(StopResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -3387,7 +3387,7 @@ module MinknowApi::Acquisition
         recv_chan = ::Channel(WatchForStatusChangeResponse | Exception).new(128)
         spawn do
           begin
-            raw.each { |bytes| recv_chan.send(res_marshaller.decode(bytes)) rescue nil }
+            raw.each { |bytes| recv_chan.send(res_marshaller.decode(bytes)) }
             recv_chan.close
           rescue ex
             recv_chan.send(ex) rescue nil
@@ -3423,7 +3423,7 @@ module MinknowApi::Acquisition
         req_marshaller = marshaller_for(CurrentStatusRequest)
         res_marshaller = marshaller_for(CurrentStatusResponse)
         response = @channel.unary_call(FULL_NAME, "current_status", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(CurrentStatusResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -3435,7 +3435,7 @@ module MinknowApi::Acquisition
         req_marshaller = marshaller_for(GetProgressRequest)
         res_marshaller = marshaller_for(GetProgressResponse)
         response = @channel.unary_call(FULL_NAME, "get_progress", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(GetProgressResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -3447,7 +3447,7 @@ module MinknowApi::Acquisition
         req_marshaller = marshaller_for(GetAcquisitionRunInfoRequest)
         res_marshaller = marshaller_for(AcquisitionRunInfo)
         response = @channel.unary_call(FULL_NAME, "get_acquisition_info", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(AcquisitionRunInfo).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -3459,7 +3459,7 @@ module MinknowApi::Acquisition
         req_marshaller = marshaller_for(ListAcquisitionRunsRequest)
         res_marshaller = marshaller_for(ListAcquisitionRunsResponse)
         response = @channel.unary_call(FULL_NAME, "list_acquisition_runs", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(ListAcquisitionRunsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -3471,7 +3471,7 @@ module MinknowApi::Acquisition
         req_marshaller = marshaller_for(GetCurrentAcquisitionRunRequest)
         res_marshaller = marshaller_for(AcquisitionRunInfo)
         response = @channel.unary_call(FULL_NAME, "get_current_acquisition_run", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(AcquisitionRunInfo).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -3483,7 +3483,7 @@ module MinknowApi::Acquisition
         req_marshaller = marshaller_for(SetSignalReaderRequest)
         res_marshaller = marshaller_for(SetSignalReaderResponse)
         response = @channel.unary_call(FULL_NAME, "set_signal_reader", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(SetSignalReaderResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -3495,7 +3495,7 @@ module MinknowApi::Acquisition
         req_marshaller = marshaller_for(GetSignalReaderRequest)
         res_marshaller = marshaller_for(GetSignalReaderResponse)
         response = @channel.unary_call(FULL_NAME, "get_signal_reader", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(GetSignalReaderResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -3507,7 +3507,7 @@ module MinknowApi::Acquisition
         req_marshaller = marshaller_for(SetBreamInfoRequest)
         res_marshaller = marshaller_for(SetBreamInfoResponse)
         response = @channel.unary_call(FULL_NAME, "set_bream_info", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(SetBreamInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -3519,7 +3519,7 @@ module MinknowApi::Acquisition
         req_marshaller = marshaller_for(MuxScanResult)
         res_marshaller = marshaller_for(AppendMuxScanResultResponse)
         response = @channel.unary_call(FULL_NAME, "append_mux_scan_result", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(AppendMuxScanResultResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
     end

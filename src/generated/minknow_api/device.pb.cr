@@ -64,7 +64,10 @@ module MinknowApi
       include Proto::Message
 
       property well : UInt32 = 0
+      # ameba:disable Naming/QueryBoolMethods
       property test_current : Bool = false
+
+      # ameba:enable Naming/QueryBoolMethods
 
       def self.decode_partial(io : IO) : self
         msg = new
@@ -119,8 +122,13 @@ module MinknowApi
       include Proto::Message
 
       property well : UInt32 = 0
+      # ameba:disable Naming/QueryBoolMethods
       property test_current : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
+      # ameba:disable Naming/QueryBoolMethods
       property unblock : Bool = false
+
+      # ameba:enable Naming/QueryBoolMethods
 
       def self.decode_partial(io : IO) : self
         msg = new
@@ -308,10 +316,14 @@ module MinknowApi
 
       property device_id : String = ""
       property device_type : Proto::OpenEnum(GetDeviceInfoResponse::DeviceType) = Proto::OpenEnum(GetDeviceInfoResponse::DeviceType).new(0)
+      # ameba:disable Naming/QueryBoolMethods
       property is_simulated : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
       property max_channel_count : UInt32 = 0
       property max_wells_per_channel : UInt32 = 0
+      # ameba:disable Naming/QueryBoolMethods
       property can_set_temperature : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
       property digitisation : UInt32 = 0
       property firmware_version : Array(GetDeviceInfoResponse::ComponentVersion) = [] of GetDeviceInfoResponse::ComponentVersion
 
@@ -613,7 +625,9 @@ module MinknowApi
 
       getter temperature_offset_nullable_case : TemperatureOffsetNullableCase = TemperatureOffsetNullableCase::NONE
 
+      # ameba:disable Naming/QueryBoolMethods
       property has_flow_cell : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
       property channel_count : UInt32 = 0
       property wells_per_channel : UInt32 = 0
       property flow_cell_id : String = ""
@@ -621,7 +635,9 @@ module MinknowApi
       property product_code : String = ""
       property user_specified_flow_cell_id : String = ""
       property user_specified_product_code : String = ""
+      # ameba:disable Naming/QueryBoolMethods
       property has_adapter : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
       property adapter_id : String = ""
       getter temperature_offset : Float32 = 0.0_f32
       property asic_version : String = ""
@@ -631,8 +647,13 @@ module MinknowApi
       property barcode_kit : String = ""
       property barcodes : Array(UInt32) = [] of UInt32
       property flow_cell_partner : String = ""
+      # ameba:disable Naming/QueryBoolMethods
       property is_ctc : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
+      # ameba:disable Naming/QueryBoolMethods
       property incompatible_flow_cell_partner : Bool = false
+
+      # ameba:enable Naming/QueryBoolMethods
 
       def clear_temperature_offset_nullable : Nil
         @temperature_offset = 0.0_f32
@@ -1595,7 +1616,10 @@ module MinknowApi
       property digitisation : UInt32 = 0
       property offsets : Array(Float32) = [] of Float32
       property pa_ranges : Array(Float32) = [] of Float32
+      # ameba:disable Naming/QueryBoolMethods
       property has_calibration : Bool = false
+
+      # ameba:enable Naming/QueryBoolMethods
 
       def self.decode_partial(io : IO) : self
         msg = new
@@ -1829,9 +1853,29 @@ module MinknowApi
             reader.expect_wire_type!(1, wt, Proto::WireType::FIXED32)
             msg.temperature = reader.read_float
           when 2
-            msg.wait_for_temperature = reader.read_embedded(2, wt) { |sub| SetTemperatureRequest::WaitForTemperatureSettings.decode_partial(sub) }
+            msg.wait_for_temperature = reader.read_embedded(2, wt) do |sub|
+              if current = msg.wait_for_temperature
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                SetTemperatureRequest::WaitForTemperatureSettings.decode_partial(merged)
+              else
+                SetTemperatureRequest::WaitForTemperatureSettings.decode_partial(sub)
+              end
+            end
           when 3
-            msg.secondary_temperature_limits = reader.read_embedded(3, wt) { |sub| SetTemperatureRequest::SecondaryTemperatureLimits.decode_partial(sub) }
+            msg.secondary_temperature_limits = reader.read_embedded(3, wt) do |sub|
+              if current = msg.secondary_temperature_limits
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                SetTemperatureRequest::SecondaryTemperatureLimits.decode_partial(merged)
+              else
+                SetTemperatureRequest::SecondaryTemperatureLimits.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1893,7 +1937,9 @@ module MinknowApi
         end
       end
 
+      # ameba:disable Naming/QueryBoolMethods
       property timed_out_waiting_for_temperature : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
       property result : Proto::OpenEnum(SetTemperatureResponse::SetTemperatureResult) = Proto::OpenEnum(SetTemperatureResponse::SetTemperatureResult).new(0)
 
       def self.decode_partial(io : IO) : self
@@ -2024,9 +2070,29 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              msg.asic_temperature = reader.read_embedded(1, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
+              msg.asic_temperature = reader.read_embedded(1, wt) do |sub|
+                if current = msg.asic_temperature
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::FloatValue.decode_partial(merged)
+                else
+                  Google::Protobuf::FloatValue.decode_partial(sub)
+                end
+              end
             when 2
-              msg.heatsink_temperature = reader.read_embedded(2, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
+              msg.heatsink_temperature = reader.read_embedded(2, wt) do |sub|
+                if current = msg.heatsink_temperature
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::FloatValue.decode_partial(merged)
+                else
+                  Google::Protobuf::FloatValue.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -2102,9 +2168,29 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              msg.flowcell_temperature = reader.read_embedded(1, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
+              msg.flowcell_temperature = reader.read_embedded(1, wt) do |sub|
+                if current = msg.flowcell_temperature
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::FloatValue.decode_partial(merged)
+                else
+                  Google::Protobuf::FloatValue.decode_partial(sub)
+                end
+              end
             when 2
-              msg.chamber_temperature = reader.read_embedded(2, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
+              msg.chamber_temperature = reader.read_embedded(2, wt) do |sub|
+                if current = msg.chamber_temperature
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::FloatValue.decode_partial(merged)
+                else
+                  Google::Protobuf::FloatValue.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -2190,11 +2276,41 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              msg.asic_temperature = reader.read_embedded(1, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
+              msg.asic_temperature = reader.read_embedded(1, wt) do |sub|
+                if current = msg.asic_temperature
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::FloatValue.decode_partial(merged)
+                else
+                  Google::Protobuf::FloatValue.decode_partial(sub)
+                end
+              end
             when 2
-              msg.instrument_temperature = reader.read_embedded(2, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
+              msg.instrument_temperature = reader.read_embedded(2, wt) do |sub|
+                if current = msg.instrument_temperature
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::FloatValue.decode_partial(merged)
+                else
+                  Google::Protobuf::FloatValue.decode_partial(sub)
+                end
+              end
             when 3
-              msg.pchip_temperature = reader.read_embedded(3, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
+              msg.pchip_temperature = reader.read_embedded(3, wt) do |sub|
+                if current = msg.pchip_temperature
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::FloatValue.decode_partial(merged)
+                else
+                  Google::Protobuf::FloatValue.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -2370,19 +2486,89 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.minion = reader.read_embedded(1, wt) { |sub| GetTemperatureResponse::MinIONTemperature.decode_partial(sub) }
+            msg.minion = reader.read_embedded(1, wt) do |sub|
+              if current = msg.minion
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                GetTemperatureResponse::MinIONTemperature.decode_partial(merged)
+              else
+                GetTemperatureResponse::MinIONTemperature.decode_partial(sub)
+              end
+            end
           when 2
-            msg.promethion = reader.read_embedded(2, wt) { |sub| GetTemperatureResponse::PromethIONTemperature.decode_partial(sub) }
+            msg.promethion = reader.read_embedded(2, wt) do |sub|
+              if current = msg.promethion
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                GetTemperatureResponse::PromethIONTemperature.decode_partial(merged)
+              else
+                GetTemperatureResponse::PromethIONTemperature.decode_partial(sub)
+              end
+            end
           when 6
-            msg.pebble = reader.read_embedded(6, wt) { |sub| GetTemperatureResponse::PebbleTemperature.decode_partial(sub) }
+            msg.pebble = reader.read_embedded(6, wt) do |sub|
+              if current = msg.pebble
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                GetTemperatureResponse::PebbleTemperature.decode_partial(merged)
+              else
+                GetTemperatureResponse::PebbleTemperature.decode_partial(sub)
+              end
+            end
           when 3
-            msg.target_temperature = reader.read_embedded(3, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
+            msg.target_temperature = reader.read_embedded(3, wt) do |sub|
+              if current = msg.target_temperature
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::FloatValue.decode_partial(merged)
+              else
+                Google::Protobuf::FloatValue.decode_partial(sub)
+              end
+            end
           when 4
-            msg.minion_starting_temperature = reader.read_embedded(4, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
+            msg.minion_starting_temperature = reader.read_embedded(4, wt) do |sub|
+              if current = msg.minion_starting_temperature
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::FloatValue.decode_partial(merged)
+              else
+                Google::Protobuf::FloatValue.decode_partial(sub)
+              end
+            end
           when 5
-            msg.promethion_starting_temperature = reader.read_embedded(5, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
+            msg.promethion_starting_temperature = reader.read_embedded(5, wt) do |sub|
+              if current = msg.promethion_starting_temperature
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::FloatValue.decode_partial(merged)
+              else
+                Google::Protobuf::FloatValue.decode_partial(sub)
+              end
+            end
           when 7
-            msg.pebble_starting_temperature = reader.read_embedded(7, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
+            msg.pebble_starting_temperature = reader.read_embedded(7, wt) do |sub|
+              if current = msg.pebble_starting_temperature
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::FloatValue.decode_partial(merged)
+              else
+                Google::Protobuf::FloatValue.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -2854,7 +3040,17 @@ module MinknowApi
               reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
               msg.key = reader.read_uint32
             when 2
-              msg.value = reader.read_embedded(2, wt) { |sub| ChannelConfiguration.decode_partial(sub) }
+              msg.value = reader.read_embedded(2, wt) do |sub|
+                if current = msg.value
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  ChannelConfiguration.decode_partial(merged)
+                else
+                  ChannelConfiguration.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -2913,9 +3109,7 @@ module MinknowApi
           case fn
           when 1
             entry = reader.read_embedded(1, wt) { |sub| SetChannelConfigurationRequest::ChannelConfigurationsEntry.decode_partial(sub) }
-            if value = entry.value
-              msg.channel_configurations[entry.key] = value
-            end
+            msg.channel_configurations[entry.key] = entry.value || ChannelConfiguration.new
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -3016,7 +3210,17 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.channel_configuration = reader.read_embedded(1, wt) { |sub| ChannelConfiguration.decode_partial(sub) }
+            msg.channel_configuration = reader.read_embedded(1, wt) do |sub|
+              if current = msg.channel_configuration
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                ChannelConfiguration.decode_partial(merged)
+              else
+                ChannelConfiguration.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -3147,13 +3351,53 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              msg.general_threshold = reader.read_embedded(1, wt) { |sub| Google::Protobuf::UInt32Value.decode_partial(sub) }
+              msg.general_threshold = reader.read_embedded(1, wt) do |sub|
+                if current = msg.general_threshold
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::UInt32Value.decode_partial(merged)
+                else
+                  Google::Protobuf::UInt32Value.decode_partial(sub)
+                end
+              end
             when 2
-              msg.unblock_threshold = reader.read_embedded(2, wt) { |sub| Google::Protobuf::UInt32Value.decode_partial(sub) }
+              msg.unblock_threshold = reader.read_embedded(2, wt) do |sub|
+                if current = msg.unblock_threshold
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::UInt32Value.decode_partial(merged)
+                else
+                  Google::Protobuf::UInt32Value.decode_partial(sub)
+                end
+              end
             when 3
-              msg.user_general_threshold = reader.read_embedded(3, wt) { |sub| Google::Protobuf::UInt32Value.decode_partial(sub) }
+              msg.user_general_threshold = reader.read_embedded(3, wt) do |sub|
+                if current = msg.user_general_threshold
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::UInt32Value.decode_partial(merged)
+                else
+                  Google::Protobuf::UInt32Value.decode_partial(sub)
+                end
+              end
             when 4
-              msg.user_unblock_threshold = reader.read_embedded(4, wt) { |sub| Google::Protobuf::UInt32Value.decode_partial(sub) }
+              msg.user_unblock_threshold = reader.read_embedded(4, wt) do |sub|
+                if current = msg.user_unblock_threshold
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::UInt32Value.decode_partial(merged)
+                else
+                  Google::Protobuf::UInt32Value.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -3202,7 +3446,9 @@ module MinknowApi
       class SoftwareSaturation
         include Proto::Message
 
+        # ameba:disable Naming/QueryBoolMethods
         property enabled : Bool = false
+        # ameba:enable Naming/QueryBoolMethods
         property software_min_adc : Google::Protobuf::Int32Value? = nil
         property software_max_adc : Google::Protobuf::Int32Value? = nil
 
@@ -3241,9 +3487,29 @@ module MinknowApi
               reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
               msg.enabled = reader.read_bool
             when 2
-              msg.software_min_adc = reader.read_embedded(2, wt) { |sub| Google::Protobuf::Int32Value.decode_partial(sub) }
+              msg.software_min_adc = reader.read_embedded(2, wt) do |sub|
+                if current = msg.software_min_adc
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::Int32Value.decode_partial(merged)
+                else
+                  Google::Protobuf::Int32Value.decode_partial(sub)
+                end
+              end
             when 3
-              msg.software_max_adc = reader.read_embedded(3, wt) { |sub| Google::Protobuf::Int32Value.decode_partial(sub) }
+              msg.software_max_adc = reader.read_embedded(3, wt) do |sub|
+                if current = msg.software_max_adc
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::Int32Value.decode_partial(merged)
+                else
+                  Google::Protobuf::Int32Value.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -3289,7 +3555,9 @@ module MinknowApi
       class UserThresholdSaturation
         include Proto::Message
 
+        # ameba:disable Naming/QueryBoolMethods
         property enabled : Bool = false
+        # ameba:enable Naming/QueryBoolMethods
         property user_threshold_min_pa : Google::Protobuf::FloatValue? = nil
         property user_threshold_max_pa : Google::Protobuf::FloatValue? = nil
 
@@ -3328,9 +3596,29 @@ module MinknowApi
               reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
               msg.enabled = reader.read_bool
             when 2
-              msg.user_threshold_min_pa = reader.read_embedded(2, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
+              msg.user_threshold_min_pa = reader.read_embedded(2, wt) do |sub|
+                if current = msg.user_threshold_min_pa
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::FloatValue.decode_partial(merged)
+                else
+                  Google::Protobuf::FloatValue.decode_partial(sub)
+                end
+              end
             when 3
-              msg.user_threshold_max_pa = reader.read_embedded(3, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
+              msg.user_threshold_max_pa = reader.read_embedded(3, wt) do |sub|
+                if current = msg.user_threshold_max_pa
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::FloatValue.decode_partial(merged)
+                else
+                  Google::Protobuf::FloatValue.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -3418,11 +3706,41 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.thresholds = reader.read_embedded(1, wt) { |sub| SaturationConfig::Thresholds.decode_partial(sub) }
+            msg.thresholds = reader.read_embedded(1, wt) do |sub|
+              if current = msg.thresholds
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                SaturationConfig::Thresholds.decode_partial(merged)
+              else
+                SaturationConfig::Thresholds.decode_partial(sub)
+              end
+            end
           when 2
-            msg.software_saturation = reader.read_embedded(2, wt) { |sub| SaturationConfig::SoftwareSaturation.decode_partial(sub) }
+            msg.software_saturation = reader.read_embedded(2, wt) do |sub|
+              if current = msg.software_saturation
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                SaturationConfig::SoftwareSaturation.decode_partial(merged)
+              else
+                SaturationConfig::SoftwareSaturation.decode_partial(sub)
+              end
+            end
           when 3
-            msg.user_threshold_saturation = reader.read_embedded(3, wt) { |sub| SaturationConfig::UserThresholdSaturation.decode_partial(sub) }
+            msg.user_threshold_saturation = reader.read_embedded(3, wt) do |sub|
+              if current = msg.user_threshold_saturation
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                SaturationConfig::UserThresholdSaturation.decode_partial(merged)
+              else
+                SaturationConfig::UserThresholdSaturation.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -3492,7 +3810,17 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.settings = reader.read_embedded(1, wt) { |sub| SaturationConfig.decode_partial(sub) }
+            msg.settings = reader.read_embedded(1, wt) do |sub|
+              if current = msg.settings
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                SaturationConfig.decode_partial(merged)
+              else
+                SaturationConfig.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -3626,7 +3954,17 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.settings = reader.read_embedded(1, wt) { |sub| SaturationConfig.decode_partial(sub) }
+            msg.settings = reader.read_embedded(1, wt) do |sub|
+              if current = msg.settings
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                SaturationConfig.decode_partial(merged)
+              else
+                SaturationConfig.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end

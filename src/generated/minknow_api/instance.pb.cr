@@ -187,7 +187,17 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.minknow = reader.read_embedded(1, wt) { |sub| GetVersionInfoResponse::MinknowVersion.decode_partial(sub) }
+            msg.minknow = reader.read_embedded(1, wt) do |sub|
+              if current = msg.minknow
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                GetVersionInfoResponse::MinknowVersion.decode_partial(merged)
+              else
+                GetVersionInfoResponse::MinknowVersion.decode_partial(sub)
+              end
+            end
           when 2
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.bream = reader.read_string
@@ -590,8 +600,12 @@ module MinknowApi
       property what : Array(String) = [] of String
       property bytes_to_stop_cleanly : UInt64 = 0
       property bytes_when_alert_issued : UInt64 = 0
+      # ameba:disable Naming/QueryBoolMethods
       property recommend_alert : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
+      # ameba:disable Naming/QueryBoolMethods
       property recommend_stop : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
       property bytes_per_second : Int64 = 0
 
       def self.decode_partial(io : IO) : self
@@ -989,7 +1003,17 @@ module MinknowApi
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.device_state = Proto::OpenEnum(MinknowApi::Device::GetDeviceStateResponse::DeviceState).new(_raw)
           when 2
-            msg.device_info = reader.read_embedded(2, wt) { |sub| MinknowApi::Device::GetDeviceInfoResponse.decode_partial(sub) }
+            msg.device_info = reader.read_embedded(2, wt) do |sub|
+              if current = msg.device_info
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::Device::GetDeviceInfoResponse.decode_partial(merged)
+              else
+                MinknowApi::Device::GetDeviceInfoResponse.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1380,21 +1404,101 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.device_info = reader.read_embedded(1, wt) { |sub| DeviceInfo.decode_partial(sub) }
+            msg.device_info = reader.read_embedded(1, wt) do |sub|
+              if current = msg.device_info
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                DeviceInfo.decode_partial(merged)
+              else
+                DeviceInfo.decode_partial(sub)
+              end
+            end
           when 2
-            msg.flow_cell_info = reader.read_embedded(2, wt) { |sub| MinknowApi::Device::GetFlowCellInfoResponse.decode_partial(sub) }
+            msg.flow_cell_info = reader.read_embedded(2, wt) do |sub|
+              if current = msg.flow_cell_info
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::Device::GetFlowCellInfoResponse.decode_partial(merged)
+              else
+                MinknowApi::Device::GetFlowCellInfoResponse.decode_partial(sub)
+              end
+            end
           when 3
-            msg.protocol_run_info = reader.read_embedded(3, wt) { |sub| MinknowApi::Protocol::ProtocolRunInfo.decode_partial(sub) }
+            msg.protocol_run_info = reader.read_embedded(3, wt) do |sub|
+              if current = msg.protocol_run_info
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::Protocol::ProtocolRunInfo.decode_partial(merged)
+              else
+                MinknowApi::Protocol::ProtocolRunInfo.decode_partial(sub)
+              end
+            end
           when 4
-            msg.acquisition_run_info = reader.read_embedded(4, wt) { |sub| MinknowApi::Acquisition::AcquisitionRunInfo.decode_partial(sub) }
+            msg.acquisition_run_info = reader.read_embedded(4, wt) do |sub|
+              if current = msg.acquisition_run_info
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::Acquisition::AcquisitionRunInfo.decode_partial(merged)
+              else
+                MinknowApi::Acquisition::AcquisitionRunInfo.decode_partial(sub)
+              end
+            end
           when 5
-            msg.flow_cell_health = reader.read_embedded(5, wt) { |sub| StreamInstanceActivityResponse::FlowCellHealth.decode_partial(sub) }
+            msg.flow_cell_health = reader.read_embedded(5, wt) do |sub|
+              if current = msg.flow_cell_health
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                StreamInstanceActivityResponse::FlowCellHealth.decode_partial(merged)
+              else
+                StreamInstanceActivityResponse::FlowCellHealth.decode_partial(sub)
+              end
+            end
           when 6
-            msg.yield_summary = reader.read_embedded(6, wt) { |sub| MinknowApi::Acquisition::AcquisitionYieldSummary.decode_partial(sub) }
+            msg.yield_summary = reader.read_embedded(6, wt) do |sub|
+              if current = msg.yield_summary
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::Acquisition::AcquisitionYieldSummary.decode_partial(merged)
+              else
+                MinknowApi::Acquisition::AcquisitionYieldSummary.decode_partial(sub)
+              end
+            end
           when 7
-            msg.basecall_speed = reader.read_embedded(7, wt) { |sub| BasecallSpeed.decode_partial(sub) }
+            msg.basecall_speed = reader.read_embedded(7, wt) do |sub|
+              if current = msg.basecall_speed
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                BasecallSpeed.decode_partial(merged)
+              else
+                BasecallSpeed.decode_partial(sub)
+              end
+            end
           when 8
-            msg.n50 = reader.read_embedded(8, wt) { |sub| N50.decode_partial(sub) }
+            msg.n50 = reader.read_embedded(8, wt) do |sub|
+              if current = msg.n50
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                N50.decode_partial(merged)
+              else
+                N50.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end

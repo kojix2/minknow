@@ -1391,7 +1391,7 @@ module MinknowApi::RunUntil
         req_marshaller = marshaller_for(WriteTargetCriteriaRequest)
         res_marshaller = marshaller_for(WriteTargetCriteriaResponse)
         response = @channel.unary_call(FULL_NAME, "write_target_criteria", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(WriteTargetCriteriaResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -1419,7 +1419,7 @@ module MinknowApi::RunUntil
         req_marshaller = marshaller_for(WriteUpdatesRequest)
         res_marshaller = marshaller_for(WriteUpdatesResponse)
         response = @channel.unary_call(FULL_NAME, "write_updates", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(WriteUpdatesResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 

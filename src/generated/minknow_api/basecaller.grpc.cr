@@ -2053,7 +2053,7 @@ module MinknowApi::Basecaller
         req_marshaller = marshaller_for(ListConfigsByKitRequest)
         res_marshaller = marshaller_for(ListConfigsByKitResponse)
         response = @channel.unary_call(FULL_NAME, "list_configs_by_kit", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(ListConfigsByKitResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -2065,7 +2065,7 @@ module MinknowApi::Basecaller
         req_marshaller = marshaller_for(StartBasecallingRequest)
         res_marshaller = marshaller_for(StartBasecallingResponse)
         response = @channel.unary_call(FULL_NAME, "start_basecalling", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(StartBasecallingResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -2077,7 +2077,7 @@ module MinknowApi::Basecaller
         req_marshaller = marshaller_for(StartBarcodingRequest)
         res_marshaller = marshaller_for(StartBarcodingResponse)
         response = @channel.unary_call(FULL_NAME, "start_barcoding", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(StartBarcodingResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -2089,7 +2089,7 @@ module MinknowApi::Basecaller
         req_marshaller = marshaller_for(StartPostProcessingProtocolRequest)
         res_marshaller = marshaller_for(StartPostProcessingProtocolResponse)
         response = @channel.unary_call(FULL_NAME, "start_post_processing_protocol", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(StartPostProcessingProtocolResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -2101,7 +2101,7 @@ module MinknowApi::Basecaller
         req_marshaller = marshaller_for(StartAlignmentRequest)
         res_marshaller = marshaller_for(StartAlignmentResponse)
         response = @channel.unary_call(FULL_NAME, "start_alignment", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(StartAlignmentResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -2113,7 +2113,7 @@ module MinknowApi::Basecaller
         req_marshaller = marshaller_for(CancelRequest)
         res_marshaller = marshaller_for(CancelResponse)
         response = @channel.unary_call(FULL_NAME, "cancel", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(CancelResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -2141,7 +2141,7 @@ module MinknowApi::Basecaller
         req_marshaller = marshaller_for(ClearInfoRequest)
         res_marshaller = marshaller_for(ClearInfoResponse)
         response = @channel.unary_call(FULL_NAME, "clear_info", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(ClearInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -2169,7 +2169,7 @@ module MinknowApi::Basecaller
         req_marshaller = marshaller_for(MakeAlignmentIndexRequest)
         res_marshaller = marshaller_for(MakeAlignmentIndexResponse)
         response = @channel.unary_call(FULL_NAME, "make_alignment_index", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(MakeAlignmentIndexResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -2181,7 +2181,7 @@ module MinknowApi::Basecaller
         req_marshaller = marshaller_for(ListPostProcessingProtocolsRequest)
         res_marshaller = marshaller_for(ListPostProcessingProtocolsResponse)
         response = @channel.unary_call(FULL_NAME, "list_post_processing_protocols", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(ListPostProcessingProtocolsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -2193,7 +2193,7 @@ module MinknowApi::Basecaller
         req_marshaller = marshaller_for(ListSettingsForPostProcessingProtocolRequest)
         res_marshaller = marshaller_for(ListSettingsForPostProcessingProtocolResponse)
         response = @channel.unary_call(FULL_NAME, "list_settings_for_post_processing_protocol", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(ListSettingsForPostProcessingProtocolResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -2205,7 +2205,7 @@ module MinknowApi::Basecaller
         req_marshaller = marshaller_for(UpdateProgressRequest)
         res_marshaller = marshaller_for(UpdateProgressResponse)
         response = @channel.unary_call(FULL_NAME, "update_post_processing_protocol_progress", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(UpdateProgressResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -2217,7 +2217,7 @@ module MinknowApi::Basecaller
         req_marshaller = marshaller_for(SendPingRequest)
         res_marshaller = marshaller_for(SendPingResponse)
         response = @channel.unary_call(FULL_NAME, "send_ping", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(SendPingResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
     end

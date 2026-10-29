@@ -15,7 +15,7 @@ module Google
           fn, wt = tag
           case fn
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -36,6 +36,7 @@ module Google
       end
 
       def ==(other : self) : Bool
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end

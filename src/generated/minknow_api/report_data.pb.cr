@@ -154,9 +154,29 @@ module MinknowApi
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.bucket_value_type = Proto::OpenEnum(MinknowApi::Statistics::BucketValueType).new(_raw)
           when 3
-            msg.plot = reader.read_embedded(3, wt) { |sub| MinknowApi::Statistics::StreamReadLengthHistogramResponse.decode_partial(sub) }
+            msg.plot = reader.read_embedded(3, wt) do |sub|
+              if current = msg.plot
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::Statistics::StreamReadLengthHistogramResponse.decode_partial(merged)
+              else
+                MinknowApi::Statistics::StreamReadLengthHistogramResponse.decode_partial(sub)
+              end
+            end
           when 4
-            msg.outliers = reader.read_embedded(4, wt) { |sub| MinknowApi::Statistics::StreamReadLengthHistogramResponse.decode_partial(sub) }
+            msg.outliers = reader.read_embedded(4, wt) do |sub|
+              if current = msg.outliers
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::Statistics::StreamReadLengthHistogramResponse.decode_partial(merged)
+              else
+                MinknowApi::Statistics::StreamReadLengthHistogramResponse.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -238,7 +258,17 @@ module MinknowApi
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.type_ = Proto::OpenEnum(MinknowApi::Statistics::StreamBoxplotRequest::BoxplotType).new(_raw)
           when 2
-            msg.plot = reader.read_embedded(2, wt) { |sub| MinknowApi::Statistics::BoxplotResponse.decode_partial(sub) }
+            msg.plot = reader.read_embedded(2, wt) do |sub|
+              if current = msg.plot
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::Statistics::BoxplotResponse.decode_partial(merged)
+              else
+                MinknowApi::Statistics::BoxplotResponse.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -372,7 +402,9 @@ module MinknowApi
       end
 
       property dorado_model_name : BasecallerInformation::DoradoModelName? = nil
+      # ameba:disable Naming/QueryBoolMethods
       property duplex_enabled : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
       property modifications : Array(String) = [] of String
 
       def has_dorado_model_name? : Bool
@@ -398,7 +430,17 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.dorado_model_name = reader.read_embedded(1, wt) { |sub| BasecallerInformation::DoradoModelName.decode_partial(sub) }
+            msg.dorado_model_name = reader.read_embedded(1, wt) do |sub|
+              if current = msg.dorado_model_name
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                BasecallerInformation::DoradoModelName.decode_partial(merged)
+              else
+                BasecallerInformation::DoradoModelName.decode_partial(sub)
+              end
+            end
           when 7
             reader.expect_wire_type!(7, wt, Proto::WireType::VARINT)
             msg.duplex_enabled = reader.read_bool
@@ -553,7 +595,17 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.acquisition_run_info = reader.read_embedded(1, wt) { |sub| MinknowApi::Acquisition::AcquisitionRunInfo.decode_partial(sub) }
+            msg.acquisition_run_info = reader.read_embedded(1, wt) do |sub|
+              if current = msg.acquisition_run_info
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::Acquisition::AcquisitionRunInfo.decode_partial(merged)
+              else
+                MinknowApi::Acquisition::AcquisitionRunInfo.decode_partial(sub)
+              end
+            end
           when 2
             reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
             msg.bucket_size = reader.read_int32
@@ -576,13 +628,53 @@ module MinknowApi
           when 9
             msg.basecall_boxplot << reader.read_embedded(9, wt) { |sub| BasecallBoxplot.decode_partial(sub) }
           when 10
-            msg.run_until_update = reader.read_embedded(10, wt) { |sub| MinknowApi::RunUntil::Update.decode_partial(sub) }
+            msg.run_until_update = reader.read_embedded(10, wt) do |sub|
+              if current = msg.run_until_update
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::RunUntil::Update.decode_partial(merged)
+              else
+                MinknowApi::RunUntil::Update.decode_partial(sub)
+              end
+            end
           when 12
-            msg.writer_config = reader.read_embedded(12, wt) { |sub| MinknowApi::AnalysisConfiguration::WriterConfiguration.decode_partial(sub) }
+            msg.writer_config = reader.read_embedded(12, wt) do |sub|
+              if current = msg.writer_config
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::AnalysisConfiguration::WriterConfiguration.decode_partial(merged)
+              else
+                MinknowApi::AnalysisConfiguration::WriterConfiguration.decode_partial(sub)
+              end
+            end
           when 13
-            msg.basecaller_config = reader.read_embedded(13, wt) { |sub| MinknowApi::AnalysisConfiguration::BasecallerConfiguration.decode_partial(sub) }
+            msg.basecaller_config = reader.read_embedded(13, wt) do |sub|
+              if current = msg.basecaller_config
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::AnalysisConfiguration::BasecallerConfiguration.decode_partial(merged)
+              else
+                MinknowApi::AnalysisConfiguration::BasecallerConfiguration.decode_partial(sub)
+              end
+            end
           when 15
-            msg.basecaller_information = reader.read_embedded(15, wt) { |sub| BasecallerInformation.decode_partial(sub) }
+            msg.basecaller_information = reader.read_embedded(15, wt) do |sub|
+              if current = msg.basecaller_information
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                BasecallerInformation.decode_partial(merged)
+              else
+                BasecallerInformation.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -784,15 +876,45 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 2
-            msg.host = reader.read_embedded(2, wt) { |sub| Host.decode_partial(sub) }
+            msg.host = reader.read_embedded(2, wt) do |sub|
+              if current = msg.host
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Host.decode_partial(merged)
+              else
+                Host.decode_partial(sub)
+              end
+            end
           when 3
-            msg.protocol_run_info = reader.read_embedded(3, wt) { |sub| MinknowApi::Protocol::ProtocolRunInfo.decode_partial(sub) }
+            msg.protocol_run_info = reader.read_embedded(3, wt) do |sub|
+              if current = msg.protocol_run_info
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::Protocol::ProtocolRunInfo.decode_partial(merged)
+              else
+                MinknowApi::Protocol::ProtocolRunInfo.decode_partial(sub)
+              end
+            end
           when 4
             msg.acquisitions << reader.read_embedded(4, wt) { |sub| AcquistionReportData.decode_partial(sub) }
           when 5
             msg.user_messages << reader.read_embedded(5, wt) { |sub| MinknowApi::Log::UserMessage.decode_partial(sub) }
           when 6
-            msg.report_data_generation_time = reader.read_embedded(6, wt) { |sub| Google::Protobuf::Timestamp.decode_partial(sub) }
+            msg.report_data_generation_time = reader.read_embedded(6, wt) do |sub|
+              if current = msg.report_data_generation_time
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::Timestamp.decode_partial(merged)
+              else
+                Google::Protobuf::Timestamp.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -877,7 +999,17 @@ module MinknowApi
               reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.position_id = reader.read_string
             when 2
-              msg.location = reader.read_embedded(2, wt) { |sub| MinknowApi::Manager::FlowCellPosition::Location.decode_partial(sub) }
+              msg.location = reader.read_embedded(2, wt) do |sub|
+                if current = msg.location
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::Manager::FlowCellPosition::Location.decode_partial(merged)
+                else
+                  MinknowApi::Manager::FlowCellPosition::Location.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -1023,7 +1155,17 @@ module MinknowApi
           when 1
             msg.sequencer_info << reader.read_embedded(1, wt) { |sub| SequencerInfo.decode_partial(sub) }
           when 2
-            msg.hardware_check_result = reader.read_embedded(2, wt) { |sub| MinknowApi::HardwareCheck::HardwareCheckResult.decode_partial(sub) }
+            msg.hardware_check_result = reader.read_embedded(2, wt) do |sub|
+              if current = msg.hardware_check_result
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::HardwareCheck::HardwareCheckResult.decode_partial(merged)
+              else
+                MinknowApi::HardwareCheck::HardwareCheckResult.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end

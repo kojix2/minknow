@@ -343,7 +343,9 @@ module MinknowApi
 
       property protocol_group_id : Google::Protobuf::StringValue? = nil
       property sample_id : Google::Protobuf::StringValue? = nil
+      # ameba:disable Naming/QueryBoolMethods
       property pool_output : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
       property barcode_user_info : Array(BarcodeUserData) = [] of BarcodeUserData
       property user_specified_flow_cell_id : Google::Protobuf::StringValue? = nil
       property user_specified_product_code : Google::Protobuf::StringValue? = nil
@@ -411,20 +413,70 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.protocol_group_id = reader.read_embedded(1, wt) { |sub| Google::Protobuf::StringValue.decode_partial(sub) }
+            msg.protocol_group_id = reader.read_embedded(1, wt) do |sub|
+              if current = msg.protocol_group_id
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::StringValue.decode_partial(merged)
+              else
+                Google::Protobuf::StringValue.decode_partial(sub)
+              end
+            end
           when 2
-            msg.sample_id = reader.read_embedded(2, wt) { |sub| Google::Protobuf::StringValue.decode_partial(sub) }
+            msg.sample_id = reader.read_embedded(2, wt) do |sub|
+              if current = msg.sample_id
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::StringValue.decode_partial(merged)
+              else
+                Google::Protobuf::StringValue.decode_partial(sub)
+              end
+            end
           when 7
             reader.expect_wire_type!(7, wt, Proto::WireType::VARINT)
             msg.pool_output = reader.read_bool
           when 3
             msg.barcode_user_info << reader.read_embedded(3, wt) { |sub| BarcodeUserData.decode_partial(sub) }
           when 4
-            msg.user_specified_flow_cell_id = reader.read_embedded(4, wt) { |sub| Google::Protobuf::StringValue.decode_partial(sub) }
+            msg.user_specified_flow_cell_id = reader.read_embedded(4, wt) do |sub|
+              if current = msg.user_specified_flow_cell_id
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::StringValue.decode_partial(merged)
+              else
+                Google::Protobuf::StringValue.decode_partial(sub)
+              end
+            end
           when 5
-            msg.user_specified_product_code = reader.read_embedded(5, wt) { |sub| Google::Protobuf::StringValue.decode_partial(sub) }
+            msg.user_specified_product_code = reader.read_embedded(5, wt) do |sub|
+              if current = msg.user_specified_product_code
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::StringValue.decode_partial(merged)
+              else
+                Google::Protobuf::StringValue.decode_partial(sub)
+              end
+            end
           when 6
-            msg.kit_info = reader.read_embedded(6, wt) { |sub| KitInfo.decode_partial(sub) }
+            msg.kit_info = reader.read_embedded(6, wt) do |sub|
+              if current = msg.kit_info
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                KitInfo.decode_partial(merged)
+              else
+                KitInfo.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -604,13 +656,53 @@ module MinknowApi
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.args << reader.read_string
           when 3
-            msg.user_info = reader.read_embedded(3, wt) { |sub| ProtocolRunUserInfo.decode_partial(sub) }
+            msg.user_info = reader.read_embedded(3, wt) do |sub|
+              if current = msg.user_info
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                ProtocolRunUserInfo.decode_partial(merged)
+              else
+                ProtocolRunUserInfo.decode_partial(sub)
+              end
+            end
           when 4
-            msg.offload_location_info = reader.read_embedded(4, wt) { |sub| OffloadLocationInfo.decode_partial(sub) }
+            msg.offload_location_info = reader.read_embedded(4, wt) do |sub|
+              if current = msg.offload_location_info
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                OffloadLocationInfo.decode_partial(merged)
+              else
+                OffloadLocationInfo.decode_partial(sub)
+              end
+            end
           when 5
-            msg.target_run_until_criteria = reader.read_embedded(5, wt) { |sub| MinknowApi::Acquisition::TargetRunUntilCriteria.decode_partial(sub) }
+            msg.target_run_until_criteria = reader.read_embedded(5, wt) do |sub|
+              if current = msg.target_run_until_criteria
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::Acquisition::TargetRunUntilCriteria.decode_partial(merged)
+              else
+                MinknowApi::Acquisition::TargetRunUntilCriteria.decode_partial(sub)
+              end
+            end
           when 7
-            msg.analysis_workflow_request = reader.read_embedded(7, wt) { |sub| MinknowApi::AnalysisWorkflows::AnalysisWorkflowRequest.decode_partial(sub) }
+            msg.analysis_workflow_request = reader.read_embedded(7, wt) do |sub|
+              if current = msg.analysis_workflow_request
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::AnalysisWorkflows::AnalysisWorkflowRequest.decode_partial(merged)
+              else
+                MinknowApi::AnalysisWorkflows::AnalysisWorkflowRequest.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1044,7 +1136,10 @@ module MinknowApi
     class ListProtocolsRequest
       include Proto::Message
 
+      # ameba:disable Naming/QueryBoolMethods
       property force_reload : Bool = false
+
+      # ameba:enable Naming/QueryBoolMethods
 
       def self.decode_partial(io : IO) : self
         msg = new
@@ -1106,7 +1201,9 @@ module MinknowApi
         getter tag_value_case : TagValueCase = TagValueCase::NONE
 
         getter string_value : String = ""
+        # ameba:disable Naming/QueryBoolMethods
         getter bool_value : Bool = false
+        # ameba:enable Naming/QueryBoolMethods
         getter int_value : Int64 = 0
         getter double_value : Float64 = 0.0_f64
         getter array_value : String = ""
@@ -1249,7 +1346,9 @@ module MinknowApi
       class TagExtractionResult
         include Proto::Message
 
+        # ameba:disable Naming/QueryBoolMethods
         property success : Bool = false
+        # ameba:enable Naming/QueryBoolMethods
         property error_report : String = ""
 
         def self.decode_partial(io : IO) : self
@@ -1333,7 +1432,17 @@ module MinknowApi
               reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.key = reader.read_string
             when 2
-              msg.value = reader.read_embedded(2, wt) { |sub| ProtocolInfo::TagValue.decode_partial(sub) }
+              msg.value = reader.read_embedded(2, wt) do |sub|
+                if current = msg.value
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  ProtocolInfo::TagValue.decode_partial(merged)
+                else
+                  ProtocolInfo::TagValue.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -1407,14 +1516,22 @@ module MinknowApi
             msg.identifier = reader.read_string
           when 2
             entry = reader.read_embedded(2, wt) { |sub| ProtocolInfo::TagsEntry.decode_partial(sub) }
-            if value = entry.value
-              msg.tags[entry.key] = value
-            end
+            msg.tags[entry.key] = entry.value || ProtocolInfo::TagValue.new
           when 3
             reader.expect_wire_type!(3, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.name = reader.read_string
           when 4
-            msg.tag_extraction_result = reader.read_embedded(4, wt) { |sub| ProtocolInfo::TagExtractionResult.decode_partial(sub) }
+            msg.tag_extraction_result = reader.read_embedded(4, wt) do |sub|
+              if current = msg.tag_extraction_result
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                ProtocolInfo::TagExtractionResult.decode_partial(merged)
+              else
+                ProtocolInfo::TagExtractionResult.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1911,13 +2028,53 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.user = reader.read_embedded(1, wt) { |sub| RequestOrigin::User.decode_partial(sub) }
+            msg.user = reader.read_embedded(1, wt) do |sub|
+              if current = msg.user
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                RequestOrigin::User.decode_partial(merged)
+              else
+                RequestOrigin::User.decode_partial(sub)
+              end
+            end
           when 2
-            msg.minknow = reader.read_embedded(2, wt) { |sub| RequestOrigin::MinKNOW.decode_partial(sub) }
+            msg.minknow = reader.read_embedded(2, wt) do |sub|
+              if current = msg.minknow
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                RequestOrigin::MinKNOW.decode_partial(merged)
+              else
+                RequestOrigin::MinKNOW.decode_partial(sub)
+              end
+            end
           when 3
-            msg.protocol_phase_management = reader.read_embedded(3, wt) { |sub| RequestOrigin::ProtocolPhaseManagement.decode_partial(sub) }
+            msg.protocol_phase_management = reader.read_embedded(3, wt) do |sub|
+              if current = msg.protocol_phase_management
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                RequestOrigin::ProtocolPhaseManagement.decode_partial(merged)
+              else
+                RequestOrigin::ProtocolPhaseManagement.decode_partial(sub)
+              end
+            end
           when 4
-            msg.run_until = reader.read_embedded(4, wt) { |sub| RequestOrigin::RunUntil.decode_partial(sub) }
+            msg.run_until = reader.read_embedded(4, wt) do |sub|
+              if current = msg.run_until
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                RequestOrigin::RunUntil.decode_partial(merged)
+              else
+                RequestOrigin::RunUntil.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -2016,9 +2173,29 @@ module MinknowApi
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.phase = Proto::OpenEnum(ProtocolPhase).new(_raw)
           when 2
-            msg.timestamp = reader.read_embedded(2, wt) { |sub| Google::Protobuf::Timestamp.decode_partial(sub) }
+            msg.timestamp = reader.read_embedded(2, wt) do |sub|
+              if current = msg.timestamp
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::Timestamp.decode_partial(merged)
+              else
+                Google::Protobuf::Timestamp.decode_partial(sub)
+              end
+            end
           when 3
-            msg.origin = reader.read_embedded(3, wt) { |sub| RequestOrigin.decode_partial(sub) }
+            msg.origin = reader.read_embedded(3, wt) do |sub|
+              if current = msg.origin
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                RequestOrigin.decode_partial(merged)
+              else
+                RequestOrigin.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -2108,7 +2285,17 @@ module MinknowApi
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.started_id = reader.read_string
           when 2
-            msg.start_request = reader.read_embedded(2, wt) { |sub| MinknowApi::Basecaller::StartRequest.decode_partial(sub) }
+            msg.start_request = reader.read_embedded(2, wt) do |sub|
+              if current = msg.start_request
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::Basecaller::StartRequest.decode_partial(merged)
+              else
+                MinknowApi::Basecaller::StartRequest.decode_partial(sub)
+              end
+            end
           when 3
             reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
@@ -2161,7 +2348,9 @@ module MinknowApi
       include Proto::Message
 
       property flow_cell_id : String = ""
+      # ameba:disable Naming/QueryBoolMethods
       property passed : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
       property total_pore_count : UInt32 = 0
 
       def self.decode_partial(io : IO) : self
@@ -2462,9 +2651,29 @@ module MinknowApi
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.failure_reason = Proto::OpenEnum(HardwareCheckResult::HardwareCheckFailureReason).new(_raw)
           when 3
-            msg.calibration_results = reader.read_embedded(3, wt) { |sub| HardwareCheckCalibrationResults.decode_partial(sub) }
+            msg.calibration_results = reader.read_embedded(3, wt) do |sub|
+              if current = msg.calibration_results
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                HardwareCheckCalibrationResults.decode_partial(merged)
+              else
+                HardwareCheckCalibrationResults.decode_partial(sub)
+              end
+            end
           when 4
-            msg.temperature_results = reader.read_embedded(4, wt) { |sub| HardwareCheckTemperatureResults.decode_partial(sub) }
+            msg.temperature_results = reader.read_embedded(4, wt) do |sub|
+              if current = msg.temperature_results
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                HardwareCheckTemperatureResults.decode_partial(merged)
+              else
+                HardwareCheckTemperatureResults.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -2564,7 +2773,17 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              msg.id = reader.read_embedded(1, wt) { |sub| Google::Protobuf::StringValue.decode_partial(sub) }
+              msg.id = reader.read_embedded(1, wt) do |sub|
+                if current = msg.id
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::StringValue.decode_partial(merged)
+                else
+                  Google::Protobuf::StringValue.decode_partial(sub)
+                end
+              end
             when 2
               reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.name = reader.read_string
@@ -2828,7 +3047,17 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.minknow = reader.read_embedded(1, wt) { |sub| GetVersionInfoResponse::MinknowVersion.decode_partial(sub) }
+            msg.minknow = reader.read_embedded(1, wt) do |sub|
+              if current = msg.minknow
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                GetVersionInfoResponse::MinknowVersion.decode_partial(merged)
+              else
+                GetVersionInfoResponse::MinknowVersion.decode_partial(sub)
+              end
+            end
           when 2
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.bream = reader.read_string
@@ -2978,7 +3207,17 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.request = reader.read_embedded(1, wt) { |sub| MinknowApi::AnalysisWorkflows::AnalysisWorkflowRequest.decode_partial(sub) }
+            msg.request = reader.read_embedded(1, wt) do |sub|
+              if current = msg.request
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::AnalysisWorkflows::AnalysisWorkflowRequest.decode_partial(merged)
+              else
+                MinknowApi::AnalysisWorkflows::AnalysisWorkflowRequest.decode_partial(sub)
+              end
+            end
           when 2
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.workflow_id = reader.read_string
@@ -3097,7 +3336,17 @@ module MinknowApi
               reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.key = reader.read_string
             when 2
-              msg.value = reader.read_embedded(2, wt) { |sub| MinknowApi::ProtocolSettings::ProtocolSetting::ProtocolSettingValue.decode_partial(sub) }
+              msg.value = reader.read_embedded(2, wt) do |sub|
+                if current = msg.value
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting::ProtocolSettingValue.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting::ProtocolSettingValue.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -3146,8 +3395,12 @@ module MinknowApi
       property phase : Proto::OpenEnum(ProtocolPhase) = Proto::OpenEnum(ProtocolPhase).new(0)
       property last_phase_change : Google::Protobuf::Timestamp? = nil
       property phase_history : Array(ProtocolPhaseSnapshot) = [] of ProtocolPhaseSnapshot
+      # ameba:disable Naming/QueryBoolMethods
       property can_pause : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
+      # ameba:disable Naming/QueryBoolMethods
       property can_trigger_mux_scan : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
       property start_time : Google::Protobuf::Timestamp? = nil
       property script_end_time : Google::Protobuf::Timestamp? = nil
       property end_time : Google::Protobuf::Timestamp? = nil
@@ -3163,7 +3416,10 @@ module MinknowApi
       property hardware_check_result : HardwareCheckResult? = nil
       property external_offload : ExternalOffload? = nil
       property software_versions : GetVersionInfoResponse? = nil
+      # ameba:disable Naming/QueryBoolMethods
       property is_protocol_script_restartable : Bool = false
+
+      # ameba:enable Naming/QueryBoolMethods
 
       def has_reported_output_path? : Bool
         !reported_output_path.nil?
@@ -3332,9 +3588,7 @@ module MinknowApi
             msg.args << reader.read_string
           when 25
             entry = reader.read_embedded(25, wt) { |sub| ProtocolRunInfo::SettingsEntry.decode_partial(sub) }
-            if value = entry.value
-              msg.settings[entry.key] = value
-            end
+            msg.settings[entry.key] = entry.value || MinknowApi::ProtocolSettings::ProtocolSetting::ProtocolSettingValue.new
           when 11
             reader.expect_wire_type!(11, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.output_path = reader.read_string
@@ -3352,7 +3606,17 @@ module MinknowApi
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.phase = Proto::OpenEnum(ProtocolPhase).new(_raw)
           when 17
-            msg.last_phase_change = reader.read_embedded(17, wt) { |sub| Google::Protobuf::Timestamp.decode_partial(sub) }
+            msg.last_phase_change = reader.read_embedded(17, wt) do |sub|
+              if current = msg.last_phase_change
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::Timestamp.decode_partial(merged)
+              else
+                Google::Protobuf::Timestamp.decode_partial(sub)
+              end
+            end
           when 28
             msg.phase_history << reader.read_embedded(28, wt) { |sub| ProtocolPhaseSnapshot.decode_partial(sub) }
           when 18
@@ -3362,36 +3626,166 @@ module MinknowApi
             reader.expect_wire_type!(19, wt, Proto::WireType::VARINT)
             msg.can_trigger_mux_scan = reader.read_bool
           when 5
-            msg.start_time = reader.read_embedded(5, wt) { |sub| Google::Protobuf::Timestamp.decode_partial(sub) }
+            msg.start_time = reader.read_embedded(5, wt) do |sub|
+              if current = msg.start_time
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::Timestamp.decode_partial(merged)
+              else
+                Google::Protobuf::Timestamp.decode_partial(sub)
+              end
+            end
           when 9
-            msg.script_end_time = reader.read_embedded(9, wt) { |sub| Google::Protobuf::Timestamp.decode_partial(sub) }
+            msg.script_end_time = reader.read_embedded(9, wt) do |sub|
+              if current = msg.script_end_time
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::Timestamp.decode_partial(merged)
+              else
+                Google::Protobuf::Timestamp.decode_partial(sub)
+              end
+            end
           when 6
-            msg.end_time = reader.read_embedded(6, wt) { |sub| Google::Protobuf::Timestamp.decode_partial(sub) }
+            msg.end_time = reader.read_embedded(6, wt) do |sub|
+              if current = msg.end_time
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::Timestamp.decode_partial(merged)
+              else
+                Google::Protobuf::Timestamp.decode_partial(sub)
+              end
+            end
           when 23
-            msg.stop_origin = reader.read_embedded(23, wt) { |sub| RequestOrigin.decode_partial(sub) }
+            msg.stop_origin = reader.read_embedded(23, wt) do |sub|
+              if current = msg.stop_origin
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                RequestOrigin.decode_partial(merged)
+              else
+                RequestOrigin.decode_partial(sub)
+              end
+            end
           when 7
             reader.expect_wire_type!(7, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.acquisition_run_ids << reader.read_string
           when 8
-            msg.user_info = reader.read_embedded(8, wt) { |sub| ProtocolRunUserInfo.decode_partial(sub) }
+            msg.user_info = reader.read_embedded(8, wt) do |sub|
+              if current = msg.user_info
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                ProtocolRunUserInfo.decode_partial(merged)
+              else
+                ProtocolRunUserInfo.decode_partial(sub)
+              end
+            end
           when 12
-            msg.device = reader.read_embedded(12, wt) { |sub| MinknowApi::Device::GetDeviceInfoResponse.decode_partial(sub) }
+            msg.device = reader.read_embedded(12, wt) do |sub|
+              if current = msg.device
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::Device::GetDeviceInfoResponse.decode_partial(merged)
+              else
+                MinknowApi::Device::GetDeviceInfoResponse.decode_partial(sub)
+              end
+            end
           when 13
-            msg.flow_cell = reader.read_embedded(13, wt) { |sub| MinknowApi::Device::GetFlowCellInfoResponse.decode_partial(sub) }
+            msg.flow_cell = reader.read_embedded(13, wt) do |sub|
+              if current = msg.flow_cell
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::Device::GetFlowCellInfoResponse.decode_partial(merged)
+              else
+                MinknowApi::Device::GetFlowCellInfoResponse.decode_partial(sub)
+              end
+            end
           when 14
-            msg.meta_info = reader.read_embedded(14, wt) { |sub| ProtocolInfo.decode_partial(sub) }
+            msg.meta_info = reader.read_embedded(14, wt) do |sub|
+              if current = msg.meta_info
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                ProtocolInfo.decode_partial(merged)
+              else
+                ProtocolInfo.decode_partial(sub)
+              end
+            end
           when 15
             msg.associated_post_processing_analysis << reader.read_embedded(15, wt) { |sub| AssociatedPostProcessingAnalysis.decode_partial(sub) }
           when 27
-            msg.analysis_workflow = reader.read_embedded(27, wt) { |sub| AnalysisWorkflowInfo.decode_partial(sub) }
+            msg.analysis_workflow = reader.read_embedded(27, wt) do |sub|
+              if current = msg.analysis_workflow
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                AnalysisWorkflowInfo.decode_partial(merged)
+              else
+                AnalysisWorkflowInfo.decode_partial(sub)
+              end
+            end
           when 20
-            msg.pqc_result = reader.read_embedded(20, wt) { |sub| PlatformQcResult.decode_partial(sub) }
+            msg.pqc_result = reader.read_embedded(20, wt) do |sub|
+              if current = msg.pqc_result
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                PlatformQcResult.decode_partial(merged)
+              else
+                PlatformQcResult.decode_partial(sub)
+              end
+            end
           when 26
-            msg.hardware_check_result = reader.read_embedded(26, wt) { |sub| HardwareCheckResult.decode_partial(sub) }
+            msg.hardware_check_result = reader.read_embedded(26, wt) do |sub|
+              if current = msg.hardware_check_result
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                HardwareCheckResult.decode_partial(merged)
+              else
+                HardwareCheckResult.decode_partial(sub)
+              end
+            end
           when 21
-            msg.external_offload = reader.read_embedded(21, wt) { |sub| ExternalOffload.decode_partial(sub) }
+            msg.external_offload = reader.read_embedded(21, wt) do |sub|
+              if current = msg.external_offload
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                ExternalOffload.decode_partial(merged)
+              else
+                ExternalOffload.decode_partial(sub)
+              end
+            end
           when 22
-            msg.software_versions = reader.read_embedded(22, wt) { |sub| GetVersionInfoResponse.decode_partial(sub) }
+            msg.software_versions = reader.read_embedded(22, wt) do |sub|
+              if current = msg.software_versions
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                GetVersionInfoResponse.decode_partial(merged)
+              else
+                GetVersionInfoResponse.decode_partial(sub)
+              end
+            end
           when 29
             reader.expect_wire_type!(29, wt, Proto::WireType::VARINT)
             msg.is_protocol_script_restartable = reader.read_bool
@@ -3432,7 +3826,7 @@ module MinknowApi
           w.write_tag(11, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(output_path)
         end
-        if _v = reported_output_path
+        unless (_v = reported_output_path).nil?
           w.write_tag(24, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(_v)
         end
@@ -3611,7 +4005,7 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if _v = flow_cell_id
+          unless (_v = flow_cell_id).nil?
             w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
             w.write_string(_v)
           end
@@ -3665,7 +4059,7 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if _v = only_succeeded_or_failed
+          unless (_v = only_succeeded_or_failed).nil?
             w.write_tag(1, Proto::WireType::VARINT)
             w.write_bool(_v)
           end
@@ -3721,9 +4115,29 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              msg.start_range = reader.read_embedded(1, wt) { |sub| Google::Protobuf::Timestamp.decode_partial(sub) }
+              msg.start_range = reader.read_embedded(1, wt) do |sub|
+                if current = msg.start_range
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::Timestamp.decode_partial(merged)
+                else
+                  Google::Protobuf::Timestamp.decode_partial(sub)
+                end
+              end
             when 2
-              msg.end_range = reader.read_embedded(2, wt) { |sub| Google::Protobuf::Timestamp.decode_partial(sub) }
+              msg.end_range = reader.read_embedded(2, wt) do |sub|
+                if current = msg.end_range
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::Timestamp.decode_partial(merged)
+                else
+                  Google::Protobuf::Timestamp.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -3860,17 +4274,47 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.pqc_filter = reader.read_embedded(1, wt) { |sub| FilteringInfo::PlatformQcFilter.decode_partial(sub) }
+            msg.pqc_filter = reader.read_embedded(1, wt) do |sub|
+              if current = msg.pqc_filter
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                FilteringInfo::PlatformQcFilter.decode_partial(merged)
+              else
+                FilteringInfo::PlatformQcFilter.decode_partial(sub)
+              end
+            end
           when 9
             reader.expect_wire_type!(9, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.flow_cell_id = reader.read_string
           when 4
-            msg.hardware_check_filter = reader.read_embedded(4, wt) { |sub| FilteringInfo::HardwareCheckFilter.decode_partial(sub) }
+            msg.hardware_check_filter = reader.read_embedded(4, wt) do |sub|
+              if current = msg.hardware_check_filter
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                FilteringInfo::HardwareCheckFilter.decode_partial(merged)
+              else
+                FilteringInfo::HardwareCheckFilter.decode_partial(sub)
+              end
+            end
           when 2
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.protocol_group_id = reader.read_string
           when 3
-            msg.experiment_start_time = reader.read_embedded(3, wt) { |sub| FilteringInfo::TimeFilter.decode_partial(sub) }
+            msg.experiment_start_time = reader.read_embedded(3, wt) do |sub|
+              if current = msg.experiment_start_time
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                FilteringInfo::TimeFilter.decode_partial(merged)
+              else
+                FilteringInfo::TimeFilter.decode_partial(sub)
+              end
+            end
           when 5
             reader.expect_wire_type!(5, wt, Proto::WireType::VARINT)
             msg.count = reader.read_int32
@@ -3905,33 +4349,33 @@ module MinknowApi
         if _v = pqc_filter
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
-        if _v = flow_cell_id
+        unless (_v = flow_cell_id).nil?
           w.write_tag(9, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(_v)
         end
         if _v = hardware_check_filter
           w.write_embedded(4) { |sub| _v.encode_partial(sub) }
         end
-        if _v = protocol_group_id
+        unless (_v = protocol_group_id).nil?
           w.write_tag(2, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(_v)
         end
         if _v = experiment_start_time
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
-        if _v = count
+        unless (_v = count).nil?
           w.write_tag(5, Proto::WireType::VARINT)
           w.write_int32(_v)
         end
-        if _v = offset
+        unless (_v = offset).nil?
           w.write_tag(6, Proto::WireType::VARINT)
           w.write_int32(_v)
         end
-        if _v = order_by
+        unless (_v = order_by).nil?
           w.write_tag(7, Proto::WireType::VARINT)
           w.write_int32(_v.raw)
         end
-        if _v = order_direction
+        unless (_v = order_direction).nil?
           w.write_tag(8, Proto::WireType::VARINT)
           w.write_int32(_v.raw)
         end
@@ -3986,7 +4430,17 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.filter_info = reader.read_embedded(1, wt) { |sub| FilteringInfo.decode_partial(sub) }
+            msg.filter_info = reader.read_embedded(1, wt) do |sub|
+              if current = msg.filter_info
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                FilteringInfo.decode_partial(merged)
+              else
+                FilteringInfo.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -4148,7 +4602,17 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 3
-            msg.run_info = reader.read_embedded(3, wt) { |sub| ProtocolRunInfo.decode_partial(sub) }
+            msg.run_info = reader.read_embedded(3, wt) do |sub|
+              if current = msg.run_info
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                ProtocolRunInfo.decode_partial(merged)
+              else
+                ProtocolRunInfo.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -4665,7 +5129,10 @@ module MinknowApi
 
       property protocol_group_id : String = ""
       property start_time : Google::Protobuf::Timestamp? = nil
+      # ameba:disable Naming/QueryBoolMethods
       property pooled_output : Bool = false
+
+      # ameba:enable Naming/QueryBoolMethods
 
       def has_start_time? : Bool
         !start_time.nil?
@@ -4693,7 +5160,17 @@ module MinknowApi
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.protocol_group_id = reader.read_string
           when 2
-            msg.start_time = reader.read_embedded(2, wt) { |sub| Google::Protobuf::Timestamp.decode_partial(sub) }
+            msg.start_time = reader.read_embedded(2, wt) do |sub|
+              if current = msg.start_time
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::Timestamp.decode_partial(merged)
+              else
+                Google::Protobuf::Timestamp.decode_partial(sub)
+              end
+            end
           when 3
             reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
             msg.pooled_output = reader.read_bool
@@ -4768,7 +5245,17 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.filter_info = reader.read_embedded(1, wt) { |sub| FilteringInfo.decode_partial(sub) }
+            msg.filter_info = reader.read_embedded(1, wt) do |sub|
+              if current = msg.filter_info
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                FilteringInfo.decode_partial(merged)
+              else
+                FilteringInfo.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -5057,7 +5544,17 @@ module MinknowApi
               reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.key = reader.read_string
             when 2
-              msg.value = reader.read_embedded(2, wt) { |sub| MinknowApi::ProtocolSettings::ProtocolSetting::ProtocolSettingValue.decode_partial(sub) }
+              msg.value = reader.read_embedded(2, wt) do |sub|
+                if current = msg.value
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting::ProtocolSettingValue.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting::ProtocolSettingValue.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -5194,20 +5691,68 @@ module MinknowApi
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.identifier = reader.read_string
           when 2
-            msg.components = reader.read_embedded(2, wt) { |sub| MinknowApi::ProtocolSettings::ProtocolIdentifierComponents.decode_partial(sub) }
+            msg.components = reader.read_embedded(2, wt) do |sub|
+              if current = msg.components
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::ProtocolSettings::ProtocolIdentifierComponents.decode_partial(merged)
+              else
+                MinknowApi::ProtocolSettings::ProtocolIdentifierComponents.decode_partial(sub)
+              end
+            end
           when 3
-            msg.user_info = reader.read_embedded(3, wt) { |sub| ProtocolRunUserInfo.decode_partial(sub) }
+            msg.user_info = reader.read_embedded(3, wt) do |sub|
+              if current = msg.user_info
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                ProtocolRunUserInfo.decode_partial(merged)
+              else
+                ProtocolRunUserInfo.decode_partial(sub)
+              end
+            end
           when 5
-            msg.offload_location_info = reader.read_embedded(5, wt) { |sub| OffloadLocationInfo.decode_partial(sub) }
+            msg.offload_location_info = reader.read_embedded(5, wt) do |sub|
+              if current = msg.offload_location_info
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                OffloadLocationInfo.decode_partial(merged)
+              else
+                OffloadLocationInfo.decode_partial(sub)
+              end
+            end
           when 6
-            msg.target_run_until_criteria = reader.read_embedded(6, wt) { |sub| MinknowApi::Acquisition::TargetRunUntilCriteria.decode_partial(sub) }
+            msg.target_run_until_criteria = reader.read_embedded(6, wt) do |sub|
+              if current = msg.target_run_until_criteria
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::Acquisition::TargetRunUntilCriteria.decode_partial(merged)
+              else
+                MinknowApi::Acquisition::TargetRunUntilCriteria.decode_partial(sub)
+              end
+            end
           when 4
             entry = reader.read_embedded(4, wt) { |sub| BeginProtocolRequest::SettingsEntry.decode_partial(sub) }
-            if value = entry.value
-              msg.settings[entry.key] = value
-            end
+            msg.settings[entry.key] = entry.value || MinknowApi::ProtocolSettings::ProtocolSetting::ProtocolSettingValue.new
           when 8
-            msg.analysis_workflow_request = reader.read_embedded(8, wt) { |sub| MinknowApi::AnalysisWorkflows::AnalysisWorkflowRequest.decode_partial(sub) }
+            msg.analysis_workflow_request = reader.read_embedded(8, wt) do |sub|
+              if current = msg.analysis_workflow_request
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::AnalysisWorkflows::AnalysisWorkflowRequest.decode_partial(merged)
+              else
+                MinknowApi::AnalysisWorkflows::AnalysisWorkflowRequest.decode_partial(sub)
+              end
+            end
           when 9
             reader.expect_wire_type!(9, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.simulation_source = reader.read_string
@@ -5358,7 +5903,17 @@ module MinknowApi
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.protocol_run_id = reader.read_string
           when 2
-            msg.pqc_result = reader.read_embedded(2, wt) { |sub| PlatformQcResult.decode_partial(sub) }
+            msg.pqc_result = reader.read_embedded(2, wt) do |sub|
+              if current = msg.pqc_result
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                PlatformQcResult.decode_partial(merged)
+              else
+                PlatformQcResult.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -5465,7 +6020,17 @@ module MinknowApi
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.protocol_run_id = reader.read_string
           when 2
-            msg.result = reader.read_embedded(2, wt) { |sub| HardwareCheckResult.decode_partial(sub) }
+            msg.result = reader.read_embedded(2, wt) do |sub|
+              if current = msg.result
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                HardwareCheckResult.decode_partial(merged)
+              else
+                HardwareCheckResult.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -5572,7 +6137,17 @@ module MinknowApi
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.run_id = reader.read_string
           when 2
-            msg.start_request = reader.read_embedded(2, wt) { |sub| MinknowApi::Basecaller::StartRequest.decode_partial(sub) }
+            msg.start_request = reader.read_embedded(2, wt) do |sub|
+              if current = msg.start_request
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::Basecaller::StartRequest.decode_partial(merged)
+              else
+                MinknowApi::Basecaller::StartRequest.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -5745,8 +6320,13 @@ module MinknowApi
       class Capabilities
         include Proto::Message
 
+        # ameba:disable Naming/QueryBoolMethods
         property can_pause : Bool = false
+        # ameba:enable Naming/QueryBoolMethods
+        # ameba:disable Naming/QueryBoolMethods
         property can_trigger_mux_scan : Bool = false
+
+        # ameba:enable Naming/QueryBoolMethods
 
         def self.decode_partial(io : IO) : self
           msg = new
@@ -5823,7 +6403,17 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.set_capabilities = reader.read_embedded(1, wt) { |sub| ProtocolPhaseManagementRequest::Capabilities.decode_partial(sub) }
+            msg.set_capabilities = reader.read_embedded(1, wt) do |sub|
+              if current = msg.set_capabilities
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                ProtocolPhaseManagementRequest::Capabilities.decode_partial(merged)
+              else
+                ProtocolPhaseManagementRequest::Capabilities.decode_partial(sub)
+              end
+            end
           when 2
             reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
@@ -5919,7 +6509,10 @@ module MinknowApi
       include Proto::Message
 
       property protocol_run_id : String = ""
+      # ameba:disable Naming/QueryBoolMethods
       property include_input_data : Bool = false
+
+      # ameba:enable Naming/QueryBoolMethods
 
       def self.decode_partial(io : IO) : self
         msg = new
@@ -6147,7 +6740,10 @@ module MinknowApi
       include Proto::Message
 
       property protocol_run_id : String = ""
+      # ameba:disable Naming/QueryBoolMethods
       property is_restartable : Bool = false
+
+      # ameba:enable Naming/QueryBoolMethods
 
       def self.decode_partial(io : IO) : self
         msg = new

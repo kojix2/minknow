@@ -990,7 +990,7 @@ module MinknowApi::Ui::SequencingRun::Presets
         req_marshaller = marshaller_for(StorePresetRequest)
         res_marshaller = marshaller_for(StorePresetResponse)
         response = @channel.unary_call(FULL_NAME, "store_preset", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(StorePresetResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -1002,7 +1002,7 @@ module MinknowApi::Ui::SequencingRun::Presets
         req_marshaller = marshaller_for(DeletePresetRequest)
         res_marshaller = marshaller_for(DeletePresetResponse)
         response = @channel.unary_call(FULL_NAME, "delete_preset", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(DeletePresetResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -1014,7 +1014,7 @@ module MinknowApi::Ui::SequencingRun::Presets
         req_marshaller = marshaller_for(GetPresetRequest)
         res_marshaller = marshaller_for(GetPresetResponse)
         response = @channel.unary_call(FULL_NAME, "get_preset", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(GetPresetResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -1026,7 +1026,7 @@ module MinknowApi::Ui::SequencingRun::Presets
         req_marshaller = marshaller_for(ListPresetsRequest)
         res_marshaller = marshaller_for(ListPresetsResponse)
         response = @channel.unary_call(FULL_NAME, "list_presets", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(ListPresetsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -1038,7 +1038,7 @@ module MinknowApi::Ui::SequencingRun::Presets
         req_marshaller = marshaller_for(CheckPresetRequest)
         res_marshaller = marshaller_for(CheckPresetResponse)
         response = @channel.unary_call(FULL_NAME, "check_preset", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(CheckPresetResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -1050,7 +1050,7 @@ module MinknowApi::Ui::SequencingRun::Presets
         req_marshaller = marshaller_for(GetStartProtocolRequest)
         res_marshaller = marshaller_for(GetStartProtocolResponse)
         response = @channel.unary_call(FULL_NAME, "get_start_protocol", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(GetStartProtocolResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
     end

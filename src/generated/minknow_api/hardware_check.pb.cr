@@ -244,7 +244,17 @@ module MinknowApi
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.device_type = Proto::OpenEnum(MinknowApi::Device::GetDeviceInfoResponse::DeviceType).new(_raw)
           when 3
-            msg.hardware_check_result = reader.read_embedded(3, wt) { |sub| MinknowApi::Protocol::HardwareCheckResult.decode_partial(sub) }
+            msg.hardware_check_result = reader.read_embedded(3, wt) do |sub|
+              if current = msg.hardware_check_result
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::Protocol::HardwareCheckResult.decode_partial(merged)
+              else
+                MinknowApi::Protocol::HardwareCheckResult.decode_partial(sub)
+              end
+            end
           when 4
             reader.expect_wire_type!(4, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.adapter_id = reader.read_string
@@ -302,7 +312,9 @@ module MinknowApi
       property position_check_results : Array(PositionCheckResult) = [] of PositionCheckResult
       property progress_percent : UInt32 = 0
       property progress_eta_seconds : UInt32 = 0
+      # ameba:disable Naming/QueryBoolMethods
       property overall_result : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
       property protocol_run_ids : Array(String) = [] of String
 
       def validate_required! : Nil
@@ -420,7 +432,17 @@ module MinknowApi
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.hardware_check_id = reader.read_string
           when 2
-            msg.hardware_check_script_data = reader.read_embedded(2, wt) { |sub| HardwareCheckScriptData.decode_partial(sub) }
+            msg.hardware_check_script_data = reader.read_embedded(2, wt) do |sub|
+              if current = msg.hardware_check_script_data
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                HardwareCheckScriptData.decode_partial(merged)
+              else
+                HardwareCheckScriptData.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -603,11 +625,41 @@ module MinknowApi
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.hardware_check_id = reader.read_string
           when 2
-            msg.start_time = reader.read_embedded(2, wt) { |sub| Google::Protobuf::Timestamp.decode_partial(sub) }
+            msg.start_time = reader.read_embedded(2, wt) do |sub|
+              if current = msg.start_time
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::Timestamp.decode_partial(merged)
+              else
+                Google::Protobuf::Timestamp.decode_partial(sub)
+              end
+            end
           when 3
-            msg.end_time = reader.read_embedded(3, wt) { |sub| Google::Protobuf::Timestamp.decode_partial(sub) }
+            msg.end_time = reader.read_embedded(3, wt) do |sub|
+              if current = msg.end_time
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::Timestamp.decode_partial(merged)
+              else
+                Google::Protobuf::Timestamp.decode_partial(sub)
+              end
+            end
           when 4
-            msg.hardware_check_script_data = reader.read_embedded(4, wt) { |sub| HardwareCheckScriptData.decode_partial(sub) }
+            msg.hardware_check_script_data = reader.read_embedded(4, wt) do |sub|
+              if current = msg.hardware_check_script_data
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                HardwareCheckScriptData.decode_partial(merged)
+              else
+                HardwareCheckScriptData.decode_partial(sub)
+              end
+            end
           when 5
             reader.expect_wire_type!(5, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
@@ -692,7 +744,17 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.hardware_check_result = reader.read_embedded(1, wt) { |sub| HardwareCheckResult.decode_partial(sub) }
+            msg.hardware_check_result = reader.read_embedded(1, wt) do |sub|
+              if current = msg.hardware_check_result
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                HardwareCheckResult.decode_partial(merged)
+              else
+                HardwareCheckResult.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end

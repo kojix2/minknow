@@ -446,7 +446,7 @@ module MinknowApi::Debug
         req_marshaller = marshaller_for(GetBasecallClientState)
         res_marshaller = marshaller_for(GetBasecallClientResponse)
         response = @channel.unary_call(FULL_NAME, "get_basecall_clients_states", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(GetBasecallClientResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -458,7 +458,7 @@ module MinknowApi::Debug
         req_marshaller = marshaller_for(GetBasecallServerState)
         res_marshaller = marshaller_for(GetBasecallServerResponse)
         response = @channel.unary_call(FULL_NAME, "get_basecaller_server_state", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(GetBasecallServerResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -470,7 +470,7 @@ module MinknowApi::Debug
         req_marshaller = marshaller_for(DisconnectFlowCellRequest)
         res_marshaller = marshaller_for(DisconnectFlowCellResponse)
         response = @channel.unary_call(FULL_NAME, "disconnect_flow_cell", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(DisconnectFlowCellResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -482,7 +482,7 @@ module MinknowApi::Debug
         req_marshaller = marshaller_for(ConnectFlowCellRequest)
         res_marshaller = marshaller_for(ConnectFlowCellResponse)
         response = @channel.unary_call(FULL_NAME, "connect_flow_cell", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(ConnectFlowCellResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -494,7 +494,7 @@ module MinknowApi::Debug
         req_marshaller = marshaller_for(SimulateFrameLossRequest)
         res_marshaller = marshaller_for(SimulateFrameLossResponse)
         response = @channel.unary_call(FULL_NAME, "simulate_frame_loss", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(SimulateFrameLossResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
     end

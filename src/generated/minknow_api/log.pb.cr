@@ -47,7 +47,10 @@ module MinknowApi
     class GetUserMessagesRequest
       include Proto::Message
 
+      # ameba:disable Naming/QueryBoolMethods
       property include_old_messages : Bool = false
+
+      # ameba:enable Naming/QueryBoolMethods
 
       def self.decode_partial(io : IO) : self
         msg = new
@@ -177,7 +180,17 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 1
-            msg.time = reader.read_embedded(1, wt) { |sub| Google::Protobuf::Timestamp.decode_partial(sub) }
+            msg.time = reader.read_embedded(1, wt) do |sub|
+              if current = msg.time
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::Timestamp.decode_partial(merged)
+              else
+                Google::Protobuf::Timestamp.decode_partial(sub)
+              end
+            end
           when 2
             reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
@@ -510,7 +523,10 @@ module MinknowApi
       include Proto::Message
 
       property collected_ping_file : String = ""
+      # ameba:disable Naming/QueryBoolMethods
       property include_previously_colleced_pings : Bool = false
+
+      # ameba:enable Naming/QueryBoolMethods
 
       def self.decode_partial(io : IO) : self
         msg = new

@@ -18,11 +18,13 @@ module Google
           fn, wt = tag
           case fn
           when 1
+            reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.type_url = reader.read_string
           when 2
+            reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.value = reader.read_bytes
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -53,6 +55,7 @@ module Google
       def ==(other : self) : Bool
         return false unless type_url == other.type_url
         return false unless value == other.value
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end

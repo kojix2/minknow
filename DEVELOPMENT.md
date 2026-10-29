@@ -6,10 +6,26 @@ Generated files:
 Code generation:
 
 ```sh
+git submodule update --init minknow_api
 make setup
-make gen-tools
 make gen
 ```
+
+Install `protoc` alongside Crystal and libnghttp2. The repository's `shard.lock`
+pins the generator versions for development and CI; it does not constrain
+applications that depend on this shard. `make gen-tools` rebuilds both plugins
+from their current sources so changes in their required files take effect.
+
+`make gen` and `make gen-one` also regenerate the Google protobuf types used by
+the API. Their schemas are pinned under `vendor/google/protobuf` instead of
+depending on the host's protobuf include files. See `vendor/README.md` for their
+version and license. To regenerate just those types, use `make gen-well-known`.
+The checked-in output includes real descriptor messages, not a placeholder.
+
+Run `crystal spec` to check the public wrapper and generated well-known types,
+including FloatValue/DoubleValue without Float extensions, positive and negative
+zero, non-finite values, unknown fields and malformed wire types. CI regenerates
+all files and checks for differences before running specs and compiling examples.
 
 ## Release Checklist
 

@@ -243,7 +243,9 @@ module MinknowApi
         getter string_value : String = ""
         getter float_value : Float64 = 0.0_f64
         getter integer_value : Int64 = 0
+        # ameba:disable Naming/QueryBoolMethods
         getter bool_value : Bool = false
+        # ameba:enable Naming/QueryBoolMethods
         getter channels_value : MinknowApi::AnalysisConfiguration::WriterConfiguration::ChannelConfiguration? = nil
         getter multi_string_value : ProtocolSetting::ProtocolSettingValue::MultiString? = nil
 
@@ -335,9 +337,29 @@ module MinknowApi
               reader.expect_wire_type!(4, wt, Proto::WireType::VARINT)
               msg.bool_value = reader.read_bool
             when 5
-              msg.channels_value = reader.read_embedded(5, wt) { |sub| MinknowApi::AnalysisConfiguration::WriterConfiguration::ChannelConfiguration.decode_partial(sub) }
+              msg.channels_value = reader.read_embedded(5, wt) do |sub|
+                if current = msg.channels_value
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::AnalysisConfiguration::WriterConfiguration::ChannelConfiguration.decode_partial(merged)
+                else
+                  MinknowApi::AnalysisConfiguration::WriterConfiguration::ChannelConfiguration.decode_partial(sub)
+                end
+              end
             when 6
-              msg.multi_string_value = reader.read_embedded(6, wt) { |sub| ProtocolSetting::ProtocolSettingValue::MultiString.decode_partial(sub) }
+              msg.multi_string_value = reader.read_embedded(6, wt) do |sub|
+                if current = msg.multi_string_value
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  ProtocolSetting::ProtocolSettingValue::MultiString.decode_partial(merged)
+                else
+                  ProtocolSetting::ProtocolSettingValue::MultiString.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -462,7 +484,17 @@ module MinknowApi
               _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
               msg.condition = Proto::OpenEnum(ProtocolSetting::Constraint::Condition).new(_raw)
             when 2
-              msg.value = reader.read_embedded(2, wt) { |sub| ProtocolSetting::ProtocolSettingValue.decode_partial(sub) }
+              msg.value = reader.read_embedded(2, wt) do |sub|
+                if current = msg.value
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  ProtocolSetting::ProtocolSettingValue.decode_partial(merged)
+                else
+                  ProtocolSetting::ProtocolSettingValue.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -625,7 +657,17 @@ module MinknowApi
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.unit = Proto::OpenEnum(ProtocolSetting::Unit).new(_raw)
           when 6
-            msg.default_value = reader.read_embedded(6, wt) { |sub| ProtocolSetting::ProtocolSettingValue.decode_partial(sub) }
+            msg.default_value = reader.read_embedded(6, wt) do |sub|
+              if current = msg.default_value
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                ProtocolSetting::ProtocolSettingValue.decode_partial(merged)
+              else
+                ProtocolSetting::ProtocolSettingValue.decode_partial(sub)
+              end
+            end
           when 7
             msg.constraints << reader.read_embedded(7, wt) { |sub| ProtocolSetting::Constraint.decode_partial(sub) }
           when 8

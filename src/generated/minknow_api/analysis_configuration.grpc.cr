@@ -5930,7 +5930,7 @@ module MinknowApi::AnalysisConfiguration
         req_marshaller = marshaller_for(GetAnalysisConfigurationRequest)
         res_marshaller = marshaller_for(AnalysisConfiguration)
         response = @channel.unary_call(FULL_NAME, "get_analysis_configuration", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(AnalysisConfiguration).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -5942,7 +5942,7 @@ module MinknowApi::AnalysisConfiguration
         req_marshaller = marshaller_for(AnalysisConfiguration)
         res_marshaller = marshaller_for(SetAnalysisConfigurationResponse)
         response = @channel.unary_call(FULL_NAME, "set_analysis_configuration", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(SetAnalysisConfigurationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -5954,7 +5954,7 @@ module MinknowApi::AnalysisConfiguration
         req_marshaller = marshaller_for(ResetAnalysisConfigurationRequest)
         res_marshaller = marshaller_for(ResetAnalysisConfigurationResponse)
         response = @channel.unary_call(FULL_NAME, "reset_analysis_configuration", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(ResetAnalysisConfigurationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -5966,7 +5966,7 @@ module MinknowApi::AnalysisConfiguration
         req_marshaller = marshaller_for(SetAnalysisEnabledStateRequest)
         res_marshaller = marshaller_for(SetAnalysisEnabledStateResponse)
         response = @channel.unary_call(FULL_NAME, "set_analysis_enabled_state", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(SetAnalysisEnabledStateResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -5978,7 +5978,7 @@ module MinknowApi::AnalysisConfiguration
         req_marshaller = marshaller_for(GetChannelStatesDescRequest)
         res_marshaller = marshaller_for(GetChannelStatesDescResponse)
         response = @channel.unary_call(FULL_NAME, "get_channel_states_desc", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(GetChannelStatesDescResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -5990,7 +5990,7 @@ module MinknowApi::AnalysisConfiguration
         req_marshaller = marshaller_for(GetSummaryRequest)
         res_marshaller = marshaller_for(GetSummaryResponse)
         response = @channel.unary_call(FULL_NAME, "get_summary", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(GetSummaryResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -6002,7 +6002,7 @@ module MinknowApi::AnalysisConfiguration
         req_marshaller = marshaller_for(SetBasecallerConfigurationRequest)
         res_marshaller = marshaller_for(SetBasecallerConfigurationResponse)
         response = @channel.unary_call(FULL_NAME, "set_basecaller_configuration", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(SetBasecallerConfigurationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -6014,7 +6014,7 @@ module MinknowApi::AnalysisConfiguration
         req_marshaller = marshaller_for(SetBasecallerConfigurationRequest)
         res_marshaller = marshaller_for(SetBasecallerConfigurationResponse)
         response = @channel.unary_call(FULL_NAME, "preload_basecaller_configuration", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(SetBasecallerConfigurationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -6026,7 +6026,7 @@ module MinknowApi::AnalysisConfiguration
         req_marshaller = marshaller_for(GetBasecallerConfigurationRequest)
         res_marshaller = marshaller_for(BasecallerConfiguration)
         response = @channel.unary_call(FULL_NAME, "get_basecaller_configuration", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(BasecallerConfiguration).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -6038,7 +6038,7 @@ module MinknowApi::AnalysisConfiguration
         req_marshaller = marshaller_for(GetPoreTypeConfigurationRequest)
         res_marshaller = marshaller_for(PoreTypeConfiguration)
         response = @channel.unary_call(FULL_NAME, "get_pore_type_configuration", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(PoreTypeConfiguration).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -6050,7 +6050,7 @@ module MinknowApi::AnalysisConfiguration
         req_marshaller = marshaller_for(PoreTypeConfiguration)
         res_marshaller = marshaller_for(SetPoreTypeConfigurationResponse)
         response = @channel.unary_call(FULL_NAME, "set_pore_type_configuration", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(SetPoreTypeConfigurationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -6062,7 +6062,7 @@ module MinknowApi::AnalysisConfiguration
         req_marshaller = marshaller_for(WriterConfiguration)
         res_marshaller = marshaller_for(SetWriterConfigurationResponse)
         response = @channel.unary_call(FULL_NAME, "set_writer_configuration", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(SetWriterConfigurationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -6074,7 +6074,7 @@ module MinknowApi::AnalysisConfiguration
         req_marshaller = marshaller_for(GetWriterConfigurationRequest)
         res_marshaller = marshaller_for(WriterConfiguration)
         response = @channel.unary_call(FULL_NAME, "get_writer_configuration", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(WriterConfiguration).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -6086,7 +6086,7 @@ module MinknowApi::AnalysisConfiguration
         req_marshaller = marshaller_for(GetReadClassificationsRequest)
         res_marshaller = marshaller_for(GetReadClassificationsResponse)
         response = @channel.unary_call(FULL_NAME, "get_read_classifications", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(GetReadClassificationsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -6098,7 +6098,7 @@ module MinknowApi::AnalysisConfiguration
         req_marshaller = marshaller_for(GetDynamicAnalysisConfigurationRequest)
         res_marshaller = marshaller_for(DynamicAnalysisConfiguration)
         response = @channel.unary_call(FULL_NAME, "get_dynamic_analysis_configuration", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(DynamicAnalysisConfiguration).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -6110,7 +6110,7 @@ module MinknowApi::AnalysisConfiguration
         req_marshaller = marshaller_for(DynamicAnalysisConfiguration)
         res_marshaller = marshaller_for(SetDynamicAnalysisConfigurationResponse)
         response = @channel.unary_call(FULL_NAME, "set_dynamic_analysis_configuration", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(SetDynamicAnalysisConfigurationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -6122,7 +6122,7 @@ module MinknowApi::AnalysisConfiguration
         req_marshaller = marshaller_for(FindBasecallConfigurationDefaultsRequest)
         res_marshaller = marshaller_for(FindBasecallConfigurationDefaultsResponse)
         response = @channel.unary_call(FULL_NAME, "find_basecall_configuration_defaults", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(FindBasecallConfigurationDefaultsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
     end

@@ -1576,7 +1576,7 @@ module MinknowApi::PromethionDevice
         req_marshaller = marshaller_for(ChangeDeviceSettingsRequest)
         res_marshaller = marshaller_for(ChangeDeviceSettingsResponse)
         response = @channel.unary_call(FULL_NAME, "change_device_settings", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(ChangeDeviceSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -1588,7 +1588,7 @@ module MinknowApi::PromethionDevice
         req_marshaller = marshaller_for(GetDeviceSettingsRequest)
         res_marshaller = marshaller_for(GetDeviceSettingsResponse)
         response = @channel.unary_call(FULL_NAME, "get_device_settings", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(GetDeviceSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -1600,7 +1600,7 @@ module MinknowApi::PromethionDevice
         req_marshaller = marshaller_for(ChangePixelBlockSettingsRequest)
         res_marshaller = marshaller_for(ChangePixelBlockSettingsResponse)
         response = @channel.unary_call(FULL_NAME, "change_pixel_block_settings", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(ChangePixelBlockSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -1612,7 +1612,7 @@ module MinknowApi::PromethionDevice
         req_marshaller = marshaller_for(GetPixelBlockSettingsRequest)
         res_marshaller = marshaller_for(GetPixelBlockSettingsResponse)
         response = @channel.unary_call(FULL_NAME, "get_pixel_block_settings", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(GetPixelBlockSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -1624,7 +1624,7 @@ module MinknowApi::PromethionDevice
         req_marshaller = marshaller_for(ChangePixelSettingsRequest)
         res_marshaller = marshaller_for(ChangePixelSettingsResponse)
         response = @channel.unary_call(FULL_NAME, "change_pixel_settings", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(ChangePixelSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -1636,7 +1636,7 @@ module MinknowApi::PromethionDevice
         req_marshaller = marshaller_for(GetPixelSettingsRequest)
         res_marshaller = marshaller_for(GetPixelSettingsResponse)
         response = @channel.unary_call(FULL_NAME, "get_pixel_settings", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(GetPixelSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 

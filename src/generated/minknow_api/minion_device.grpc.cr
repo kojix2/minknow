@@ -1463,7 +1463,7 @@ module MinknowApi::MinionDevice
         req_marshaller = marshaller_for(ChangeSettingsRequest)
         res_marshaller = marshaller_for(ChangeSettingsResponse)
         response = @channel.unary_call(FULL_NAME, "change_settings", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(ChangeSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -1475,7 +1475,7 @@ module MinknowApi::MinionDevice
         req_marshaller = marshaller_for(GetSettingsRequest)
         res_marshaller = marshaller_for(GetSettingsResponse)
         response = @channel.unary_call(FULL_NAME, "get_settings", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(GetSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -1487,7 +1487,7 @@ module MinknowApi::MinionDevice
         req_marshaller = marshaller_for(GetFanSpeedRequest)
         res_marshaller = marshaller_for(GetFanSpeedResponse)
         response = @channel.unary_call(FULL_NAME, "get_fan_speed", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(GetFanSpeedResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
     end

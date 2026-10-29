@@ -1108,7 +1108,7 @@ module MinknowApi::PebbleDevice
         req_marshaller = marshaller_for(ChangeDeviceSettingsRequest)
         res_marshaller = marshaller_for(ChangeDeviceSettingsResponse)
         response = @channel.unary_call(FULL_NAME, "change_device_settings", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(ChangeDeviceSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -1120,7 +1120,7 @@ module MinknowApi::PebbleDevice
         req_marshaller = marshaller_for(GetDeviceSettingsRequest)
         res_marshaller = marshaller_for(GetDeviceSettingsResponse)
         response = @channel.unary_call(FULL_NAME, "get_device_settings", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(GetDeviceSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -1132,7 +1132,7 @@ module MinknowApi::PebbleDevice
         req_marshaller = marshaller_for(ChangeChannelSettingsRequest)
         res_marshaller = marshaller_for(ChangeChannelSettingsResponse)
         response = @channel.unary_call(FULL_NAME, "change_channel_settings", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(ChangeChannelSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -1144,7 +1144,7 @@ module MinknowApi::PebbleDevice
         req_marshaller = marshaller_for(GetChannelSettingsRequest)
         res_marshaller = marshaller_for(GetChannelSettingsResponse)
         response = @channel.unary_call(FULL_NAME, "get_channel_settings", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(GetChannelSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
@@ -1156,7 +1156,7 @@ module MinknowApi::PebbleDevice
         req_marshaller = marshaller_for(ChangeResearchOnlySettingsRequest)
         res_marshaller = marshaller_for(ChangeResearchOnlySettingsResponse)
         response = @channel.unary_call(FULL_NAME, "change_research_only_settings", req_marshaller.encode(request), ctx)
-        message = response.raw.empty? ? nil : res_marshaller.decode(response.raw)
+        message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(ChangeResearchOnlySettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
     end

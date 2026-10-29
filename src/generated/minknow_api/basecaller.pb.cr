@@ -174,7 +174,17 @@ module MinknowApi
                 reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
                 msg.key = reader.read_string
               when 2
-                msg.value = reader.read_embedded(2, wt) { |sub| ListConfigsByKitResponse::ConfigList.decode_partial(sub) }
+                msg.value = reader.read_embedded(2, wt) do |sub|
+                  if current = msg.value
+                    merged = IO::Memory.new
+                    current.encode_partial(merged)
+                    IO.copy(sub, merged)
+                    merged.rewind
+                    ListConfigsByKitResponse::ConfigList.decode_partial(merged)
+                  else
+                    ListConfigsByKitResponse::ConfigList.decode_partial(sub)
+                  end
+                end
               else
                 msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
               end
@@ -233,9 +243,7 @@ module MinknowApi
             case fn
             when 1
               entry = reader.read_embedded(1, wt) { |sub| ListConfigsByKitResponse::PerFlowCell::KitConfigsEntry.decode_partial(sub) }
-              if value = entry.value
-                msg.kit_configs[entry.key] = value
-              end
+              msg.kit_configs[entry.key] = entry.value || ListConfigsByKitResponse::ConfigList.new
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -304,7 +312,17 @@ module MinknowApi
               reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.key = reader.read_string
             when 2
-              msg.value = reader.read_embedded(2, wt) { |sub| ListConfigsByKitResponse::PerFlowCell.decode_partial(sub) }
+              msg.value = reader.read_embedded(2, wt) do |sub|
+                if current = msg.value
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  ListConfigsByKitResponse::PerFlowCell.decode_partial(merged)
+                else
+                  ListConfigsByKitResponse::PerFlowCell.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -363,9 +381,7 @@ module MinknowApi
           case fn
           when 1
             entry = reader.read_embedded(1, wt) { |sub| ListConfigsByKitResponse::FlowCellConfigsEntry.decode_partial(sub) }
-            if value = entry.value
-              msg.flow_cell_configs[entry.key] = value
-            end
+            msg.flow_cell_configs[entry.key] = entry.value || ListConfigsByKitResponse::PerFlowCell.new
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -418,16 +434,29 @@ module MinknowApi
       property output_reads_directory : String = ""
       getter configuration : String = ""
       getter model_names : MinknowApi::AnalysisConfiguration::BasecallerConfiguration::ModelNames? = nil
+      # ameba:disable Naming/QueryBoolMethods
       property fast5_out : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
+      # ameba:disable Naming/QueryBoolMethods
       property compress_fastq : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
+      # ameba:disable Naming/QueryBoolMethods
       property disable_events : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
+      # ameba:disable Naming/QueryBoolMethods
       property recursive : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
       property barcoding_configuration : MinknowApi::AnalysisConfiguration::BarcodingConfiguration? = nil
       property alignment_configuration : MinknowApi::AnalysisConfiguration::AlignmentConfiguration? = nil
       property min_qscore : Float64 = 0.0_f64
+      # ameba:disable Naming/QueryBoolMethods
       property enable_read_splitting : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
       property min_score_read_splitting : Google::Protobuf::FloatValue? = nil
+      # ameba:disable Naming/QueryBoolMethods
       property estimate_poly_a : Bool = false
+
+      # ameba:enable Naming/QueryBoolMethods
 
       def clear_basecall_model : Nil
         @configuration = ""
@@ -507,7 +536,17 @@ module MinknowApi
             reader.expect_wire_type!(3, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.configuration = reader.read_string
           when 16
-            msg.model_names = reader.read_embedded(16, wt) { |sub| MinknowApi::AnalysisConfiguration::BasecallerConfiguration::ModelNames.decode_partial(sub) }
+            msg.model_names = reader.read_embedded(16, wt) do |sub|
+              if current = msg.model_names
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::AnalysisConfiguration::BasecallerConfiguration::ModelNames.decode_partial(merged)
+              else
+                MinknowApi::AnalysisConfiguration::BasecallerConfiguration::ModelNames.decode_partial(sub)
+              end
+            end
           when 4
             reader.expect_wire_type!(4, wt, Proto::WireType::VARINT)
             msg.fast5_out = reader.read_bool
@@ -521,9 +560,29 @@ module MinknowApi
             reader.expect_wire_type!(7, wt, Proto::WireType::VARINT)
             msg.recursive = reader.read_bool
           when 10
-            msg.barcoding_configuration = reader.read_embedded(10, wt) { |sub| MinknowApi::AnalysisConfiguration::BarcodingConfiguration.decode_partial(sub) }
+            msg.barcoding_configuration = reader.read_embedded(10, wt) do |sub|
+              if current = msg.barcoding_configuration
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::AnalysisConfiguration::BarcodingConfiguration.decode_partial(merged)
+              else
+                MinknowApi::AnalysisConfiguration::BarcodingConfiguration.decode_partial(sub)
+              end
+            end
           when 11
-            msg.alignment_configuration = reader.read_embedded(11, wt) { |sub| MinknowApi::AnalysisConfiguration::AlignmentConfiguration.decode_partial(sub) }
+            msg.alignment_configuration = reader.read_embedded(11, wt) do |sub|
+              if current = msg.alignment_configuration
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::AnalysisConfiguration::AlignmentConfiguration.decode_partial(merged)
+              else
+                MinknowApi::AnalysisConfiguration::AlignmentConfiguration.decode_partial(sub)
+              end
+            end
           when 15
             reader.expect_wire_type!(15, wt, Proto::WireType::FIXED64)
             msg.min_qscore = reader.read_double
@@ -531,7 +590,17 @@ module MinknowApi
             reader.expect_wire_type!(13, wt, Proto::WireType::VARINT)
             msg.enable_read_splitting = reader.read_bool
           when 14
-            msg.min_score_read_splitting = reader.read_embedded(14, wt) { |sub| Google::Protobuf::FloatValue.decode_partial(sub) }
+            msg.min_score_read_splitting = reader.read_embedded(14, wt) do |sub|
+              if current = msg.min_score_read_splitting
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::FloatValue.decode_partial(merged)
+              else
+                Google::Protobuf::FloatValue.decode_partial(sub)
+              end
+            end
           when 156
             reader.expect_wire_type!(156, wt, Proto::WireType::VARINT)
             msg.estimate_poly_a = reader.read_bool
@@ -702,8 +771,12 @@ module MinknowApi
       property name : String = ""
       property input_reads_directories : Array(String) = [] of String
       property output_reads_directory : String = ""
+      # ameba:disable Naming/QueryBoolMethods
       property compress_fastq : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
+      # ameba:disable Naming/QueryBoolMethods
       property recursive : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
       property barcoding_configuration : MinknowApi::AnalysisConfiguration::BarcodingConfiguration? = nil
       property output_format : Proto::OpenEnum(StartBarcodingRequest::OutputFormat) = Proto::OpenEnum(StartBarcodingRequest::OutputFormat).new(0)
 
@@ -745,7 +818,17 @@ module MinknowApi
             reader.expect_wire_type!(5, wt, Proto::WireType::VARINT)
             msg.recursive = reader.read_bool
           when 10
-            msg.barcoding_configuration = reader.read_embedded(10, wt) { |sub| MinknowApi::AnalysisConfiguration::BarcodingConfiguration.decode_partial(sub) }
+            msg.barcoding_configuration = reader.read_embedded(10, wt) do |sub|
+              if current = msg.barcoding_configuration
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::AnalysisConfiguration::BarcodingConfiguration.decode_partial(merged)
+              else
+                MinknowApi::AnalysisConfiguration::BarcodingConfiguration.decode_partial(sub)
+              end
+            end
           when 12
             reader.expect_wire_type!(12, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
@@ -866,7 +949,9 @@ module MinknowApi
       property name : String = ""
       property input_reads_directories : Array(String) = [] of String
       property output_reads_directory : String = ""
+      # ameba:disable Naming/QueryBoolMethods
       property recursive : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
       property alignment_configuration : MinknowApi::AnalysisConfiguration::AlignmentConfiguration? = nil
 
       def has_alignment_configuration? : Bool
@@ -904,7 +989,17 @@ module MinknowApi
             reader.expect_wire_type!(4, wt, Proto::WireType::VARINT)
             msg.recursive = reader.read_bool
           when 6
-            msg.alignment_configuration = reader.read_embedded(6, wt) { |sub| MinknowApi::AnalysisConfiguration::AlignmentConfiguration.decode_partial(sub) }
+            msg.alignment_configuration = reader.read_embedded(6, wt) do |sub|
+              if current = msg.alignment_configuration
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::AnalysisConfiguration::AlignmentConfiguration.decode_partial(merged)
+              else
+                MinknowApi::AnalysisConfiguration::AlignmentConfiguration.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1039,7 +1134,17 @@ module MinknowApi
               reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.key = reader.read_string
             when 2
-              msg.value = reader.read_embedded(2, wt) { |sub| MinknowApi::ProtocolSettings::ProtocolSetting::ProtocolSettingValue.decode_partial(sub) }
+              msg.value = reader.read_embedded(2, wt) do |sub|
+                if current = msg.value
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting::ProtocolSettingValue.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting::ProtocolSettingValue.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -1126,9 +1231,7 @@ module MinknowApi
             msg.output_directory = reader.read_string
           when 6
             entry = reader.read_embedded(6, wt) { |sub| StartPostProcessingProtocolRequest::SettingValuesEntry.decode_partial(sub) }
-            if value = entry.value
-              msg.setting_values[entry.key] = value
-            end
+            msg.setting_values[entry.key] = entry.value || MinknowApi::ProtocolSettings::ProtocolSetting::ProtocolSettingValue.new
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1318,17 +1421,77 @@ module MinknowApi
           fn, wt = tag
           case fn
           when 2
-            msg.start_basecalling_request = reader.read_embedded(2, wt) { |sub| StartBasecallingRequest.decode_partial(sub) }
+            msg.start_basecalling_request = reader.read_embedded(2, wt) do |sub|
+              if current = msg.start_basecalling_request
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                StartBasecallingRequest.decode_partial(merged)
+              else
+                StartBasecallingRequest.decode_partial(sub)
+              end
+            end
           when 3
-            msg.start_barcoding_request = reader.read_embedded(3, wt) { |sub| StartBarcodingRequest.decode_partial(sub) }
+            msg.start_barcoding_request = reader.read_embedded(3, wt) do |sub|
+              if current = msg.start_barcoding_request
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                StartBarcodingRequest.decode_partial(merged)
+              else
+                StartBarcodingRequest.decode_partial(sub)
+              end
+            end
           when 4
-            msg.start_alignment_request = reader.read_embedded(4, wt) { |sub| StartAlignmentRequest.decode_partial(sub) }
+            msg.start_alignment_request = reader.read_embedded(4, wt) do |sub|
+              if current = msg.start_alignment_request
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                StartAlignmentRequest.decode_partial(merged)
+              else
+                StartAlignmentRequest.decode_partial(sub)
+              end
+            end
           when 5
-            msg.start_post_processing_protocol_request = reader.read_embedded(5, wt) { |sub| StartPostProcessingProtocolRequest.decode_partial(sub) }
+            msg.start_post_processing_protocol_request = reader.read_embedded(5, wt) do |sub|
+              if current = msg.start_post_processing_protocol_request
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                StartPostProcessingProtocolRequest.decode_partial(merged)
+              else
+                StartPostProcessingProtocolRequest.decode_partial(sub)
+              end
+            end
           when 6
-            msg.proxy_request = reader.read_embedded(6, wt) { |sub| MinknowApi::AnalysisWorkflows::ProxyRequest.decode_partial(sub) }
+            msg.proxy_request = reader.read_embedded(6, wt) do |sub|
+              if current = msg.proxy_request
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::AnalysisWorkflows::ProxyRequest.decode_partial(merged)
+              else
+                MinknowApi::AnalysisWorkflows::ProxyRequest.decode_partial(sub)
+              end
+            end
           when 7
-            msg.analysis_workflow_request = reader.read_embedded(7, wt) { |sub| MinknowApi::AnalysisWorkflows::AnalysisWorkflowRequest.decode_partial(sub) }
+            msg.analysis_workflow_request = reader.read_embedded(7, wt) do |sub|
+              if current = msg.analysis_workflow_request
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                MinknowApi::AnalysisWorkflows::AnalysisWorkflowRequest.decode_partial(merged)
+              else
+                MinknowApi::AnalysisWorkflows::AnalysisWorkflowRequest.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1650,13 +1813,53 @@ module MinknowApi
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.id = reader.read_string
           when 2
-            msg.start_basecalling_request = reader.read_embedded(2, wt) { |sub| StartBasecallingRequest.decode_partial(sub) }
+            msg.start_basecalling_request = reader.read_embedded(2, wt) do |sub|
+              if current = msg.start_basecalling_request
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                StartBasecallingRequest.decode_partial(merged)
+              else
+                StartBasecallingRequest.decode_partial(sub)
+              end
+            end
           when 11
-            msg.start_barcoding_request = reader.read_embedded(11, wt) { |sub| StartBarcodingRequest.decode_partial(sub) }
+            msg.start_barcoding_request = reader.read_embedded(11, wt) do |sub|
+              if current = msg.start_barcoding_request
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                StartBarcodingRequest.decode_partial(merged)
+              else
+                StartBarcodingRequest.decode_partial(sub)
+              end
+            end
           when 12
-            msg.start_alignment_request = reader.read_embedded(12, wt) { |sub| StartAlignmentRequest.decode_partial(sub) }
+            msg.start_alignment_request = reader.read_embedded(12, wt) do |sub|
+              if current = msg.start_alignment_request
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                StartAlignmentRequest.decode_partial(merged)
+              else
+                StartAlignmentRequest.decode_partial(sub)
+              end
+            end
           when 13
-            msg.start_post_processing_protocol_request = reader.read_embedded(13, wt) { |sub| StartPostProcessingProtocolRequest.decode_partial(sub) }
+            msg.start_post_processing_protocol_request = reader.read_embedded(13, wt) do |sub|
+              if current = msg.start_post_processing_protocol_request
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                StartPostProcessingProtocolRequest.decode_partial(merged)
+              else
+                StartPostProcessingProtocolRequest.decode_partial(sub)
+              end
+            end
           when 3
             reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
@@ -1675,11 +1878,41 @@ module MinknowApi
             reader.expect_wire_type!(7, wt, Proto::WireType::VARINT)
             msg.progress_total = reader.read_int32
           when 8
-            msg.start_time = reader.read_embedded(8, wt) { |sub| Google::Protobuf::Timestamp.decode_partial(sub) }
+            msg.start_time = reader.read_embedded(8, wt) do |sub|
+              if current = msg.start_time
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::Timestamp.decode_partial(merged)
+              else
+                Google::Protobuf::Timestamp.decode_partial(sub)
+              end
+            end
           when 9
-            msg.end_time = reader.read_embedded(9, wt) { |sub| Google::Protobuf::Timestamp.decode_partial(sub) }
+            msg.end_time = reader.read_embedded(9, wt) do |sub|
+              if current = msg.end_time
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::Timestamp.decode_partial(merged)
+              else
+                Google::Protobuf::Timestamp.decode_partial(sub)
+              end
+            end
           when 10
-            msg.estimated_end_time = reader.read_embedded(10, wt) { |sub| Google::Protobuf::Timestamp.decode_partial(sub) }
+            msg.estimated_end_time = reader.read_embedded(10, wt) do |sub|
+              if current = msg.estimated_end_time
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                Google::Protobuf::Timestamp.decode_partial(merged)
+              else
+                Google::Protobuf::Timestamp.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1893,7 +2126,17 @@ module MinknowApi
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.id = reader.read_string
           when 3
-            msg.list = reader.read_embedded(3, wt) { |sub| GetInfoRequest::IdList.decode_partial(sub) }
+            msg.list = reader.read_embedded(3, wt) do |sub|
+              if current = msg.list
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                GetInfoRequest::IdList.decode_partial(merged)
+              else
+                GetInfoRequest::IdList.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -2082,7 +2325,10 @@ module MinknowApi
       include Proto::Message
 
       property id : String = ""
+      # ameba:disable Naming/QueryBoolMethods
       property send_finished_runs : Bool = false
+
+      # ameba:enable Naming/QueryBoolMethods
 
       def self.decode_partial(io : IO) : self
         msg = new
@@ -2505,9 +2751,15 @@ module MinknowApi
     class ListSettingsForPostProcessingProtocolResponse
       include Proto::Message
 
+      # ameba:disable Naming/QueryBoolMethods
       property requires_fast5_input : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
+      # ameba:disable Naming/QueryBoolMethods
       property requires_fastq_input : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
+      # ameba:disable Naming/QueryBoolMethods
       property requires_bam_input : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
       property protocol_settings : Array(MinknowApi::ProtocolSettings::ProtocolSetting) = [] of MinknowApi::ProtocolSettings::ProtocolSetting
 
       def validate_required! : Nil

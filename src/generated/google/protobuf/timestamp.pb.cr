@@ -18,11 +18,13 @@ module Google
           fn, wt = tag
           case fn
           when 1
+            reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             msg.seconds = reader.read_int64
           when 2
+            reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
             msg.nanos = reader.read_int32
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -53,6 +55,7 @@ module Google
       def ==(other : self) : Bool
         return false unless seconds == other.seconds
         return false unless nanos == other.nanos
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end

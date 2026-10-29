@@ -17,9 +17,10 @@ module Google
           fn, wt = tag
           case fn
           when 1
+            reader.expect_wire_type!(1, wt, Proto::WireType::FIXED64)
             msg.value = reader.read_double
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -32,7 +33,7 @@ module Google
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if value.to_bits != 0
+        if !value.zero? || value.sign_bit < 0
           w.write_tag(1, Proto::WireType::FIXED64)
           w.write_double(value)
         end
@@ -45,6 +46,7 @@ module Google
 
       def ==(other : self) : Bool
         return false unless value == other.value
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -61,9 +63,10 @@ module Google
           fn, wt = tag
           case fn
           when 1
+            reader.expect_wire_type!(1, wt, Proto::WireType::FIXED32)
             msg.value = reader.read_float
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -76,7 +79,7 @@ module Google
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        if value.to_bits != 0
+        if !value.zero? || value.sign_bit < 0
           w.write_tag(1, Proto::WireType::FIXED32)
           w.write_float(value)
         end
@@ -89,6 +92,7 @@ module Google
 
       def ==(other : self) : Bool
         return false unless value == other.value
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -105,9 +109,10 @@ module Google
           fn, wt = tag
           case fn
           when 1
+            reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             msg.value = reader.read_int64
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -133,6 +138,7 @@ module Google
 
       def ==(other : self) : Bool
         return false unless value == other.value
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -149,9 +155,10 @@ module Google
           fn, wt = tag
           case fn
           when 1
+            reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             msg.value = reader.read_uint64
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -177,6 +184,7 @@ module Google
 
       def ==(other : self) : Bool
         return false unless value == other.value
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -193,9 +201,10 @@ module Google
           fn, wt = tag
           case fn
           when 1
+            reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             msg.value = reader.read_int32
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -221,6 +230,7 @@ module Google
 
       def ==(other : self) : Bool
         return false unless value == other.value
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -237,9 +247,10 @@ module Google
           fn, wt = tag
           case fn
           when 1
+            reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             msg.value = reader.read_uint32
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -265,6 +276,7 @@ module Google
 
       def ==(other : self) : Bool
         return false unless value == other.value
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -272,7 +284,10 @@ module Google
     class BoolValue
       include Proto::Message
 
+      # ameba:disable Naming/QueryBoolMethods
       property value : Bool = false
+
+      # ameba:enable Naming/QueryBoolMethods
 
       def self.decode_partial(io : IO) : self
         msg = new
@@ -281,9 +296,10 @@ module Google
           fn, wt = tag
           case fn
           when 1
+            reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             msg.value = reader.read_bool
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -309,6 +325,7 @@ module Google
 
       def ==(other : self) : Bool
         return false unless value == other.value
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -325,9 +342,10 @@ module Google
           fn, wt = tag
           case fn
           when 1
+            reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.value = reader.read_string
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -353,6 +371,7 @@ module Google
 
       def ==(other : self) : Bool
         return false unless value == other.value
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
@@ -369,9 +388,10 @@ module Google
           fn, wt = tag
           case fn
           when 1
+            reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.value = reader.read_bytes
           else
-            msg.capture_unknown_field(reader, fn, wt)
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
         msg
@@ -397,6 +417,7 @@ module Google
 
       def ==(other : self) : Bool
         return false unless value == other.value
+        return false unless unknown_fields == other.unknown_fields
         true
       end
     end
