@@ -47,12 +47,11 @@ module Minknow
       sample_minimum_chunk_size : UInt64 = 0_u64,
       accepted_first_chunk_classifications : Array(Int32) = [] of Int32,
     ) : LiveRequest
-      setup = StreamSetup.new(
-        first_channel: first_channel.to_u32,
-        last_channel: last_channel.to_u32,
-        sample_minimum_chunk_size: sample_minimum_chunk_size,
-        accepted_first_chunk_classifications: accepted_first_chunk_classifications,
-      )
+      setup = StreamSetup.new
+      setup.first_channel = first_channel.to_u32
+      setup.last_channel = last_channel.to_u32
+      setup.sample_minimum_chunk_size = sample_minimum_chunk_size
+      setup.accepted_first_chunk_classifications = accepted_first_chunk_classifications
       setup.raw_data_type = Proto::OpenEnum(RawDataType).new(raw_data_type.value)
       req = LiveRequest.new
       req.setup = setup

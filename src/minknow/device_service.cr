@@ -54,11 +54,11 @@ module Minknow
     end
 
     # Returns the current calibration for the device.
-    def calibration : CalibrationResponse
-      client.get_calibration(
-        MinknowApi::Device::GetCalibrationRequest.new,
-        @ctx
-      )
+    def calibration(first_channel : Int32 = 1, last_channel : Int32? = nil) : CalibrationResponse
+      request = MinknowApi::Device::GetCalibrationRequest.new
+      request.first_channel = first_channel.to_u32
+      request.last_channel = last_channel.try(&.to_u32) || flow_cell_info.channel_count
+      client.get_calibration(request, @ctx)
     end
 
     # Returns the current temperature reading.

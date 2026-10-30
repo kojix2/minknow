@@ -27,6 +27,13 @@ including FloatValue/DoubleValue without Float extensions, positive and negative
 zero, non-finite values, unknown fields and malformed wire types. CI regenerates
 all files and checks for differences before running specs and compiling examples.
 
+Wrapper regression tests use a recording channel without a running MinKNOW
+instance. They cover RPC request types, contexts, streaming, live-read setup and
+actions, required calibration ranges and protocol run IDs, fractional timeouts,
+and local authentication precedence, token files and manager-port lookup.
+`make gen` also regenerates the Google RPC status type required by the v2 API
+from its pinned schema under `vendor/google/rpc`.
+
 ## Release Checklist
 
 Before tagging a release:

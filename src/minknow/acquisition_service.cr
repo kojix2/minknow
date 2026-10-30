@@ -27,15 +27,14 @@ module Minknow
 
     # Returns the current acquisition status.
     def current_status : CurrentStatus
-      client.get_current_status(MinknowApi::Acquisition::GetCurrentStatusRequest.new, @ctx)
+      client.current_status(MinknowApi::Acquisition::CurrentStatusRequest.new, @ctx)
     end
 
     # Returns info about a specific acquisition run by run_id.
     def get_acquisition_info(run_id : String) : RunInfo
-      client.get_acquisition_info(
-        MinknowApi::Acquisition::GetAcquisitionRunInfoRequest.new(run_id: run_id),
-        @ctx
-      )
+      request = MinknowApi::Acquisition::GetAcquisitionRunInfoRequest.new
+      request.run_id = run_id
+      client.get_acquisition_info(request, @ctx)
     end
   end
 end

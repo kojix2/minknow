@@ -53,10 +53,9 @@ module Minknow
 
     # Returns info about a specific protocol run by run_id.
     def get_run_info(run_id : String) : RunInfo
-      client.get_run_info(
-        MinknowApi::Protocol::GetRunInfoRequest.new(run_id: run_id),
-        @ctx
-      )
+      request = MinknowApi::Protocol::GetRunInfoRequest.new
+      request.run_id = run_id
+      client.get_run_info(request, @ctx)
     end
 
     # Returns a list of all protocol runs.
@@ -75,12 +74,11 @@ module Minknow
     end
 
     # Blocks until the current protocol finishes. *timeout_seconds* is optional.
-    def wait_for_finished(timeout_seconds : Float64? = nil) : RunInfo
+    def wait_for_finished(timeout_seconds : Float64? = nil, run_id : String? = nil) : RunInfo
       req = MinknowApi::Protocol::WaitForFinishedRequest.new
-      if t = timeout_seconds
-        req = MinknowApi::Protocol::WaitForFinishedRequest.new(
-          timeout: Google::Protobuf::Duration.new(seconds: t.to_i64)
-        )
+      req.run_id = run_id || current_protocol_run.run_id
+      if timeout = timeout_seconds
+        req.timeout = timeout.to_f32
       end
       client.wait_for_finished(req, @ctx)
     end

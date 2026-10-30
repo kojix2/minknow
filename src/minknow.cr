@@ -68,7 +68,7 @@ module Minknow
         authentication_token: authentication_token,
         protocol_token: protocol_token,
         auto_local_auth: auto_local_auth,
-        local_auth_lookup_port: local_auth_lookup_port,
+        local_auth_lookup_port: local_auth_lookup_port || self.port,
       )
     end
 
@@ -117,7 +117,7 @@ module Minknow
 
     def local_auth_enabled? : Bool
       override = ENV["MINKNOW_API_USE_LOCAL_TOKEN"]?
-      if value = auto_local_auth
+      unless (value = auto_local_auth).nil?
         return value
       end
 
@@ -177,7 +177,7 @@ module Minknow
       return unless File.file?(token_path)
 
       payload = JSON.parse(File.read(token_path))
-      payload["token"]?.try(&.as_s?)
+      payload.as_h?.try { |object| object["token"]?.try(&.as_s?) }
     rescue JSON::ParseException
       nil
     rescue IO::Error

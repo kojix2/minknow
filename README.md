@@ -64,6 +64,23 @@ Notes:
 - The default manager port is expected to be `9501`, which is the secure gRPC entrypoint on modern MinKNOW installations.
 - Local token lookup only helps for local connections. Remote connections should use an explicit auth token or client certificates.
 - Client certificate support is available through `ConnectionConfig`, but broad production validation across different MinKNOW deployments is still ongoing in this pre-stable release.
+- An explicit `auto_local_auth: false` or `true` takes precedence over
+  `MINKNOW_API_USE_LOCAL_TOKEN`. This controls automatic lookup, not an explicit
+  `authentication_token` or authentication metadata.
+- Connections returned by `Manager#connect` keep local token lookups on the
+  Manager port. Use `local_auth_lookup_port` to override that lookup port.
+
+### Service Requests
+
+`connection.device.calibration` fetches calibration for channels 1 through the
+flow cell's channel count. To select a range without querying the flow cell, use
+`connection.device.calibration(first_channel: 1, last_channel: 128)`.
+
+`connection.protocol.wait_for_finished(1.25)` waits for the current protocol with
+a timeout in seconds, including fractional seconds. Use
+`connection.protocol.wait_for_finished(1.25, run_id: "run-id")` to wait for a
+specific run without querying the current protocol. Omitting the timeout uses
+the API's default of waiting indefinitely.
 
 ## Environment Variables
 
