@@ -5,6 +5,8 @@ require "../src/generated/google/protobuf/duration.pb"
 require "../src/generated/google/protobuf/timestamp.pb"
 require "../src/generated/google/protobuf/empty.pb"
 require "../src/generated/google/protobuf/descriptor.pb"
+require "../src/generated/minknow_api/v2/protocols.pb"
+require "../src/generated/minknow_api/v2/protocols.grpc"
 
 describe "generated Google protobuf types" do
   it "omits positive zero in FloatValue and DoubleValue without Float extensions" do
@@ -99,5 +101,20 @@ describe "generated Google protobuf types" do
     decoded = Google::Protobuf::FileDescriptorSet.decode(descriptors.encode)
     decoded.file.first.name.should eq("example.proto")
     decoded.file.first.syntax.should eq("proto3")
+  end
+
+  it "round-trips the Google RPC status used by the v2 protocol API" do
+    detail = Google::Protobuf::Any.new
+    detail.type_url = "type.example/Message"
+    detail.value = Bytes[1, 2, 3]
+    status = Google::Rpc::Status.new
+    status.code = 5
+    status.message = "not found"
+    status.details = [detail]
+
+    decoded = Google::Rpc::Status.decode(status.encode)
+
+    decoded.should eq(status)
+    decoded.details.first.value.should eq(detail.value)
   end
 end

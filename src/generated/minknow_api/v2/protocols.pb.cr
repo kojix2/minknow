@@ -5,7 +5,7 @@ require "proto"
 
 require "../acquisition.pb.cr"
 require "../protocol.pb.cr"
-require "../../util/status.pb.cr"
+require "../../google/rpc/status.pb.cr"
 
 module MinknowApi
   module V2
@@ -909,6 +909,7 @@ module MinknowApi
 
         property experiment_start_time : MinknowApi::Protocol::FilteringInfo::TimeFilter? = nil
         property order_direction : Proto::OpenEnum(MinknowApi::Protocol::FilteringInfo::OrderDirection)? = nil
+        property protocol_group_id : String? = nil
 
         def has_experiment_start_time? : Bool
           !experiment_start_time.nil?
@@ -924,6 +925,14 @@ module MinknowApi
 
         def clear_order_direction : Nil
           self.order_direction = nil
+        end
+
+        def has_protocol_group_id? : Bool
+          !protocol_group_id.nil?
+        end
+
+        def clear_protocol_group_id : Nil
+          self.protocol_group_id = nil
         end
 
         def validate_required! : Nil
@@ -957,6 +966,9 @@ module MinknowApi
               _raw_u64 = reader.read_uint64
               _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
               msg.order_direction = Proto::OpenEnum(MinknowApi::Protocol::FilteringInfo::OrderDirection).new(_raw)
+            when 3
+              reader.expect_wire_type!(3, wt, Proto::WireType::LENGTH_DELIMITED)
+              msg.protocol_group_id = reader.read_string
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -979,6 +991,10 @@ module MinknowApi
             w.write_tag(2, Proto::WireType::VARINT)
             w.write_int32(_v.raw)
           end
+          unless (_v = protocol_group_id).nil?
+            w.write_tag(3, Proto::WireType::LENGTH_DELIMITED)
+            w.write_string(_v)
+          end
           write_unknown_fields(w)
         end
 
@@ -990,6 +1006,7 @@ module MinknowApi
         def ==(other : self) : Bool
           return false unless experiment_start_time == other.experiment_start_time
           return false unless order_direction == other.order_direction
+          return false unless protocol_group_id == other.protocol_group_id
           return false unless unknown_fields == other.unknown_fields
           true
         end

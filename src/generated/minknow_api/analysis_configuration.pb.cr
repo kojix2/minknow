@@ -895,8 +895,8 @@ module MinknowApi
       # ameba:enable Naming/QueryBoolMethods
       # ameba:disable Naming/QueryBoolMethods
       property disable_reset_open_pore_tracker_on_mux_change : Bool = false
-
       # ameba:enable Naming/QueryBoolMethods
+      property acf_delta_limit : Float32 = 0.0_f32
 
       def has_max_sample_size? : Bool
         !max_sample_size.nil?
@@ -1162,6 +1162,9 @@ module MinknowApi
           when 17
             reader.expect_wire_type!(17, wt, Proto::WireType::VARINT)
             msg.disable_reset_open_pore_tracker_on_mux_change = reader.read_bool
+          when 18
+            reader.expect_wire_type!(18, wt, Proto::WireType::FIXED32)
+            msg.acf_delta_limit = reader.read_float
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1234,6 +1237,10 @@ module MinknowApi
           w.write_tag(17, Proto::WireType::VARINT)
           w.write_bool(disable_reset_open_pore_tracker_on_mux_change)
         end
+        if !acf_delta_limit.zero? || acf_delta_limit.sign_bit < 0
+          w.write_tag(18, Proto::WireType::FIXED32)
+          w.write_float(acf_delta_limit)
+        end
         write_unknown_fields(w)
       end
 
@@ -1260,6 +1267,7 @@ module MinknowApi
         return false unless metrics_ewma == other.metrics_ewma
         return false unless disable_reset_selected_tracker_on_mux_change == other.disable_reset_selected_tracker_on_mux_change
         return false unless disable_reset_open_pore_tracker_on_mux_change == other.disable_reset_open_pore_tracker_on_mux_change
+        return false unless acf_delta_limit == other.acf_delta_limit
         return false unless unknown_fields == other.unknown_fields
         true
       end
@@ -6018,6 +6026,10 @@ module MinknowApi
         property compression_type : Proto::OpenEnum(WriterConfiguration::CompressionType) = Proto::OpenEnum(WriterConfiguration::CompressionType).new(0)
         property file_pattern : String = ""
         property raw : WriterConfiguration::ChannelConfiguration? = nil
+        property unprocessed_raw : WriterConfiguration::ChannelConfiguration? = nil
+        # ameba:disable Naming/QueryBoolMethods
+        property default_raw_is_unprocessed : Bool = false
+        # ameba:enable Naming/QueryBoolMethods
         property events : WriterConfiguration::ChannelConfiguration? = nil
         property reads : WriterConfiguration::ChannelConfiguration? = nil
         property multiplex : WriterConfiguration::ChannelConfiguration? = nil
@@ -6042,6 +6054,14 @@ module MinknowApi
 
         def clear_raw : Nil
           self.raw = nil
+        end
+
+        def has_unprocessed_raw? : Bool
+          !unprocessed_raw.nil?
+        end
+
+        def clear_unprocessed_raw : Nil
+          self.unprocessed_raw = nil
         end
 
         def has_events? : Bool
@@ -6082,6 +6102,7 @@ module MinknowApi
         def validate_required_deep! : Nil
           validate_required!
           raw.try &.validate_required_deep!
+          unprocessed_raw.try &.validate_required_deep!
           events.try &.validate_required_deep!
           reads.try &.validate_required_deep!
           multiplex.try &.validate_required_deep!
@@ -6117,6 +6138,21 @@ module MinknowApi
                   WriterConfiguration::ChannelConfiguration.decode_partial(sub)
                 end
               end
+            when 17
+              msg.unprocessed_raw = reader.read_embedded(17, wt) do |sub|
+                if current = msg.unprocessed_raw
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  WriterConfiguration::ChannelConfiguration.decode_partial(merged)
+                else
+                  WriterConfiguration::ChannelConfiguration.decode_partial(sub)
+                end
+              end
+            when 18
+              reader.expect_wire_type!(18, wt, Proto::WireType::VARINT)
+              msg.default_raw_is_unprocessed = reader.read_bool
             when 4
               msg.events = reader.read_embedded(4, wt) do |sub|
                 if current = msg.events
@@ -6207,6 +6243,13 @@ module MinknowApi
           if _v = raw
             w.write_embedded(3) { |sub| _v.encode_partial(sub) }
           end
+          if _v = unprocessed_raw
+            w.write_embedded(17) { |sub| _v.encode_partial(sub) }
+          end
+          if default_raw_is_unprocessed
+            w.write_tag(18, Proto::WireType::VARINT)
+            w.write_bool(default_raw_is_unprocessed)
+          end
           if _v = events
             w.write_embedded(4) { |sub| _v.encode_partial(sub) }
           end
@@ -6248,6 +6291,8 @@ module MinknowApi
           return false unless compression_type == other.compression_type
           return false unless file_pattern == other.file_pattern
           return false unless raw == other.raw
+          return false unless unprocessed_raw == other.unprocessed_raw
+          return false unless default_raw_is_unprocessed == other.default_raw_is_unprocessed
           return false unless events == other.events
           return false unless reads == other.reads
           return false unless multiplex == other.multiplex
@@ -6869,6 +6914,257 @@ module MinknowApi
       end
     end
 
+    class SignalFixingParams
+      include Proto::Message
+
+      class ReferenceChannel
+        include Proto::Message
+
+        property channel : UInt32 = 0
+        property baseline_pa : Float32 = 0.0_f32
+
+        def self.decode_partial(io : IO) : self
+          msg = new
+          reader = Proto::Wire::Reader.new(io)
+          while tag = reader.read_tag
+            fn, wt = tag
+            case fn
+            when 1
+              reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
+              msg.channel = reader.read_uint32
+            when 2
+              reader.expect_wire_type!(2, wt, Proto::WireType::FIXED32)
+              msg.baseline_pa = reader.read_float
+            else
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
+            end
+          end
+          msg
+        end
+
+        def self.decode(io : IO) : self
+          msg = decode_partial(io)
+          msg
+        end
+
+        def encode_partial(io : IO) : Nil
+          w = Proto::Wire::Writer.new(io)
+          if channel != 0
+            w.write_tag(1, Proto::WireType::VARINT)
+            w.write_uint32(channel)
+          end
+          if !baseline_pa.zero? || baseline_pa.sign_bit < 0
+            w.write_tag(2, Proto::WireType::FIXED32)
+            w.write_float(baseline_pa)
+          end
+          write_unknown_fields(w)
+        end
+
+        def encode(io : IO) : Nil
+          encode_partial(io)
+        end
+
+        def ==(other : self) : Bool
+          return false unless channel == other.channel
+          return false unless baseline_pa == other.baseline_pa
+          return false unless unknown_fields == other.unknown_fields
+          true
+        end
+      end
+
+      class WellCapacitances
+        include Proto::Message
+
+        property wells : Array(Float32) = [] of Float32
+
+        def self.decode_partial(io : IO) : self
+          msg = new
+          reader = Proto::Wire::Reader.new(io)
+          while tag = reader.read_tag
+            fn, wt = tag
+            case fn
+            when 1
+              if reader.packed_wire_type?(1, wt, Proto::WireType::FIXED32)
+                reader.read_packed_float { |v| msg.wells << v }
+              else
+                msg.wells << reader.read_float
+              end
+            else
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
+            end
+          end
+          msg
+        end
+
+        def self.decode(io : IO) : self
+          msg = decode_partial(io)
+          msg
+        end
+
+        def encode_partial(io : IO) : Nil
+          w = Proto::Wire::Writer.new(io)
+          w.write_packed(1) do |buf|
+            sub = Proto::Wire::Writer.new(buf)
+            wells.each { |item| sub.write_float(item) }
+          end
+          write_unknown_fields(w)
+        end
+
+        def encode(io : IO) : Nil
+          encode_partial(io)
+        end
+
+        def ==(other : self) : Bool
+          return false unless wells == other.wells
+          return false unless unknown_fields == other.unknown_fields
+          true
+        end
+      end
+
+      # ameba:disable Naming/QueryBoolMethods
+      property enabled : Bool = false
+      # ameba:enable Naming/QueryBoolMethods
+      property reference_channels : Array(SignalFixingParams::ReferenceChannel) = [] of SignalFixingParams::ReferenceChannel
+      property max_per_sample_deviation : Float32 = 0.0_f32
+      property max_bad_samples_before_discarding : UInt32 = 0
+      property min_active_reference_channels : UInt32 = 0
+      property max_active_reference_channels : UInt32 = 0
+      property capacitances : Array(SignalFixingParams::WellCapacitances) = [] of SignalFixingParams::WellCapacitances
+      property min_baseline : Float32? = nil
+      property max_baseline : Float32? = nil
+
+      def has_min_baseline? : Bool
+        !min_baseline.nil?
+      end
+
+      def clear_min_baseline : Nil
+        self.min_baseline = nil
+      end
+
+      def has_max_baseline? : Bool
+        !max_baseline.nil?
+      end
+
+      def clear_max_baseline : Nil
+        self.max_baseline = nil
+      end
+
+      def validate_required! : Nil
+      end
+
+      def validate_required_deep! : Nil
+        validate_required!
+        reference_channels.each do |item|
+          item.validate_required_deep!
+        end
+        capacitances.each do |item|
+          item.validate_required_deep!
+        end
+      end
+
+      def self.decode_partial(io : IO) : self
+        msg = new
+        reader = Proto::Wire::Reader.new(io)
+        while tag = reader.read_tag
+          fn, wt = tag
+          case fn
+          when 1
+            reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
+            msg.enabled = reader.read_bool
+          when 2
+            msg.reference_channels << reader.read_embedded(2, wt) { |sub| SignalFixingParams::ReferenceChannel.decode_partial(sub) }
+          when 3
+            reader.expect_wire_type!(3, wt, Proto::WireType::FIXED32)
+            msg.max_per_sample_deviation = reader.read_float
+          when 4
+            reader.expect_wire_type!(4, wt, Proto::WireType::VARINT)
+            msg.max_bad_samples_before_discarding = reader.read_uint32
+          when 5
+            reader.expect_wire_type!(5, wt, Proto::WireType::VARINT)
+            msg.min_active_reference_channels = reader.read_uint32
+          when 6
+            reader.expect_wire_type!(6, wt, Proto::WireType::VARINT)
+            msg.max_active_reference_channels = reader.read_uint32
+          when 7
+            msg.capacitances << reader.read_embedded(7, wt) { |sub| SignalFixingParams::WellCapacitances.decode_partial(sub) }
+          when 8
+            reader.expect_wire_type!(8, wt, Proto::WireType::FIXED32)
+            msg.min_baseline = reader.read_float
+          when 9
+            reader.expect_wire_type!(9, wt, Proto::WireType::FIXED32)
+            msg.max_baseline = reader.read_float
+          else
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
+          end
+        end
+        msg
+      end
+
+      def self.decode(io : IO) : self
+        msg = decode_partial(io)
+        msg.validate_required_deep!
+        msg
+      end
+
+      def encode_partial(io : IO) : Nil
+        w = Proto::Wire::Writer.new(io)
+        if enabled
+          w.write_tag(1, Proto::WireType::VARINT)
+          w.write_bool(enabled)
+        end
+        reference_channels.each do |item|
+          w.write_embedded(2) { |sub| item.encode_partial(sub) }
+        end
+        if !max_per_sample_deviation.zero? || max_per_sample_deviation.sign_bit < 0
+          w.write_tag(3, Proto::WireType::FIXED32)
+          w.write_float(max_per_sample_deviation)
+        end
+        if max_bad_samples_before_discarding != 0
+          w.write_tag(4, Proto::WireType::VARINT)
+          w.write_uint32(max_bad_samples_before_discarding)
+        end
+        if min_active_reference_channels != 0
+          w.write_tag(5, Proto::WireType::VARINT)
+          w.write_uint32(min_active_reference_channels)
+        end
+        if max_active_reference_channels != 0
+          w.write_tag(6, Proto::WireType::VARINT)
+          w.write_uint32(max_active_reference_channels)
+        end
+        capacitances.each do |item|
+          w.write_embedded(7) { |sub| item.encode_partial(sub) }
+        end
+        unless (_v = min_baseline).nil?
+          w.write_tag(8, Proto::WireType::FIXED32)
+          w.write_float(_v)
+        end
+        unless (_v = max_baseline).nil?
+          w.write_tag(9, Proto::WireType::FIXED32)
+          w.write_float(_v)
+        end
+        write_unknown_fields(w)
+      end
+
+      def encode(io : IO) : Nil
+        validate_required_deep!
+        encode_partial(io)
+      end
+
+      def ==(other : self) : Bool
+        return false unless enabled == other.enabled
+        return false unless reference_channels == other.reference_channels
+        return false unless max_per_sample_deviation == other.max_per_sample_deviation
+        return false unless max_bad_samples_before_discarding == other.max_bad_samples_before_discarding
+        return false unless min_active_reference_channels == other.min_active_reference_channels
+        return false unless max_active_reference_channels == other.max_active_reference_channels
+        return false unless capacitances == other.capacitances
+        return false unless min_baseline == other.min_baseline
+        return false unless max_baseline == other.max_baseline
+        return false unless unknown_fields == other.unknown_fields
+        true
+      end
+    end
+
     class DynamicAnalysisConfiguration
       include Proto::Message
 
@@ -7056,6 +7352,7 @@ module MinknowApi
       # ameba:enable Naming/QueryBoolMethods
       property force_veto_end_reasons : Array(Proto::OpenEnum(MinknowApi::ReadEndReason::ReadEndReason)) = [] of Proto::OpenEnum(MinknowApi::ReadEndReason::ReadEndReason)
       property channel_well_info : Array(DynamicAnalysisConfiguration::ChannelWellInfo) = [] of DynamicAnalysisConfiguration::ChannelWellInfo
+      property signal_fixing_params : SignalFixingParams? = nil
 
       def has_read_scale_tracking? : Bool
         !read_scale_tracking.nil?
@@ -7063,6 +7360,14 @@ module MinknowApi
 
       def clear_read_scale_tracking : Nil
         self.read_scale_tracking = nil
+      end
+
+      def has_signal_fixing_params? : Bool
+        !signal_fixing_params.nil?
+      end
+
+      def clear_signal_fixing_params : Nil
+        self.signal_fixing_params = nil
       end
 
       def validate_required! : Nil
@@ -7074,6 +7379,7 @@ module MinknowApi
         channel_well_info.each do |item|
           item.validate_required_deep!
         end
+        signal_fixing_params.try &.validate_required_deep!
       end
 
       def self.decode_partial(io : IO) : self
@@ -7109,6 +7415,18 @@ module MinknowApi
             end
           when 4
             msg.channel_well_info << reader.read_embedded(4, wt) { |sub| DynamicAnalysisConfiguration::ChannelWellInfo.decode_partial(sub) }
+          when 5
+            msg.signal_fixing_params = reader.read_embedded(5, wt) do |sub|
+              if current = msg.signal_fixing_params
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                SignalFixingParams.decode_partial(merged)
+              else
+                SignalFixingParams.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -7138,6 +7456,9 @@ module MinknowApi
         channel_well_info.each do |item|
           w.write_embedded(4) { |sub| item.encode_partial(sub) }
         end
+        if _v = signal_fixing_params
+          w.write_embedded(5) { |sub| _v.encode_partial(sub) }
+        end
         write_unknown_fields(w)
       end
 
@@ -7151,6 +7472,7 @@ module MinknowApi
         return false unless force_veto_all_reads == other.force_veto_all_reads
         return false unless force_veto_end_reasons == other.force_veto_end_reasons
         return false unless channel_well_info == other.channel_well_info
+        return false unless signal_fixing_params == other.signal_fixing_params
         return false unless unknown_fields == other.unknown_fields
         true
       end

@@ -110,17 +110,25 @@ module MinknowApi
       include Proto::Message
 
       enum Category : Int32
-        OTHER       = 0
-        RUN_OPTIONS = 1
-        BASECALLING = 2
-        OUTPUT      = 3
+        OTHER             = 0
+        BASECALLING       = 2
+        MISCELLANEOUS     = 4
+        ADAPTIVE_SAMPLING = 5
+        BARCODING         = 6
+        ALIGNMENT         = 7
+        DATA_OUTPUT       = 8
+        FILTERING         = 9
 
         def self.from_raw?(raw : Int32) : self?
           case raw
           when 0 then OTHER
-          when 1 then RUN_OPTIONS
           when 2 then BASECALLING
-          when 3 then OUTPUT
+          when 4 then MISCELLANEOUS
+          when 5 then ADAPTIVE_SAMPLING
+          when 6 then BARCODING
+          when 7 then ALIGNMENT
+          when 8 then DATA_OUTPUT
+          when 9 then FILTERING
           end
         end
       end
@@ -159,22 +167,6 @@ module MinknowApi
           when 12 then MBASE
           when 13 then GBASE
           when 14 then MILLIVOLT
-          end
-        end
-      end
-
-      enum Visibility : Int32
-        EDITABLE = 0
-        HIDDEN   = 1
-        FIXED    = 2
-        REQUIRED = 3
-
-        def self.from_raw?(raw : Int32) : self?
-          case raw
-          when 0 then EDITABLE
-          when 1 then HIDDEN
-          when 2 then FIXED
-          when 3 then REQUIRED
           end
         end
       end
@@ -228,14 +220,64 @@ module MinknowApi
           end
         end
 
+        class MultiInteger
+          include Proto::Message
+
+          property values : Array(Int64) = [] of Int64
+
+          def self.decode_partial(io : IO) : self
+            msg = new
+            reader = Proto::Wire::Reader.new(io)
+            while tag = reader.read_tag
+              fn, wt = tag
+              case fn
+              when 1
+                if reader.packed_wire_type?(1, wt, Proto::WireType::VARINT)
+                  reader.read_packed_varint { |v| msg.values << v.to_i64! }
+                else
+                  msg.values << reader.read_int64
+                end
+              else
+                msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
+              end
+            end
+            msg
+          end
+
+          def self.decode(io : IO) : self
+            msg = decode_partial(io)
+            msg
+          end
+
+          def encode_partial(io : IO) : Nil
+            w = Proto::Wire::Writer.new(io)
+            w.write_packed(1) do |buf|
+              sub = Proto::Wire::Writer.new(buf)
+              values.each { |item| sub.write_int64(item) }
+            end
+            write_unknown_fields(w)
+          end
+
+          def encode(io : IO) : Nil
+            encode_partial(io)
+          end
+
+          def ==(other : self) : Bool
+            return false unless values == other.values
+            return false unless unknown_fields == other.unknown_fields
+            true
+          end
+        end
+
         enum ProtocolSettingValueCase : Int32
-          NONE               = 0
-          STRING_VALUE       = 1
-          FLOAT_VALUE        = 2
-          INTEGER_VALUE      = 3
-          BOOL_VALUE         = 4
-          CHANNELS_VALUE     = 5
-          MULTI_STRING_VALUE = 6
+          NONE                = 0
+          STRING_VALUE        = 1
+          FLOAT_VALUE         = 2
+          INTEGER_VALUE       = 3
+          BOOL_VALUE          = 4
+          CHANNELS_VALUE      = 5
+          MULTI_STRING_VALUE  = 6
+          MULTI_INTEGER_VALUE = 7
         end
 
         getter protocol_setting_value_case : ProtocolSettingValueCase = ProtocolSettingValueCase::NONE
@@ -248,6 +290,7 @@ module MinknowApi
         # ameba:enable Naming/QueryBoolMethods
         getter channels_value : MinknowApi::AnalysisConfiguration::WriterConfiguration::ChannelConfiguration? = nil
         getter multi_string_value : ProtocolSetting::ProtocolSettingValue::MultiString? = nil
+        getter multi_integer_value : ProtocolSetting::ProtocolSettingValue::MultiInteger? = nil
 
         def clear_protocol_setting_value : Nil
           @string_value = ""
@@ -256,6 +299,7 @@ module MinknowApi
           @bool_value = false
           @channels_value = nil
           @multi_string_value = nil
+          @multi_integer_value = nil
           @protocol_setting_value_case = ProtocolSettingValueCase::NONE
         end
 
@@ -309,6 +353,17 @@ module MinknowApi
           value
         end
 
+        def multi_integer_value=(value : ProtocolSetting::ProtocolSettingValue::MultiInteger?) : ProtocolSetting::ProtocolSettingValue::MultiInteger?
+          if value.nil?
+            clear_protocol_setting_value
+            return value
+          end
+          clear_protocol_setting_value
+          @multi_integer_value = value
+          @protocol_setting_value_case = ProtocolSettingValueCase::MULTI_INTEGER_VALUE
+          value
+        end
+
         def validate_required! : Nil
         end
 
@@ -316,6 +371,7 @@ module MinknowApi
           validate_required!
           channels_value.try &.validate_required_deep!
           multi_string_value.try &.validate_required_deep!
+          multi_integer_value.try &.validate_required_deep!
         end
 
         def self.decode_partial(io : IO) : self
@@ -360,6 +416,18 @@ module MinknowApi
                   ProtocolSetting::ProtocolSettingValue::MultiString.decode_partial(sub)
                 end
               end
+            when 7
+              msg.multi_integer_value = reader.read_embedded(7, wt) do |sub|
+                if current = msg.multi_integer_value
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  ProtocolSetting::ProtocolSettingValue::MultiInteger.decode_partial(merged)
+                else
+                  ProtocolSetting::ProtocolSettingValue::MultiInteger.decode_partial(sub)
+                end
+              end
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -401,6 +469,11 @@ module MinknowApi
               w.write_embedded(6) { |sub| _v.encode_partial(sub) }
             end
           end
+          if protocol_setting_value_case == ProtocolSettingValueCase::MULTI_INTEGER_VALUE
+            if _v = multi_integer_value
+              w.write_embedded(7) { |sub| _v.encode_partial(sub) }
+            end
+          end
           write_unknown_fields(w)
         end
 
@@ -417,182 +490,7 @@ module MinknowApi
           return false unless bool_value == other.bool_value
           return false unless channels_value == other.channels_value
           return false unless multi_string_value == other.multi_string_value
-          return false unless unknown_fields == other.unknown_fields
-          true
-        end
-      end
-
-      class Constraint
-        include Proto::Message
-
-        enum Condition : Int32
-          EQUAL       = 0
-          NOT_EQUAL   = 1
-          GT_EQ       = 2
-          GT          = 3
-          LT_EQ       = 4
-          LT          = 5
-          IN          = 6
-          NOT_IN      = 7
-          ENDS_WITH   = 8
-          STARTS_WITH = 9
-
-          def self.from_raw?(raw : Int32) : self?
-            case raw
-            when 0 then EQUAL
-            when 1 then NOT_EQUAL
-            when 2 then GT_EQ
-            when 3 then GT
-            when 4 then LT_EQ
-            when 5 then LT
-            when 6 then IN
-            when 7 then NOT_IN
-            when 8 then ENDS_WITH
-            when 9 then STARTS_WITH
-            end
-          end
-        end
-
-        property condition : Proto::OpenEnum(ProtocolSetting::Constraint::Condition) = Proto::OpenEnum(ProtocolSetting::Constraint::Condition).new(0)
-        property value : ProtocolSetting::ProtocolSettingValue? = nil
-
-        def has_value? : Bool
-          !value.nil?
-        end
-
-        def clear_value : Nil
-          self.value = nil
-        end
-
-        def validate_required! : Nil
-        end
-
-        def validate_required_deep! : Nil
-          validate_required!
-          value.try &.validate_required_deep!
-        end
-
-        def self.decode_partial(io : IO) : self
-          msg = new
-          reader = Proto::Wire::Reader.new(io)
-          while tag = reader.read_tag
-            fn, wt = tag
-            case fn
-            when 1
-              reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
-              _raw_u64 = reader.read_uint64
-              _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
-              msg.condition = Proto::OpenEnum(ProtocolSetting::Constraint::Condition).new(_raw)
-            when 2
-              msg.value = reader.read_embedded(2, wt) do |sub|
-                if current = msg.value
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  ProtocolSetting::ProtocolSettingValue.decode_partial(merged)
-                else
-                  ProtocolSetting::ProtocolSettingValue.decode_partial(sub)
-                end
-              end
-            else
-              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
-            end
-          end
-          msg
-        end
-
-        def self.decode(io : IO) : self
-          msg = decode_partial(io)
-          msg.validate_required_deep!
-          msg
-        end
-
-        def encode_partial(io : IO) : Nil
-          w = Proto::Wire::Writer.new(io)
-          if condition.raw != 0
-            w.write_tag(1, Proto::WireType::VARINT)
-            w.write_int32(condition.raw)
-          end
-          if _v = value
-            w.write_embedded(2) { |sub| _v.encode_partial(sub) }
-          end
-          write_unknown_fields(w)
-        end
-
-        def encode(io : IO) : Nil
-          validate_required_deep!
-          encode_partial(io)
-        end
-
-        def ==(other : self) : Bool
-          return false unless condition == other.condition
-          return false unless value == other.value
-          return false unless unknown_fields == other.unknown_fields
-          true
-        end
-      end
-
-      class Dependency
-        include Proto::Message
-
-        property identifier : String = ""
-        property constraints : Array(ProtocolSetting::Constraint) = [] of ProtocolSetting::Constraint
-
-        def validate_required! : Nil
-        end
-
-        def validate_required_deep! : Nil
-          validate_required!
-          constraints.each do |item|
-            item.validate_required_deep!
-          end
-        end
-
-        def self.decode_partial(io : IO) : self
-          msg = new
-          reader = Proto::Wire::Reader.new(io)
-          while tag = reader.read_tag
-            fn, wt = tag
-            case fn
-            when 1
-              reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
-              msg.identifier = reader.read_string
-            when 2
-              msg.constraints << reader.read_embedded(2, wt) { |sub| ProtocolSetting::Constraint.decode_partial(sub) }
-            else
-              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
-            end
-          end
-          msg
-        end
-
-        def self.decode(io : IO) : self
-          msg = decode_partial(io)
-          msg.validate_required_deep!
-          msg
-        end
-
-        def encode_partial(io : IO) : Nil
-          w = Proto::Wire::Writer.new(io)
-          if !identifier.empty?
-            w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
-            w.write_string(identifier)
-          end
-          constraints.each do |item|
-            w.write_embedded(2) { |sub| item.encode_partial(sub) }
-          end
-          write_unknown_fields(w)
-        end
-
-        def encode(io : IO) : Nil
-          validate_required_deep!
-          encode_partial(io)
-        end
-
-        def ==(other : self) : Bool
-          return false unless identifier == other.identifier
-          return false unless constraints == other.constraints
+          return false unless multi_integer_value == other.multi_integer_value
           return false unless unknown_fields == other.unknown_fields
           true
         end
@@ -600,14 +498,8 @@ module MinknowApi
 
       property category : Proto::OpenEnum(ProtocolSetting::Category) = Proto::OpenEnum(ProtocolSetting::Category).new(0)
       property identifier : String = ""
-      property display_name : String = ""
-      property help : String = ""
       property unit : Proto::OpenEnum(ProtocolSetting::Unit) = Proto::OpenEnum(ProtocolSetting::Unit).new(0)
       property default_value : ProtocolSetting::ProtocolSettingValue? = nil
-      property constraints : Array(ProtocolSetting::Constraint) = [] of ProtocolSetting::Constraint
-      property dependencies : Array(ProtocolSetting::Dependency) = [] of ProtocolSetting::Dependency
-      property visibility : Proto::OpenEnum(ProtocolSetting::Visibility) = Proto::OpenEnum(ProtocolSetting::Visibility).new(0)
-      property choices : Array(String) = [] of String
 
       def has_default_value? : Bool
         !default_value.nil?
@@ -623,12 +515,6 @@ module MinknowApi
       def validate_required_deep! : Nil
         validate_required!
         default_value.try &.validate_required_deep!
-        constraints.each do |item|
-          item.validate_required_deep!
-        end
-        dependencies.each do |item|
-          item.validate_required_deep!
-        end
       end
 
       def self.decode_partial(io : IO) : self
@@ -645,12 +531,6 @@ module MinknowApi
           when 2
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.identifier = reader.read_string
-          when 3
-            reader.expect_wire_type!(3, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.display_name = reader.read_string
-          when 16
-            reader.expect_wire_type!(16, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.help = reader.read_string
           when 5
             reader.expect_wire_type!(5, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
@@ -668,18 +548,6 @@ module MinknowApi
                 ProtocolSetting::ProtocolSettingValue.decode_partial(sub)
               end
             end
-          when 7
-            msg.constraints << reader.read_embedded(7, wt) { |sub| ProtocolSetting::Constraint.decode_partial(sub) }
-          when 8
-            msg.dependencies << reader.read_embedded(8, wt) { |sub| ProtocolSetting::Dependency.decode_partial(sub) }
-          when 9
-            reader.expect_wire_type!(9, wt, Proto::WireType::VARINT)
-            _raw_u64 = reader.read_uint64
-            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
-            msg.visibility = Proto::OpenEnum(ProtocolSetting::Visibility).new(_raw)
-          when 17
-            reader.expect_wire_type!(17, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.choices << reader.read_string
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -703,34 +571,12 @@ module MinknowApi
           w.write_tag(2, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(identifier)
         end
-        if !display_name.empty?
-          w.write_tag(3, Proto::WireType::LENGTH_DELIMITED)
-          w.write_string(display_name)
-        end
-        if !help.empty?
-          w.write_tag(16, Proto::WireType::LENGTH_DELIMITED)
-          w.write_string(help)
-        end
         if unit.raw != 0
           w.write_tag(5, Proto::WireType::VARINT)
           w.write_int32(unit.raw)
         end
         if _v = default_value
           w.write_embedded(6) { |sub| _v.encode_partial(sub) }
-        end
-        constraints.each do |item|
-          w.write_embedded(7) { |sub| item.encode_partial(sub) }
-        end
-        dependencies.each do |item|
-          w.write_embedded(8) { |sub| item.encode_partial(sub) }
-        end
-        if visibility.raw != 0
-          w.write_tag(9, Proto::WireType::VARINT)
-          w.write_int32(visibility.raw)
-        end
-        choices.each do |item|
-          w.write_tag(17, Proto::WireType::LENGTH_DELIMITED)
-          w.write_string(item)
         end
         write_unknown_fields(w)
       end
@@ -743,14 +589,8 @@ module MinknowApi
       def ==(other : self) : Bool
         return false unless category == other.category
         return false unless identifier == other.identifier
-        return false unless display_name == other.display_name
-        return false unless help == other.help
         return false unless unit == other.unit
         return false unless default_value == other.default_value
-        return false unless constraints == other.constraints
-        return false unless dependencies == other.dependencies
-        return false unless visibility == other.visibility
-        return false unless choices == other.choices
         return false unless unknown_fields == other.unknown_fields
         true
       end

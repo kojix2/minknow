@@ -15,6 +15,7 @@ WELL_KNOWN_PROTOS := google/protobuf/any.proto \
 	google/protobuf/empty.proto \
 	google/protobuf/timestamp.proto \
 	google/protobuf/wrappers.proto
+GOOGLE_RPC_PROTOS := google/rpc/status.proto
 PROTO_PATHS := --proto_path=$(PROTO_ROOT) --proto_path=vendor
 
 .PHONY: help setup gen-tools gen gen-one gen-well-known gen-raw gen-one-raw gen-fmt
@@ -54,13 +55,13 @@ gen-well-known: gen-tools
 gen-raw: gen-tools
 	@test -n "$(PROTO_FILES)" || (echo "Initialize API inputs with git submodule update --init minknow_api"; exit 1)
 	@mkdir -p $(OUT_DIR)
-	$(PROTOC) $(PROTO_PATHS) --plugin=protoc-gen-crystal=$(PROTO_PLUGIN) --crystal_out=$(OUT_DIR) $(WELL_KNOWN_PROTOS) $(PROTO_FILES)
+	$(PROTOC) $(PROTO_PATHS) --plugin=protoc-gen-crystal=$(PROTO_PLUGIN) --crystal_out=$(OUT_DIR) $(WELL_KNOWN_PROTOS) $(GOOGLE_RPC_PROTOS) $(PROTO_FILES)
 	$(PROTOC) $(PROTO_PATHS) --plugin=protoc-gen-crystal-grpc=$(GRPC_PLUGIN) --crystal-grpc_out=$(OUT_DIR) $(PROTO_FILES)
 
 gen-one-raw: gen-tools
 	@test -n "$(PROTOS)" || (echo "Specify PROTOS, e.g. PROTOS='minknow_api/manager.proto'"; exit 1)
 	@mkdir -p $(OUT_DIR)
-	$(PROTOC) $(PROTO_PATHS) --plugin=protoc-gen-crystal=$(PROTO_PLUGIN) --crystal_out=$(OUT_DIR) $(WELL_KNOWN_PROTOS) $(PROTOS)
+	$(PROTOC) $(PROTO_PATHS) --plugin=protoc-gen-crystal=$(PROTO_PLUGIN) --crystal_out=$(OUT_DIR) $(WELL_KNOWN_PROTOS) $(GOOGLE_RPC_PROTOS) $(PROTOS)
 	$(PROTOC) $(PROTO_PATHS) --plugin=protoc-gen-crystal-grpc=$(GRPC_PLUGIN) --crystal-grpc_out=$(OUT_DIR) $(PROTOS)
 
 gen-fmt:

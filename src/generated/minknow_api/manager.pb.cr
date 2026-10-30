@@ -136,6 +136,28 @@ module MinknowApi
         end
       end
 
+      enum HostDevice : Int32
+        HOST_GRIDION          = 0
+        HOST_P2               = 1
+        HOST_P24              = 2
+        HOST_P48              = 3
+        HOST_PROMETHION_OTHER = 4
+        HOST_ELYSION          = 5
+        HOST_OTHER            = 6
+
+        def self.from_raw?(raw : Int32) : self?
+          case raw
+          when 0 then HOST_GRIDION
+          when 1 then HOST_P2
+          when 2 then HOST_P24
+          when 3 then HOST_P48
+          when 4 then HOST_PROMETHION_OTHER
+          when 5 then HOST_ELYSION
+          when 6 then HOST_OTHER
+          end
+        end
+      end
+
       class BasecallerSubstrate
         include Proto::Message
 
@@ -207,6 +229,7 @@ module MinknowApi
       property can_basecall : Proto::OpenEnum(DescribeHostResponse::BasecallingAvailability) = Proto::OpenEnum(DescribeHostResponse::BasecallingAvailability).new(0)
       property current_basecalling_hardware : DescribeHostResponse::BasecallerSubstrate? = nil
       property available_basecalling_hardware : Array(DescribeHostResponse::BasecallerSubstrate) = [] of DescribeHostResponse::BasecallerSubstrate
+      property type_of_host_device : Proto::OpenEnum(DescribeHostResponse::HostDevice) = Proto::OpenEnum(DescribeHostResponse::HostDevice).new(0)
 
       def has_current_basecalling_hardware? : Bool
         !current_basecalling_hardware.nil?
@@ -275,6 +298,11 @@ module MinknowApi
             end
           when 8
             msg.available_basecalling_hardware << reader.read_embedded(8, wt) { |sub| DescribeHostResponse::BasecallerSubstrate.decode_partial(sub) }
+          when 9
+            reader.expect_wire_type!(9, wt, Proto::WireType::VARINT)
+            _raw_u64 = reader.read_uint64
+            _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
+            msg.type_of_host_device = Proto::OpenEnum(DescribeHostResponse::HostDevice).new(_raw)
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -328,6 +356,10 @@ module MinknowApi
         available_basecalling_hardware.each do |item|
           w.write_embedded(8) { |sub| item.encode_partial(sub) }
         end
+        if type_of_host_device.raw != 0
+          w.write_tag(9, Proto::WireType::VARINT)
+          w.write_int32(type_of_host_device.raw)
+        end
         write_unknown_fields(w)
       end
 
@@ -347,6 +379,7 @@ module MinknowApi
         return false unless can_basecall == other.can_basecall
         return false unless current_basecalling_hardware == other.current_basecalling_hardware
         return false unless available_basecalling_hardware == other.available_basecalling_hardware
+        return false unless type_of_host_device == other.type_of_host_device
         return false unless unknown_fields == other.unknown_fields
         true
       end
@@ -4194,354 +4227,13 @@ module MinknowApi
     class ListSettingsForProtocolResponse
       include Proto::Message
 
-      class RunOptions
-        include Proto::Message
-
-        property run_length : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property bias_voltage : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property read_until_enabled : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property read_until_ref_file : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property read_until_channels : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property read_until_bed_file_enabled : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property read_until_bed_file : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property read_until_enrichment : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property active_channel_selection : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property mux_scan_period : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property group_change_period : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-
-        def has_run_length? : Bool
-          !run_length.nil?
-        end
-
-        def clear_run_length : Nil
-          self.run_length = nil
-        end
-
-        def has_bias_voltage? : Bool
-          !bias_voltage.nil?
-        end
-
-        def clear_bias_voltage : Nil
-          self.bias_voltage = nil
-        end
-
-        def has_read_until_enabled? : Bool
-          !read_until_enabled.nil?
-        end
-
-        def clear_read_until_enabled : Nil
-          self.read_until_enabled = nil
-        end
-
-        def has_read_until_ref_file? : Bool
-          !read_until_ref_file.nil?
-        end
-
-        def clear_read_until_ref_file : Nil
-          self.read_until_ref_file = nil
-        end
-
-        def has_read_until_channels? : Bool
-          !read_until_channels.nil?
-        end
-
-        def clear_read_until_channels : Nil
-          self.read_until_channels = nil
-        end
-
-        def has_read_until_bed_file_enabled? : Bool
-          !read_until_bed_file_enabled.nil?
-        end
-
-        def clear_read_until_bed_file_enabled : Nil
-          self.read_until_bed_file_enabled = nil
-        end
-
-        def has_read_until_bed_file? : Bool
-          !read_until_bed_file.nil?
-        end
-
-        def clear_read_until_bed_file : Nil
-          self.read_until_bed_file = nil
-        end
-
-        def has_read_until_enrichment? : Bool
-          !read_until_enrichment.nil?
-        end
-
-        def clear_read_until_enrichment : Nil
-          self.read_until_enrichment = nil
-        end
-
-        def has_active_channel_selection? : Bool
-          !active_channel_selection.nil?
-        end
-
-        def clear_active_channel_selection : Nil
-          self.active_channel_selection = nil
-        end
-
-        def has_mux_scan_period? : Bool
-          !mux_scan_period.nil?
-        end
-
-        def clear_mux_scan_period : Nil
-          self.mux_scan_period = nil
-        end
-
-        def has_group_change_period? : Bool
-          !group_change_period.nil?
-        end
-
-        def clear_group_change_period : Nil
-          self.group_change_period = nil
-        end
-
-        def validate_required! : Nil
-        end
-
-        def validate_required_deep! : Nil
-          validate_required!
-          run_length.try &.validate_required_deep!
-          bias_voltage.try &.validate_required_deep!
-          read_until_enabled.try &.validate_required_deep!
-          read_until_ref_file.try &.validate_required_deep!
-          read_until_channels.try &.validate_required_deep!
-          read_until_bed_file_enabled.try &.validate_required_deep!
-          read_until_bed_file.try &.validate_required_deep!
-          read_until_enrichment.try &.validate_required_deep!
-          active_channel_selection.try &.validate_required_deep!
-          mux_scan_period.try &.validate_required_deep!
-          group_change_period.try &.validate_required_deep!
-        end
-
-        def self.decode_partial(io : IO) : self
-          msg = new
-          reader = Proto::Wire::Reader.new(io)
-          while tag = reader.read_tag
-            fn, wt = tag
-            case fn
-            when 1
-              msg.run_length = reader.read_embedded(1, wt) do |sub|
-                if current = msg.run_length
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 2
-              msg.bias_voltage = reader.read_embedded(2, wt) do |sub|
-                if current = msg.bias_voltage
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 3
-              msg.read_until_enabled = reader.read_embedded(3, wt) do |sub|
-                if current = msg.read_until_enabled
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 4
-              msg.read_until_ref_file = reader.read_embedded(4, wt) do |sub|
-                if current = msg.read_until_ref_file
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 5
-              msg.read_until_channels = reader.read_embedded(5, wt) do |sub|
-                if current = msg.read_until_channels
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 6
-              msg.read_until_bed_file_enabled = reader.read_embedded(6, wt) do |sub|
-                if current = msg.read_until_bed_file_enabled
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 7
-              msg.read_until_bed_file = reader.read_embedded(7, wt) do |sub|
-                if current = msg.read_until_bed_file
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 8
-              msg.read_until_enrichment = reader.read_embedded(8, wt) do |sub|
-                if current = msg.read_until_enrichment
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 9
-              msg.active_channel_selection = reader.read_embedded(9, wt) do |sub|
-                if current = msg.active_channel_selection
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 10
-              msg.mux_scan_period = reader.read_embedded(10, wt) do |sub|
-                if current = msg.mux_scan_period
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 11
-              msg.group_change_period = reader.read_embedded(11, wt) do |sub|
-                if current = msg.group_change_period
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            else
-              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
-            end
-          end
-          msg
-        end
-
-        def self.decode(io : IO) : self
-          msg = decode_partial(io)
-          msg.validate_required_deep!
-          msg
-        end
-
-        def encode_partial(io : IO) : Nil
-          w = Proto::Wire::Writer.new(io)
-          if _v = run_length
-            w.write_embedded(1) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = bias_voltage
-            w.write_embedded(2) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = read_until_enabled
-            w.write_embedded(3) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = read_until_ref_file
-            w.write_embedded(4) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = read_until_channels
-            w.write_embedded(5) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = read_until_bed_file_enabled
-            w.write_embedded(6) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = read_until_bed_file
-            w.write_embedded(7) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = read_until_enrichment
-            w.write_embedded(8) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = active_channel_selection
-            w.write_embedded(9) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = mux_scan_period
-            w.write_embedded(10) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = group_change_period
-            w.write_embedded(11) { |sub| _v.encode_partial(sub) }
-          end
-          write_unknown_fields(w)
-        end
-
-        def encode(io : IO) : Nil
-          validate_required_deep!
-          encode_partial(io)
-        end
-
-        def ==(other : self) : Bool
-          return false unless run_length == other.run_length
-          return false unless bias_voltage == other.bias_voltage
-          return false unless read_until_enabled == other.read_until_enabled
-          return false unless read_until_ref_file == other.read_until_ref_file
-          return false unless read_until_channels == other.read_until_channels
-          return false unless read_until_bed_file_enabled == other.read_until_bed_file_enabled
-          return false unless read_until_bed_file == other.read_until_bed_file
-          return false unless read_until_enrichment == other.read_until_enrichment
-          return false unless active_channel_selection == other.active_channel_selection
-          return false unless mux_scan_period == other.mux_scan_period
-          return false unless group_change_period == other.group_change_period
-          return false unless unknown_fields == other.unknown_fields
-          true
-        end
-      end
-
       class Basecalling
         include Proto::Message
 
         property basecalling_enabled : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property barcoding_enabled : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property barcoding_kits : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
         property basecall_model : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property trim_barcodes_enabled : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property require_barcodes_both_ends : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property ignore_unspecified_barcodes : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property alignment_enabled : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property alignment_ref_file : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property alignment_bed_file : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property model_names_simplex_model : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property model_names_modified_models : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property model_names_stereo_model : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+        property modified_basecalling_models : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+        property poly_a_tail_length_estimation_enabled : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
 
         def has_basecalling_enabled? : Bool
           !basecalling_enabled.nil?
@@ -4549,22 +4241,6 @@ module MinknowApi
 
         def clear_basecalling_enabled : Nil
           self.basecalling_enabled = nil
-        end
-
-        def has_barcoding_enabled? : Bool
-          !barcoding_enabled.nil?
-        end
-
-        def clear_barcoding_enabled : Nil
-          self.barcoding_enabled = nil
-        end
-
-        def has_barcoding_kits? : Bool
-          !barcoding_kits.nil?
-        end
-
-        def clear_barcoding_kits : Nil
-          self.barcoding_kits = nil
         end
 
         def has_basecall_model? : Bool
@@ -4575,76 +4251,20 @@ module MinknowApi
           self.basecall_model = nil
         end
 
-        def has_trim_barcodes_enabled? : Bool
-          !trim_barcodes_enabled.nil?
+        def has_modified_basecalling_models? : Bool
+          !modified_basecalling_models.nil?
         end
 
-        def clear_trim_barcodes_enabled : Nil
-          self.trim_barcodes_enabled = nil
+        def clear_modified_basecalling_models : Nil
+          self.modified_basecalling_models = nil
         end
 
-        def has_require_barcodes_both_ends? : Bool
-          !require_barcodes_both_ends.nil?
+        def has_poly_a_tail_length_estimation_enabled? : Bool
+          !poly_a_tail_length_estimation_enabled.nil?
         end
 
-        def clear_require_barcodes_both_ends : Nil
-          self.require_barcodes_both_ends = nil
-        end
-
-        def has_ignore_unspecified_barcodes? : Bool
-          !ignore_unspecified_barcodes.nil?
-        end
-
-        def clear_ignore_unspecified_barcodes : Nil
-          self.ignore_unspecified_barcodes = nil
-        end
-
-        def has_alignment_enabled? : Bool
-          !alignment_enabled.nil?
-        end
-
-        def clear_alignment_enabled : Nil
-          self.alignment_enabled = nil
-        end
-
-        def has_alignment_ref_file? : Bool
-          !alignment_ref_file.nil?
-        end
-
-        def clear_alignment_ref_file : Nil
-          self.alignment_ref_file = nil
-        end
-
-        def has_alignment_bed_file? : Bool
-          !alignment_bed_file.nil?
-        end
-
-        def clear_alignment_bed_file : Nil
-          self.alignment_bed_file = nil
-        end
-
-        def has_model_names_simplex_model? : Bool
-          !model_names_simplex_model.nil?
-        end
-
-        def clear_model_names_simplex_model : Nil
-          self.model_names_simplex_model = nil
-        end
-
-        def has_model_names_modified_models? : Bool
-          !model_names_modified_models.nil?
-        end
-
-        def clear_model_names_modified_models : Nil
-          self.model_names_modified_models = nil
-        end
-
-        def has_model_names_stereo_model? : Bool
-          !model_names_stereo_model.nil?
-        end
-
-        def clear_model_names_stereo_model : Nil
-          self.model_names_stereo_model = nil
+        def clear_poly_a_tail_length_estimation_enabled : Nil
+          self.poly_a_tail_length_estimation_enabled = nil
         end
 
         def validate_required! : Nil
@@ -4653,18 +4273,9 @@ module MinknowApi
         def validate_required_deep! : Nil
           validate_required!
           basecalling_enabled.try &.validate_required_deep!
-          barcoding_enabled.try &.validate_required_deep!
-          barcoding_kits.try &.validate_required_deep!
           basecall_model.try &.validate_required_deep!
-          trim_barcodes_enabled.try &.validate_required_deep!
-          require_barcodes_both_ends.try &.validate_required_deep!
-          ignore_unspecified_barcodes.try &.validate_required_deep!
-          alignment_enabled.try &.validate_required_deep!
-          alignment_ref_file.try &.validate_required_deep!
-          alignment_bed_file.try &.validate_required_deep!
-          model_names_simplex_model.try &.validate_required_deep!
-          model_names_modified_models.try &.validate_required_deep!
-          model_names_stereo_model.try &.validate_required_deep!
+          modified_basecalling_models.try &.validate_required_deep!
+          poly_a_tail_length_estimation_enabled.try &.validate_required_deep!
         end
 
         def self.decode_partial(io : IO) : self
@@ -4676,30 +4287,6 @@ module MinknowApi
             when 1
               msg.basecalling_enabled = reader.read_embedded(1, wt) do |sub|
                 if current = msg.basecalling_enabled
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 2
-              msg.barcoding_enabled = reader.read_embedded(2, wt) do |sub|
-                if current = msg.barcoding_enabled
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 3
-              msg.barcoding_kits = reader.read_embedded(3, wt) do |sub|
-                if current = msg.barcoding_kits
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
@@ -4721,9 +4308,9 @@ module MinknowApi
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 5
-              msg.trim_barcodes_enabled = reader.read_embedded(5, wt) do |sub|
-                if current = msg.trim_barcodes_enabled
+            when 20
+              msg.modified_basecalling_models = reader.read_embedded(20, wt) do |sub|
+                if current = msg.modified_basecalling_models
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
@@ -4733,93 +4320,9 @@ module MinknowApi
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 6
-              msg.require_barcodes_both_ends = reader.read_embedded(6, wt) do |sub|
-                if current = msg.require_barcodes_both_ends
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 7
-              msg.ignore_unspecified_barcodes = reader.read_embedded(7, wt) do |sub|
-                if current = msg.ignore_unspecified_barcodes
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 13
-              msg.alignment_enabled = reader.read_embedded(13, wt) do |sub|
-                if current = msg.alignment_enabled
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 14
-              msg.alignment_ref_file = reader.read_embedded(14, wt) do |sub|
-                if current = msg.alignment_ref_file
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 16
-              msg.alignment_bed_file = reader.read_embedded(16, wt) do |sub|
-                if current = msg.alignment_bed_file
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 17
-              msg.model_names_simplex_model = reader.read_embedded(17, wt) do |sub|
-                if current = msg.model_names_simplex_model
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 18
-              msg.model_names_modified_models = reader.read_embedded(18, wt) do |sub|
-                if current = msg.model_names_modified_models
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 19
-              msg.model_names_stereo_model = reader.read_embedded(19, wt) do |sub|
-                if current = msg.model_names_stereo_model
+            when 21
+              msg.poly_a_tail_length_estimation_enabled = reader.read_embedded(21, wt) do |sub|
+                if current = msg.poly_a_tail_length_estimation_enabled
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
@@ -4847,41 +4350,14 @@ module MinknowApi
           if _v = basecalling_enabled
             w.write_embedded(1) { |sub| _v.encode_partial(sub) }
           end
-          if _v = barcoding_enabled
-            w.write_embedded(2) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = barcoding_kits
-            w.write_embedded(3) { |sub| _v.encode_partial(sub) }
-          end
           if _v = basecall_model
             w.write_embedded(4) { |sub| _v.encode_partial(sub) }
           end
-          if _v = trim_barcodes_enabled
-            w.write_embedded(5) { |sub| _v.encode_partial(sub) }
+          if _v = modified_basecalling_models
+            w.write_embedded(20) { |sub| _v.encode_partial(sub) }
           end
-          if _v = require_barcodes_both_ends
-            w.write_embedded(6) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = ignore_unspecified_barcodes
-            w.write_embedded(7) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = alignment_enabled
-            w.write_embedded(13) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = alignment_ref_file
-            w.write_embedded(14) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = alignment_bed_file
-            w.write_embedded(16) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = model_names_simplex_model
-            w.write_embedded(17) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = model_names_modified_models
-            w.write_embedded(18) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = model_names_stereo_model
-            w.write_embedded(19) { |sub| _v.encode_partial(sub) }
+          if _v = poly_a_tail_length_estimation_enabled
+            w.write_embedded(21) { |sub| _v.encode_partial(sub) }
           end
           write_unknown_fields(w)
         end
@@ -4893,58 +4369,352 @@ module MinknowApi
 
         def ==(other : self) : Bool
           return false unless basecalling_enabled == other.basecalling_enabled
-          return false unless barcoding_enabled == other.barcoding_enabled
-          return false unless barcoding_kits == other.barcoding_kits
           return false unless basecall_model == other.basecall_model
-          return false unless trim_barcodes_enabled == other.trim_barcodes_enabled
-          return false unless require_barcodes_both_ends == other.require_barcodes_both_ends
-          return false unless ignore_unspecified_barcodes == other.ignore_unspecified_barcodes
-          return false unless alignment_enabled == other.alignment_enabled
-          return false unless alignment_ref_file == other.alignment_ref_file
-          return false unless alignment_bed_file == other.alignment_bed_file
-          return false unless model_names_simplex_model == other.model_names_simplex_model
-          return false unless model_names_modified_models == other.model_names_modified_models
-          return false unless model_names_stereo_model == other.model_names_stereo_model
+          return false unless modified_basecalling_models == other.modified_basecalling_models
+          return false unless poly_a_tail_length_estimation_enabled == other.poly_a_tail_length_estimation_enabled
           return false unless unknown_fields == other.unknown_fields
           true
         end
       end
 
-      class Output
+      class Miscellaneous
         include Proto::Message
 
-        property output_location : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+        property mux_scan_period : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+        property reserved_pores : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+
+        def has_mux_scan_period? : Bool
+          !mux_scan_period.nil?
+        end
+
+        def clear_mux_scan_period : Nil
+          self.mux_scan_period = nil
+        end
+
+        def has_reserved_pores? : Bool
+          !reserved_pores.nil?
+        end
+
+        def clear_reserved_pores : Nil
+          self.reserved_pores = nil
+        end
+
+        def validate_required! : Nil
+        end
+
+        def validate_required_deep! : Nil
+          validate_required!
+          mux_scan_period.try &.validate_required_deep!
+          reserved_pores.try &.validate_required_deep!
+        end
+
+        def self.decode_partial(io : IO) : self
+          msg = new
+          reader = Proto::Wire::Reader.new(io)
+          while tag = reader.read_tag
+            fn, wt = tag
+            case fn
+            when 1
+              msg.mux_scan_period = reader.read_embedded(1, wt) do |sub|
+                if current = msg.mux_scan_period
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
+                end
+              end
+            when 2
+              msg.reserved_pores = reader.read_embedded(2, wt) do |sub|
+                if current = msg.reserved_pores
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
+                end
+              end
+            else
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
+            end
+          end
+          msg
+        end
+
+        def self.decode(io : IO) : self
+          msg = decode_partial(io)
+          msg.validate_required_deep!
+          msg
+        end
+
+        def encode_partial(io : IO) : Nil
+          w = Proto::Wire::Writer.new(io)
+          if _v = mux_scan_period
+            w.write_embedded(1) { |sub| _v.encode_partial(sub) }
+          end
+          if _v = reserved_pores
+            w.write_embedded(2) { |sub| _v.encode_partial(sub) }
+          end
+          write_unknown_fields(w)
+        end
+
+        def encode(io : IO) : Nil
+          validate_required_deep!
+          encode_partial(io)
+        end
+
+        def ==(other : self) : Bool
+          return false unless mux_scan_period == other.mux_scan_period
+          return false unless reserved_pores == other.reserved_pores
+          return false unless unknown_fields == other.unknown_fields
+          true
+        end
+      end
+
+      class Barcoding
+        include Proto::Message
+
+        property trim_barcodes_enabled : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+        property require_barcodes_both_ends : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+        property custom_barcode_selection : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+
+        def has_trim_barcodes_enabled? : Bool
+          !trim_barcodes_enabled.nil?
+        end
+
+        def clear_trim_barcodes_enabled : Nil
+          self.trim_barcodes_enabled = nil
+        end
+
+        def has_require_barcodes_both_ends? : Bool
+          !require_barcodes_both_ends.nil?
+        end
+
+        def clear_require_barcodes_both_ends : Nil
+          self.require_barcodes_both_ends = nil
+        end
+
+        def has_custom_barcode_selection? : Bool
+          !custom_barcode_selection.nil?
+        end
+
+        def clear_custom_barcode_selection : Nil
+          self.custom_barcode_selection = nil
+        end
+
+        def validate_required! : Nil
+        end
+
+        def validate_required_deep! : Nil
+          validate_required!
+          trim_barcodes_enabled.try &.validate_required_deep!
+          require_barcodes_both_ends.try &.validate_required_deep!
+          custom_barcode_selection.try &.validate_required_deep!
+        end
+
+        def self.decode_partial(io : IO) : self
+          msg = new
+          reader = Proto::Wire::Reader.new(io)
+          while tag = reader.read_tag
+            fn, wt = tag
+            case fn
+            when 1
+              msg.trim_barcodes_enabled = reader.read_embedded(1, wt) do |sub|
+                if current = msg.trim_barcodes_enabled
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
+                end
+              end
+            when 2
+              msg.require_barcodes_both_ends = reader.read_embedded(2, wt) do |sub|
+                if current = msg.require_barcodes_both_ends
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
+                end
+              end
+            when 3
+              msg.custom_barcode_selection = reader.read_embedded(3, wt) do |sub|
+                if current = msg.custom_barcode_selection
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
+                end
+              end
+            else
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
+            end
+          end
+          msg
+        end
+
+        def self.decode(io : IO) : self
+          msg = decode_partial(io)
+          msg.validate_required_deep!
+          msg
+        end
+
+        def encode_partial(io : IO) : Nil
+          w = Proto::Wire::Writer.new(io)
+          if _v = trim_barcodes_enabled
+            w.write_embedded(1) { |sub| _v.encode_partial(sub) }
+          end
+          if _v = require_barcodes_both_ends
+            w.write_embedded(2) { |sub| _v.encode_partial(sub) }
+          end
+          if _v = custom_barcode_selection
+            w.write_embedded(3) { |sub| _v.encode_partial(sub) }
+          end
+          write_unknown_fields(w)
+        end
+
+        def encode(io : IO) : Nil
+          validate_required_deep!
+          encode_partial(io)
+        end
+
+        def ==(other : self) : Bool
+          return false unless trim_barcodes_enabled == other.trim_barcodes_enabled
+          return false unless require_barcodes_both_ends == other.require_barcodes_both_ends
+          return false unless custom_barcode_selection == other.custom_barcode_selection
+          return false unless unknown_fields == other.unknown_fields
+          true
+        end
+      end
+
+      class Alignment
+        include Proto::Message
+
+        property alignment_ref_file : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+        property alignment_bed_file : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+
+        def has_alignment_ref_file? : Bool
+          !alignment_ref_file.nil?
+        end
+
+        def clear_alignment_ref_file : Nil
+          self.alignment_ref_file = nil
+        end
+
+        def has_alignment_bed_file? : Bool
+          !alignment_bed_file.nil?
+        end
+
+        def clear_alignment_bed_file : Nil
+          self.alignment_bed_file = nil
+        end
+
+        def validate_required! : Nil
+        end
+
+        def validate_required_deep! : Nil
+          validate_required!
+          alignment_ref_file.try &.validate_required_deep!
+          alignment_bed_file.try &.validate_required_deep!
+        end
+
+        def self.decode_partial(io : IO) : self
+          msg = new
+          reader = Proto::Wire::Reader.new(io)
+          while tag = reader.read_tag
+            fn, wt = tag
+            case fn
+            when 1
+              msg.alignment_ref_file = reader.read_embedded(1, wt) do |sub|
+                if current = msg.alignment_ref_file
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
+                end
+              end
+            when 2
+              msg.alignment_bed_file = reader.read_embedded(2, wt) do |sub|
+                if current = msg.alignment_bed_file
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
+                end
+              end
+            else
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
+            end
+          end
+          msg
+        end
+
+        def self.decode(io : IO) : self
+          msg = decode_partial(io)
+          msg.validate_required_deep!
+          msg
+        end
+
+        def encode_partial(io : IO) : Nil
+          w = Proto::Wire::Writer.new(io)
+          if _v = alignment_ref_file
+            w.write_embedded(1) { |sub| _v.encode_partial(sub) }
+          end
+          if _v = alignment_bed_file
+            w.write_embedded(2) { |sub| _v.encode_partial(sub) }
+          end
+          write_unknown_fields(w)
+        end
+
+        def encode(io : IO) : Nil
+          validate_required_deep!
+          encode_partial(io)
+        end
+
+        def ==(other : self) : Bool
+          return false unless alignment_ref_file == other.alignment_ref_file
+          return false unless alignment_bed_file == other.alignment_bed_file
+          return false unless unknown_fields == other.unknown_fields
+          true
+        end
+      end
+
+      class DataOutput
+        include Proto::Message
+
         property fast_q_enabled : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
         property fast_q_reads_per_file : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
         property fast_q_data_compression : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property fast_5_enabled : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property fast_5_reads_per_file : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property fast_5_data_trace_table : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property fast_5_data_move_table : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property fast_5_data_fast_q : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property fast_5_data_raw : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property fast_5_data_compression : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
         property bam_enabled : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property read_filtering_enabled : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property read_filtering_min_qscore : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property read_filtering_min_read_length : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property read_filtering_max_read_length : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property bulk_file_enabled : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+        property pod5_enabled : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+        property bam_reads_per_file : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+        property fast_q_batch_duration : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+        property bam_batch_duration : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+        property pod5_batch_duration : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+        property split_fastq_files_by_barcode : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+        property split_bam_files_by_barcode : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+        property split_pod5_files_by_barcode : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
         property bulk_file_raw : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
         property bulk_file_events : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
         property bulk_file_read_table : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property bulk_file_raw_enabled : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property bulk_file_events_enabled : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property bulk_file_read_table_enabled : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-        property read_filtering_min_duplex_qscore : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
-
-        def has_output_location? : Bool
-          !output_location.nil?
-        end
-
-        def clear_output_location : Nil
-          self.output_location = nil
-        end
 
         def has_fast_q_enabled? : Bool
           !fast_q_enabled.nil?
@@ -4970,62 +4740,6 @@ module MinknowApi
           self.fast_q_data_compression = nil
         end
 
-        def has_fast_5_enabled? : Bool
-          !fast_5_enabled.nil?
-        end
-
-        def clear_fast_5_enabled : Nil
-          self.fast_5_enabled = nil
-        end
-
-        def has_fast_5_reads_per_file? : Bool
-          !fast_5_reads_per_file.nil?
-        end
-
-        def clear_fast_5_reads_per_file : Nil
-          self.fast_5_reads_per_file = nil
-        end
-
-        def has_fast_5_data_trace_table? : Bool
-          !fast_5_data_trace_table.nil?
-        end
-
-        def clear_fast_5_data_trace_table : Nil
-          self.fast_5_data_trace_table = nil
-        end
-
-        def has_fast_5_data_move_table? : Bool
-          !fast_5_data_move_table.nil?
-        end
-
-        def clear_fast_5_data_move_table : Nil
-          self.fast_5_data_move_table = nil
-        end
-
-        def has_fast_5_data_fast_q? : Bool
-          !fast_5_data_fast_q.nil?
-        end
-
-        def clear_fast_5_data_fast_q : Nil
-          self.fast_5_data_fast_q = nil
-        end
-
-        def has_fast_5_data_raw? : Bool
-          !fast_5_data_raw.nil?
-        end
-
-        def clear_fast_5_data_raw : Nil
-          self.fast_5_data_raw = nil
-        end
-
-        def has_fast_5_data_compression? : Bool
-          !fast_5_data_compression.nil?
-        end
-
-        def clear_fast_5_data_compression : Nil
-          self.fast_5_data_compression = nil
-        end
-
         def has_bam_enabled? : Bool
           !bam_enabled.nil?
         end
@@ -5034,44 +4748,68 @@ module MinknowApi
           self.bam_enabled = nil
         end
 
-        def has_read_filtering_enabled? : Bool
-          !read_filtering_enabled.nil?
+        def has_pod5_enabled? : Bool
+          !pod5_enabled.nil?
         end
 
-        def clear_read_filtering_enabled : Nil
-          self.read_filtering_enabled = nil
+        def clear_pod5_enabled : Nil
+          self.pod5_enabled = nil
         end
 
-        def has_read_filtering_min_qscore? : Bool
-          !read_filtering_min_qscore.nil?
+        def has_bam_reads_per_file? : Bool
+          !bam_reads_per_file.nil?
         end
 
-        def clear_read_filtering_min_qscore : Nil
-          self.read_filtering_min_qscore = nil
+        def clear_bam_reads_per_file : Nil
+          self.bam_reads_per_file = nil
         end
 
-        def has_read_filtering_min_read_length? : Bool
-          !read_filtering_min_read_length.nil?
+        def has_fast_q_batch_duration? : Bool
+          !fast_q_batch_duration.nil?
         end
 
-        def clear_read_filtering_min_read_length : Nil
-          self.read_filtering_min_read_length = nil
+        def clear_fast_q_batch_duration : Nil
+          self.fast_q_batch_duration = nil
         end
 
-        def has_read_filtering_max_read_length? : Bool
-          !read_filtering_max_read_length.nil?
+        def has_bam_batch_duration? : Bool
+          !bam_batch_duration.nil?
         end
 
-        def clear_read_filtering_max_read_length : Nil
-          self.read_filtering_max_read_length = nil
+        def clear_bam_batch_duration : Nil
+          self.bam_batch_duration = nil
         end
 
-        def has_bulk_file_enabled? : Bool
-          !bulk_file_enabled.nil?
+        def has_pod5_batch_duration? : Bool
+          !pod5_batch_duration.nil?
         end
 
-        def clear_bulk_file_enabled : Nil
-          self.bulk_file_enabled = nil
+        def clear_pod5_batch_duration : Nil
+          self.pod5_batch_duration = nil
+        end
+
+        def has_split_fastq_files_by_barcode? : Bool
+          !split_fastq_files_by_barcode.nil?
+        end
+
+        def clear_split_fastq_files_by_barcode : Nil
+          self.split_fastq_files_by_barcode = nil
+        end
+
+        def has_split_bam_files_by_barcode? : Bool
+          !split_bam_files_by_barcode.nil?
+        end
+
+        def clear_split_bam_files_by_barcode : Nil
+          self.split_bam_files_by_barcode = nil
+        end
+
+        def has_split_pod5_files_by_barcode? : Bool
+          !split_pod5_files_by_barcode.nil?
+        end
+
+        def clear_split_pod5_files_by_barcode : Nil
+          self.split_pod5_files_by_barcode = nil
         end
 
         def has_bulk_file_raw? : Bool
@@ -5098,67 +4836,26 @@ module MinknowApi
           self.bulk_file_read_table = nil
         end
 
-        def has_bulk_file_raw_enabled? : Bool
-          !bulk_file_raw_enabled.nil?
-        end
-
-        def clear_bulk_file_raw_enabled : Nil
-          self.bulk_file_raw_enabled = nil
-        end
-
-        def has_bulk_file_events_enabled? : Bool
-          !bulk_file_events_enabled.nil?
-        end
-
-        def clear_bulk_file_events_enabled : Nil
-          self.bulk_file_events_enabled = nil
-        end
-
-        def has_bulk_file_read_table_enabled? : Bool
-          !bulk_file_read_table_enabled.nil?
-        end
-
-        def clear_bulk_file_read_table_enabled : Nil
-          self.bulk_file_read_table_enabled = nil
-        end
-
-        def has_read_filtering_min_duplex_qscore? : Bool
-          !read_filtering_min_duplex_qscore.nil?
-        end
-
-        def clear_read_filtering_min_duplex_qscore : Nil
-          self.read_filtering_min_duplex_qscore = nil
-        end
-
         def validate_required! : Nil
         end
 
         def validate_required_deep! : Nil
           validate_required!
-          output_location.try &.validate_required_deep!
           fast_q_enabled.try &.validate_required_deep!
           fast_q_reads_per_file.try &.validate_required_deep!
           fast_q_data_compression.try &.validate_required_deep!
-          fast_5_enabled.try &.validate_required_deep!
-          fast_5_reads_per_file.try &.validate_required_deep!
-          fast_5_data_trace_table.try &.validate_required_deep!
-          fast_5_data_move_table.try &.validate_required_deep!
-          fast_5_data_fast_q.try &.validate_required_deep!
-          fast_5_data_raw.try &.validate_required_deep!
-          fast_5_data_compression.try &.validate_required_deep!
           bam_enabled.try &.validate_required_deep!
-          read_filtering_enabled.try &.validate_required_deep!
-          read_filtering_min_qscore.try &.validate_required_deep!
-          read_filtering_min_read_length.try &.validate_required_deep!
-          read_filtering_max_read_length.try &.validate_required_deep!
-          bulk_file_enabled.try &.validate_required_deep!
+          pod5_enabled.try &.validate_required_deep!
+          bam_reads_per_file.try &.validate_required_deep!
+          fast_q_batch_duration.try &.validate_required_deep!
+          bam_batch_duration.try &.validate_required_deep!
+          pod5_batch_duration.try &.validate_required_deep!
+          split_fastq_files_by_barcode.try &.validate_required_deep!
+          split_bam_files_by_barcode.try &.validate_required_deep!
+          split_pod5_files_by_barcode.try &.validate_required_deep!
           bulk_file_raw.try &.validate_required_deep!
           bulk_file_events.try &.validate_required_deep!
           bulk_file_read_table.try &.validate_required_deep!
-          bulk_file_raw_enabled.try &.validate_required_deep!
-          bulk_file_events_enabled.try &.validate_required_deep!
-          bulk_file_read_table_enabled.try &.validate_required_deep!
-          read_filtering_min_duplex_qscore.try &.validate_required_deep!
         end
 
         def self.decode_partial(io : IO) : self
@@ -5168,19 +4865,7 @@ module MinknowApi
             fn, wt = tag
             case fn
             when 1
-              msg.output_location = reader.read_embedded(1, wt) do |sub|
-                if current = msg.output_location
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 2
-              msg.fast_q_enabled = reader.read_embedded(2, wt) do |sub|
+              msg.fast_q_enabled = reader.read_embedded(1, wt) do |sub|
                 if current = msg.fast_q_enabled
                   merged = IO::Memory.new
                   current.encode_partial(merged)
@@ -5191,8 +4876,8 @@ module MinknowApi
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 3
-              msg.fast_q_reads_per_file = reader.read_embedded(3, wt) do |sub|
+            when 2
+              msg.fast_q_reads_per_file = reader.read_embedded(2, wt) do |sub|
                 if current = msg.fast_q_reads_per_file
                   merged = IO::Memory.new
                   current.encode_partial(merged)
@@ -5203,8 +4888,8 @@ module MinknowApi
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 4
-              msg.fast_q_data_compression = reader.read_embedded(4, wt) do |sub|
+            when 3
+              msg.fast_q_data_compression = reader.read_embedded(3, wt) do |sub|
                 if current = msg.fast_q_data_compression
                   merged = IO::Memory.new
                   current.encode_partial(merged)
@@ -5215,92 +4900,8 @@ module MinknowApi
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 5
-              msg.fast_5_enabled = reader.read_embedded(5, wt) do |sub|
-                if current = msg.fast_5_enabled
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 6
-              msg.fast_5_reads_per_file = reader.read_embedded(6, wt) do |sub|
-                if current = msg.fast_5_reads_per_file
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 7
-              msg.fast_5_data_trace_table = reader.read_embedded(7, wt) do |sub|
-                if current = msg.fast_5_data_trace_table
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 8
-              msg.fast_5_data_move_table = reader.read_embedded(8, wt) do |sub|
-                if current = msg.fast_5_data_move_table
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 9
-              msg.fast_5_data_fast_q = reader.read_embedded(9, wt) do |sub|
-                if current = msg.fast_5_data_fast_q
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 10
-              msg.fast_5_data_raw = reader.read_embedded(10, wt) do |sub|
-                if current = msg.fast_5_data_raw
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 11
-              msg.fast_5_data_compression = reader.read_embedded(11, wt) do |sub|
-                if current = msg.fast_5_data_compression
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 12
-              msg.bam_enabled = reader.read_embedded(12, wt) do |sub|
+            when 4
+              msg.bam_enabled = reader.read_embedded(4, wt) do |sub|
                 if current = msg.bam_enabled
                   merged = IO::Memory.new
                   current.encode_partial(merged)
@@ -5311,68 +4912,104 @@ module MinknowApi
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
+            when 5
+              msg.pod5_enabled = reader.read_embedded(5, wt) do |sub|
+                if current = msg.pod5_enabled
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
+                end
+              end
+            when 6
+              msg.bam_reads_per_file = reader.read_embedded(6, wt) do |sub|
+                if current = msg.bam_reads_per_file
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
+                end
+              end
+            when 7
+              msg.fast_q_batch_duration = reader.read_embedded(7, wt) do |sub|
+                if current = msg.fast_q_batch_duration
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
+                end
+              end
+            when 8
+              msg.bam_batch_duration = reader.read_embedded(8, wt) do |sub|
+                if current = msg.bam_batch_duration
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
+                end
+              end
+            when 9
+              msg.pod5_batch_duration = reader.read_embedded(9, wt) do |sub|
+                if current = msg.pod5_batch_duration
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
+                end
+              end
+            when 10
+              msg.split_fastq_files_by_barcode = reader.read_embedded(10, wt) do |sub|
+                if current = msg.split_fastq_files_by_barcode
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
+                end
+              end
+            when 11
+              msg.split_bam_files_by_barcode = reader.read_embedded(11, wt) do |sub|
+                if current = msg.split_bam_files_by_barcode
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
+                end
+              end
+            when 12
+              msg.split_pod5_files_by_barcode = reader.read_embedded(12, wt) do |sub|
+                if current = msg.split_pod5_files_by_barcode
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
+                end
+              end
             when 13
-              msg.read_filtering_enabled = reader.read_embedded(13, wt) do |sub|
-                if current = msg.read_filtering_enabled
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 14
-              msg.read_filtering_min_qscore = reader.read_embedded(14, wt) do |sub|
-                if current = msg.read_filtering_min_qscore
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 15
-              msg.read_filtering_min_read_length = reader.read_embedded(15, wt) do |sub|
-                if current = msg.read_filtering_min_read_length
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 16
-              msg.read_filtering_max_read_length = reader.read_embedded(16, wt) do |sub|
-                if current = msg.read_filtering_max_read_length
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 17
-              msg.bulk_file_enabled = reader.read_embedded(17, wt) do |sub|
-                if current = msg.bulk_file_enabled
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 18
-              msg.bulk_file_raw = reader.read_embedded(18, wt) do |sub|
+              msg.bulk_file_raw = reader.read_embedded(13, wt) do |sub|
                 if current = msg.bulk_file_raw
                   merged = IO::Memory.new
                   current.encode_partial(merged)
@@ -5383,8 +5020,8 @@ module MinknowApi
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 19
-              msg.bulk_file_events = reader.read_embedded(19, wt) do |sub|
+            when 14
+              msg.bulk_file_events = reader.read_embedded(14, wt) do |sub|
                 if current = msg.bulk_file_events
                   merged = IO::Memory.new
                   current.encode_partial(merged)
@@ -5395,57 +5032,9 @@ module MinknowApi
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 20
-              msg.bulk_file_read_table = reader.read_embedded(20, wt) do |sub|
+            when 15
+              msg.bulk_file_read_table = reader.read_embedded(15, wt) do |sub|
                 if current = msg.bulk_file_read_table
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 21
-              msg.bulk_file_raw_enabled = reader.read_embedded(21, wt) do |sub|
-                if current = msg.bulk_file_raw_enabled
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 22
-              msg.bulk_file_events_enabled = reader.read_embedded(22, wt) do |sub|
-                if current = msg.bulk_file_events_enabled
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 23
-              msg.bulk_file_read_table_enabled = reader.read_embedded(23, wt) do |sub|
-                if current = msg.bulk_file_read_table_enabled
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
-                else
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
-                end
-              end
-            when 24
-              msg.read_filtering_min_duplex_qscore = reader.read_embedded(24, wt) do |sub|
-                if current = msg.read_filtering_min_duplex_qscore
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
@@ -5470,77 +5059,50 @@ module MinknowApi
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          if _v = output_location
+          if _v = fast_q_enabled
             w.write_embedded(1) { |sub| _v.encode_partial(sub) }
           end
-          if _v = fast_q_enabled
+          if _v = fast_q_reads_per_file
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
           end
-          if _v = fast_q_reads_per_file
+          if _v = fast_q_data_compression
             w.write_embedded(3) { |sub| _v.encode_partial(sub) }
           end
-          if _v = fast_q_data_compression
+          if _v = bam_enabled
             w.write_embedded(4) { |sub| _v.encode_partial(sub) }
           end
-          if _v = fast_5_enabled
+          if _v = pod5_enabled
             w.write_embedded(5) { |sub| _v.encode_partial(sub) }
           end
-          if _v = fast_5_reads_per_file
+          if _v = bam_reads_per_file
             w.write_embedded(6) { |sub| _v.encode_partial(sub) }
           end
-          if _v = fast_5_data_trace_table
+          if _v = fast_q_batch_duration
             w.write_embedded(7) { |sub| _v.encode_partial(sub) }
           end
-          if _v = fast_5_data_move_table
+          if _v = bam_batch_duration
             w.write_embedded(8) { |sub| _v.encode_partial(sub) }
           end
-          if _v = fast_5_data_fast_q
+          if _v = pod5_batch_duration
             w.write_embedded(9) { |sub| _v.encode_partial(sub) }
           end
-          if _v = fast_5_data_raw
+          if _v = split_fastq_files_by_barcode
             w.write_embedded(10) { |sub| _v.encode_partial(sub) }
           end
-          if _v = fast_5_data_compression
+          if _v = split_bam_files_by_barcode
             w.write_embedded(11) { |sub| _v.encode_partial(sub) }
           end
-          if _v = bam_enabled
+          if _v = split_pod5_files_by_barcode
             w.write_embedded(12) { |sub| _v.encode_partial(sub) }
           end
-          if _v = read_filtering_enabled
+          if _v = bulk_file_raw
             w.write_embedded(13) { |sub| _v.encode_partial(sub) }
           end
-          if _v = read_filtering_min_qscore
+          if _v = bulk_file_events
             w.write_embedded(14) { |sub| _v.encode_partial(sub) }
           end
-          if _v = read_filtering_min_read_length
-            w.write_embedded(15) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = read_filtering_max_read_length
-            w.write_embedded(16) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = bulk_file_enabled
-            w.write_embedded(17) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = bulk_file_raw
-            w.write_embedded(18) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = bulk_file_events
-            w.write_embedded(19) { |sub| _v.encode_partial(sub) }
-          end
           if _v = bulk_file_read_table
-            w.write_embedded(20) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = bulk_file_raw_enabled
-            w.write_embedded(21) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = bulk_file_events_enabled
-            w.write_embedded(22) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = bulk_file_read_table_enabled
-            w.write_embedded(23) { |sub| _v.encode_partial(sub) }
-          end
-          if _v = read_filtering_min_duplex_qscore
-            w.write_embedded(24) { |sub| _v.encode_partial(sub) }
+            w.write_embedded(15) { |sub| _v.encode_partial(sub) }
           end
           write_unknown_fields(w)
         end
@@ -5551,40 +5113,335 @@ module MinknowApi
         end
 
         def ==(other : self) : Bool
-          return false unless output_location == other.output_location
           return false unless fast_q_enabled == other.fast_q_enabled
           return false unless fast_q_reads_per_file == other.fast_q_reads_per_file
           return false unless fast_q_data_compression == other.fast_q_data_compression
-          return false unless fast_5_enabled == other.fast_5_enabled
-          return false unless fast_5_reads_per_file == other.fast_5_reads_per_file
-          return false unless fast_5_data_trace_table == other.fast_5_data_trace_table
-          return false unless fast_5_data_move_table == other.fast_5_data_move_table
-          return false unless fast_5_data_fast_q == other.fast_5_data_fast_q
-          return false unless fast_5_data_raw == other.fast_5_data_raw
-          return false unless fast_5_data_compression == other.fast_5_data_compression
           return false unless bam_enabled == other.bam_enabled
-          return false unless read_filtering_enabled == other.read_filtering_enabled
-          return false unless read_filtering_min_qscore == other.read_filtering_min_qscore
-          return false unless read_filtering_min_read_length == other.read_filtering_min_read_length
-          return false unless read_filtering_max_read_length == other.read_filtering_max_read_length
-          return false unless bulk_file_enabled == other.bulk_file_enabled
+          return false unless pod5_enabled == other.pod5_enabled
+          return false unless bam_reads_per_file == other.bam_reads_per_file
+          return false unless fast_q_batch_duration == other.fast_q_batch_duration
+          return false unless bam_batch_duration == other.bam_batch_duration
+          return false unless pod5_batch_duration == other.pod5_batch_duration
+          return false unless split_fastq_files_by_barcode == other.split_fastq_files_by_barcode
+          return false unless split_bam_files_by_barcode == other.split_bam_files_by_barcode
+          return false unless split_pod5_files_by_barcode == other.split_pod5_files_by_barcode
           return false unless bulk_file_raw == other.bulk_file_raw
           return false unless bulk_file_events == other.bulk_file_events
           return false unless bulk_file_read_table == other.bulk_file_read_table
-          return false unless bulk_file_raw_enabled == other.bulk_file_raw_enabled
-          return false unless bulk_file_events_enabled == other.bulk_file_events_enabled
-          return false unless bulk_file_read_table_enabled == other.bulk_file_read_table_enabled
-          return false unless read_filtering_min_duplex_qscore == other.read_filtering_min_duplex_qscore
+          return false unless unknown_fields == other.unknown_fields
+          true
+        end
+      end
+
+      class AdaptiveSampling
+        include Proto::Message
+
+        property ref_file : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+        property bed_file : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+        property channel_start : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+        property channel_end : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+
+        def has_ref_file? : Bool
+          !ref_file.nil?
+        end
+
+        def clear_ref_file : Nil
+          self.ref_file = nil
+        end
+
+        def has_bed_file? : Bool
+          !bed_file.nil?
+        end
+
+        def clear_bed_file : Nil
+          self.bed_file = nil
+        end
+
+        def has_channel_start? : Bool
+          !channel_start.nil?
+        end
+
+        def clear_channel_start : Nil
+          self.channel_start = nil
+        end
+
+        def has_channel_end? : Bool
+          !channel_end.nil?
+        end
+
+        def clear_channel_end : Nil
+          self.channel_end = nil
+        end
+
+        def validate_required! : Nil
+        end
+
+        def validate_required_deep! : Nil
+          validate_required!
+          ref_file.try &.validate_required_deep!
+          bed_file.try &.validate_required_deep!
+          channel_start.try &.validate_required_deep!
+          channel_end.try &.validate_required_deep!
+        end
+
+        def self.decode_partial(io : IO) : self
+          msg = new
+          reader = Proto::Wire::Reader.new(io)
+          while tag = reader.read_tag
+            fn, wt = tag
+            case fn
+            when 1
+              msg.ref_file = reader.read_embedded(1, wt) do |sub|
+                if current = msg.ref_file
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
+                end
+              end
+            when 2
+              msg.bed_file = reader.read_embedded(2, wt) do |sub|
+                if current = msg.bed_file
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
+                end
+              end
+            when 3
+              msg.channel_start = reader.read_embedded(3, wt) do |sub|
+                if current = msg.channel_start
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
+                end
+              end
+            when 4
+              msg.channel_end = reader.read_embedded(4, wt) do |sub|
+                if current = msg.channel_end
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
+                end
+              end
+            else
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
+            end
+          end
+          msg
+        end
+
+        def self.decode(io : IO) : self
+          msg = decode_partial(io)
+          msg.validate_required_deep!
+          msg
+        end
+
+        def encode_partial(io : IO) : Nil
+          w = Proto::Wire::Writer.new(io)
+          if _v = ref_file
+            w.write_embedded(1) { |sub| _v.encode_partial(sub) }
+          end
+          if _v = bed_file
+            w.write_embedded(2) { |sub| _v.encode_partial(sub) }
+          end
+          if _v = channel_start
+            w.write_embedded(3) { |sub| _v.encode_partial(sub) }
+          end
+          if _v = channel_end
+            w.write_embedded(4) { |sub| _v.encode_partial(sub) }
+          end
+          write_unknown_fields(w)
+        end
+
+        def encode(io : IO) : Nil
+          validate_required_deep!
+          encode_partial(io)
+        end
+
+        def ==(other : self) : Bool
+          return false unless ref_file == other.ref_file
+          return false unless bed_file == other.bed_file
+          return false unless channel_start == other.channel_start
+          return false unless channel_end == other.channel_end
+          return false unless unknown_fields == other.unknown_fields
+          true
+        end
+      end
+
+      class Filtering
+        include Proto::Message
+
+        property read_filtering_min_qscore : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+        property read_filtering_min_read_length : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+        property read_filtering_max_read_length : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+        property filter_unaligned : MinknowApi::ProtocolSettings::ProtocolSetting? = nil
+
+        def has_read_filtering_min_qscore? : Bool
+          !read_filtering_min_qscore.nil?
+        end
+
+        def clear_read_filtering_min_qscore : Nil
+          self.read_filtering_min_qscore = nil
+        end
+
+        def has_read_filtering_min_read_length? : Bool
+          !read_filtering_min_read_length.nil?
+        end
+
+        def clear_read_filtering_min_read_length : Nil
+          self.read_filtering_min_read_length = nil
+        end
+
+        def has_read_filtering_max_read_length? : Bool
+          !read_filtering_max_read_length.nil?
+        end
+
+        def clear_read_filtering_max_read_length : Nil
+          self.read_filtering_max_read_length = nil
+        end
+
+        def has_filter_unaligned? : Bool
+          !filter_unaligned.nil?
+        end
+
+        def clear_filter_unaligned : Nil
+          self.filter_unaligned = nil
+        end
+
+        def validate_required! : Nil
+        end
+
+        def validate_required_deep! : Nil
+          validate_required!
+          read_filtering_min_qscore.try &.validate_required_deep!
+          read_filtering_min_read_length.try &.validate_required_deep!
+          read_filtering_max_read_length.try &.validate_required_deep!
+          filter_unaligned.try &.validate_required_deep!
+        end
+
+        def self.decode_partial(io : IO) : self
+          msg = new
+          reader = Proto::Wire::Reader.new(io)
+          while tag = reader.read_tag
+            fn, wt = tag
+            case fn
+            when 1
+              msg.read_filtering_min_qscore = reader.read_embedded(1, wt) do |sub|
+                if current = msg.read_filtering_min_qscore
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
+                end
+              end
+            when 2
+              msg.read_filtering_min_read_length = reader.read_embedded(2, wt) do |sub|
+                if current = msg.read_filtering_min_read_length
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
+                end
+              end
+            when 3
+              msg.read_filtering_max_read_length = reader.read_embedded(3, wt) do |sub|
+                if current = msg.read_filtering_max_read_length
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
+                end
+              end
+            when 4
+              msg.filter_unaligned = reader.read_embedded(4, wt) do |sub|
+                if current = msg.filter_unaligned
+                  merged = IO::Memory.new
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                else
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
+                end
+              end
+            else
+              msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
+            end
+          end
+          msg
+        end
+
+        def self.decode(io : IO) : self
+          msg = decode_partial(io)
+          msg.validate_required_deep!
+          msg
+        end
+
+        def encode_partial(io : IO) : Nil
+          w = Proto::Wire::Writer.new(io)
+          if _v = read_filtering_min_qscore
+            w.write_embedded(1) { |sub| _v.encode_partial(sub) }
+          end
+          if _v = read_filtering_min_read_length
+            w.write_embedded(2) { |sub| _v.encode_partial(sub) }
+          end
+          if _v = read_filtering_max_read_length
+            w.write_embedded(3) { |sub| _v.encode_partial(sub) }
+          end
+          if _v = filter_unaligned
+            w.write_embedded(4) { |sub| _v.encode_partial(sub) }
+          end
+          write_unknown_fields(w)
+        end
+
+        def encode(io : IO) : Nil
+          validate_required_deep!
+          encode_partial(io)
+        end
+
+        def ==(other : self) : Bool
+          return false unless read_filtering_min_qscore == other.read_filtering_min_qscore
+          return false unless read_filtering_min_read_length == other.read_filtering_min_read_length
+          return false unless read_filtering_max_read_length == other.read_filtering_max_read_length
+          return false unless filter_unaligned == other.filter_unaligned
           return false unless unknown_fields == other.unknown_fields
           true
         end
       end
 
       property protocol : MinknowApi::ProtocolSettings::ProtocolIdentifierComponents? = nil
-      property run_options : ListSettingsForProtocolResponse::RunOptions? = nil
       property basecalling : ListSettingsForProtocolResponse::Basecalling? = nil
-      property output : ListSettingsForProtocolResponse::Output? = nil
       property protocol_settings : Array(MinknowApi::ProtocolSettings::ProtocolSetting) = [] of MinknowApi::ProtocolSettings::ProtocolSetting
+      property miscellaneous : ListSettingsForProtocolResponse::Miscellaneous? = nil
+      property barcoding : ListSettingsForProtocolResponse::Barcoding? = nil
+      property alignment : ListSettingsForProtocolResponse::Alignment? = nil
+      property data_output : ListSettingsForProtocolResponse::DataOutput? = nil
+      property adaptive_sampling : ListSettingsForProtocolResponse::AdaptiveSampling? = nil
+      property filtering : ListSettingsForProtocolResponse::Filtering? = nil
 
       def has_protocol? : Bool
         !protocol.nil?
@@ -5592,14 +5449,6 @@ module MinknowApi
 
       def clear_protocol : Nil
         self.protocol = nil
-      end
-
-      def has_run_options? : Bool
-        !run_options.nil?
-      end
-
-      def clear_run_options : Nil
-        self.run_options = nil
       end
 
       def has_basecalling? : Bool
@@ -5610,12 +5459,52 @@ module MinknowApi
         self.basecalling = nil
       end
 
-      def has_output? : Bool
-        !output.nil?
+      def has_miscellaneous? : Bool
+        !miscellaneous.nil?
       end
 
-      def clear_output : Nil
-        self.output = nil
+      def clear_miscellaneous : Nil
+        self.miscellaneous = nil
+      end
+
+      def has_barcoding? : Bool
+        !barcoding.nil?
+      end
+
+      def clear_barcoding : Nil
+        self.barcoding = nil
+      end
+
+      def has_alignment? : Bool
+        !alignment.nil?
+      end
+
+      def clear_alignment : Nil
+        self.alignment = nil
+      end
+
+      def has_data_output? : Bool
+        !data_output.nil?
+      end
+
+      def clear_data_output : Nil
+        self.data_output = nil
+      end
+
+      def has_adaptive_sampling? : Bool
+        !adaptive_sampling.nil?
+      end
+
+      def clear_adaptive_sampling : Nil
+        self.adaptive_sampling = nil
+      end
+
+      def has_filtering? : Bool
+        !filtering.nil?
+      end
+
+      def clear_filtering : Nil
+        self.filtering = nil
       end
 
       def validate_required! : Nil
@@ -5624,12 +5513,16 @@ module MinknowApi
       def validate_required_deep! : Nil
         validate_required!
         protocol.try &.validate_required_deep!
-        run_options.try &.validate_required_deep!
         basecalling.try &.validate_required_deep!
-        output.try &.validate_required_deep!
         protocol_settings.each do |item|
           item.validate_required_deep!
         end
+        miscellaneous.try &.validate_required_deep!
+        barcoding.try &.validate_required_deep!
+        alignment.try &.validate_required_deep!
+        data_output.try &.validate_required_deep!
+        adaptive_sampling.try &.validate_required_deep!
+        filtering.try &.validate_required_deep!
       end
 
       def self.decode_partial(io : IO) : self
@@ -5650,18 +5543,6 @@ module MinknowApi
                 MinknowApi::ProtocolSettings::ProtocolIdentifierComponents.decode_partial(sub)
               end
             end
-          when 2
-            msg.run_options = reader.read_embedded(2, wt) do |sub|
-              if current = msg.run_options
-                merged = IO::Memory.new
-                current.encode_partial(merged)
-                IO.copy(sub, merged)
-                merged.rewind
-                ListSettingsForProtocolResponse::RunOptions.decode_partial(merged)
-              else
-                ListSettingsForProtocolResponse::RunOptions.decode_partial(sub)
-              end
-            end
           when 3
             msg.basecalling = reader.read_embedded(3, wt) do |sub|
               if current = msg.basecalling
@@ -5674,20 +5555,80 @@ module MinknowApi
                 ListSettingsForProtocolResponse::Basecalling.decode_partial(sub)
               end
             end
-          when 4
-            msg.output = reader.read_embedded(4, wt) do |sub|
-              if current = msg.output
+          when 5
+            msg.protocol_settings << reader.read_embedded(5, wt) { |sub| MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub) }
+          when 6
+            msg.miscellaneous = reader.read_embedded(6, wt) do |sub|
+              if current = msg.miscellaneous
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                ListSettingsForProtocolResponse::Output.decode_partial(merged)
+                ListSettingsForProtocolResponse::Miscellaneous.decode_partial(merged)
               else
-                ListSettingsForProtocolResponse::Output.decode_partial(sub)
+                ListSettingsForProtocolResponse::Miscellaneous.decode_partial(sub)
               end
             end
-          when 5
-            msg.protocol_settings << reader.read_embedded(5, wt) { |sub| MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub) }
+          when 7
+            msg.barcoding = reader.read_embedded(7, wt) do |sub|
+              if current = msg.barcoding
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                ListSettingsForProtocolResponse::Barcoding.decode_partial(merged)
+              else
+                ListSettingsForProtocolResponse::Barcoding.decode_partial(sub)
+              end
+            end
+          when 8
+            msg.alignment = reader.read_embedded(8, wt) do |sub|
+              if current = msg.alignment
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                ListSettingsForProtocolResponse::Alignment.decode_partial(merged)
+              else
+                ListSettingsForProtocolResponse::Alignment.decode_partial(sub)
+              end
+            end
+          when 9
+            msg.data_output = reader.read_embedded(9, wt) do |sub|
+              if current = msg.data_output
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                ListSettingsForProtocolResponse::DataOutput.decode_partial(merged)
+              else
+                ListSettingsForProtocolResponse::DataOutput.decode_partial(sub)
+              end
+            end
+          when 10
+            msg.adaptive_sampling = reader.read_embedded(10, wt) do |sub|
+              if current = msg.adaptive_sampling
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                ListSettingsForProtocolResponse::AdaptiveSampling.decode_partial(merged)
+              else
+                ListSettingsForProtocolResponse::AdaptiveSampling.decode_partial(sub)
+              end
+            end
+          when 11
+            msg.filtering = reader.read_embedded(11, wt) do |sub|
+              if current = msg.filtering
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                ListSettingsForProtocolResponse::Filtering.decode_partial(merged)
+              else
+                ListSettingsForProtocolResponse::Filtering.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -5706,17 +5647,29 @@ module MinknowApi
         if _v = protocol
           w.write_embedded(1) { |sub| _v.encode_partial(sub) }
         end
-        if _v = run_options
-          w.write_embedded(2) { |sub| _v.encode_partial(sub) }
-        end
         if _v = basecalling
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
-        if _v = output
-          w.write_embedded(4) { |sub| _v.encode_partial(sub) }
-        end
         protocol_settings.each do |item|
           w.write_embedded(5) { |sub| item.encode_partial(sub) }
+        end
+        if _v = miscellaneous
+          w.write_embedded(6) { |sub| _v.encode_partial(sub) }
+        end
+        if _v = barcoding
+          w.write_embedded(7) { |sub| _v.encode_partial(sub) }
+        end
+        if _v = alignment
+          w.write_embedded(8) { |sub| _v.encode_partial(sub) }
+        end
+        if _v = data_output
+          w.write_embedded(9) { |sub| _v.encode_partial(sub) }
+        end
+        if _v = adaptive_sampling
+          w.write_embedded(10) { |sub| _v.encode_partial(sub) }
+        end
+        if _v = filtering
+          w.write_embedded(11) { |sub| _v.encode_partial(sub) }
         end
         write_unknown_fields(w)
       end
@@ -5728,10 +5681,14 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless protocol == other.protocol
-        return false unless run_options == other.run_options
         return false unless basecalling == other.basecalling
-        return false unless output == other.output
         return false unless protocol_settings == other.protocol_settings
+        return false unless miscellaneous == other.miscellaneous
+        return false unless barcoding == other.barcoding
+        return false unless alignment == other.alignment
+        return false unless data_output == other.data_output
+        return false unless adaptive_sampling == other.adaptive_sampling
+        return false unless filtering == other.filtering
         return false unless unknown_fields == other.unknown_fields
         true
       end

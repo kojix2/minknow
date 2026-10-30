@@ -12,6 +12,7 @@ module MinknowApi
       include Proto::Message
 
       property voltages : Array(Float64) = [] of Float64
+      property dac_values : Array(UInt32) = [] of UInt32
       property samples_per_entry : Google::Protobuf::UInt32Value? = nil
 
       def has_samples_per_entry? : Bool
@@ -41,6 +42,12 @@ module MinknowApi
               reader.read_packed_double { |v| msg.voltages << v }
             else
               msg.voltages << reader.read_double
+            end
+          when 3
+            if reader.packed_wire_type?(3, wt, Proto::WireType::VARINT)
+              reader.read_packed_varint { |v| msg.dac_values << v.to_u32! }
+            else
+              msg.dac_values << reader.read_uint32
             end
           when 2
             msg.samples_per_entry = reader.read_embedded(2, wt) do |sub|
@@ -73,6 +80,10 @@ module MinknowApi
           sub = Proto::Wire::Writer.new(buf)
           voltages.each { |item| sub.write_double(item) }
         end
+        w.write_packed(3) do |buf|
+          sub = Proto::Wire::Writer.new(buf)
+          dac_values.each { |item| sub.write_uint32(item) }
+        end
         if _v = samples_per_entry
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
@@ -86,6 +97,7 @@ module MinknowApi
 
       def ==(other : self) : Bool
         return false unless voltages == other.voltages
+        return false unless dac_values == other.dac_values
         return false unless samples_per_entry == other.samples_per_entry
         return false unless unknown_fields == other.unknown_fields
         true

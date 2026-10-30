@@ -1637,6 +1637,7 @@ module MinknowApi
       property events_to_base_ratio : Float32 = 0.0_f32
       property sample_rate : UInt32 = 0
       property channel_count : UInt32 = 0
+      property signal_reader_config : GetSignalReaderResponse? = nil
 
       def clear_basecall_model : Nil
         @basecalling_config_filename = ""
@@ -1670,6 +1671,14 @@ module MinknowApi
         self.channel_state_info = nil
       end
 
+      def has_signal_reader_config? : Bool
+        !signal_reader_config.nil?
+      end
+
+      def clear_signal_reader_config : Nil
+        self.signal_reader_config = nil
+      end
+
       def validate_required! : Nil
       end
 
@@ -1677,6 +1686,7 @@ module MinknowApi
         validate_required!
         basecalling_model_names.try &.validate_required_deep!
         channel_state_info.try &.validate_required_deep!
+        signal_reader_config.try &.validate_required_deep!
       end
 
       def self.decode_partial(io : IO) : self
@@ -1780,6 +1790,18 @@ module MinknowApi
           when 12
             reader.expect_wire_type!(12, wt, Proto::WireType::VARINT)
             msg.channel_count = reader.read_uint32
+          when 27
+            msg.signal_reader_config = reader.read_embedded(27, wt) do |sub|
+              if current = msg.signal_reader_config
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                GetSignalReaderResponse.decode_partial(merged)
+              else
+                GetSignalReaderResponse.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1895,6 +1917,9 @@ module MinknowApi
           w.write_tag(12, Proto::WireType::VARINT)
           w.write_uint32(channel_count)
         end
+        if _v = signal_reader_config
+          w.write_embedded(27) { |sub| _v.encode_partial(sub) }
+        end
         write_unknown_fields(w)
       end
 
@@ -1930,6 +1955,7 @@ module MinknowApi
         return false unless events_to_base_ratio == other.events_to_base_ratio
         return false unless sample_rate == other.sample_rate
         return false unless channel_count == other.channel_count
+        return false unless signal_reader_config == other.signal_reader_config
         return false unless unknown_fields == other.unknown_fields
         true
       end
@@ -2185,6 +2211,10 @@ module MinknowApi
 
       property auto_mux_scan_period_hours : Float32 = 0.0_f32
       property category_groups : Array(MuxScanMetadata::CategoryGroup) = [] of MuxScanMetadata::CategoryGroup
+      # ameba:disable Naming/QueryBoolMethods
+      property enable_reserve_pore : Bool = false
+
+      # ameba:enable Naming/QueryBoolMethods
 
       def validate_required! : Nil
       end
@@ -2207,6 +2237,9 @@ module MinknowApi
             msg.auto_mux_scan_period_hours = reader.read_float
           when 2
             msg.category_groups << reader.read_embedded(2, wt) { |sub| MuxScanMetadata::CategoryGroup.decode_partial(sub) }
+          when 3
+            reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
+            msg.enable_reserve_pore = reader.read_bool
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -2229,6 +2262,10 @@ module MinknowApi
         category_groups.each do |item|
           w.write_embedded(2) { |sub| item.encode_partial(sub) }
         end
+        if enable_reserve_pore
+          w.write_tag(3, Proto::WireType::VARINT)
+          w.write_bool(enable_reserve_pore)
+        end
         write_unknown_fields(w)
       end
 
@@ -2240,6 +2277,71 @@ module MinknowApi
       def ==(other : self) : Bool
         return false unless auto_mux_scan_period_hours == other.auto_mux_scan_period_hours
         return false unless category_groups == other.category_groups
+        return false unless enable_reserve_pore == other.enable_reserve_pore
+        return false unless unknown_fields == other.unknown_fields
+        true
+      end
+    end
+
+    class ReadUntilInfo
+      include Proto::Message
+
+      property filter_type : String = ""
+      property reference_files : Array(String) = [] of String
+      property bed_file : String = ""
+
+      def self.decode_partial(io : IO) : self
+        msg = new
+        reader = Proto::Wire::Reader.new(io)
+        while tag = reader.read_tag
+          fn, wt = tag
+          case fn
+          when 1
+            reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
+            msg.filter_type = reader.read_string
+          when 2
+            reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
+            msg.reference_files << reader.read_string
+          when 3
+            reader.expect_wire_type!(3, wt, Proto::WireType::LENGTH_DELIMITED)
+            msg.bed_file = reader.read_string
+          else
+            msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
+          end
+        end
+        msg
+      end
+
+      def self.decode(io : IO) : self
+        msg = decode_partial(io)
+        msg
+      end
+
+      def encode_partial(io : IO) : Nil
+        w = Proto::Wire::Writer.new(io)
+        if !filter_type.empty?
+          w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string(filter_type)
+        end
+        reference_files.each do |item|
+          w.write_tag(2, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string(item)
+        end
+        if !bed_file.empty?
+          w.write_tag(3, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string(bed_file)
+        end
+        write_unknown_fields(w)
+      end
+
+      def encode(io : IO) : Nil
+        encode_partial(io)
+      end
+
+      def ==(other : self) : Bool
+        return false unless filter_type == other.filter_type
+        return false unless reference_files == other.reference_files
+        return false unless bed_file == other.bed_file
         return false unless unknown_fields == other.unknown_fields
         true
       end
@@ -2420,6 +2522,7 @@ module MinknowApi
       property target_translocation_speed : BreamInfo::Range? = nil
       property target_q_score : BreamInfo::Range? = nil
       property target_temperature : BreamInfo::Range? = nil
+      property read_until_info : ReadUntilInfo? = nil
 
       def has_mux_scan_metadata? : Bool
         !mux_scan_metadata.nil?
@@ -2453,6 +2556,14 @@ module MinknowApi
         self.target_temperature = nil
       end
 
+      def has_read_until_info? : Bool
+        !read_until_info.nil?
+      end
+
+      def clear_read_until_info : Nil
+        self.read_until_info = nil
+      end
+
       def validate_required! : Nil
       end
 
@@ -2465,6 +2576,7 @@ module MinknowApi
         target_translocation_speed.try &.validate_required_deep!
         target_q_score.try &.validate_required_deep!
         target_temperature.try &.validate_required_deep!
+        read_until_info.try &.validate_required_deep!
       end
 
       def self.decode_partial(io : IO) : self
@@ -2523,6 +2635,18 @@ module MinknowApi
                 BreamInfo::Range.decode_partial(sub)
               end
             end
+          when 6
+            msg.read_until_info = reader.read_embedded(6, wt) do |sub|
+              if current = msg.read_until_info
+                merged = IO::Memory.new
+                current.encode_partial(merged)
+                IO.copy(sub, merged)
+                merged.rewind
+                ReadUntilInfo.decode_partial(merged)
+              else
+                ReadUntilInfo.decode_partial(sub)
+              end
+            end
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -2553,6 +2677,9 @@ module MinknowApi
         if _v = target_temperature
           w.write_embedded(5) { |sub| _v.encode_partial(sub) }
         end
+        if _v = read_until_info
+          w.write_embedded(6) { |sub| _v.encode_partial(sub) }
+        end
         write_unknown_fields(w)
       end
 
@@ -2567,6 +2694,7 @@ module MinknowApi
         return false unless target_translocation_speed == other.target_translocation_speed
         return false unless target_q_score == other.target_q_score
         return false unless target_temperature == other.target_temperature
+        return false unless read_until_info == other.read_until_info
         return false unless unknown_fields == other.unknown_fields
         true
       end
