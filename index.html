@@ -6413,163 +6413,65 @@
     <use href="#octicon-link"/>
   </svg>
 </a>minknow.cr</h1>
-<p><a href="https://github.com/kojix2/minknow/actions/workflows/test.yml"><img src="https://github.com/kojix2/minknow/actions/workflows/test.yml/badge.svg" alt="test" /></a>
-<a href="https://tokei.kojix2.net/github/kojix2/minknow"><img src="https://img.shields.io/endpoint?url=https://tokei.kojix2.net/badge/github/kojix2/minknow/lines" alt="Lines of Code" /></a></p>
-<p>🧬🎛️ <a href="https://github.com/nanoporetech/minknow_api">MinKNOW API</a> for <a href="https://crystal-lang.org/">Crystal</a></p>
+<p><a href="https://github.com/kojix2/minknow/actions/workflows/test.yml"><img src="https://github.com/kojix2/minknow/actions/workflows/test.yml/badge.svg" alt="Test" /></a></p>
+<p>Crystal bindings for the <a href="https://github.com/nanoporetech/minknow_api">MinKNOW API</a>.
+Includes generated RPC types and wrappers for Manager, instance, device,
+acquisition, protocol and live-read data services.</p>
 <h2><a id="installation" class="anchor" href="#installation">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
 </a>Installation</h2>
-<p>Add the dependency to your shard.yml:</p>
+<p>Requires Crystal &gt;= 1.20 and <a href="https://github.com/kojix2/grpc#installation">libnghttp2</a>.
+Add this dependency, then run <code>shards install</code>:</p>
 <pre><code class="language-yaml">dependencies:
   minknow:
     github: kojix2/minknow</code></pre>
-<p>Run <code>shards install</code></p>
-<h2><a id="quick-start" class="anchor" href="#quick-start">
+<h2><a id="connect" class="anchor" href="#connect">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>Quick Start</h2>
-<pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;minknow&quot;</span></code></pre>
-<p>Recommended first smoke test for a local MinKNOW installation:</p>
+</a>Connect</h2>
+<pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;minknow&quot;</span>
+
+manager <span class="o">=</span> <span class="t">Minknow</span><span class="t">::</span><span class="t">Manager</span>.new(
+  <span class="t">Minknow</span><span class="t">::</span><span class="t">ConnectionConfig</span>.new(host: <span class="s">&quot;localhost&quot;</span>, port: <span class="n">9501</span>, tls: <span class="n">true</span>))
+<span class="k">begin</span>
+  manager.fetch_flow_cell_positions.each <span class="k">do</span> <span class="o">|</span>position<span class="o">|</span>
+    puts <span class="s">&quot;</span><span class="i">#{</span>position.name<span class="i">}</span><span class="s">: </span><span class="i">#{</span>position.host<span class="i">}</span><span class="s">:</span><span class="i">#{</span>position.secure_port<span class="i">}</span><span class="s">&quot;</span>
+  <span class="k">end</span>
+<span class="k">ensure</span>
+  manager.channel.close
+<span class="k">end</span></code></pre>
+<p>Use <code>manager.connect(position)</code> for a position-specific connection. Its
+<code>device</code>, <code>data</code>, <code>protocol</code>, <code>acquisition</code> and <code>instance</code> methods expose service
+wrappers. For a first connection check without an attached sequencer, run:</p>
 <pre><code class="language-sh">crystal run examples/manager_info.cr</code></pre>
-<p>If you specifically want to see connected sequencing positions:</p>
-<pre><code class="language-sh">crystal run examples/list_devices.cr</code></pre>
-<p>For local MinKNOW installations, <code>examples/manager_info.cr</code> is a better first check than <code>examples/list_devices.cr</code> because it succeeds even when no sequencing device is attached.</p>
-<h2><a id="public-api" class="anchor" href="#public-api">
+<h2><a id="authentication" class="anchor" href="#authentication">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>Public API</h2>
-<p>The intended public surface for v0.0.0 is:</p>
-<ul>
-<li><code><a href="Minknow/ConnectionConfig.html">Minknow::ConnectionConfig</a></code> for connection settings and auth/TLS behavior</li>
-<li><code><a href="Minknow/Manager.html">Minknow::Manager</a></code> for Manager-level RPCs such as host info and flow cell positions</li>
-<li><code><a href="Minknow/FlowCellPosition.html">Minknow::FlowCellPosition</a></code> for discovered sequencing positions</li>
-<li><code><a href="Minknow/Connection.html">Minknow::Connection</a></code> for position-specific connections returned by <code>Manager#connect</code></li>
-</ul>
-<p>The generated types under <code>src/generated</code> are shipped as implementation detail and may change shape more often than the high-level wrapper.</p>
-<h2><a id="connection-behavior" class="anchor" href="#connection-behavior">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Connection Behavior</h2>
-<p><code><a href="Minknow/ConnectionConfig.html">Minknow::ConnectionConfig</a></code> resolves MinKNOW connectivity in this order:</p>
-<ul>
-<li>Uses TLS by default against the manager port.</li>
-<li>Loads the trusted CA from <code>MINKNOW_TRUSTED_CA</code> when set, otherwise tries MinKNOW's default install paths.</li>
-<li>Loads a client certificate from <code>MINKNOW_API_CLIENT_CERTIFICATE_CHAIN</code> and <code>MINKNOW_API_CLIENT_KEY</code> when both are set.</li>
-<li>Uses <code>MINKNOW_AUTH_TOKEN</code> as a <code>local-auth</code> token when provided.</li>
-<li>Otherwise, for localhost connections, fetches the local auth token path from MinKNOW and injects <code>local-auth</code> automatically.</li>
-<li>Adds <code>PROTOCOL_TOKEN</code> as <code>protocol-auth</code> metadata when present.</li>
-</ul>
-<p>Notes:</p>
-<ul>
-<li>The default manager port is expected to be <code>9501</code>, which is the secure gRPC entrypoint on modern MinKNOW installations.</li>
-<li>Local token lookup only helps for local connections. Remote connections should use an explicit auth token or client certificates.</li>
-<li>Client certificate support is available through <code>ConnectionConfig</code>, but broad production validation across different MinKNOW deployments is still ongoing in this pre-stable release.</li>
-<li>An explicit <code>auto_local_auth: false</code> or <code>true</code> takes precedence over
-<code>MINKNOW_API_USE_LOCAL_TOKEN</code>. This controls automatic lookup, not an explicit
-<code>authentication_token</code> or authentication metadata.</li>
-<li>Connections returned by <code>Manager#connect</code> keep local token lookups on the
-Manager port. Use <code>local_auth_lookup_port</code> to override that lookup port.</li>
-</ul>
-<h3><a id="service-requests" class="anchor" href="#service-requests">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Service Requests</h3>
-<p><code>connection.device.calibration</code> fetches calibration for channels 1 through the
-flow cell's channel count. To select a range without querying the flow cell, use
-<code>connection.device.calibration(first_channel: 1, last_channel: 128)</code>.</p>
-<p><code>connection.protocol.wait_for_finished(1.25)</code> waits for the current protocol with
-a timeout in seconds, including fractional seconds. Use
-<code>connection.protocol.wait_for_finished(1.25, run_id: &quot;run-id&quot;)</code> to wait for a
-specific run without querying the current protocol. Omitting the timeout uses
-the API's default of waiting indefinitely.</p>
-<h2><a id="environment-variables" class="anchor" href="#environment-variables">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Environment Variables</h2>
-<p>Common environment variables:</p>
-<pre><code class="language-text">MINKNOW_HOST=localhost
-MINKNOW_PORT=9501
-MINKNOW_TLS=true
-MINKNOW_TRUSTED_CA=/var/lib/minknow/data/rpc-certs/minknow/ca.crt
-MINKNOW_AUTH_TOKEN=&lt;developer-or-local-token&gt;
-MINKNOW_API_CLIENT_CERTIFICATE_CHAIN=/path/to/client-chain.pem
-MINKNOW_API_CLIENT_KEY=/path/to/client-key.pem
-PROTOCOL_TOKEN=&lt;protocol-token&gt;
-MINKNOW_API_USE_LOCAL_TOKEN=0|1</code></pre>
-<p>Typical meanings:</p>
-<ul>
-<li><code>MINKNOW_HOST</code>: MinKNOW host, usually <code>localhost</code></li>
-<li><code>MINKNOW_PORT</code>: Manager port, usually <code>9501</code></li>
-<li><code>MINKNOW_TLS</code>: <code>true</code> for secure manager connections, <code>false</code> only for non-standard setups</li>
-<li><code>MINKNOW_TRUSTED_CA</code>: path to the MinKNOW CA certificate used to verify the server certificate</li>
-<li><code>MINKNOW_AUTH_TOKEN</code>: explicit token sent as <code>local-auth</code></li>
-<li><code>MINKNOW_API_CLIENT_CERTIFICATE_CHAIN</code>: PEM certificate chain for client-certificate auth</li>
-<li><code>MINKNOW_API_CLIENT_KEY</code>: PEM private key matching the client certificate chain</li>
-<li><code>PROTOCOL_TOKEN</code>: token sent as <code>protocol-auth</code> when running inside MinKNOW-managed protocol contexts</li>
-<li><code>MINKNOW_API_USE_LOCAL_TOKEN</code>: overrides automatic local token lookup; set to <code>0</code>/<code>false</code> to disable or <code>1</code>/<code>true</code> to force it</li>
-</ul>
-<h2><a id="examples" class="anchor" href="#examples">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Examples</h2>
-<p>Example details and runnable commands are documented in <a href="examples/README.md">examples/README.md</a>.</p>
-<p>Quick pointers:</p>
-<ul>
-<li><code>examples/manager_info.cr</code> is the recommended first smoke test</li>
-<li><code>examples/list_devices.cr</code> shows visible sequencing positions</li>
-<li><code>examples/simulated_protocol_preset_workflow.cr</code> demonstrates simulated devices + protocol/preset workflow</li>
-</ul>
-<h2><a id="limitations" class="anchor" href="#limitations">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Limitations</h2>
-<p>v0.0.0 intentionally has a narrow scope.</p>
-<ul>
-<li>The high-level wrapper currently focuses on Manager connectivity and the basic position discovery flow.</li>
-<li>Many generated MinKNOW services are present, but not all of them have ergonomic wrapper methods yet.</li>
-<li>Client certificate configuration is supported, but cross-environment validation is still limited.</li>
-<li>The API should be considered pre-stable until a later 0.x release defines stronger compatibility expectations.</li>
-</ul>
-<h2><a id="troubleshooting" class="anchor" href="#troubleshooting">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Troubleshooting</h2>
-<p>TLS certificate verify failed:</p>
-<p>Set <code>MINKNOW_TRUSTED_CA</code> to the MinKNOW CA file, or confirm that MinKNOW's default CA path exists on the machine.</p>
-<p>Unauthenticated:</p>
-<p>For local connections, confirm that local guest access is enabled and that <code>MINKNOW_API_USE_LOCAL_TOKEN</code> is not disabling token lookup. For remote connections, provide <code>MINKNOW_AUTH_TOKEN</code> or client certificates.</p>
-<p><code>positions=0</code> from <code>list_devices.cr</code>:</p>
-<p>This usually means the connection to MinKNOW succeeded but no sequencing positions are currently available or attached.</p>
-<p>Client certificate configuration errors:</p>
-<p><code>MINKNOW_API_CLIENT_CERTIFICATE_CHAIN</code> and <code>MINKNOW_API_CLIENT_KEY</code> must be set together and must both point to existing PEM files.</p>
-<h2><a id="release-checklist" class="anchor" href="#release-checklist">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Release Checklist</h2>
-<p>Release checklist is documented in <a href="DEVELOPMENT.md">DEVELOPMENT.md</a>.</p>
-<h2><a id="changelog" class="anchor" href="#changelog">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Changelog</h2>
-<p>See <a href="CHANGELOG.md">CHANGELOG.md</a> for release notes.</p>
+</a>Authentication</h2>
+<p>Connections use TLS by default. Configure host/port/TLS through <code>ConnectionConfig</code>;
+example scripts also accept <code>MINKNOW_HOST</code>, <code>MINKNOW_PORT</code> and <code>MINKNOW_TLS</code>.</p>
+<p>| Environment variable | Purpose |
+| --- | --- |
+| <code>MINKNOW_TRUSTED_CA</code> | CA file; otherwise MinKNOW's installation paths are checked |
+| <code>MINKNOW_AUTH_TOKEN</code> | Explicit <code>local-auth</code> token |
+| <code>MINKNOW_API_CLIENT_CERTIFICATE_CHAIN</code> / <code>MINKNOW_API_CLIENT_KEY</code> | Client certificate and key; set both |
+| <code>MINKNOW_API_USE_LOCAL_TOKEN</code> | Enable/disable automatic localhost token lookup |
+| <code>PROTOCOL_TOKEN</code> | <code>protocol-auth</code> metadata |</p>
+<p>Remote connections need explicit authentication. <code>auto_local_auth:</code> overrides
+the lookup environment setting; <code>local_auth_lookup_port:</code> selects its Manager port.</p>
 <h2><a id="development" class="anchor" href="#development">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
 </a>Development</h2>
-<p>Development notes and generation workflow are documented in <a href="DEVELOPMENT.md">DEVELOPMENT.md</a>.</p>
+<p>Generated sources are included; ordinary use does not need <code>protoc</code>.
+Run <code>crystal spec</code>. See <a href="examples/README.md">examples</a> for runnable commands and
+<a href="DEVELOPMENT.md">DEVELOPMENT.md</a> for API regeneration and release checks.</p>
+<p>License: <a href="LICENSE">MIT</a>.</p>
 </div>
 </body>
 </html>
