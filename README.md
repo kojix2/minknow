@@ -1,6 +1,7 @@
 # minknow.cr
 
 [![Test](https://github.com/kojix2/minknow/actions/workflows/test.yml/badge.svg)](https://github.com/kojix2/minknow/actions/workflows/test.yml)
+[![Lines of Code](https://img.shields.io/endpoint?url=https%3A%2F%2Ftokei.kojix2.net%2Fbadge%2Fgithub%2Fkojix2%2Fminknow%2Flines)](https://tokei.kojix2.net/github/kojix2/minknow)
 
 Crystal bindings for the [MinKNOW API](https://github.com/nanoporetech/minknow_api).
 Includes generated RPC types and wrappers for Manager, instance, device,
