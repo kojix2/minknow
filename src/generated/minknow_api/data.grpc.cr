@@ -4173,7 +4173,7 @@ module MinknowApi::Data
         end
         send_proc = Proc(GetLiveReadsRequest, Nil).new { |msg| raw.send_raw(req_marshaller.encode(msg)) }
         close_proc = Proc(Nil).new { raw.close_send }
-        GRPC::BidiCall(GetLiveReadsRequest, GetLiveReadsResponse).new(send_proc, close_proc, recv_chan, -> { raw.headers }, -> { raw.status }, -> { raw.trailers }, -> { raw.cancel })
+        GRPC::BidiCall(GetLiveReadsRequest, GetLiveReadsResponse).new(send_proc, close_proc, recv_chan, -> { raw.headers }, -> { raw.status }, -> { raw.trailers }, -> { raw.cancel }, final_status_proc: -> { raw.final_status })
       end
 
       def record_adaptive_sampling_information(request : RecordAdaptiveSamplingInformationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : RecordAdaptiveSamplingInformationResponse

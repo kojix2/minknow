@@ -6,6 +6,7 @@ class RecordingChannel < GRPC::Channel
   getter calls = [] of Tuple(String, String, Bytes, GRPC::ClientContext)
   getter responses = {} of String => Bytes
   getter sent_requests = [] of Bytes
+  property bidi_final_status : GRPC::Status? = nil
 
   def initialize
     super("http://localhost:9501")
@@ -55,7 +56,8 @@ class RecordingChannel < GRPC::Channel
       -> { GRPC::Metadata.new },
       -> { GRPC::Status.ok },
       -> { GRPC::Metadata.new },
-      -> { }
+      -> { },
+      final_status_proc: -> { @bidi_final_status }
     )
   end
 end

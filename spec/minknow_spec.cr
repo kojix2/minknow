@@ -401,4 +401,14 @@ describe "service wrappers" do
     decoded_actions[1].id.should eq("read-2")
     decoded_actions[1].stop_further_data.should_not be_nil
   end
+
+  it "exposes live RPC completion before consuming decoded responses" do
+    channel = RecordingChannel.new
+    stream = Minknow::DataService.new(channel, GRPC::ClientContext.new).live_reads
+    stream.final_status.should be_nil
+
+    channel.bidi_final_status = GRPC::Status.ok
+    stream.final_status.should eq(GRPC::Status.ok)
+    stream.to_a.size.should eq(1)
+  end
 end

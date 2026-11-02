@@ -3478,7 +3478,7 @@ module MinknowApi::Acquisition
         end
         send_proc = Proc(WatchForStatusChangeRequest, Nil).new { |msg| raw.send_raw(req_marshaller.encode(msg)) }
         close_proc = Proc(Nil).new { raw.close_send }
-        GRPC::BidiCall(WatchForStatusChangeRequest, WatchForStatusChangeResponse).new(send_proc, close_proc, recv_chan, -> { raw.headers }, -> { raw.status }, -> { raw.trailers }, -> { raw.cancel })
+        GRPC::BidiCall(WatchForStatusChangeRequest, WatchForStatusChangeResponse).new(send_proc, close_proc, recv_chan, -> { raw.headers }, -> { raw.status }, -> { raw.trailers }, -> { raw.cancel }, final_status_proc: -> { raw.final_status })
       end
 
       def watch_current_acquisition_run(request : WatchCurrentAcquisitionRunRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(AcquisitionRunInfo)

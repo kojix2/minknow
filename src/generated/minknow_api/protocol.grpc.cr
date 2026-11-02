@@ -5640,7 +5640,7 @@ module MinknowApi::Protocol
         end
         send_proc = Proc(ProtocolPhaseManagementRequest, Nil).new { |msg| raw.send_raw(req_marshaller.encode(msg)) }
         close_proc = Proc(Nil).new { raw.close_send }
-        GRPC::BidiCall(ProtocolPhaseManagementRequest, ProtocolPhaseManagementResponse).new(send_proc, close_proc, recv_chan, -> { raw.headers }, -> { raw.status }, -> { raw.trailers }, -> { raw.cancel })
+        GRPC::BidiCall(ProtocolPhaseManagementRequest, ProtocolPhaseManagementResponse).new(send_proc, close_proc, recv_chan, -> { raw.headers }, -> { raw.status }, -> { raw.trailers }, -> { raw.cancel }, final_status_proc: -> { raw.final_status })
       end
 
       def generate_run_report(request : GenerateRunReportRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(GenerateRunReportResponse)
