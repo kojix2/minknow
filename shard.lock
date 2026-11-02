@@ -2,8 +2,9 @@ version: 2.0
 shards:
   grpc:
     git: https://github.com/kojix2/grpc.git
-    version: 0.1.0+git.commit.d3b02c38fc9d623ba8839efb884a709fff53aa82
+    version: 0.1.0+git.commit.153a766ded66d6d9adccdde013ae8b40704d0e4e
 
   proto:
     git: https://github.com/kojix2/proto.git
-    version: 0.1.0+git.commit.675d91e11138e48aaeaa96e2325f42a8abe8a57e
+    version: 0.1.0+git.commit.931f27162defaab7c8834319c26aade399827c04
+
