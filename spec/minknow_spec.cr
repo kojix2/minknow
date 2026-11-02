@@ -83,7 +83,7 @@ describe Minknow do
   it "round-trips a default live reads setup request" do
     request = Minknow::DataService.setup_request
     decoded = Minknow::DataService::LiveRequest.decode(request.encode)
-    setup = decoded.setup.not_nil!
+    setup = decoded.setup.should_not(be_nil)
 
     setup.first_channel.should eq(1_u32)
     setup.last_channel.should eq(512_u32)
@@ -101,7 +101,7 @@ describe Minknow do
       sample_minimum_chunk_size: 4096_u64,
       accepted_first_chunk_classifications: [1, 7],
     )
-    setup = Minknow::DataService::LiveRequest.decode(request.encode).setup.not_nil!
+    setup = Minknow::DataService::LiveRequest.decode(request.encode).setup.should_not(be_nil)
 
     setup.first_channel.should eq(2_u32)
     setup.last_channel.should eq(128_u32)
@@ -254,18 +254,18 @@ describe "service wrappers" do
                     {:get_default_output_directories, MinknowApi::Instance::GetDefaultOutputDirectoriesRequest},
                     {:local_authentication_token_path, MinknowApi::Manager::LocalAuthenticationTokenPathRequest},
                   ] %}
-    it {{"routes Manager #{entry[0]} with its request and context"}} do
+    it {{ "routes Manager #{entry[0]} with its request and context" }} do
       channel = RecordingChannel.new
       manager = RecordingManager.new
       manager.recording_channel = channel
       ctx = GRPC::ClientContext.new
 
-      manager.{{entry[0].id}}(ctx)
+      manager.{{ entry[0].id }}(ctx)
 
       call = channel.calls.last
       call[0].should eq("minknow_api.manager.ManagerService")
-      call[1].should eq({{entry[0].id.stringify}})
-      {{entry[1]}}.decode(call[2]).should eq({{entry[1]}}.new)
+      call[1].should eq({{ entry[0].id.stringify }})
+      {{ entry[1] }}.decode(call[2]).should eq({{ entry[1] }}.new)
       call[3].should be(ctx)
     end
   {% end %}
@@ -298,17 +298,17 @@ describe "service wrappers" do
                     {:start_protocol, MinknowApi::Protocol::StartProtocolRequest},
                     {:stop_protocol, MinknowApi::Protocol::StopProtocolRequest},
                   ] %}
-    it {{"passes the supplied #{entry[0]} request to the client"}} do
+    it {{ "passes the supplied #{entry[0]} request to the client" }} do
       channel = RecordingChannel.new
       ctx = GRPC::ClientContext.new
       service = Minknow::ProtocolService.new(channel, ctx)
-      request = {{entry[1]}}.new
+      request = {{ entry[1] }}.new
 
-      service.{{entry[0].id}}(request)
+      service.{{ entry[0].id }}(request)
 
       call = channel.calls.last
-      call[1].should eq({{entry[0].id.stringify}})
-      {{entry[1]}}.decode(call[2]).should eq(request)
+      call[1].should eq({{ entry[0].id.stringify }})
+      {{ entry[1] }}.decode(call[2]).should eq(request)
       call[3].should be(ctx)
     end
   {% end %}
@@ -335,17 +335,17 @@ describe "service wrappers" do
                     {Minknow::ProtocolService, :context_info, :get_context_info, MinknowApi::Protocol::GetContextInfoRequest},
                     {Minknow::DataService, :data_types, :get_data_types, MinknowApi::Data::GetDataTypesRequest},
                   ] %}
-    it {{"routes #{entry[0]} #{entry[1]} with its request and context"}} do
+    it {{ "routes #{entry[0]} #{entry[1]} with its request and context" }} do
       channel = RecordingChannel.new
       ctx = GRPC::ClientContext.new(metadata: {"test-auth" => "token"})
-      service = {{entry[0]}}.new(channel, ctx)
+      service = {{ entry[0] }}.new(channel, ctx)
 
-      service.{{entry[1].id}}
+      service.{{ entry[1].id }}
 
       channel.calls.size.should eq(1)
       call = channel.calls.last
-      call[1].should eq({{entry[2].id.stringify}})
-      {{entry[3]}}.decode(call[2]).should eq({{entry[3]}}.new)
+      call[1].should eq({{ entry[2].id.stringify }})
+      {{ entry[3] }}.decode(call[2]).should eq({{ entry[3] }}.new)
       call[3].should be(ctx)
     end
   {% end %}
@@ -356,16 +356,16 @@ describe "service wrappers" do
                     {Minknow::DeviceService, :stream_temperature, MinknowApi::Device::StreamTemperatureRequest},
                     {Minknow::ProtocolService, :watch_current_protocol_run, MinknowApi::Protocol::WatchCurrentProtocolRunRequest},
                   ] %}
-    it {{"opens #{entry[0]} #{entry[1]} with its request and context"}} do
+    it {{ "opens #{entry[0]} #{entry[1]} with its request and context" }} do
       channel = RecordingChannel.new
       ctx = GRPC::ClientContext.new
-      service = {{entry[0]}}.new(channel, ctx)
+      service = {{ entry[0] }}.new(channel, ctx)
 
-      service.{{entry[1].id}}.to_a.size.should eq(1)
+      service.{{ entry[1].id }}.to_a.size.should eq(1)
 
       call = channel.calls.last
-      call[1].should eq({{entry[1].id.stringify}})
-      {{entry[2]}}.decode(call[2]).should eq({{entry[2]}}.new)
+      call[1].should eq({{ entry[1].id.stringify }})
+      {{ entry[2] }}.decode(call[2]).should eq({{ entry[2] }}.new)
       call[3].should be(ctx)
     end
   {% end %}
@@ -391,11 +391,11 @@ describe "service wrappers" do
     requests = channel.sent_requests.map { |bytes| Minknow::DataService::LiveRequest.decode(bytes) }
     requests.first.should eq(setup)
     requests.last.should eq(actions)
-    decoded_actions = requests.last.actions.not_nil!.actions
+    decoded_actions = requests.last.actions.should_not(be_nil).actions
     decoded_actions[0].action_id.should eq("unblock")
     decoded_actions[0].channel.should eq(2_u32)
     decoded_actions[0].id.should eq("read-1")
-    decoded_actions[0].unblock.not_nil!.duration.should eq(0.25)
+    decoded_actions[0].unblock.should_not(be_nil).duration.should eq(0.25)
     decoded_actions[1].action_id.should eq("stop")
     decoded_actions[1].channel.should eq(3_u32)
     decoded_actions[1].id.should eq("read-2")

@@ -202,13 +202,11 @@ begin
   puts
 
   selected_positions.each do |position|
-    begin
-      list_protocols_for_position(manager, position, protocol_limit)
-    rescue ex
-      section("Protocols on #{position.name}")
-      row("error", "#{ex.class.name}: #{ex.message}")
-      puts
-    end
+    list_protocols_for_position(manager, position, protocol_limit)
+  rescue ex
+    section("Protocols on #{position.name}")
+    row("error", "#{ex.class.name}: #{ex.message}")
+    puts
   end
 
   section("Step 3: Manager find_protocols")

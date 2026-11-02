@@ -154,7 +154,7 @@ module Minknow
     end
 
     def tls_context : OpenSSL::SSL::Context::Client?
-      return nil unless tls?
+      return unless tls?
 
       OpenSSL::SSL::Context::Client.new.tap do |context|
         context.alpn_protocol = "h2"
@@ -211,7 +211,7 @@ module Minknow
       private_key = client_private_key_path || ENV["MINKNOW_API_CLIENT_KEY"]?
 
       if certificate_chain.nil? && private_key.nil?
-        return nil
+        return
       end
 
       unless certificate_chain && private_key
