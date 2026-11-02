@@ -6460,7 +6460,7 @@ Subclass it and implement each RPC method, then register with GRPC::Server#handl
   </h2>
   
     
-      <a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/debug.grpc.cr#L372" target="_blank">
+      <a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/debug.grpc.cr#L372" target="_blank">
         generated/minknow_api/debug.grpc.cr
       </a>
     
@@ -6489,12 +6489,12 @@ Subclass it and implement each RPC method, then register with GRPC::Server#handl
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#connect_flow_cell%28request%3AConnectFlowCellRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AConnectFlowCellResponse-instance-method" class="signature"><strong>#connect_flow_cell</strong>(request : ConnectFlowCellRequest, ctx : GRPC::ServerContext) : ConnectFlowCellResponse</a>
+        <a href="#connect_flow_cell%28request%3AMinknowApi%3A%3ADebug%3A%3AConnectFlowCellRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3ADebug%3A%3AConnectFlowCellResponse-instance-method" class="signature"><strong>#connect_flow_cell</strong>(request : MinknowApi::Debug::ConnectFlowCellRequest, ctx : GRPC::ServerContext) : MinknowApi::Debug::ConnectFlowCellResponse</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#disconnect_flow_cell%28request%3ADisconnectFlowCellRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3ADisconnectFlowCellResponse-instance-method" class="signature"><strong>#disconnect_flow_cell</strong>(request : DisconnectFlowCellRequest, ctx : GRPC::ServerContext) : DisconnectFlowCellResponse</a>
+        <a href="#disconnect_flow_cell%28request%3AMinknowApi%3A%3ADebug%3A%3ADisconnectFlowCellRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3ADebug%3A%3ADisconnectFlowCellResponse-instance-method" class="signature"><strong>#disconnect_flow_cell</strong>(request : MinknowApi::Debug::DisconnectFlowCellRequest, ctx : GRPC::ServerContext) : MinknowApi::Debug::DisconnectFlowCellResponse</a>
         
       </li>
     
@@ -6506,12 +6506,12 @@ Subclass it and implement each RPC method, then register with GRPC::Server#handl
       </li>
     
       <li class="entry-summary">
-        <a href="#get_basecall_clients_states%28request%3AGetBasecallClientState%2Cctx%3AGRPC%3A%3AServerContext%29%3AGetBasecallClientResponse-instance-method" class="signature"><strong>#get_basecall_clients_states</strong>(request : GetBasecallClientState, ctx : GRPC::ServerContext) : GetBasecallClientResponse</a>
+        <a href="#get_basecall_clients_states%28request%3AMinknowApi%3A%3ADebug%3A%3AGetBasecallClientState%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3ADebug%3A%3AGetBasecallClientResponse-instance-method" class="signature"><strong>#get_basecall_clients_states</strong>(request : MinknowApi::Debug::GetBasecallClientState, ctx : GRPC::ServerContext) : MinknowApi::Debug::GetBasecallClientResponse</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#get_basecaller_server_state%28request%3AGetBasecallServerState%2Cctx%3AGRPC%3A%3AServerContext%29%3AGetBasecallServerResponse-instance-method" class="signature"><strong>#get_basecaller_server_state</strong>(request : GetBasecallServerState, ctx : GRPC::ServerContext) : GetBasecallServerResponse</a>
+        <a href="#get_basecaller_server_state%28request%3AMinknowApi%3A%3ADebug%3A%3AGetBasecallServerState%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3ADebug%3A%3AGetBasecallServerResponse-instance-method" class="signature"><strong>#get_basecaller_server_state</strong>(request : MinknowApi::Debug::GetBasecallServerState, ctx : GRPC::ServerContext) : MinknowApi::Debug::GetBasecallServerResponse</a>
         
       </li>
     
@@ -6523,7 +6523,7 @@ Subclass it and implement each RPC method, then register with GRPC::Server#handl
       </li>
     
       <li class="entry-summary">
-        <a href="#simulate_frame_loss%28request%3ASimulateFrameLossRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3ASimulateFrameLossResponse-instance-method" class="signature"><strong>#simulate_frame_loss</strong>(request : SimulateFrameLossRequest, ctx : GRPC::ServerContext) : SimulateFrameLossResponse</a>
+        <a href="#simulate_frame_loss%28request%3AMinknowApi%3A%3ADebug%3A%3ASimulateFrameLossRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3ADebug%3A%3ASimulateFrameLossResponse-instance-method" class="signature"><strong>#simulate_frame_loss</strong>(request : MinknowApi::Debug::SimulateFrameLossRequest, ctx : GRPC::ServerContext) : MinknowApi::Debug::SimulateFrameLossResponse</a>
         
       </li>
     
@@ -6590,34 +6590,34 @@ Subclass it and implement each RPC method, then register with GRPC::Server#handl
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="connect_flow_cell(request:ConnectFlowCellRequest,ctx:GRPC::ServerContext):ConnectFlowCellResponse-instance-method">
+    <div class="entry-detail" id="connect_flow_cell(request:MinknowApi::Debug::ConnectFlowCellRequest,ctx:GRPC::ServerContext):MinknowApi::Debug::ConnectFlowCellResponse-instance-method">
       <div class="signature">
         abstract 
-        def <strong>connect_flow_cell</strong>(request : <a href="../../../MinknowApi/Debug/ConnectFlowCellRequest.html">ConnectFlowCellRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/Debug/ConnectFlowCellResponse.html">ConnectFlowCellResponse</a>
+        def <strong>connect_flow_cell</strong>(request : <a href="../../../MinknowApi/Debug/ConnectFlowCellRequest.html">MinknowApi::Debug::ConnectFlowCellRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/Debug/ConnectFlowCellResponse.html">MinknowApi::Debug::ConnectFlowCellResponse</a>
 
-        <a class="method-permalink" href="#connect_flow_cell%28request%3AConnectFlowCellRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AConnectFlowCellResponse-instance-method">#</a>
+        <a class="method-permalink" href="#connect_flow_cell%28request%3AMinknowApi%3A%3ADebug%3A%3AConnectFlowCellRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3ADebug%3A%3AConnectFlowCellResponse-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/debug.grpc.cr#L385" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/debug.grpc.cr#L385" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="disconnect_flow_cell(request:DisconnectFlowCellRequest,ctx:GRPC::ServerContext):DisconnectFlowCellResponse-instance-method">
+    <div class="entry-detail" id="disconnect_flow_cell(request:MinknowApi::Debug::DisconnectFlowCellRequest,ctx:GRPC::ServerContext):MinknowApi::Debug::DisconnectFlowCellResponse-instance-method">
       <div class="signature">
         abstract 
-        def <strong>disconnect_flow_cell</strong>(request : <a href="../../../MinknowApi/Debug/DisconnectFlowCellRequest.html">DisconnectFlowCellRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/Debug/DisconnectFlowCellResponse.html">DisconnectFlowCellResponse</a>
+        def <strong>disconnect_flow_cell</strong>(request : <a href="../../../MinknowApi/Debug/DisconnectFlowCellRequest.html">MinknowApi::Debug::DisconnectFlowCellRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/Debug/DisconnectFlowCellResponse.html">MinknowApi::Debug::DisconnectFlowCellResponse</a>
 
-        <a class="method-permalink" href="#disconnect_flow_cell%28request%3ADisconnectFlowCellRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3ADisconnectFlowCellResponse-instance-method">#</a>
+        <a class="method-permalink" href="#disconnect_flow_cell%28request%3AMinknowApi%3A%3ADebug%3A%3ADisconnectFlowCellRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3ADebug%3A%3ADisconnectFlowCellResponse-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/debug.grpc.cr#L384" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/debug.grpc.cr#L384" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6643,39 +6643,39 @@ Returns {response_body : Bytes, status : Status}.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/debug.grpc.cr#L388" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/debug.grpc.cr#L388" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="get_basecall_clients_states(request:GetBasecallClientState,ctx:GRPC::ServerContext):GetBasecallClientResponse-instance-method">
+    <div class="entry-detail" id="get_basecall_clients_states(request:MinknowApi::Debug::GetBasecallClientState,ctx:GRPC::ServerContext):MinknowApi::Debug::GetBasecallClientResponse-instance-method">
       <div class="signature">
         abstract 
-        def <strong>get_basecall_clients_states</strong>(request : <a href="../../../MinknowApi/Debug/GetBasecallClientState.html">GetBasecallClientState</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/Debug/GetBasecallClientResponse.html">GetBasecallClientResponse</a>
+        def <strong>get_basecall_clients_states</strong>(request : <a href="../../../MinknowApi/Debug/GetBasecallClientState.html">MinknowApi::Debug::GetBasecallClientState</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/Debug/GetBasecallClientResponse.html">MinknowApi::Debug::GetBasecallClientResponse</a>
 
-        <a class="method-permalink" href="#get_basecall_clients_states%28request%3AGetBasecallClientState%2Cctx%3AGRPC%3A%3AServerContext%29%3AGetBasecallClientResponse-instance-method">#</a>
+        <a class="method-permalink" href="#get_basecall_clients_states%28request%3AMinknowApi%3A%3ADebug%3A%3AGetBasecallClientState%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3ADebug%3A%3AGetBasecallClientResponse-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/debug.grpc.cr#L382" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/debug.grpc.cr#L382" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="get_basecaller_server_state(request:GetBasecallServerState,ctx:GRPC::ServerContext):GetBasecallServerResponse-instance-method">
+    <div class="entry-detail" id="get_basecaller_server_state(request:MinknowApi::Debug::GetBasecallServerState,ctx:GRPC::ServerContext):MinknowApi::Debug::GetBasecallServerResponse-instance-method">
       <div class="signature">
         abstract 
-        def <strong>get_basecaller_server_state</strong>(request : <a href="../../../MinknowApi/Debug/GetBasecallServerState.html">GetBasecallServerState</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/Debug/GetBasecallServerResponse.html">GetBasecallServerResponse</a>
+        def <strong>get_basecaller_server_state</strong>(request : <a href="../../../MinknowApi/Debug/GetBasecallServerState.html">MinknowApi::Debug::GetBasecallServerState</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/Debug/GetBasecallServerResponse.html">MinknowApi::Debug::GetBasecallServerResponse</a>
 
-        <a class="method-permalink" href="#get_basecaller_server_state%28request%3AGetBasecallServerState%2Cctx%3AGRPC%3A%3AServerContext%29%3AGetBasecallServerResponse-instance-method">#</a>
+        <a class="method-permalink" href="#get_basecaller_server_state%28request%3AMinknowApi%3A%3ADebug%3A%3AGetBasecallServerState%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3ADebug%3A%3AGetBasecallServerResponse-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/debug.grpc.cr#L383" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/debug.grpc.cr#L383" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6700,23 +6700,23 @@ Returns {response_body : Bytes, status : Status}.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/debug.grpc.cr#L373" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/debug.grpc.cr#L373" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="simulate_frame_loss(request:SimulateFrameLossRequest,ctx:GRPC::ServerContext):SimulateFrameLossResponse-instance-method">
+    <div class="entry-detail" id="simulate_frame_loss(request:MinknowApi::Debug::SimulateFrameLossRequest,ctx:GRPC::ServerContext):MinknowApi::Debug::SimulateFrameLossResponse-instance-method">
       <div class="signature">
         abstract 
-        def <strong>simulate_frame_loss</strong>(request : <a href="../../../MinknowApi/Debug/SimulateFrameLossRequest.html">SimulateFrameLossRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/Debug/SimulateFrameLossResponse.html">SimulateFrameLossResponse</a>
+        def <strong>simulate_frame_loss</strong>(request : <a href="../../../MinknowApi/Debug/SimulateFrameLossRequest.html">MinknowApi::Debug::SimulateFrameLossRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/Debug/SimulateFrameLossResponse.html">MinknowApi::Debug::SimulateFrameLossResponse</a>
 
-        <a class="method-permalink" href="#simulate_frame_loss%28request%3ASimulateFrameLossRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3ASimulateFrameLossResponse-instance-method">#</a>
+        <a class="method-permalink" href="#simulate_frame_loss%28request%3AMinknowApi%3A%3ADebug%3A%3ASimulateFrameLossRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3ADebug%3A%3ASimulateFrameLossResponse-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/debug.grpc.cr#L386" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/debug.grpc.cr#L386" target="_blank">View source</a>]
         
       </div>
     </div>

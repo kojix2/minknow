@@ -6460,7 +6460,7 @@ Subclass it and implement each RPC method, then register with GRPC::Server#handl
   </h2>
   
     
-      <a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/log.grpc.cr#L431" target="_blank">
+      <a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/log.grpc.cr#L431" target="_blank">
         generated/minknow_api/log.grpc.cr
       </a>
     
@@ -6489,7 +6489,7 @@ Subclass it and implement each RPC method, then register with GRPC::Server#handl
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#collect_pings%28request%3ACollectPingsRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28CollectPingsResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#collect_pings</strong>(request : CollectPingsRequest, writer : GRPC::ResponseStream(CollectPingsResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
+        <a href="#collect_pings%28request%3AMinknowApi%3A%3ALog%3A%3ACollectPingsRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3ALog%3A%3ACollectPingsResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#collect_pings</strong>(request : MinknowApi::Log::CollectPingsRequest, writer : GRPC::ResponseStream(MinknowApi::Log::CollectPingsResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
         
       </li>
     
@@ -6508,17 +6508,17 @@ Subclass it and implement each RPC method, then register with GRPC::Server#handl
       </li>
     
       <li class="entry-summary">
-        <a href="#get_user_messages%28request%3AGetUserMessagesRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28UserMessage%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#get_user_messages</strong>(request : GetUserMessagesRequest, writer : GRPC::ResponseStream(UserMessage), ctx : GRPC::ServerContext) : GRPC::Status</a>
+        <a href="#get_user_messages%28request%3AMinknowApi%3A%3ALog%3A%3AGetUserMessagesRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3ALog%3A%3AUserMessage%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#get_user_messages</strong>(request : MinknowApi::Log::GetUserMessagesRequest, writer : GRPC::ResponseStream(MinknowApi::Log::UserMessage), ctx : GRPC::ServerContext) : GRPC::Status</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#send_ping%28request%3ASendPingRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3ASendPingResponse-instance-method" class="signature"><strong>#send_ping</strong>(request : SendPingRequest, ctx : GRPC::ServerContext) : SendPingResponse</a>
+        <a href="#send_ping%28request%3AMinknowApi%3A%3ALog%3A%3ASendPingRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3ALog%3A%3ASendPingResponse-instance-method" class="signature"><strong>#send_ping</strong>(request : MinknowApi::Log::SendPingRequest, ctx : GRPC::ServerContext) : MinknowApi::Log::SendPingResponse</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#send_user_message%28request%3ASendUserMessageRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3ASendUserMessageResponse-instance-method" class="signature"><strong>#send_user_message</strong>(request : SendUserMessageRequest, ctx : GRPC::ServerContext) : SendUserMessageResponse</a>
+        <a href="#send_user_message%28request%3AMinknowApi%3A%3ALog%3A%3ASendUserMessageRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3ALog%3A%3ASendUserMessageResponse-instance-method" class="signature"><strong>#send_user_message</strong>(request : MinknowApi::Log::SendUserMessageRequest, ctx : GRPC::ServerContext) : MinknowApi::Log::SendUserMessageResponse</a>
         
       </li>
     
@@ -6599,18 +6599,18 @@ Subclass it and implement each RPC method, then register with GRPC::Server#handl
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="collect_pings(request:CollectPingsRequest,writer:GRPC::ResponseStream(CollectPingsResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
+    <div class="entry-detail" id="collect_pings(request:MinknowApi::Log::CollectPingsRequest,writer:GRPC::ResponseStream(MinknowApi::Log::CollectPingsResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
       <div class="signature">
         abstract 
-        def <strong>collect_pings</strong>(request : <a href="../../../MinknowApi/Log/CollectPingsRequest.html">CollectPingsRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Log/CollectPingsResponse.html">CollectPingsResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
+        def <strong>collect_pings</strong>(request : <a href="../../../MinknowApi/Log/CollectPingsRequest.html">MinknowApi::Log::CollectPingsRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Log/CollectPingsResponse.html">MinknowApi::Log::CollectPingsResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
 
-        <a class="method-permalink" href="#collect_pings%28request%3ACollectPingsRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28CollectPingsResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
+        <a class="method-permalink" href="#collect_pings%28request%3AMinknowApi%3A%3ALog%3A%3ACollectPingsRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3ALog%3A%3ACollectPingsResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/log.grpc.cr#L444" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/log.grpc.cr#L444" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6636,7 +6636,7 @@ Returns {response_body : Bytes, status : Status}.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/log.grpc.cr#L446" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/log.grpc.cr#L446" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6663,55 +6663,55 @@ typed ResponseStream(T) before handing off to the user implementation.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/log.grpc.cr#L477" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/log.grpc.cr#L477" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="get_user_messages(request:GetUserMessagesRequest,writer:GRPC::ResponseStream(UserMessage),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
+    <div class="entry-detail" id="get_user_messages(request:MinknowApi::Log::GetUserMessagesRequest,writer:GRPC::ResponseStream(MinknowApi::Log::UserMessage),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
       <div class="signature">
         abstract 
-        def <strong>get_user_messages</strong>(request : <a href="../../../MinknowApi/Log/GetUserMessagesRequest.html">GetUserMessagesRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Log/UserMessage.html">UserMessage</a>), ctx : GRPC::ServerContext) : GRPC::Status
+        def <strong>get_user_messages</strong>(request : <a href="../../../MinknowApi/Log/GetUserMessagesRequest.html">MinknowApi::Log::GetUserMessagesRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Log/UserMessage.html">MinknowApi::Log::UserMessage</a>), ctx : GRPC::ServerContext) : GRPC::Status
 
-        <a class="method-permalink" href="#get_user_messages%28request%3AGetUserMessagesRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28UserMessage%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
+        <a class="method-permalink" href="#get_user_messages%28request%3AMinknowApi%3A%3ALog%3A%3AGetUserMessagesRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3ALog%3A%3AUserMessage%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/log.grpc.cr#L441" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/log.grpc.cr#L441" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="send_ping(request:SendPingRequest,ctx:GRPC::ServerContext):SendPingResponse-instance-method">
+    <div class="entry-detail" id="send_ping(request:MinknowApi::Log::SendPingRequest,ctx:GRPC::ServerContext):MinknowApi::Log::SendPingResponse-instance-method">
       <div class="signature">
         abstract 
-        def <strong>send_ping</strong>(request : <a href="../../../MinknowApi/Log/SendPingRequest.html">SendPingRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/Log/SendPingResponse.html">SendPingResponse</a>
+        def <strong>send_ping</strong>(request : <a href="../../../MinknowApi/Log/SendPingRequest.html">MinknowApi::Log::SendPingRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/Log/SendPingResponse.html">MinknowApi::Log::SendPingResponse</a>
 
-        <a class="method-permalink" href="#send_ping%28request%3ASendPingRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3ASendPingResponse-instance-method">#</a>
+        <a class="method-permalink" href="#send_ping%28request%3AMinknowApi%3A%3ALog%3A%3ASendPingRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3ALog%3A%3ASendPingResponse-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/log.grpc.cr#L443" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/log.grpc.cr#L443" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="send_user_message(request:SendUserMessageRequest,ctx:GRPC::ServerContext):SendUserMessageResponse-instance-method">
+    <div class="entry-detail" id="send_user_message(request:MinknowApi::Log::SendUserMessageRequest,ctx:GRPC::ServerContext):MinknowApi::Log::SendUserMessageResponse-instance-method">
       <div class="signature">
         abstract 
-        def <strong>send_user_message</strong>(request : <a href="../../../MinknowApi/Log/SendUserMessageRequest.html">SendUserMessageRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/Log/SendUserMessageResponse.html">SendUserMessageResponse</a>
+        def <strong>send_user_message</strong>(request : <a href="../../../MinknowApi/Log/SendUserMessageRequest.html">MinknowApi::Log::SendUserMessageRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/Log/SendUserMessageResponse.html">MinknowApi::Log::SendUserMessageResponse</a>
 
-        <a class="method-permalink" href="#send_user_message%28request%3ASendUserMessageRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3ASendUserMessageResponse-instance-method">#</a>
+        <a class="method-permalink" href="#send_user_message%28request%3AMinknowApi%3A%3ALog%3A%3ASendUserMessageRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3ALog%3A%3ASendUserMessageResponse-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/log.grpc.cr#L442" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/log.grpc.cr#L442" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6737,7 +6737,7 @@ Generated service base classes override this; the default is false (unary).</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/log.grpc.cr#L469" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/log.grpc.cr#L469" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6762,7 +6762,7 @@ Generated service base classes override this; the default is false (unary).</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/log.grpc.cr#L432" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/log.grpc.cr#L432" target="_blank">View source</a>]
         
       </div>
     </div>

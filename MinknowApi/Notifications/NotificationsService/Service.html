@@ -6460,7 +6460,7 @@ Subclass it and implement each RPC method, then register with GRPC::Server#handl
   </h2>
   
     
-      <a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/notifications.grpc.cr#L336" target="_blank">
+      <a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/notifications.grpc.cr#L336" target="_blank">
         generated/minknow_api/notifications.grpc.cr
       </a>
     
@@ -6489,7 +6489,7 @@ Subclass it and implement each RPC method, then register with GRPC::Server#handl
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#create_notification%28request%3ACreateNotificationRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3ACreateNotificationResponse-instance-method" class="signature"><strong>#create_notification</strong>(request : CreateNotificationRequest, ctx : GRPC::ServerContext) : CreateNotificationResponse</a>
+        <a href="#create_notification%28request%3AMinknowApi%3A%3ANotifications%3A%3ACreateNotificationRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3ANotifications%3A%3ACreateNotificationResponse-instance-method" class="signature"><strong>#create_notification</strong>(request : MinknowApi::Notifications::CreateNotificationRequest, ctx : GRPC::ServerContext) : MinknowApi::Notifications::CreateNotificationResponse</a>
         
       </li>
     
@@ -6508,7 +6508,7 @@ Subclass it and implement each RPC method, then register with GRPC::Server#handl
       </li>
     
       <li class="entry-summary">
-        <a href="#mark_notifications_as_read%28request%3AMarkNotificationsAsReadRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMarkNotificationsAsReadResponse-instance-method" class="signature"><strong>#mark_notifications_as_read</strong>(request : MarkNotificationsAsReadRequest, ctx : GRPC::ServerContext) : MarkNotificationsAsReadResponse</a>
+        <a href="#mark_notifications_as_read%28request%3AMinknowApi%3A%3ANotifications%3A%3AMarkNotificationsAsReadRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3ANotifications%3A%3AMarkNotificationsAsReadResponse-instance-method" class="signature"><strong>#mark_notifications_as_read</strong>(request : MinknowApi::Notifications::MarkNotificationsAsReadRequest, ctx : GRPC::ServerContext) : MinknowApi::Notifications::MarkNotificationsAsReadResponse</a>
         
       </li>
     
@@ -6527,7 +6527,7 @@ Subclass it and implement each RPC method, then register with GRPC::Server#handl
       </li>
     
       <li class="entry-summary">
-        <a href="#stream_notifications%28request%3AStreamNotificationsRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamNotificationsResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_notifications</strong>(request : StreamNotificationsRequest, writer : GRPC::ResponseStream(StreamNotificationsResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
+        <a href="#stream_notifications%28request%3AMinknowApi%3A%3ANotifications%3A%3AStreamNotificationsRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3ANotifications%3A%3AStreamNotificationsResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_notifications</strong>(request : MinknowApi::Notifications::StreamNotificationsRequest, writer : GRPC::ResponseStream(MinknowApi::Notifications::StreamNotificationsResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
         
       </li>
     
@@ -6594,18 +6594,18 @@ Subclass it and implement each RPC method, then register with GRPC::Server#handl
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="create_notification(request:CreateNotificationRequest,ctx:GRPC::ServerContext):CreateNotificationResponse-instance-method">
+    <div class="entry-detail" id="create_notification(request:MinknowApi::Notifications::CreateNotificationRequest,ctx:GRPC::ServerContext):MinknowApi::Notifications::CreateNotificationResponse-instance-method">
       <div class="signature">
         abstract 
-        def <strong>create_notification</strong>(request : <a href="../../../MinknowApi/Notifications/CreateNotificationRequest.html">CreateNotificationRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/Notifications/CreateNotificationResponse.html">CreateNotificationResponse</a>
+        def <strong>create_notification</strong>(request : <a href="../../../MinknowApi/Notifications/CreateNotificationRequest.html">MinknowApi::Notifications::CreateNotificationRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/Notifications/CreateNotificationResponse.html">MinknowApi::Notifications::CreateNotificationResponse</a>
 
-        <a class="method-permalink" href="#create_notification%28request%3ACreateNotificationRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3ACreateNotificationResponse-instance-method">#</a>
+        <a class="method-permalink" href="#create_notification%28request%3AMinknowApi%3A%3ANotifications%3A%3ACreateNotificationRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3ANotifications%3A%3ACreateNotificationResponse-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/notifications.grpc.cr#L348" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/notifications.grpc.cr#L348" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6631,7 +6631,7 @@ Returns {response_body : Bytes, status : Status}.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/notifications.grpc.cr#L350" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/notifications.grpc.cr#L350" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6658,23 +6658,23 @@ typed ResponseStream(T) before handing off to the user implementation.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/notifications.grpc.cr#L380" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/notifications.grpc.cr#L380" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="mark_notifications_as_read(request:MarkNotificationsAsReadRequest,ctx:GRPC::ServerContext):MarkNotificationsAsReadResponse-instance-method">
+    <div class="entry-detail" id="mark_notifications_as_read(request:MinknowApi::Notifications::MarkNotificationsAsReadRequest,ctx:GRPC::ServerContext):MinknowApi::Notifications::MarkNotificationsAsReadResponse-instance-method">
       <div class="signature">
         abstract 
-        def <strong>mark_notifications_as_read</strong>(request : <a href="../../../MinknowApi/Notifications/MarkNotificationsAsReadRequest.html">MarkNotificationsAsReadRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/Notifications/MarkNotificationsAsReadResponse.html">MarkNotificationsAsReadResponse</a>
+        def <strong>mark_notifications_as_read</strong>(request : <a href="../../../MinknowApi/Notifications/MarkNotificationsAsReadRequest.html">MinknowApi::Notifications::MarkNotificationsAsReadRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/Notifications/MarkNotificationsAsReadResponse.html">MinknowApi::Notifications::MarkNotificationsAsReadResponse</a>
 
-        <a class="method-permalink" href="#mark_notifications_as_read%28request%3AMarkNotificationsAsReadRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMarkNotificationsAsReadResponse-instance-method">#</a>
+        <a class="method-permalink" href="#mark_notifications_as_read%28request%3AMinknowApi%3A%3ANotifications%3A%3AMarkNotificationsAsReadRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3ANotifications%3A%3AMarkNotificationsAsReadResponse-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/notifications.grpc.cr#L347" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/notifications.grpc.cr#L347" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6700,7 +6700,7 @@ Generated service base classes override this; the default is false (unary).</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/notifications.grpc.cr#L373" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/notifications.grpc.cr#L373" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6725,23 +6725,23 @@ Generated service base classes override this; the default is false (unary).</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/notifications.grpc.cr#L337" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/notifications.grpc.cr#L337" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="stream_notifications(request:StreamNotificationsRequest,writer:GRPC::ResponseStream(StreamNotificationsResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
+    <div class="entry-detail" id="stream_notifications(request:MinknowApi::Notifications::StreamNotificationsRequest,writer:GRPC::ResponseStream(MinknowApi::Notifications::StreamNotificationsResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
       <div class="signature">
         abstract 
-        def <strong>stream_notifications</strong>(request : <a href="../../../MinknowApi/Notifications/StreamNotificationsRequest.html">StreamNotificationsRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Notifications/StreamNotificationsResponse.html">StreamNotificationsResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
+        def <strong>stream_notifications</strong>(request : <a href="../../../MinknowApi/Notifications/StreamNotificationsRequest.html">MinknowApi::Notifications::StreamNotificationsRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Notifications/StreamNotificationsResponse.html">MinknowApi::Notifications::StreamNotificationsResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
 
-        <a class="method-permalink" href="#stream_notifications%28request%3AStreamNotificationsRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamNotificationsResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
+        <a class="method-permalink" href="#stream_notifications%28request%3AMinknowApi%3A%3ANotifications%3A%3AStreamNotificationsRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3ANotifications%3A%3AStreamNotificationsResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/notifications.grpc.cr#L346" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/notifications.grpc.cr#L346" target="_blank">View source</a>]
         
       </div>
     </div>

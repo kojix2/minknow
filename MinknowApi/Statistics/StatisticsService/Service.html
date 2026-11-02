@@ -6460,7 +6460,7 @@ Subclass it and implement each RPC method, then register with GRPC::Server#handl
   </h2>
   
     
-      <a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/statistics.grpc.cr#L3409" target="_blank">
+      <a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/statistics.grpc.cr#L3409" target="_blank">
         generated/minknow_api/statistics.grpc.cr
       </a>
     
@@ -6503,12 +6503,12 @@ Subclass it and implement each RPC method, then register with GRPC::Server#handl
       </li>
     
       <li class="entry-summary">
-        <a href="#get_read_length_types%28request%3AGetReadLengthTypesRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AGetReadLengthTypesResponse-instance-method" class="signature"><strong>#get_read_length_types</strong>(request : GetReadLengthTypesRequest, ctx : GRPC::ServerContext) : GetReadLengthTypesResponse</a>
+        <a href="#get_read_length_types%28request%3AMinknowApi%3A%3AStatistics%3A%3AGetReadLengthTypesRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3AStatistics%3A%3AGetReadLengthTypesResponse-instance-method" class="signature"><strong>#get_read_length_types</strong>(request : MinknowApi::Statistics::GetReadLengthTypesRequest, ctx : GRPC::ServerContext) : MinknowApi::Statistics::GetReadLengthTypesResponse</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#read_length_n50%28request%3AReadLengthN50Request%2Cctx%3AGRPC%3A%3AServerContext%29%3AReadLengthN50Response-instance-method" class="signature"><strong>#read_length_n50</strong>(request : ReadLengthN50Request, ctx : GRPC::ServerContext) : ReadLengthN50Response</a>
+        <a href="#read_length_n50%28request%3AMinknowApi%3A%3AStatistics%3A%3AReadLengthN50Request%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3AStatistics%3A%3AReadLengthN50Response-instance-method" class="signature"><strong>#read_length_n50</strong>(request : MinknowApi::Statistics::ReadLengthN50Request, ctx : GRPC::ServerContext) : MinknowApi::Statistics::ReadLengthN50Response</a>
         
       </li>
     
@@ -6527,52 +6527,52 @@ Subclass it and implement each RPC method, then register with GRPC::Server#handl
       </li>
     
       <li class="entry-summary">
-        <a href="#stream_acquisition_output%28request%3AStreamAcquisitionOutputRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamAcquisitionOutputResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_acquisition_output</strong>(request : StreamAcquisitionOutputRequest, writer : GRPC::ResponseStream(StreamAcquisitionOutputResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
+        <a href="#stream_acquisition_output%28request%3AMinknowApi%3A%3AStatistics%3A%3AStreamAcquisitionOutputRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3AStatistics%3A%3AStreamAcquisitionOutputResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_acquisition_output</strong>(request : MinknowApi::Statistics::StreamAcquisitionOutputRequest, writer : GRPC::ResponseStream(MinknowApi::Statistics::StreamAcquisitionOutputResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#stream_basecall_boxplots%28request%3AStreamBoxplotRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28BoxplotResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_basecall_boxplots</strong>(request : StreamBoxplotRequest, writer : GRPC::ResponseStream(BoxplotResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
+        <a href="#stream_basecall_boxplots%28request%3AMinknowApi%3A%3AStatistics%3A%3AStreamBoxplotRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3AStatistics%3A%3ABoxplotResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_basecall_boxplots</strong>(request : MinknowApi::Statistics::StreamBoxplotRequest, writer : GRPC::ResponseStream(MinknowApi::Statistics::BoxplotResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#stream_bias_voltages%28request%3AStreamBiasVoltagesRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamBiasVoltagesResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_bias_voltages</strong>(request : StreamBiasVoltagesRequest, writer : GRPC::ResponseStream(StreamBiasVoltagesResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
+        <a href="#stream_bias_voltages%28request%3AMinknowApi%3A%3AStatistics%3A%3AStreamBiasVoltagesRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3AStatistics%3A%3AStreamBiasVoltagesResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_bias_voltages</strong>(request : MinknowApi::Statistics::StreamBiasVoltagesRequest, writer : GRPC::ResponseStream(MinknowApi::Statistics::StreamBiasVoltagesResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#stream_duty_time%28request%3AStreamDutyTimeRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamDutyTimeResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_duty_time</strong>(request : StreamDutyTimeRequest, writer : GRPC::ResponseStream(StreamDutyTimeResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
+        <a href="#stream_duty_time%28request%3AMinknowApi%3A%3AStatistics%3A%3AStreamDutyTimeRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3AStatistics%3A%3AStreamDutyTimeResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_duty_time</strong>(request : MinknowApi::Statistics::StreamDutyTimeRequest, writer : GRPC::ResponseStream(MinknowApi::Statistics::StreamDutyTimeResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#stream_encountered_acquisition_output_keys%28request%3AStreamEncounteredAcquisitionOutputKeysRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamEncounteredAcquisitionOutputKeysResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_encountered_acquisition_output_keys</strong>(request : StreamEncounteredAcquisitionOutputKeysRequest, writer : GRPC::ResponseStream(StreamEncounteredAcquisitionOutputKeysResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
+        <a href="#stream_encountered_acquisition_output_keys%28request%3AMinknowApi%3A%3AStatistics%3A%3AStreamEncounteredAcquisitionOutputKeysRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3AStatistics%3A%3AStreamEncounteredAcquisitionOutputKeysResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_encountered_acquisition_output_keys</strong>(request : MinknowApi::Statistics::StreamEncounteredAcquisitionOutputKeysRequest, writer : GRPC::ResponseStream(MinknowApi::Statistics::StreamEncounteredAcquisitionOutputKeysResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#stream_q_accuracy_histogram%28request%3AStreamQAccuracyHistogramRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamQAccuracyHistogramResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_q_accuracy_histogram</strong>(request : StreamQAccuracyHistogramRequest, writer : GRPC::ResponseStream(StreamQAccuracyHistogramResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
+        <a href="#stream_q_accuracy_histogram%28request%3AMinknowApi%3A%3AStatistics%3A%3AStreamQAccuracyHistogramRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3AStatistics%3A%3AStreamQAccuracyHistogramResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_q_accuracy_histogram</strong>(request : MinknowApi::Statistics::StreamQAccuracyHistogramRequest, writer : GRPC::ResponseStream(MinknowApi::Statistics::StreamQAccuracyHistogramResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#stream_q_score_histogram%28request%3AStreamQScoreHistogramRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamQScoreHistogramResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_q_score_histogram</strong>(request : StreamQScoreHistogramRequest, writer : GRPC::ResponseStream(StreamQScoreHistogramResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
+        <a href="#stream_q_score_histogram%28request%3AMinknowApi%3A%3AStatistics%3A%3AStreamQScoreHistogramRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3AStatistics%3A%3AStreamQScoreHistogramResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_q_score_histogram</strong>(request : MinknowApi::Statistics::StreamQScoreHistogramRequest, writer : GRPC::ResponseStream(MinknowApi::Statistics::StreamQScoreHistogramResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#stream_read_length_histogram%28request%3AStreamReadLengthHistogramRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamReadLengthHistogramResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_read_length_histogram</strong>(request : StreamReadLengthHistogramRequest, writer : GRPC::ResponseStream(StreamReadLengthHistogramResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
+        <a href="#stream_read_length_histogram%28request%3AMinknowApi%3A%3AStatistics%3A%3AStreamReadLengthHistogramRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3AStatistics%3A%3AStreamReadLengthHistogramResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_read_length_histogram</strong>(request : MinknowApi::Statistics::StreamReadLengthHistogramRequest, writer : GRPC::ResponseStream(MinknowApi::Statistics::StreamReadLengthHistogramResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#stream_temperature%28request%3AStreamTemperatureRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamTemperatureResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_temperature</strong>(request : StreamTemperatureRequest, writer : GRPC::ResponseStream(StreamTemperatureResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
+        <a href="#stream_temperature%28request%3AMinknowApi%3A%3AStatistics%3A%3AStreamTemperatureRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3AStatistics%3A%3AStreamTemperatureResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_temperature</strong>(request : MinknowApi::Statistics::StreamTemperatureRequest, writer : GRPC::ResponseStream(MinknowApi::Statistics::StreamTemperatureResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#stream_writer_output%28request%3AStreamWriterOutputRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamWriterOutputResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_writer_output</strong>(request : StreamWriterOutputRequest, writer : GRPC::ResponseStream(StreamWriterOutputResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
+        <a href="#stream_writer_output%28request%3AMinknowApi%3A%3AStatistics%3A%3AStreamWriterOutputRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3AStatistics%3A%3AStreamWriterOutputResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_writer_output</strong>(request : MinknowApi::Statistics::StreamWriterOutputRequest, writer : GRPC::ResponseStream(MinknowApi::Statistics::StreamWriterOutputResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
         
       </li>
     
@@ -6660,7 +6660,7 @@ Returns {response_body : Bytes, status : Status}.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/statistics.grpc.cr#L3432" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/statistics.grpc.cr#L3432" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6687,39 +6687,39 @@ typed ResponseStream(T) before handing off to the user implementation.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/statistics.grpc.cr#L3471" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/statistics.grpc.cr#L3471" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="get_read_length_types(request:GetReadLengthTypesRequest,ctx:GRPC::ServerContext):GetReadLengthTypesResponse-instance-method">
+    <div class="entry-detail" id="get_read_length_types(request:MinknowApi::Statistics::GetReadLengthTypesRequest,ctx:GRPC::ServerContext):MinknowApi::Statistics::GetReadLengthTypesResponse-instance-method">
       <div class="signature">
         abstract 
-        def <strong>get_read_length_types</strong>(request : <a href="../../../MinknowApi/Statistics/GetReadLengthTypesRequest.html">GetReadLengthTypesRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/Statistics/GetReadLengthTypesResponse.html">GetReadLengthTypesResponse</a>
+        def <strong>get_read_length_types</strong>(request : <a href="../../../MinknowApi/Statistics/GetReadLengthTypesRequest.html">MinknowApi::Statistics::GetReadLengthTypesRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/Statistics/GetReadLengthTypesResponse.html">MinknowApi::Statistics::GetReadLengthTypesResponse</a>
 
-        <a class="method-permalink" href="#get_read_length_types%28request%3AGetReadLengthTypesRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AGetReadLengthTypesResponse-instance-method">#</a>
+        <a class="method-permalink" href="#get_read_length_types%28request%3AMinknowApi%3A%3AStatistics%3A%3AGetReadLengthTypesRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3AStatistics%3A%3AGetReadLengthTypesResponse-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/statistics.grpc.cr#L3427" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/statistics.grpc.cr#L3427" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="read_length_n50(request:ReadLengthN50Request,ctx:GRPC::ServerContext):ReadLengthN50Response-instance-method">
+    <div class="entry-detail" id="read_length_n50(request:MinknowApi::Statistics::ReadLengthN50Request,ctx:GRPC::ServerContext):MinknowApi::Statistics::ReadLengthN50Response-instance-method">
       <div class="signature">
         abstract 
-        def <strong>read_length_n50</strong>(request : <a href="../../../MinknowApi/Statistics/ReadLengthN50Request.html">ReadLengthN50Request</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/Statistics/ReadLengthN50Response.html">ReadLengthN50Response</a>
+        def <strong>read_length_n50</strong>(request : <a href="../../../MinknowApi/Statistics/ReadLengthN50Request.html">MinknowApi::Statistics::ReadLengthN50Request</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/Statistics/ReadLengthN50Response.html">MinknowApi::Statistics::ReadLengthN50Response</a>
 
-        <a class="method-permalink" href="#read_length_n50%28request%3AReadLengthN50Request%2Cctx%3AGRPC%3A%3AServerContext%29%3AReadLengthN50Response-instance-method">#</a>
+        <a class="method-permalink" href="#read_length_n50%28request%3AMinknowApi%3A%3AStatistics%3A%3AReadLengthN50Request%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3AStatistics%3A%3AReadLengthN50Response-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/statistics.grpc.cr#L3426" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/statistics.grpc.cr#L3426" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6745,7 +6745,7 @@ Generated service base classes override this; the default is false (unary).</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/statistics.grpc.cr#L3455" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/statistics.grpc.cr#L3455" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6770,167 +6770,167 @@ Generated service base classes override this; the default is false (unary).</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/statistics.grpc.cr#L3410" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/statistics.grpc.cr#L3410" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="stream_acquisition_output(request:StreamAcquisitionOutputRequest,writer:GRPC::ResponseStream(StreamAcquisitionOutputResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
+    <div class="entry-detail" id="stream_acquisition_output(request:MinknowApi::Statistics::StreamAcquisitionOutputRequest,writer:GRPC::ResponseStream(MinknowApi::Statistics::StreamAcquisitionOutputResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
       <div class="signature">
         abstract 
-        def <strong>stream_acquisition_output</strong>(request : <a href="../../../MinknowApi/Statistics/StreamAcquisitionOutputRequest.html">StreamAcquisitionOutputRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Statistics/StreamAcquisitionOutputResponse.html">StreamAcquisitionOutputResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
+        def <strong>stream_acquisition_output</strong>(request : <a href="../../../MinknowApi/Statistics/StreamAcquisitionOutputRequest.html">MinknowApi::Statistics::StreamAcquisitionOutputRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Statistics/StreamAcquisitionOutputResponse.html">MinknowApi::Statistics::StreamAcquisitionOutputResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
 
-        <a class="method-permalink" href="#stream_acquisition_output%28request%3AStreamAcquisitionOutputRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamAcquisitionOutputResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
+        <a class="method-permalink" href="#stream_acquisition_output%28request%3AMinknowApi%3A%3AStatistics%3A%3AStreamAcquisitionOutputRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3AStatistics%3A%3AStreamAcquisitionOutputResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/statistics.grpc.cr#L3420" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/statistics.grpc.cr#L3420" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="stream_basecall_boxplots(request:StreamBoxplotRequest,writer:GRPC::ResponseStream(BoxplotResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
+    <div class="entry-detail" id="stream_basecall_boxplots(request:MinknowApi::Statistics::StreamBoxplotRequest,writer:GRPC::ResponseStream(MinknowApi::Statistics::BoxplotResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
       <div class="signature">
         abstract 
-        def <strong>stream_basecall_boxplots</strong>(request : <a href="../../../MinknowApi/Statistics/StreamBoxplotRequest.html">StreamBoxplotRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Statistics/BoxplotResponse.html">BoxplotResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
+        def <strong>stream_basecall_boxplots</strong>(request : <a href="../../../MinknowApi/Statistics/StreamBoxplotRequest.html">MinknowApi::Statistics::StreamBoxplotRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Statistics/BoxplotResponse.html">MinknowApi::Statistics::BoxplotResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
 
-        <a class="method-permalink" href="#stream_basecall_boxplots%28request%3AStreamBoxplotRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28BoxplotResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
+        <a class="method-permalink" href="#stream_basecall_boxplots%28request%3AMinknowApi%3A%3AStatistics%3A%3AStreamBoxplotRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3AStatistics%3A%3ABoxplotResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/statistics.grpc.cr#L3430" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/statistics.grpc.cr#L3430" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="stream_bias_voltages(request:StreamBiasVoltagesRequest,writer:GRPC::ResponseStream(StreamBiasVoltagesResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
+    <div class="entry-detail" id="stream_bias_voltages(request:MinknowApi::Statistics::StreamBiasVoltagesRequest,writer:GRPC::ResponseStream(MinknowApi::Statistics::StreamBiasVoltagesResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
       <div class="signature">
         abstract 
-        def <strong>stream_bias_voltages</strong>(request : <a href="../../../MinknowApi/Statistics/StreamBiasVoltagesRequest.html">StreamBiasVoltagesRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Statistics/StreamBiasVoltagesResponse.html">StreamBiasVoltagesResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
+        def <strong>stream_bias_voltages</strong>(request : <a href="../../../MinknowApi/Statistics/StreamBiasVoltagesRequest.html">MinknowApi::Statistics::StreamBiasVoltagesRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Statistics/StreamBiasVoltagesResponse.html">MinknowApi::Statistics::StreamBiasVoltagesResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
 
-        <a class="method-permalink" href="#stream_bias_voltages%28request%3AStreamBiasVoltagesRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamBiasVoltagesResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
+        <a class="method-permalink" href="#stream_bias_voltages%28request%3AMinknowApi%3A%3AStatistics%3A%3AStreamBiasVoltagesRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3AStatistics%3A%3AStreamBiasVoltagesResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/statistics.grpc.cr#L3424" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/statistics.grpc.cr#L3424" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="stream_duty_time(request:StreamDutyTimeRequest,writer:GRPC::ResponseStream(StreamDutyTimeResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
+    <div class="entry-detail" id="stream_duty_time(request:MinknowApi::Statistics::StreamDutyTimeRequest,writer:GRPC::ResponseStream(MinknowApi::Statistics::StreamDutyTimeResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
       <div class="signature">
         abstract 
-        def <strong>stream_duty_time</strong>(request : <a href="../../../MinknowApi/Statistics/StreamDutyTimeRequest.html">StreamDutyTimeRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Statistics/StreamDutyTimeResponse.html">StreamDutyTimeResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
+        def <strong>stream_duty_time</strong>(request : <a href="../../../MinknowApi/Statistics/StreamDutyTimeRequest.html">MinknowApi::Statistics::StreamDutyTimeRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Statistics/StreamDutyTimeResponse.html">MinknowApi::Statistics::StreamDutyTimeResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
 
-        <a class="method-permalink" href="#stream_duty_time%28request%3AStreamDutyTimeRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamDutyTimeResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
+        <a class="method-permalink" href="#stream_duty_time%28request%3AMinknowApi%3A%3AStatistics%3A%3AStreamDutyTimeRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3AStatistics%3A%3AStreamDutyTimeResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/statistics.grpc.cr#L3419" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/statistics.grpc.cr#L3419" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="stream_encountered_acquisition_output_keys(request:StreamEncounteredAcquisitionOutputKeysRequest,writer:GRPC::ResponseStream(StreamEncounteredAcquisitionOutputKeysResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
+    <div class="entry-detail" id="stream_encountered_acquisition_output_keys(request:MinknowApi::Statistics::StreamEncounteredAcquisitionOutputKeysRequest,writer:GRPC::ResponseStream(MinknowApi::Statistics::StreamEncounteredAcquisitionOutputKeysResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
       <div class="signature">
         abstract 
-        def <strong>stream_encountered_acquisition_output_keys</strong>(request : <a href="../../../MinknowApi/Statistics/StreamEncounteredAcquisitionOutputKeysRequest.html">StreamEncounteredAcquisitionOutputKeysRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Statistics/StreamEncounteredAcquisitionOutputKeysResponse.html">StreamEncounteredAcquisitionOutputKeysResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
+        def <strong>stream_encountered_acquisition_output_keys</strong>(request : <a href="../../../MinknowApi/Statistics/StreamEncounteredAcquisitionOutputKeysRequest.html">MinknowApi::Statistics::StreamEncounteredAcquisitionOutputKeysRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Statistics/StreamEncounteredAcquisitionOutputKeysResponse.html">MinknowApi::Statistics::StreamEncounteredAcquisitionOutputKeysResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
 
-        <a class="method-permalink" href="#stream_encountered_acquisition_output_keys%28request%3AStreamEncounteredAcquisitionOutputKeysRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamEncounteredAcquisitionOutputKeysResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
+        <a class="method-permalink" href="#stream_encountered_acquisition_output_keys%28request%3AMinknowApi%3A%3AStatistics%3A%3AStreamEncounteredAcquisitionOutputKeysRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3AStatistics%3A%3AStreamEncounteredAcquisitionOutputKeysResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/statistics.grpc.cr#L3422" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/statistics.grpc.cr#L3422" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="stream_q_accuracy_histogram(request:StreamQAccuracyHistogramRequest,writer:GRPC::ResponseStream(StreamQAccuracyHistogramResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
+    <div class="entry-detail" id="stream_q_accuracy_histogram(request:MinknowApi::Statistics::StreamQAccuracyHistogramRequest,writer:GRPC::ResponseStream(MinknowApi::Statistics::StreamQAccuracyHistogramResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
       <div class="signature">
         abstract 
-        def <strong>stream_q_accuracy_histogram</strong>(request : <a href="../../../MinknowApi/Statistics/StreamQAccuracyHistogramRequest.html">StreamQAccuracyHistogramRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Statistics/StreamQAccuracyHistogramResponse.html">StreamQAccuracyHistogramResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
+        def <strong>stream_q_accuracy_histogram</strong>(request : <a href="../../../MinknowApi/Statistics/StreamQAccuracyHistogramRequest.html">MinknowApi::Statistics::StreamQAccuracyHistogramRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Statistics/StreamQAccuracyHistogramResponse.html">MinknowApi::Statistics::StreamQAccuracyHistogramResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
 
-        <a class="method-permalink" href="#stream_q_accuracy_histogram%28request%3AStreamQAccuracyHistogramRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamQAccuracyHistogramResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
+        <a class="method-permalink" href="#stream_q_accuracy_histogram%28request%3AMinknowApi%3A%3AStatistics%3A%3AStreamQAccuracyHistogramRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3AStatistics%3A%3AStreamQAccuracyHistogramResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/statistics.grpc.cr#L3429" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/statistics.grpc.cr#L3429" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="stream_q_score_histogram(request:StreamQScoreHistogramRequest,writer:GRPC::ResponseStream(StreamQScoreHistogramResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
+    <div class="entry-detail" id="stream_q_score_histogram(request:MinknowApi::Statistics::StreamQScoreHistogramRequest,writer:GRPC::ResponseStream(MinknowApi::Statistics::StreamQScoreHistogramResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
       <div class="signature">
         abstract 
-        def <strong>stream_q_score_histogram</strong>(request : <a href="../../../MinknowApi/Statistics/StreamQScoreHistogramRequest.html">StreamQScoreHistogramRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Statistics/StreamQScoreHistogramResponse.html">StreamQScoreHistogramResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
+        def <strong>stream_q_score_histogram</strong>(request : <a href="../../../MinknowApi/Statistics/StreamQScoreHistogramRequest.html">MinknowApi::Statistics::StreamQScoreHistogramRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Statistics/StreamQScoreHistogramResponse.html">MinknowApi::Statistics::StreamQScoreHistogramResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
 
-        <a class="method-permalink" href="#stream_q_score_histogram%28request%3AStreamQScoreHistogramRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamQScoreHistogramResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
+        <a class="method-permalink" href="#stream_q_score_histogram%28request%3AMinknowApi%3A%3AStatistics%3A%3AStreamQScoreHistogramRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3AStatistics%3A%3AStreamQScoreHistogramResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/statistics.grpc.cr#L3428" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/statistics.grpc.cr#L3428" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="stream_read_length_histogram(request:StreamReadLengthHistogramRequest,writer:GRPC::ResponseStream(StreamReadLengthHistogramResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
+    <div class="entry-detail" id="stream_read_length_histogram(request:MinknowApi::Statistics::StreamReadLengthHistogramRequest,writer:GRPC::ResponseStream(MinknowApi::Statistics::StreamReadLengthHistogramResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
       <div class="signature">
         abstract 
-        def <strong>stream_read_length_histogram</strong>(request : <a href="../../../MinknowApi/Statistics/StreamReadLengthHistogramRequest.html">StreamReadLengthHistogramRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Statistics/StreamReadLengthHistogramResponse.html">StreamReadLengthHistogramResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
+        def <strong>stream_read_length_histogram</strong>(request : <a href="../../../MinknowApi/Statistics/StreamReadLengthHistogramRequest.html">MinknowApi::Statistics::StreamReadLengthHistogramRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Statistics/StreamReadLengthHistogramResponse.html">MinknowApi::Statistics::StreamReadLengthHistogramResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
 
-        <a class="method-permalink" href="#stream_read_length_histogram%28request%3AStreamReadLengthHistogramRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamReadLengthHistogramResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
+        <a class="method-permalink" href="#stream_read_length_histogram%28request%3AMinknowApi%3A%3AStatistics%3A%3AStreamReadLengthHistogramRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3AStatistics%3A%3AStreamReadLengthHistogramResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/statistics.grpc.cr#L3425" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/statistics.grpc.cr#L3425" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="stream_temperature(request:StreamTemperatureRequest,writer:GRPC::ResponseStream(StreamTemperatureResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
+    <div class="entry-detail" id="stream_temperature(request:MinknowApi::Statistics::StreamTemperatureRequest,writer:GRPC::ResponseStream(MinknowApi::Statistics::StreamTemperatureResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
       <div class="signature">
         abstract 
-        def <strong>stream_temperature</strong>(request : <a href="../../../MinknowApi/Statistics/StreamTemperatureRequest.html">StreamTemperatureRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Statistics/StreamTemperatureResponse.html">StreamTemperatureResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
+        def <strong>stream_temperature</strong>(request : <a href="../../../MinknowApi/Statistics/StreamTemperatureRequest.html">MinknowApi::Statistics::StreamTemperatureRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Statistics/StreamTemperatureResponse.html">MinknowApi::Statistics::StreamTemperatureResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
 
-        <a class="method-permalink" href="#stream_temperature%28request%3AStreamTemperatureRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamTemperatureResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
+        <a class="method-permalink" href="#stream_temperature%28request%3AMinknowApi%3A%3AStatistics%3A%3AStreamTemperatureRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3AStatistics%3A%3AStreamTemperatureResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/statistics.grpc.cr#L3423" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/statistics.grpc.cr#L3423" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="stream_writer_output(request:StreamWriterOutputRequest,writer:GRPC::ResponseStream(StreamWriterOutputResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
+    <div class="entry-detail" id="stream_writer_output(request:MinknowApi::Statistics::StreamWriterOutputRequest,writer:GRPC::ResponseStream(MinknowApi::Statistics::StreamWriterOutputResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
       <div class="signature">
         abstract 
-        def <strong>stream_writer_output</strong>(request : <a href="../../../MinknowApi/Statistics/StreamWriterOutputRequest.html">StreamWriterOutputRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Statistics/StreamWriterOutputResponse.html">StreamWriterOutputResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
+        def <strong>stream_writer_output</strong>(request : <a href="../../../MinknowApi/Statistics/StreamWriterOutputRequest.html">MinknowApi::Statistics::StreamWriterOutputRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/Statistics/StreamWriterOutputResponse.html">MinknowApi::Statistics::StreamWriterOutputResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
 
-        <a class="method-permalink" href="#stream_writer_output%28request%3AStreamWriterOutputRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamWriterOutputResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
+        <a class="method-permalink" href="#stream_writer_output%28request%3AMinknowApi%3A%3AStatistics%3A%3AStreamWriterOutputRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3AStatistics%3A%3AStreamWriterOutputResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/statistics.grpc.cr#L3421" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/statistics.grpc.cr#L3421" target="_blank">View source</a>]
         
       </div>
     </div>

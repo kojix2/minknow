@@ -6460,7 +6460,7 @@ Subclass it and implement each RPC method, then register with GRPC::Server#handl
   </h2>
   
     
-      <a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/run_until.grpc.cr#L1305" target="_blank">
+      <a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/run_until.grpc.cr#L1305" target="_blank">
         generated/minknow_api/run_until.grpc.cr
       </a>
     
@@ -6517,22 +6517,22 @@ Subclass it and implement each RPC method, then register with GRPC::Server#handl
       </li>
     
       <li class="entry-summary">
-        <a href="#stream_target_criteria%28request%3AStreamTargetCriteriaRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamTargetCriteriaResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_target_criteria</strong>(request : StreamTargetCriteriaRequest, writer : GRPC::ResponseStream(StreamTargetCriteriaResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
+        <a href="#stream_target_criteria%28request%3AMinknowApi%3A%3ARunUntil%3A%3AStreamTargetCriteriaRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3ARunUntil%3A%3AStreamTargetCriteriaResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_target_criteria</strong>(request : MinknowApi::RunUntil::StreamTargetCriteriaRequest, writer : GRPC::ResponseStream(MinknowApi::RunUntil::StreamTargetCriteriaResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#stream_updates%28request%3AStreamUpdatesRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamUpdatesResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_updates</strong>(request : StreamUpdatesRequest, writer : GRPC::ResponseStream(StreamUpdatesResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
+        <a href="#stream_updates%28request%3AMinknowApi%3A%3ARunUntil%3A%3AStreamUpdatesRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3ARunUntil%3A%3AStreamUpdatesResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_updates</strong>(request : MinknowApi::RunUntil::StreamUpdatesRequest, writer : GRPC::ResponseStream(MinknowApi::RunUntil::StreamUpdatesResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#write_target_criteria%28request%3AWriteTargetCriteriaRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AWriteTargetCriteriaResponse-instance-method" class="signature"><strong>#write_target_criteria</strong>(request : WriteTargetCriteriaRequest, ctx : GRPC::ServerContext) : WriteTargetCriteriaResponse</a>
+        <a href="#write_target_criteria%28request%3AMinknowApi%3A%3ARunUntil%3A%3AWriteTargetCriteriaRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3ARunUntil%3A%3AWriteTargetCriteriaResponse-instance-method" class="signature"><strong>#write_target_criteria</strong>(request : MinknowApi::RunUntil::WriteTargetCriteriaRequest, ctx : GRPC::ServerContext) : MinknowApi::RunUntil::WriteTargetCriteriaResponse</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#write_updates%28request%3AWriteUpdatesRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AWriteUpdatesResponse-instance-method" class="signature"><strong>#write_updates</strong>(request : WriteUpdatesRequest, ctx : GRPC::ServerContext) : WriteUpdatesResponse</a>
+        <a href="#write_updates%28request%3AMinknowApi%3A%3ARunUntil%3A%3AWriteUpdatesRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3ARunUntil%3A%3AWriteUpdatesResponse-instance-method" class="signature"><strong>#write_updates</strong>(request : MinknowApi::RunUntil::WriteUpdatesRequest, ctx : GRPC::ServerContext) : MinknowApi::RunUntil::WriteUpdatesResponse</a>
         
       </li>
     
@@ -6620,7 +6620,7 @@ Returns {response_body : Bytes, status : Status}.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/run_until.grpc.cr#L1320" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/run_until.grpc.cr#L1320" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6647,7 +6647,7 @@ typed ResponseStream(T) before handing off to the user implementation.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/run_until.grpc.cr#L1351" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/run_until.grpc.cr#L1351" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6673,7 +6673,7 @@ Generated service base classes override this; the default is false (unary).</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/run_until.grpc.cr#L1343" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/run_until.grpc.cr#L1343" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6698,71 +6698,71 @@ Generated service base classes override this; the default is false (unary).</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/run_until.grpc.cr#L1306" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/run_until.grpc.cr#L1306" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="stream_target_criteria(request:StreamTargetCriteriaRequest,writer:GRPC::ResponseStream(StreamTargetCriteriaResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
+    <div class="entry-detail" id="stream_target_criteria(request:MinknowApi::RunUntil::StreamTargetCriteriaRequest,writer:GRPC::ResponseStream(MinknowApi::RunUntil::StreamTargetCriteriaResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
       <div class="signature">
         abstract 
-        def <strong>stream_target_criteria</strong>(request : <a href="../../../MinknowApi/RunUntil/StreamTargetCriteriaRequest.html">StreamTargetCriteriaRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/RunUntil/StreamTargetCriteriaResponse.html">StreamTargetCriteriaResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
+        def <strong>stream_target_criteria</strong>(request : <a href="../../../MinknowApi/RunUntil/StreamTargetCriteriaRequest.html">MinknowApi::RunUntil::StreamTargetCriteriaRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/RunUntil/StreamTargetCriteriaResponse.html">MinknowApi::RunUntil::StreamTargetCriteriaResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
 
-        <a class="method-permalink" href="#stream_target_criteria%28request%3AStreamTargetCriteriaRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamTargetCriteriaResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
+        <a class="method-permalink" href="#stream_target_criteria%28request%3AMinknowApi%3A%3ARunUntil%3A%3AStreamTargetCriteriaRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3ARunUntil%3A%3AStreamTargetCriteriaResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/run_until.grpc.cr#L1316" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/run_until.grpc.cr#L1316" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="stream_updates(request:StreamUpdatesRequest,writer:GRPC::ResponseStream(StreamUpdatesResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
+    <div class="entry-detail" id="stream_updates(request:MinknowApi::RunUntil::StreamUpdatesRequest,writer:GRPC::ResponseStream(MinknowApi::RunUntil::StreamUpdatesResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
       <div class="signature">
         abstract 
-        def <strong>stream_updates</strong>(request : <a href="../../../MinknowApi/RunUntil/StreamUpdatesRequest.html">StreamUpdatesRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/RunUntil/StreamUpdatesResponse.html">StreamUpdatesResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
+        def <strong>stream_updates</strong>(request : <a href="../../../MinknowApi/RunUntil/StreamUpdatesRequest.html">MinknowApi::RunUntil::StreamUpdatesRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/RunUntil/StreamUpdatesResponse.html">MinknowApi::RunUntil::StreamUpdatesResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
 
-        <a class="method-permalink" href="#stream_updates%28request%3AStreamUpdatesRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamUpdatesResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
+        <a class="method-permalink" href="#stream_updates%28request%3AMinknowApi%3A%3ARunUntil%3A%3AStreamUpdatesRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3ARunUntil%3A%3AStreamUpdatesResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/run_until.grpc.cr#L1318" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/run_until.grpc.cr#L1318" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="write_target_criteria(request:WriteTargetCriteriaRequest,ctx:GRPC::ServerContext):WriteTargetCriteriaResponse-instance-method">
+    <div class="entry-detail" id="write_target_criteria(request:MinknowApi::RunUntil::WriteTargetCriteriaRequest,ctx:GRPC::ServerContext):MinknowApi::RunUntil::WriteTargetCriteriaResponse-instance-method">
       <div class="signature">
         abstract 
-        def <strong>write_target_criteria</strong>(request : <a href="../../../MinknowApi/RunUntil/WriteTargetCriteriaRequest.html">WriteTargetCriteriaRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/RunUntil/WriteTargetCriteriaResponse.html">WriteTargetCriteriaResponse</a>
+        def <strong>write_target_criteria</strong>(request : <a href="../../../MinknowApi/RunUntil/WriteTargetCriteriaRequest.html">MinknowApi::RunUntil::WriteTargetCriteriaRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/RunUntil/WriteTargetCriteriaResponse.html">MinknowApi::RunUntil::WriteTargetCriteriaResponse</a>
 
-        <a class="method-permalink" href="#write_target_criteria%28request%3AWriteTargetCriteriaRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AWriteTargetCriteriaResponse-instance-method">#</a>
+        <a class="method-permalink" href="#write_target_criteria%28request%3AMinknowApi%3A%3ARunUntil%3A%3AWriteTargetCriteriaRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3ARunUntil%3A%3AWriteTargetCriteriaResponse-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/run_until.grpc.cr#L1315" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/run_until.grpc.cr#L1315" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="write_updates(request:WriteUpdatesRequest,ctx:GRPC::ServerContext):WriteUpdatesResponse-instance-method">
+    <div class="entry-detail" id="write_updates(request:MinknowApi::RunUntil::WriteUpdatesRequest,ctx:GRPC::ServerContext):MinknowApi::RunUntil::WriteUpdatesResponse-instance-method">
       <div class="signature">
         abstract 
-        def <strong>write_updates</strong>(request : <a href="../../../MinknowApi/RunUntil/WriteUpdatesRequest.html">WriteUpdatesRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/RunUntil/WriteUpdatesResponse.html">WriteUpdatesResponse</a>
+        def <strong>write_updates</strong>(request : <a href="../../../MinknowApi/RunUntil/WriteUpdatesRequest.html">MinknowApi::RunUntil::WriteUpdatesRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/RunUntil/WriteUpdatesResponse.html">MinknowApi::RunUntil::WriteUpdatesResponse</a>
 
-        <a class="method-permalink" href="#write_updates%28request%3AWriteUpdatesRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AWriteUpdatesResponse-instance-method">#</a>
+        <a class="method-permalink" href="#write_updates%28request%3AMinknowApi%3A%3ARunUntil%3A%3AWriteUpdatesRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3ARunUntil%3A%3AWriteUpdatesResponse-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/run_until.grpc.cr#L1317" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/run_until.grpc.cr#L1317" target="_blank">View source</a>]
         
       </div>
     </div>

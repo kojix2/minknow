@@ -6460,7 +6460,7 @@ Subclass it and implement each RPC method, then register with GRPC::Server#handl
   </h2>
   
     
-      <a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/hardware_check.grpc.cr#L700" target="_blank">
+      <a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/hardware_check.grpc.cr#L700" target="_blank">
         generated/minknow_api/hardware_check.grpc.cr
       </a>
     
@@ -6503,7 +6503,7 @@ Subclass it and implement each RPC method, then register with GRPC::Server#handl
       </li>
     
       <li class="entry-summary">
-        <a href="#generate_hardware_check_report%28request%3AGenerateHardwareCheckReportRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28GenerateHardwareCheckReportResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#generate_hardware_check_report</strong>(request : GenerateHardwareCheckReportRequest, writer : GRPC::ResponseStream(GenerateHardwareCheckReportResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
+        <a href="#generate_hardware_check_report%28request%3AMinknowApi%3A%3AHardwareCheck%3A%3AGenerateHardwareCheckReportRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3AHardwareCheck%3A%3AGenerateHardwareCheckReportResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#generate_hardware_check_report</strong>(request : MinknowApi::HardwareCheck::GenerateHardwareCheckReportRequest, writer : GRPC::ResponseStream(MinknowApi::HardwareCheck::GenerateHardwareCheckReportResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
         
       </li>
     
@@ -6522,22 +6522,22 @@ Subclass it and implement each RPC method, then register with GRPC::Server#handl
       </li>
     
       <li class="entry-summary">
-        <a href="#start_hardware_check%28request%3AStartHardwareCheckRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AStartHardwareCheckResponse-instance-method" class="signature"><strong>#start_hardware_check</strong>(request : StartHardwareCheckRequest, ctx : GRPC::ServerContext) : StartHardwareCheckResponse</a>
+        <a href="#start_hardware_check%28request%3AMinknowApi%3A%3AHardwareCheck%3A%3AStartHardwareCheckRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3AHardwareCheck%3A%3AStartHardwareCheckResponse-instance-method" class="signature"><strong>#start_hardware_check</strong>(request : MinknowApi::HardwareCheck::StartHardwareCheckRequest, ctx : GRPC::ServerContext) : MinknowApi::HardwareCheck::StartHardwareCheckResponse</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#stop_hardware_check%28request%3AStopHardwareCheckRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AStopHardwareCheckResponse-instance-method" class="signature"><strong>#stop_hardware_check</strong>(request : StopHardwareCheckRequest, ctx : GRPC::ServerContext) : StopHardwareCheckResponse</a>
+        <a href="#stop_hardware_check%28request%3AMinknowApi%3A%3AHardwareCheck%3A%3AStopHardwareCheckRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3AHardwareCheck%3A%3AStopHardwareCheckResponse-instance-method" class="signature"><strong>#stop_hardware_check</strong>(request : MinknowApi::HardwareCheck::StopHardwareCheckRequest, ctx : GRPC::ServerContext) : MinknowApi::HardwareCheck::StopHardwareCheckResponse</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#stream_hardware_check_results%28request%3AStreamHardwareCheckResultsRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamHardwareCheckResultsResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_hardware_check_results</strong>(request : StreamHardwareCheckResultsRequest, writer : GRPC::ResponseStream(StreamHardwareCheckResultsResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
+        <a href="#stream_hardware_check_results%28request%3AMinknowApi%3A%3AHardwareCheck%3A%3AStreamHardwareCheckResultsRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3AHardwareCheck%3A%3AStreamHardwareCheckResultsResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method" class="signature"><strong>#stream_hardware_check_results</strong>(request : MinknowApi::HardwareCheck::StreamHardwareCheckResultsRequest, writer : GRPC::ResponseStream(MinknowApi::HardwareCheck::StreamHardwareCheckResultsResponse), ctx : GRPC::ServerContext) : GRPC::Status</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#update_hardware_check_results%28request%3AUpdateHardwareCheckResultsRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AUpdateHardwareCheckResultsResponse-instance-method" class="signature"><strong>#update_hardware_check_results</strong>(request : UpdateHardwareCheckResultsRequest, ctx : GRPC::ServerContext) : UpdateHardwareCheckResultsResponse</a>
+        <a href="#update_hardware_check_results%28request%3AMinknowApi%3A%3AHardwareCheck%3A%3AUpdateHardwareCheckResultsRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3AHardwareCheck%3A%3AUpdateHardwareCheckResultsResponse-instance-method" class="signature"><strong>#update_hardware_check_results</strong>(request : MinknowApi::HardwareCheck::UpdateHardwareCheckResultsRequest, ctx : GRPC::ServerContext) : MinknowApi::HardwareCheck::UpdateHardwareCheckResultsResponse</a>
         
       </li>
     
@@ -6625,7 +6625,7 @@ Returns {response_body : Bytes, status : Status}.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/hardware_check.grpc.cr#L716" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/hardware_check.grpc.cr#L716" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6652,23 +6652,23 @@ typed ResponseStream(T) before handing off to the user implementation.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/hardware_check.grpc.cr#L753" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/hardware_check.grpc.cr#L753" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="generate_hardware_check_report(request:GenerateHardwareCheckReportRequest,writer:GRPC::ResponseStream(GenerateHardwareCheckReportResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
+    <div class="entry-detail" id="generate_hardware_check_report(request:MinknowApi::HardwareCheck::GenerateHardwareCheckReportRequest,writer:GRPC::ResponseStream(MinknowApi::HardwareCheck::GenerateHardwareCheckReportResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
       <div class="signature">
         abstract 
-        def <strong>generate_hardware_check_report</strong>(request : <a href="../../../MinknowApi/HardwareCheck/GenerateHardwareCheckReportRequest.html">GenerateHardwareCheckReportRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/HardwareCheck/GenerateHardwareCheckReportResponse.html">GenerateHardwareCheckReportResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
+        def <strong>generate_hardware_check_report</strong>(request : <a href="../../../MinknowApi/HardwareCheck/GenerateHardwareCheckReportRequest.html">MinknowApi::HardwareCheck::GenerateHardwareCheckReportRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/HardwareCheck/GenerateHardwareCheckReportResponse.html">MinknowApi::HardwareCheck::GenerateHardwareCheckReportResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
 
-        <a class="method-permalink" href="#generate_hardware_check_report%28request%3AGenerateHardwareCheckReportRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28GenerateHardwareCheckReportResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
+        <a class="method-permalink" href="#generate_hardware_check_report%28request%3AMinknowApi%3A%3AHardwareCheck%3A%3AGenerateHardwareCheckReportRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3AHardwareCheck%3A%3AGenerateHardwareCheckReportResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/hardware_check.grpc.cr#L714" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/hardware_check.grpc.cr#L714" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6694,7 +6694,7 @@ Generated service base classes override this; the default is false (unary).</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/hardware_check.grpc.cr#L745" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/hardware_check.grpc.cr#L745" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6719,71 +6719,71 @@ Generated service base classes override this; the default is false (unary).</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/hardware_check.grpc.cr#L701" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/hardware_check.grpc.cr#L701" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="start_hardware_check(request:StartHardwareCheckRequest,ctx:GRPC::ServerContext):StartHardwareCheckResponse-instance-method">
+    <div class="entry-detail" id="start_hardware_check(request:MinknowApi::HardwareCheck::StartHardwareCheckRequest,ctx:GRPC::ServerContext):MinknowApi::HardwareCheck::StartHardwareCheckResponse-instance-method">
       <div class="signature">
         abstract 
-        def <strong>start_hardware_check</strong>(request : <a href="../../../MinknowApi/HardwareCheck/StartHardwareCheckRequest.html">StartHardwareCheckRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/HardwareCheck/StartHardwareCheckResponse.html">StartHardwareCheckResponse</a>
+        def <strong>start_hardware_check</strong>(request : <a href="../../../MinknowApi/HardwareCheck/StartHardwareCheckRequest.html">MinknowApi::HardwareCheck::StartHardwareCheckRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/HardwareCheck/StartHardwareCheckResponse.html">MinknowApi::HardwareCheck::StartHardwareCheckResponse</a>
 
-        <a class="method-permalink" href="#start_hardware_check%28request%3AStartHardwareCheckRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AStartHardwareCheckResponse-instance-method">#</a>
+        <a class="method-permalink" href="#start_hardware_check%28request%3AMinknowApi%3A%3AHardwareCheck%3A%3AStartHardwareCheckRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3AHardwareCheck%3A%3AStartHardwareCheckResponse-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/hardware_check.grpc.cr#L710" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/hardware_check.grpc.cr#L710" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="stop_hardware_check(request:StopHardwareCheckRequest,ctx:GRPC::ServerContext):StopHardwareCheckResponse-instance-method">
+    <div class="entry-detail" id="stop_hardware_check(request:MinknowApi::HardwareCheck::StopHardwareCheckRequest,ctx:GRPC::ServerContext):MinknowApi::HardwareCheck::StopHardwareCheckResponse-instance-method">
       <div class="signature">
         abstract 
-        def <strong>stop_hardware_check</strong>(request : <a href="../../../MinknowApi/HardwareCheck/StopHardwareCheckRequest.html">StopHardwareCheckRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/HardwareCheck/StopHardwareCheckResponse.html">StopHardwareCheckResponse</a>
+        def <strong>stop_hardware_check</strong>(request : <a href="../../../MinknowApi/HardwareCheck/StopHardwareCheckRequest.html">MinknowApi::HardwareCheck::StopHardwareCheckRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/HardwareCheck/StopHardwareCheckResponse.html">MinknowApi::HardwareCheck::StopHardwareCheckResponse</a>
 
-        <a class="method-permalink" href="#stop_hardware_check%28request%3AStopHardwareCheckRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AStopHardwareCheckResponse-instance-method">#</a>
+        <a class="method-permalink" href="#stop_hardware_check%28request%3AMinknowApi%3A%3AHardwareCheck%3A%3AStopHardwareCheckRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3AHardwareCheck%3A%3AStopHardwareCheckResponse-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/hardware_check.grpc.cr#L711" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/hardware_check.grpc.cr#L711" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="stream_hardware_check_results(request:StreamHardwareCheckResultsRequest,writer:GRPC::ResponseStream(StreamHardwareCheckResultsResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
+    <div class="entry-detail" id="stream_hardware_check_results(request:MinknowApi::HardwareCheck::StreamHardwareCheckResultsRequest,writer:GRPC::ResponseStream(MinknowApi::HardwareCheck::StreamHardwareCheckResultsResponse),ctx:GRPC::ServerContext):GRPC::Status-instance-method">
       <div class="signature">
         abstract 
-        def <strong>stream_hardware_check_results</strong>(request : <a href="../../../MinknowApi/HardwareCheck/StreamHardwareCheckResultsRequest.html">StreamHardwareCheckResultsRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/HardwareCheck/StreamHardwareCheckResultsResponse.html">StreamHardwareCheckResultsResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
+        def <strong>stream_hardware_check_results</strong>(request : <a href="../../../MinknowApi/HardwareCheck/StreamHardwareCheckResultsRequest.html">MinknowApi::HardwareCheck::StreamHardwareCheckResultsRequest</a>, writer : GRPC::ResponseStream(<a href="../../../MinknowApi/HardwareCheck/StreamHardwareCheckResultsResponse.html">MinknowApi::HardwareCheck::StreamHardwareCheckResultsResponse</a>), ctx : GRPC::ServerContext) : GRPC::Status
 
-        <a class="method-permalink" href="#stream_hardware_check_results%28request%3AStreamHardwareCheckResultsRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28StreamHardwareCheckResultsResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
+        <a class="method-permalink" href="#stream_hardware_check_results%28request%3AMinknowApi%3A%3AHardwareCheck%3A%3AStreamHardwareCheckResultsRequest%2Cwriter%3AGRPC%3A%3AResponseStream%28MinknowApi%3A%3AHardwareCheck%3A%3AStreamHardwareCheckResultsResponse%29%2Cctx%3AGRPC%3A%3AServerContext%29%3AGRPC%3A%3AStatus-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/hardware_check.grpc.cr#L713" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/hardware_check.grpc.cr#L713" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="update_hardware_check_results(request:UpdateHardwareCheckResultsRequest,ctx:GRPC::ServerContext):UpdateHardwareCheckResultsResponse-instance-method">
+    <div class="entry-detail" id="update_hardware_check_results(request:MinknowApi::HardwareCheck::UpdateHardwareCheckResultsRequest,ctx:GRPC::ServerContext):MinknowApi::HardwareCheck::UpdateHardwareCheckResultsResponse-instance-method">
       <div class="signature">
         abstract 
-        def <strong>update_hardware_check_results</strong>(request : <a href="../../../MinknowApi/HardwareCheck/UpdateHardwareCheckResultsRequest.html">UpdateHardwareCheckResultsRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/HardwareCheck/UpdateHardwareCheckResultsResponse.html">UpdateHardwareCheckResultsResponse</a>
+        def <strong>update_hardware_check_results</strong>(request : <a href="../../../MinknowApi/HardwareCheck/UpdateHardwareCheckResultsRequest.html">MinknowApi::HardwareCheck::UpdateHardwareCheckResultsRequest</a>, ctx : GRPC::ServerContext) : <a href="../../../MinknowApi/HardwareCheck/UpdateHardwareCheckResultsResponse.html">MinknowApi::HardwareCheck::UpdateHardwareCheckResultsResponse</a>
 
-        <a class="method-permalink" href="#update_hardware_check_results%28request%3AUpdateHardwareCheckResultsRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AUpdateHardwareCheckResultsResponse-instance-method">#</a>
+        <a class="method-permalink" href="#update_hardware_check_results%28request%3AMinknowApi%3A%3AHardwareCheck%3A%3AUpdateHardwareCheckResultsRequest%2Cctx%3AGRPC%3A%3AServerContext%29%3AMinknowApi%3A%3AHardwareCheck%3A%3AUpdateHardwareCheckResultsResponse-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/f31fadef29b49f8dfe70568440cd979e14ffc8d0/src/generated/minknow_api/hardware_check.grpc.cr#L712" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/72f8f7caf4fe475018cd83c12a0206d0c9c4629e/src/generated/minknow_api/hardware_check.grpc.cr#L712" target="_blank">View source</a>]
         
       </div>
     </div>
