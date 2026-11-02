@@ -5181,206 +5181,206 @@ module MinknowApi::Manager
         GRPC::ProtoMarshaller(T).new
       end
 
-      abstract def describe_host(request : DescribeHostRequest, ctx : GRPC::ServerContext) : DescribeHostResponse
-      abstract def get_basecaller_features(request : GetBasecallerFeaturesRequest, ctx : GRPC::ServerContext) : GetBasecallerFeaturesResponse
-      abstract def flow_cell_positions(request : FlowCellPositionsRequest, writer : GRPC::ResponseStream(FlowCellPositionsResponse), ctx : GRPC::ServerContext) : GRPC::Status
-      abstract def watch_flow_cell_positions(request : WatchFlowCellPositionsRequest, writer : GRPC::ResponseStream(WatchFlowCellPositionsResponse), ctx : GRPC::ServerContext) : GRPC::Status
-      abstract def reset_position(request : ResetPositionRequest, ctx : GRPC::ServerContext) : ResetPositionResponse
-      abstract def basecaller_api(request : BasecallerApiRequest, ctx : GRPC::ServerContext) : BasecallerApiResponse
-      abstract def get_guppy_info(request : GetGuppyInfoRequest, ctx : GRPC::ServerContext) : GetGuppyInfoResponse
-      abstract def get_version_info(request : GetVersionInfoRequest, ctx : GRPC::ServerContext) : MinknowApi::Instance::GetVersionInfoResponse
-      abstract def list_protocol_output_dir_files(request : ListProtocolOutputDirFilesRequest, writer : GRPC::ResponseStream(ListProtocolOutputDirFilesResponse), ctx : GRPC::ServerContext) : GRPC::Status
-      abstract def create_directory(request : CreateDirectoryRequest, ctx : GRPC::ServerContext) : CreateDirectoryResponse
-      abstract def get_disk_space_info(request : GetDiskSpaceInfoRequest, ctx : GRPC::ServerContext) : GetDiskSpaceInfoResponse
-      abstract def get_default_output_directories(request : MinknowApi::Instance::GetDefaultOutputDirectoriesRequest, ctx : GRPC::ServerContext) : MinknowApi::Instance::OutputDirectories
-      abstract def stream_disk_space_info(request : StreamDiskSpaceInfoRequest, writer : GRPC::ResponseStream(GetDiskSpaceInfoResponse), ctx : GRPC::ServerContext) : GRPC::Status
-      abstract def get_barcode_kit_info(request : GetBarcodeKitInfoRequest, ctx : GRPC::ServerContext) : GetBarcodeKitInfoResponse
-      abstract def get_lamp_kit_info(request : GetLampKitInfoRequest, ctx : GRPC::ServerContext) : GetLampKitInfoResponse
-      abstract def get_barcode_keys(request : GetBarcodeKeysRequest, ctx : GRPC::ServerContext) : GetBarcodeKeysResponse
-      abstract def get_flow_cell_types(request : GetFlowCellTypesRequest, ctx : GRPC::ServerContext) : GetFlowCellTypesResponse
-      abstract def get_sequencing_kits(request : GetSequencingKitsRequest, ctx : GRPC::ServerContext) : GetSequencingKitsResponse
-      abstract def add_simulated_device(request : AddSimulatedDeviceRequest, ctx : GRPC::ServerContext) : AddSimulatedDeviceResponse
-      abstract def remove_simulated_device(request : RemoveSimulatedDeviceRequest, ctx : GRPC::ServerContext) : RemoveSimulatedDeviceResponse
-      abstract def local_authentication_token_path(request : LocalAuthenticationTokenPathRequest, ctx : GRPC::ServerContext) : LocalAuthenticationTokenPathResponse
-      abstract def get_alignment_reference_information(request : GetAlignmentReferenceInformationRequest, ctx : GRPC::ServerContext) : GetAlignmentReferenceInformationResponse
-      abstract def association_device_code(request : AssociationDeviceCodeRequest, ctx : GRPC::ServerContext) : AssociationDeviceCodeResponse
-      abstract def apply_offline_association_unlock_code(request : ApplyOfflineAssociationUnlockCodeRequest, ctx : GRPC::ServerContext) : ApplyOfflineAssociationUnlockCodeResponse
-      abstract def find_protocols(request : FindProtocolsRequest, ctx : GRPC::ServerContext) : FindProtocolsResponse
-      abstract def list_settings_for_protocol(request : ListSettingsForProtocolRequest, ctx : GRPC::ServerContext) : ListSettingsForProtocolResponse
-      abstract def get_features(request : GetFeaturesRequest, ctx : GRPC::ServerContext) : GetFeaturesResponse
-      abstract def set_features(request : SetFeaturesRequest, ctx : GRPC::ServerContext) : SetFeaturesResponse
-      abstract def restart_device_admin_service(request : RestartDeviceAdminRequest, ctx : GRPC::ServerContext) : RestartDeviceAdminResponse
-      abstract def check_bed_file(request : CheckBedFileRequest, ctx : GRPC::ServerContext) : CheckBedFileResponse
-      abstract def find_basecall_configurations(request : FindBasecallConfigurationsRequest, ctx : GRPC::ServerContext) : FindBasecallConfigurationsResponse
-      abstract def check_path_info(request : CheckPathInfoRequest, ctx : GRPC::ServerContext) : CheckPathInfoResponse
+      abstract def describe_host(request : ::MinknowApi::Manager::DescribeHostRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::DescribeHostResponse
+      abstract def get_basecaller_features(request : ::MinknowApi::Manager::GetBasecallerFeaturesRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::GetBasecallerFeaturesResponse
+      abstract def flow_cell_positions(request : ::MinknowApi::Manager::FlowCellPositionsRequest, writer : GRPC::ResponseStream(::MinknowApi::Manager::FlowCellPositionsResponse), ctx : GRPC::ServerContext) : GRPC::Status
+      abstract def watch_flow_cell_positions(request : ::MinknowApi::Manager::WatchFlowCellPositionsRequest, writer : GRPC::ResponseStream(::MinknowApi::Manager::WatchFlowCellPositionsResponse), ctx : GRPC::ServerContext) : GRPC::Status
+      abstract def reset_position(request : ::MinknowApi::Manager::ResetPositionRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::ResetPositionResponse
+      abstract def basecaller_api(request : ::MinknowApi::Manager::BasecallerApiRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::BasecallerApiResponse
+      abstract def get_guppy_info(request : ::MinknowApi::Manager::GetGuppyInfoRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::GetGuppyInfoResponse
+      abstract def get_version_info(request : ::MinknowApi::Manager::GetVersionInfoRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Instance::GetVersionInfoResponse
+      abstract def list_protocol_output_dir_files(request : ::MinknowApi::Manager::ListProtocolOutputDirFilesRequest, writer : GRPC::ResponseStream(::MinknowApi::Manager::ListProtocolOutputDirFilesResponse), ctx : GRPC::ServerContext) : GRPC::Status
+      abstract def create_directory(request : ::MinknowApi::Manager::CreateDirectoryRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::CreateDirectoryResponse
+      abstract def get_disk_space_info(request : ::MinknowApi::Manager::GetDiskSpaceInfoRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::GetDiskSpaceInfoResponse
+      abstract def get_default_output_directories(request : ::MinknowApi::Instance::GetDefaultOutputDirectoriesRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Instance::OutputDirectories
+      abstract def stream_disk_space_info(request : ::MinknowApi::Manager::StreamDiskSpaceInfoRequest, writer : GRPC::ResponseStream(::MinknowApi::Manager::GetDiskSpaceInfoResponse), ctx : GRPC::ServerContext) : GRPC::Status
+      abstract def get_barcode_kit_info(request : ::MinknowApi::Manager::GetBarcodeKitInfoRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::GetBarcodeKitInfoResponse
+      abstract def get_lamp_kit_info(request : ::MinknowApi::Manager::GetLampKitInfoRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::GetLampKitInfoResponse
+      abstract def get_barcode_keys(request : ::MinknowApi::Manager::GetBarcodeKeysRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::GetBarcodeKeysResponse
+      abstract def get_flow_cell_types(request : ::MinknowApi::Manager::GetFlowCellTypesRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::GetFlowCellTypesResponse
+      abstract def get_sequencing_kits(request : ::MinknowApi::Manager::GetSequencingKitsRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::GetSequencingKitsResponse
+      abstract def add_simulated_device(request : ::MinknowApi::Manager::AddSimulatedDeviceRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::AddSimulatedDeviceResponse
+      abstract def remove_simulated_device(request : ::MinknowApi::Manager::RemoveSimulatedDeviceRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::RemoveSimulatedDeviceResponse
+      abstract def local_authentication_token_path(request : ::MinknowApi::Manager::LocalAuthenticationTokenPathRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::LocalAuthenticationTokenPathResponse
+      abstract def get_alignment_reference_information(request : ::MinknowApi::Manager::GetAlignmentReferenceInformationRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::GetAlignmentReferenceInformationResponse
+      abstract def association_device_code(request : ::MinknowApi::Manager::AssociationDeviceCodeRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::AssociationDeviceCodeResponse
+      abstract def apply_offline_association_unlock_code(request : ::MinknowApi::Manager::ApplyOfflineAssociationUnlockCodeRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::ApplyOfflineAssociationUnlockCodeResponse
+      abstract def find_protocols(request : ::MinknowApi::Manager::FindProtocolsRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::FindProtocolsResponse
+      abstract def list_settings_for_protocol(request : ::MinknowApi::Manager::ListSettingsForProtocolRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::ListSettingsForProtocolResponse
+      abstract def get_features(request : ::MinknowApi::Manager::GetFeaturesRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::GetFeaturesResponse
+      abstract def set_features(request : ::MinknowApi::Manager::SetFeaturesRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::SetFeaturesResponse
+      abstract def restart_device_admin_service(request : ::MinknowApi::Manager::RestartDeviceAdminRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::RestartDeviceAdminResponse
+      abstract def check_bed_file(request : ::MinknowApi::Manager::CheckBedFileRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::CheckBedFileResponse
+      abstract def find_basecall_configurations(request : ::MinknowApi::Manager::FindBasecallConfigurationsRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::FindBasecallConfigurationsResponse
+      abstract def check_path_info(request : ::MinknowApi::Manager::CheckPathInfoRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Manager::CheckPathInfoResponse
 
       def dispatch(method : String, body : Bytes, ctx : GRPC::ServerContext) : {Bytes, GRPC::Status}
         case method
         when "describe_host"
-          req_marshaller = marshaller_for(DescribeHostRequest)
-          res_marshaller = marshaller_for(DescribeHostResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::DescribeHostRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::DescribeHostResponse)
           req = req_marshaller.decode(body)
           resp = describe_host(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_basecaller_features"
-          req_marshaller = marshaller_for(GetBasecallerFeaturesRequest)
-          res_marshaller = marshaller_for(GetBasecallerFeaturesResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::GetBasecallerFeaturesRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::GetBasecallerFeaturesResponse)
           req = req_marshaller.decode(body)
           resp = get_basecaller_features(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "reset_position"
-          req_marshaller = marshaller_for(ResetPositionRequest)
-          res_marshaller = marshaller_for(ResetPositionResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::ResetPositionRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::ResetPositionResponse)
           req = req_marshaller.decode(body)
           resp = reset_position(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "basecaller_api"
-          req_marshaller = marshaller_for(BasecallerApiRequest)
-          res_marshaller = marshaller_for(BasecallerApiResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::BasecallerApiRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::BasecallerApiResponse)
           req = req_marshaller.decode(body)
           resp = basecaller_api(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_guppy_info"
-          req_marshaller = marshaller_for(GetGuppyInfoRequest)
-          res_marshaller = marshaller_for(GetGuppyInfoResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::GetGuppyInfoRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::GetGuppyInfoResponse)
           req = req_marshaller.decode(body)
           resp = get_guppy_info(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_version_info"
-          req_marshaller = marshaller_for(GetVersionInfoRequest)
-          res_marshaller = marshaller_for(MinknowApi::Instance::GetVersionInfoResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::GetVersionInfoRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Instance::GetVersionInfoResponse)
           req = req_marshaller.decode(body)
           resp = get_version_info(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "create_directory"
-          req_marshaller = marshaller_for(CreateDirectoryRequest)
-          res_marshaller = marshaller_for(CreateDirectoryResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::CreateDirectoryRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::CreateDirectoryResponse)
           req = req_marshaller.decode(body)
           resp = create_directory(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_disk_space_info"
-          req_marshaller = marshaller_for(GetDiskSpaceInfoRequest)
-          res_marshaller = marshaller_for(GetDiskSpaceInfoResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::GetDiskSpaceInfoRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::GetDiskSpaceInfoResponse)
           req = req_marshaller.decode(body)
           resp = get_disk_space_info(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_default_output_directories"
-          req_marshaller = marshaller_for(MinknowApi::Instance::GetDefaultOutputDirectoriesRequest)
-          res_marshaller = marshaller_for(MinknowApi::Instance::OutputDirectories)
+          req_marshaller = marshaller_for(::MinknowApi::Instance::GetDefaultOutputDirectoriesRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Instance::OutputDirectories)
           req = req_marshaller.decode(body)
           resp = get_default_output_directories(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_barcode_kit_info"
-          req_marshaller = marshaller_for(GetBarcodeKitInfoRequest)
-          res_marshaller = marshaller_for(GetBarcodeKitInfoResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::GetBarcodeKitInfoRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::GetBarcodeKitInfoResponse)
           req = req_marshaller.decode(body)
           resp = get_barcode_kit_info(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_lamp_kit_info"
-          req_marshaller = marshaller_for(GetLampKitInfoRequest)
-          res_marshaller = marshaller_for(GetLampKitInfoResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::GetLampKitInfoRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::GetLampKitInfoResponse)
           req = req_marshaller.decode(body)
           resp = get_lamp_kit_info(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_barcode_keys"
-          req_marshaller = marshaller_for(GetBarcodeKeysRequest)
-          res_marshaller = marshaller_for(GetBarcodeKeysResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::GetBarcodeKeysRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::GetBarcodeKeysResponse)
           req = req_marshaller.decode(body)
           resp = get_barcode_keys(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_flow_cell_types"
-          req_marshaller = marshaller_for(GetFlowCellTypesRequest)
-          res_marshaller = marshaller_for(GetFlowCellTypesResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::GetFlowCellTypesRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::GetFlowCellTypesResponse)
           req = req_marshaller.decode(body)
           resp = get_flow_cell_types(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_sequencing_kits"
-          req_marshaller = marshaller_for(GetSequencingKitsRequest)
-          res_marshaller = marshaller_for(GetSequencingKitsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::GetSequencingKitsRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::GetSequencingKitsResponse)
           req = req_marshaller.decode(body)
           resp = get_sequencing_kits(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "add_simulated_device"
-          req_marshaller = marshaller_for(AddSimulatedDeviceRequest)
-          res_marshaller = marshaller_for(AddSimulatedDeviceResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::AddSimulatedDeviceRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::AddSimulatedDeviceResponse)
           req = req_marshaller.decode(body)
           resp = add_simulated_device(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "remove_simulated_device"
-          req_marshaller = marshaller_for(RemoveSimulatedDeviceRequest)
-          res_marshaller = marshaller_for(RemoveSimulatedDeviceResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::RemoveSimulatedDeviceRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::RemoveSimulatedDeviceResponse)
           req = req_marshaller.decode(body)
           resp = remove_simulated_device(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "local_authentication_token_path"
-          req_marshaller = marshaller_for(LocalAuthenticationTokenPathRequest)
-          res_marshaller = marshaller_for(LocalAuthenticationTokenPathResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::LocalAuthenticationTokenPathRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::LocalAuthenticationTokenPathResponse)
           req = req_marshaller.decode(body)
           resp = local_authentication_token_path(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_alignment_reference_information"
-          req_marshaller = marshaller_for(GetAlignmentReferenceInformationRequest)
-          res_marshaller = marshaller_for(GetAlignmentReferenceInformationResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::GetAlignmentReferenceInformationRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::GetAlignmentReferenceInformationResponse)
           req = req_marshaller.decode(body)
           resp = get_alignment_reference_information(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "association_device_code"
-          req_marshaller = marshaller_for(AssociationDeviceCodeRequest)
-          res_marshaller = marshaller_for(AssociationDeviceCodeResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::AssociationDeviceCodeRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::AssociationDeviceCodeResponse)
           req = req_marshaller.decode(body)
           resp = association_device_code(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "apply_offline_association_unlock_code"
-          req_marshaller = marshaller_for(ApplyOfflineAssociationUnlockCodeRequest)
-          res_marshaller = marshaller_for(ApplyOfflineAssociationUnlockCodeResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::ApplyOfflineAssociationUnlockCodeRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::ApplyOfflineAssociationUnlockCodeResponse)
           req = req_marshaller.decode(body)
           resp = apply_offline_association_unlock_code(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "find_protocols"
-          req_marshaller = marshaller_for(FindProtocolsRequest)
-          res_marshaller = marshaller_for(FindProtocolsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::FindProtocolsRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::FindProtocolsResponse)
           req = req_marshaller.decode(body)
           resp = find_protocols(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "list_settings_for_protocol"
-          req_marshaller = marshaller_for(ListSettingsForProtocolRequest)
-          res_marshaller = marshaller_for(ListSettingsForProtocolResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::ListSettingsForProtocolRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::ListSettingsForProtocolResponse)
           req = req_marshaller.decode(body)
           resp = list_settings_for_protocol(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_features"
-          req_marshaller = marshaller_for(GetFeaturesRequest)
-          res_marshaller = marshaller_for(GetFeaturesResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::GetFeaturesRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::GetFeaturesResponse)
           req = req_marshaller.decode(body)
           resp = get_features(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_features"
-          req_marshaller = marshaller_for(SetFeaturesRequest)
-          res_marshaller = marshaller_for(SetFeaturesResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::SetFeaturesRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::SetFeaturesResponse)
           req = req_marshaller.decode(body)
           resp = set_features(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "restart_device_admin_service"
-          req_marshaller = marshaller_for(RestartDeviceAdminRequest)
-          res_marshaller = marshaller_for(RestartDeviceAdminResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::RestartDeviceAdminRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::RestartDeviceAdminResponse)
           req = req_marshaller.decode(body)
           resp = restart_device_admin_service(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "check_bed_file"
-          req_marshaller = marshaller_for(CheckBedFileRequest)
-          res_marshaller = marshaller_for(CheckBedFileResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::CheckBedFileRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::CheckBedFileResponse)
           req = req_marshaller.decode(body)
           resp = check_bed_file(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "find_basecall_configurations"
-          req_marshaller = marshaller_for(FindBasecallConfigurationsRequest)
-          res_marshaller = marshaller_for(FindBasecallConfigurationsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::FindBasecallConfigurationsRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::FindBasecallConfigurationsResponse)
           req = req_marshaller.decode(body)
           resp = find_basecall_configurations(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "check_path_info"
-          req_marshaller = marshaller_for(CheckPathInfoRequest)
-          res_marshaller = marshaller_for(CheckPathInfoResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::CheckPathInfoRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::CheckPathInfoResponse)
           req = req_marshaller.decode(body)
           resp = check_path_info(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
@@ -5408,24 +5408,24 @@ module MinknowApi::Manager
                                  writer : GRPC::RawResponseStream) : GRPC::Status
         case method
         when "flow_cell_positions"
-          req_marshaller = marshaller_for(FlowCellPositionsRequest)
-          res_marshaller = marshaller_for(FlowCellPositionsResponse)
-          typed_writer = GRPC::ResponseStream(FlowCellPositionsResponse).new(writer, res_marshaller)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::FlowCellPositionsRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::FlowCellPositionsResponse)
+          typed_writer = GRPC::ResponseStream(::MinknowApi::Manager::FlowCellPositionsResponse).new(writer, res_marshaller)
           flow_cell_positions(req_marshaller.decode(body), typed_writer, ctx)
         when "watch_flow_cell_positions"
-          req_marshaller = marshaller_for(WatchFlowCellPositionsRequest)
-          res_marshaller = marshaller_for(WatchFlowCellPositionsResponse)
-          typed_writer = GRPC::ResponseStream(WatchFlowCellPositionsResponse).new(writer, res_marshaller)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::WatchFlowCellPositionsRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::WatchFlowCellPositionsResponse)
+          typed_writer = GRPC::ResponseStream(::MinknowApi::Manager::WatchFlowCellPositionsResponse).new(writer, res_marshaller)
           watch_flow_cell_positions(req_marshaller.decode(body), typed_writer, ctx)
         when "list_protocol_output_dir_files"
-          req_marshaller = marshaller_for(ListProtocolOutputDirFilesRequest)
-          res_marshaller = marshaller_for(ListProtocolOutputDirFilesResponse)
-          typed_writer = GRPC::ResponseStream(ListProtocolOutputDirFilesResponse).new(writer, res_marshaller)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::ListProtocolOutputDirFilesRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::ListProtocolOutputDirFilesResponse)
+          typed_writer = GRPC::ResponseStream(::MinknowApi::Manager::ListProtocolOutputDirFilesResponse).new(writer, res_marshaller)
           list_protocol_output_dir_files(req_marshaller.decode(body), typed_writer, ctx)
         when "stream_disk_space_info"
-          req_marshaller = marshaller_for(StreamDiskSpaceInfoRequest)
-          res_marshaller = marshaller_for(GetDiskSpaceInfoResponse)
-          typed_writer = GRPC::ResponseStream(GetDiskSpaceInfoResponse).new(writer, res_marshaller)
+          req_marshaller = marshaller_for(::MinknowApi::Manager::StreamDiskSpaceInfoRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Manager::GetDiskSpaceInfoResponse)
+          typed_writer = GRPC::ResponseStream(::MinknowApi::Manager::GetDiskSpaceInfoResponse).new(writer, res_marshaller)
           stream_disk_space_info(req_marshaller.decode(body), typed_writer, ctx)
         else
           GRPC::Status.unimplemented("method #{method} not found")
@@ -5448,404 +5448,368 @@ module MinknowApi::Manager
         GRPC::ProtoMarshaller(T).new
       end
 
-      def describe_host(request : DescribeHostRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : DescribeHostResponse
+      def describe_host(request : ::MinknowApi::Manager::DescribeHostRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::DescribeHostResponse
         describe_host_response(request, ctx).ok!
       end
 
-      def describe_host_response(request : DescribeHostRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(DescribeHostResponse)
-        req_marshaller = marshaller_for(DescribeHostRequest)
-        res_marshaller = marshaller_for(DescribeHostResponse)
+      def describe_host_response(request : ::MinknowApi::Manager::DescribeHostRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::DescribeHostResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::DescribeHostRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::DescribeHostResponse)
         response = @channel.unary_call(FULL_NAME, "describe_host", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(DescribeHostResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::DescribeHostResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_basecaller_features(request : GetBasecallerFeaturesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetBasecallerFeaturesResponse
+      def get_basecaller_features(request : ::MinknowApi::Manager::GetBasecallerFeaturesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::GetBasecallerFeaturesResponse
         get_basecaller_features_response(request, ctx).ok!
       end
 
-      def get_basecaller_features_response(request : GetBasecallerFeaturesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetBasecallerFeaturesResponse)
-        req_marshaller = marshaller_for(GetBasecallerFeaturesRequest)
-        res_marshaller = marshaller_for(GetBasecallerFeaturesResponse)
+      def get_basecaller_features_response(request : ::MinknowApi::Manager::GetBasecallerFeaturesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::GetBasecallerFeaturesResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::GetBasecallerFeaturesRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::GetBasecallerFeaturesResponse)
         response = @channel.unary_call(FULL_NAME, "get_basecaller_features", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetBasecallerFeaturesResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::GetBasecallerFeaturesResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def flow_cell_positions(request : FlowCellPositionsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(FlowCellPositionsResponse)
-        req_marshaller = marshaller_for(FlowCellPositionsRequest)
-        res_marshaller = marshaller_for(FlowCellPositionsResponse)
+      def flow_cell_positions(request : ::MinknowApi::Manager::FlowCellPositionsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Manager::FlowCellPositionsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::FlowCellPositionsRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::FlowCellPositionsResponse)
         raw = @channel.open_server_stream(FULL_NAME, "flow_cell_positions", req_marshaller.encode(request), ctx)
-        stream = GRPC::ServerStream(FlowCellPositionsResponse).new(-> { raw.headers }, -> { raw.status }, -> { raw.trailers }, -> { raw.cancel })
-        spawn do
-          begin
-            raw.each { |bytes| stream.push(res_marshaller.decode(bytes)) }
-            stream.finish
-          rescue ex
-            stream.finish(GRPC::Status.internal(ex.message || "error"))
-          end
-        end
-        stream
+        GRPC::ServerStream(::MinknowApi::Manager::FlowCellPositionsResponse).new(raw, res_marshaller)
       end
 
-      def watch_flow_cell_positions(request : WatchFlowCellPositionsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(WatchFlowCellPositionsResponse)
-        req_marshaller = marshaller_for(WatchFlowCellPositionsRequest)
-        res_marshaller = marshaller_for(WatchFlowCellPositionsResponse)
+      def watch_flow_cell_positions(request : ::MinknowApi::Manager::WatchFlowCellPositionsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Manager::WatchFlowCellPositionsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::WatchFlowCellPositionsRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::WatchFlowCellPositionsResponse)
         raw = @channel.open_server_stream(FULL_NAME, "watch_flow_cell_positions", req_marshaller.encode(request), ctx)
-        stream = GRPC::ServerStream(WatchFlowCellPositionsResponse).new(-> { raw.headers }, -> { raw.status }, -> { raw.trailers }, -> { raw.cancel })
-        spawn do
-          begin
-            raw.each { |bytes| stream.push(res_marshaller.decode(bytes)) }
-            stream.finish
-          rescue ex
-            stream.finish(GRPC::Status.internal(ex.message || "error"))
-          end
-        end
-        stream
+        GRPC::ServerStream(::MinknowApi::Manager::WatchFlowCellPositionsResponse).new(raw, res_marshaller)
       end
 
-      def reset_position(request : ResetPositionRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ResetPositionResponse
+      def reset_position(request : ::MinknowApi::Manager::ResetPositionRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::ResetPositionResponse
         reset_position_response(request, ctx).ok!
       end
 
-      def reset_position_response(request : ResetPositionRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(ResetPositionResponse)
-        req_marshaller = marshaller_for(ResetPositionRequest)
-        res_marshaller = marshaller_for(ResetPositionResponse)
+      def reset_position_response(request : ::MinknowApi::Manager::ResetPositionRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::ResetPositionResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::ResetPositionRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::ResetPositionResponse)
         response = @channel.unary_call(FULL_NAME, "reset_position", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(ResetPositionResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::ResetPositionResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def basecaller_api(request : BasecallerApiRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : BasecallerApiResponse
+      def basecaller_api(request : ::MinknowApi::Manager::BasecallerApiRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::BasecallerApiResponse
         basecaller_api_response(request, ctx).ok!
       end
 
-      def basecaller_api_response(request : BasecallerApiRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(BasecallerApiResponse)
-        req_marshaller = marshaller_for(BasecallerApiRequest)
-        res_marshaller = marshaller_for(BasecallerApiResponse)
+      def basecaller_api_response(request : ::MinknowApi::Manager::BasecallerApiRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::BasecallerApiResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::BasecallerApiRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::BasecallerApiResponse)
         response = @channel.unary_call(FULL_NAME, "basecaller_api", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(BasecallerApiResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::BasecallerApiResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_guppy_info(request : GetGuppyInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetGuppyInfoResponse
+      def get_guppy_info(request : ::MinknowApi::Manager::GetGuppyInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::GetGuppyInfoResponse
         get_guppy_info_response(request, ctx).ok!
       end
 
-      def get_guppy_info_response(request : GetGuppyInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetGuppyInfoResponse)
-        req_marshaller = marshaller_for(GetGuppyInfoRequest)
-        res_marshaller = marshaller_for(GetGuppyInfoResponse)
+      def get_guppy_info_response(request : ::MinknowApi::Manager::GetGuppyInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::GetGuppyInfoResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::GetGuppyInfoRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::GetGuppyInfoResponse)
         response = @channel.unary_call(FULL_NAME, "get_guppy_info", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetGuppyInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::GetGuppyInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_version_info(request : GetVersionInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : MinknowApi::Instance::GetVersionInfoResponse
+      def get_version_info(request : ::MinknowApi::Manager::GetVersionInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Instance::GetVersionInfoResponse
         get_version_info_response(request, ctx).ok!
       end
 
-      def get_version_info_response(request : GetVersionInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(MinknowApi::Instance::GetVersionInfoResponse)
-        req_marshaller = marshaller_for(GetVersionInfoRequest)
-        res_marshaller = marshaller_for(MinknowApi::Instance::GetVersionInfoResponse)
+      def get_version_info_response(request : ::MinknowApi::Manager::GetVersionInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Instance::GetVersionInfoResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::GetVersionInfoRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Instance::GetVersionInfoResponse)
         response = @channel.unary_call(FULL_NAME, "get_version_info", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(MinknowApi::Instance::GetVersionInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Instance::GetVersionInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def list_protocol_output_dir_files(request : ListProtocolOutputDirFilesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(ListProtocolOutputDirFilesResponse)
-        req_marshaller = marshaller_for(ListProtocolOutputDirFilesRequest)
-        res_marshaller = marshaller_for(ListProtocolOutputDirFilesResponse)
+      def list_protocol_output_dir_files(request : ::MinknowApi::Manager::ListProtocolOutputDirFilesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Manager::ListProtocolOutputDirFilesResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::ListProtocolOutputDirFilesRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::ListProtocolOutputDirFilesResponse)
         raw = @channel.open_server_stream(FULL_NAME, "list_protocol_output_dir_files", req_marshaller.encode(request), ctx)
-        stream = GRPC::ServerStream(ListProtocolOutputDirFilesResponse).new(-> { raw.headers }, -> { raw.status }, -> { raw.trailers }, -> { raw.cancel })
-        spawn do
-          begin
-            raw.each { |bytes| stream.push(res_marshaller.decode(bytes)) }
-            stream.finish
-          rescue ex
-            stream.finish(GRPC::Status.internal(ex.message || "error"))
-          end
-        end
-        stream
+        GRPC::ServerStream(::MinknowApi::Manager::ListProtocolOutputDirFilesResponse).new(raw, res_marshaller)
       end
 
-      def create_directory(request : CreateDirectoryRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : CreateDirectoryResponse
+      def create_directory(request : ::MinknowApi::Manager::CreateDirectoryRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::CreateDirectoryResponse
         create_directory_response(request, ctx).ok!
       end
 
-      def create_directory_response(request : CreateDirectoryRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(CreateDirectoryResponse)
-        req_marshaller = marshaller_for(CreateDirectoryRequest)
-        res_marshaller = marshaller_for(CreateDirectoryResponse)
+      def create_directory_response(request : ::MinknowApi::Manager::CreateDirectoryRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::CreateDirectoryResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::CreateDirectoryRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::CreateDirectoryResponse)
         response = @channel.unary_call(FULL_NAME, "create_directory", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(CreateDirectoryResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::CreateDirectoryResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_disk_space_info(request : GetDiskSpaceInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetDiskSpaceInfoResponse
+      def get_disk_space_info(request : ::MinknowApi::Manager::GetDiskSpaceInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::GetDiskSpaceInfoResponse
         get_disk_space_info_response(request, ctx).ok!
       end
 
-      def get_disk_space_info_response(request : GetDiskSpaceInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetDiskSpaceInfoResponse)
-        req_marshaller = marshaller_for(GetDiskSpaceInfoRequest)
-        res_marshaller = marshaller_for(GetDiskSpaceInfoResponse)
+      def get_disk_space_info_response(request : ::MinknowApi::Manager::GetDiskSpaceInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::GetDiskSpaceInfoResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::GetDiskSpaceInfoRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::GetDiskSpaceInfoResponse)
         response = @channel.unary_call(FULL_NAME, "get_disk_space_info", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetDiskSpaceInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::GetDiskSpaceInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_default_output_directories(request : MinknowApi::Instance::GetDefaultOutputDirectoriesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : MinknowApi::Instance::OutputDirectories
+      def get_default_output_directories(request : ::MinknowApi::Instance::GetDefaultOutputDirectoriesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Instance::OutputDirectories
         get_default_output_directories_response(request, ctx).ok!
       end
 
-      def get_default_output_directories_response(request : MinknowApi::Instance::GetDefaultOutputDirectoriesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(MinknowApi::Instance::OutputDirectories)
-        req_marshaller = marshaller_for(MinknowApi::Instance::GetDefaultOutputDirectoriesRequest)
-        res_marshaller = marshaller_for(MinknowApi::Instance::OutputDirectories)
+      def get_default_output_directories_response(request : ::MinknowApi::Instance::GetDefaultOutputDirectoriesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Instance::OutputDirectories)
+        req_marshaller = marshaller_for(::MinknowApi::Instance::GetDefaultOutputDirectoriesRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Instance::OutputDirectories)
         response = @channel.unary_call(FULL_NAME, "get_default_output_directories", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(MinknowApi::Instance::OutputDirectories).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Instance::OutputDirectories).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def stream_disk_space_info(request : StreamDiskSpaceInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(GetDiskSpaceInfoResponse)
-        req_marshaller = marshaller_for(StreamDiskSpaceInfoRequest)
-        res_marshaller = marshaller_for(GetDiskSpaceInfoResponse)
+      def stream_disk_space_info(request : ::MinknowApi::Manager::StreamDiskSpaceInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Manager::GetDiskSpaceInfoResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::StreamDiskSpaceInfoRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::GetDiskSpaceInfoResponse)
         raw = @channel.open_server_stream(FULL_NAME, "stream_disk_space_info", req_marshaller.encode(request), ctx)
-        stream = GRPC::ServerStream(GetDiskSpaceInfoResponse).new(-> { raw.headers }, -> { raw.status }, -> { raw.trailers }, -> { raw.cancel })
-        spawn do
-          begin
-            raw.each { |bytes| stream.push(res_marshaller.decode(bytes)) }
-            stream.finish
-          rescue ex
-            stream.finish(GRPC::Status.internal(ex.message || "error"))
-          end
-        end
-        stream
+        GRPC::ServerStream(::MinknowApi::Manager::GetDiskSpaceInfoResponse).new(raw, res_marshaller)
       end
 
-      def get_barcode_kit_info(request : GetBarcodeKitInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetBarcodeKitInfoResponse
+      def get_barcode_kit_info(request : ::MinknowApi::Manager::GetBarcodeKitInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::GetBarcodeKitInfoResponse
         get_barcode_kit_info_response(request, ctx).ok!
       end
 
-      def get_barcode_kit_info_response(request : GetBarcodeKitInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetBarcodeKitInfoResponse)
-        req_marshaller = marshaller_for(GetBarcodeKitInfoRequest)
-        res_marshaller = marshaller_for(GetBarcodeKitInfoResponse)
+      def get_barcode_kit_info_response(request : ::MinknowApi::Manager::GetBarcodeKitInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::GetBarcodeKitInfoResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::GetBarcodeKitInfoRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::GetBarcodeKitInfoResponse)
         response = @channel.unary_call(FULL_NAME, "get_barcode_kit_info", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetBarcodeKitInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::GetBarcodeKitInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_lamp_kit_info(request : GetLampKitInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetLampKitInfoResponse
+      def get_lamp_kit_info(request : ::MinknowApi::Manager::GetLampKitInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::GetLampKitInfoResponse
         get_lamp_kit_info_response(request, ctx).ok!
       end
 
-      def get_lamp_kit_info_response(request : GetLampKitInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetLampKitInfoResponse)
-        req_marshaller = marshaller_for(GetLampKitInfoRequest)
-        res_marshaller = marshaller_for(GetLampKitInfoResponse)
+      def get_lamp_kit_info_response(request : ::MinknowApi::Manager::GetLampKitInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::GetLampKitInfoResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::GetLampKitInfoRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::GetLampKitInfoResponse)
         response = @channel.unary_call(FULL_NAME, "get_lamp_kit_info", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetLampKitInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::GetLampKitInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_barcode_keys(request : GetBarcodeKeysRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetBarcodeKeysResponse
+      def get_barcode_keys(request : ::MinknowApi::Manager::GetBarcodeKeysRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::GetBarcodeKeysResponse
         get_barcode_keys_response(request, ctx).ok!
       end
 
-      def get_barcode_keys_response(request : GetBarcodeKeysRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetBarcodeKeysResponse)
-        req_marshaller = marshaller_for(GetBarcodeKeysRequest)
-        res_marshaller = marshaller_for(GetBarcodeKeysResponse)
+      def get_barcode_keys_response(request : ::MinknowApi::Manager::GetBarcodeKeysRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::GetBarcodeKeysResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::GetBarcodeKeysRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::GetBarcodeKeysResponse)
         response = @channel.unary_call(FULL_NAME, "get_barcode_keys", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetBarcodeKeysResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::GetBarcodeKeysResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_flow_cell_types(request : GetFlowCellTypesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetFlowCellTypesResponse
+      def get_flow_cell_types(request : ::MinknowApi::Manager::GetFlowCellTypesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::GetFlowCellTypesResponse
         get_flow_cell_types_response(request, ctx).ok!
       end
 
-      def get_flow_cell_types_response(request : GetFlowCellTypesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetFlowCellTypesResponse)
-        req_marshaller = marshaller_for(GetFlowCellTypesRequest)
-        res_marshaller = marshaller_for(GetFlowCellTypesResponse)
+      def get_flow_cell_types_response(request : ::MinknowApi::Manager::GetFlowCellTypesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::GetFlowCellTypesResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::GetFlowCellTypesRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::GetFlowCellTypesResponse)
         response = @channel.unary_call(FULL_NAME, "get_flow_cell_types", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetFlowCellTypesResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::GetFlowCellTypesResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_sequencing_kits(request : GetSequencingKitsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetSequencingKitsResponse
+      def get_sequencing_kits(request : ::MinknowApi::Manager::GetSequencingKitsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::GetSequencingKitsResponse
         get_sequencing_kits_response(request, ctx).ok!
       end
 
-      def get_sequencing_kits_response(request : GetSequencingKitsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetSequencingKitsResponse)
-        req_marshaller = marshaller_for(GetSequencingKitsRequest)
-        res_marshaller = marshaller_for(GetSequencingKitsResponse)
+      def get_sequencing_kits_response(request : ::MinknowApi::Manager::GetSequencingKitsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::GetSequencingKitsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::GetSequencingKitsRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::GetSequencingKitsResponse)
         response = @channel.unary_call(FULL_NAME, "get_sequencing_kits", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetSequencingKitsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::GetSequencingKitsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def add_simulated_device(request : AddSimulatedDeviceRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : AddSimulatedDeviceResponse
+      def add_simulated_device(request : ::MinknowApi::Manager::AddSimulatedDeviceRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::AddSimulatedDeviceResponse
         add_simulated_device_response(request, ctx).ok!
       end
 
-      def add_simulated_device_response(request : AddSimulatedDeviceRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(AddSimulatedDeviceResponse)
-        req_marshaller = marshaller_for(AddSimulatedDeviceRequest)
-        res_marshaller = marshaller_for(AddSimulatedDeviceResponse)
+      def add_simulated_device_response(request : ::MinknowApi::Manager::AddSimulatedDeviceRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::AddSimulatedDeviceResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::AddSimulatedDeviceRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::AddSimulatedDeviceResponse)
         response = @channel.unary_call(FULL_NAME, "add_simulated_device", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(AddSimulatedDeviceResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::AddSimulatedDeviceResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def remove_simulated_device(request : RemoveSimulatedDeviceRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : RemoveSimulatedDeviceResponse
+      def remove_simulated_device(request : ::MinknowApi::Manager::RemoveSimulatedDeviceRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::RemoveSimulatedDeviceResponse
         remove_simulated_device_response(request, ctx).ok!
       end
 
-      def remove_simulated_device_response(request : RemoveSimulatedDeviceRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(RemoveSimulatedDeviceResponse)
-        req_marshaller = marshaller_for(RemoveSimulatedDeviceRequest)
-        res_marshaller = marshaller_for(RemoveSimulatedDeviceResponse)
+      def remove_simulated_device_response(request : ::MinknowApi::Manager::RemoveSimulatedDeviceRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::RemoveSimulatedDeviceResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::RemoveSimulatedDeviceRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::RemoveSimulatedDeviceResponse)
         response = @channel.unary_call(FULL_NAME, "remove_simulated_device", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(RemoveSimulatedDeviceResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::RemoveSimulatedDeviceResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def local_authentication_token_path(request : LocalAuthenticationTokenPathRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : LocalAuthenticationTokenPathResponse
+      def local_authentication_token_path(request : ::MinknowApi::Manager::LocalAuthenticationTokenPathRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::LocalAuthenticationTokenPathResponse
         local_authentication_token_path_response(request, ctx).ok!
       end
 
-      def local_authentication_token_path_response(request : LocalAuthenticationTokenPathRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(LocalAuthenticationTokenPathResponse)
-        req_marshaller = marshaller_for(LocalAuthenticationTokenPathRequest)
-        res_marshaller = marshaller_for(LocalAuthenticationTokenPathResponse)
+      def local_authentication_token_path_response(request : ::MinknowApi::Manager::LocalAuthenticationTokenPathRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::LocalAuthenticationTokenPathResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::LocalAuthenticationTokenPathRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::LocalAuthenticationTokenPathResponse)
         response = @channel.unary_call(FULL_NAME, "local_authentication_token_path", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(LocalAuthenticationTokenPathResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::LocalAuthenticationTokenPathResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_alignment_reference_information(request : GetAlignmentReferenceInformationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetAlignmentReferenceInformationResponse
+      def get_alignment_reference_information(request : ::MinknowApi::Manager::GetAlignmentReferenceInformationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::GetAlignmentReferenceInformationResponse
         get_alignment_reference_information_response(request, ctx).ok!
       end
 
-      def get_alignment_reference_information_response(request : GetAlignmentReferenceInformationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetAlignmentReferenceInformationResponse)
-        req_marshaller = marshaller_for(GetAlignmentReferenceInformationRequest)
-        res_marshaller = marshaller_for(GetAlignmentReferenceInformationResponse)
+      def get_alignment_reference_information_response(request : ::MinknowApi::Manager::GetAlignmentReferenceInformationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::GetAlignmentReferenceInformationResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::GetAlignmentReferenceInformationRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::GetAlignmentReferenceInformationResponse)
         response = @channel.unary_call(FULL_NAME, "get_alignment_reference_information", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetAlignmentReferenceInformationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::GetAlignmentReferenceInformationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def association_device_code(request : AssociationDeviceCodeRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : AssociationDeviceCodeResponse
+      def association_device_code(request : ::MinknowApi::Manager::AssociationDeviceCodeRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::AssociationDeviceCodeResponse
         association_device_code_response(request, ctx).ok!
       end
 
-      def association_device_code_response(request : AssociationDeviceCodeRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(AssociationDeviceCodeResponse)
-        req_marshaller = marshaller_for(AssociationDeviceCodeRequest)
-        res_marshaller = marshaller_for(AssociationDeviceCodeResponse)
+      def association_device_code_response(request : ::MinknowApi::Manager::AssociationDeviceCodeRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::AssociationDeviceCodeResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::AssociationDeviceCodeRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::AssociationDeviceCodeResponse)
         response = @channel.unary_call(FULL_NAME, "association_device_code", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(AssociationDeviceCodeResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::AssociationDeviceCodeResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def apply_offline_association_unlock_code(request : ApplyOfflineAssociationUnlockCodeRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ApplyOfflineAssociationUnlockCodeResponse
+      def apply_offline_association_unlock_code(request : ::MinknowApi::Manager::ApplyOfflineAssociationUnlockCodeRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::ApplyOfflineAssociationUnlockCodeResponse
         apply_offline_association_unlock_code_response(request, ctx).ok!
       end
 
-      def apply_offline_association_unlock_code_response(request : ApplyOfflineAssociationUnlockCodeRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(ApplyOfflineAssociationUnlockCodeResponse)
-        req_marshaller = marshaller_for(ApplyOfflineAssociationUnlockCodeRequest)
-        res_marshaller = marshaller_for(ApplyOfflineAssociationUnlockCodeResponse)
+      def apply_offline_association_unlock_code_response(request : ::MinknowApi::Manager::ApplyOfflineAssociationUnlockCodeRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::ApplyOfflineAssociationUnlockCodeResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::ApplyOfflineAssociationUnlockCodeRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::ApplyOfflineAssociationUnlockCodeResponse)
         response = @channel.unary_call(FULL_NAME, "apply_offline_association_unlock_code", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(ApplyOfflineAssociationUnlockCodeResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::ApplyOfflineAssociationUnlockCodeResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def find_protocols(request : FindProtocolsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : FindProtocolsResponse
+      def find_protocols(request : ::MinknowApi::Manager::FindProtocolsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::FindProtocolsResponse
         find_protocols_response(request, ctx).ok!
       end
 
-      def find_protocols_response(request : FindProtocolsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(FindProtocolsResponse)
-        req_marshaller = marshaller_for(FindProtocolsRequest)
-        res_marshaller = marshaller_for(FindProtocolsResponse)
+      def find_protocols_response(request : ::MinknowApi::Manager::FindProtocolsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::FindProtocolsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::FindProtocolsRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::FindProtocolsResponse)
         response = @channel.unary_call(FULL_NAME, "find_protocols", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(FindProtocolsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::FindProtocolsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def list_settings_for_protocol(request : ListSettingsForProtocolRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ListSettingsForProtocolResponse
+      def list_settings_for_protocol(request : ::MinknowApi::Manager::ListSettingsForProtocolRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::ListSettingsForProtocolResponse
         list_settings_for_protocol_response(request, ctx).ok!
       end
 
-      def list_settings_for_protocol_response(request : ListSettingsForProtocolRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(ListSettingsForProtocolResponse)
-        req_marshaller = marshaller_for(ListSettingsForProtocolRequest)
-        res_marshaller = marshaller_for(ListSettingsForProtocolResponse)
+      def list_settings_for_protocol_response(request : ::MinknowApi::Manager::ListSettingsForProtocolRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::ListSettingsForProtocolResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::ListSettingsForProtocolRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::ListSettingsForProtocolResponse)
         response = @channel.unary_call(FULL_NAME, "list_settings_for_protocol", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(ListSettingsForProtocolResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::ListSettingsForProtocolResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_features(request : GetFeaturesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetFeaturesResponse
+      def get_features(request : ::MinknowApi::Manager::GetFeaturesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::GetFeaturesResponse
         get_features_response(request, ctx).ok!
       end
 
-      def get_features_response(request : GetFeaturesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetFeaturesResponse)
-        req_marshaller = marshaller_for(GetFeaturesRequest)
-        res_marshaller = marshaller_for(GetFeaturesResponse)
+      def get_features_response(request : ::MinknowApi::Manager::GetFeaturesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::GetFeaturesResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::GetFeaturesRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::GetFeaturesResponse)
         response = @channel.unary_call(FULL_NAME, "get_features", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetFeaturesResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::GetFeaturesResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def set_features(request : SetFeaturesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : SetFeaturesResponse
+      def set_features(request : ::MinknowApi::Manager::SetFeaturesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::SetFeaturesResponse
         set_features_response(request, ctx).ok!
       end
 
-      def set_features_response(request : SetFeaturesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(SetFeaturesResponse)
-        req_marshaller = marshaller_for(SetFeaturesRequest)
-        res_marshaller = marshaller_for(SetFeaturesResponse)
+      def set_features_response(request : ::MinknowApi::Manager::SetFeaturesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::SetFeaturesResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::SetFeaturesRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::SetFeaturesResponse)
         response = @channel.unary_call(FULL_NAME, "set_features", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(SetFeaturesResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::SetFeaturesResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def restart_device_admin_service(request : RestartDeviceAdminRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : RestartDeviceAdminResponse
+      def restart_device_admin_service(request : ::MinknowApi::Manager::RestartDeviceAdminRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::RestartDeviceAdminResponse
         restart_device_admin_service_response(request, ctx).ok!
       end
 
-      def restart_device_admin_service_response(request : RestartDeviceAdminRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(RestartDeviceAdminResponse)
-        req_marshaller = marshaller_for(RestartDeviceAdminRequest)
-        res_marshaller = marshaller_for(RestartDeviceAdminResponse)
+      def restart_device_admin_service_response(request : ::MinknowApi::Manager::RestartDeviceAdminRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::RestartDeviceAdminResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::RestartDeviceAdminRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::RestartDeviceAdminResponse)
         response = @channel.unary_call(FULL_NAME, "restart_device_admin_service", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(RestartDeviceAdminResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::RestartDeviceAdminResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def check_bed_file(request : CheckBedFileRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : CheckBedFileResponse
+      def check_bed_file(request : ::MinknowApi::Manager::CheckBedFileRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::CheckBedFileResponse
         check_bed_file_response(request, ctx).ok!
       end
 
-      def check_bed_file_response(request : CheckBedFileRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(CheckBedFileResponse)
-        req_marshaller = marshaller_for(CheckBedFileRequest)
-        res_marshaller = marshaller_for(CheckBedFileResponse)
+      def check_bed_file_response(request : ::MinknowApi::Manager::CheckBedFileRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::CheckBedFileResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::CheckBedFileRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::CheckBedFileResponse)
         response = @channel.unary_call(FULL_NAME, "check_bed_file", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(CheckBedFileResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::CheckBedFileResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def find_basecall_configurations(request : FindBasecallConfigurationsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : FindBasecallConfigurationsResponse
+      def find_basecall_configurations(request : ::MinknowApi::Manager::FindBasecallConfigurationsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::FindBasecallConfigurationsResponse
         find_basecall_configurations_response(request, ctx).ok!
       end
 
-      def find_basecall_configurations_response(request : FindBasecallConfigurationsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(FindBasecallConfigurationsResponse)
-        req_marshaller = marshaller_for(FindBasecallConfigurationsRequest)
-        res_marshaller = marshaller_for(FindBasecallConfigurationsResponse)
+      def find_basecall_configurations_response(request : ::MinknowApi::Manager::FindBasecallConfigurationsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::FindBasecallConfigurationsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::FindBasecallConfigurationsRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::FindBasecallConfigurationsResponse)
         response = @channel.unary_call(FULL_NAME, "find_basecall_configurations", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(FindBasecallConfigurationsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::FindBasecallConfigurationsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def check_path_info(request : CheckPathInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : CheckPathInfoResponse
+      def check_path_info(request : ::MinknowApi::Manager::CheckPathInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Manager::CheckPathInfoResponse
         check_path_info_response(request, ctx).ok!
       end
 
-      def check_path_info_response(request : CheckPathInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(CheckPathInfoResponse)
-        req_marshaller = marshaller_for(CheckPathInfoRequest)
-        res_marshaller = marshaller_for(CheckPathInfoResponse)
+      def check_path_info_response(request : ::MinknowApi::Manager::CheckPathInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Manager::CheckPathInfoResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Manager::CheckPathInfoRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Manager::CheckPathInfoResponse)
         response = @channel.unary_call(FULL_NAME, "check_path_info", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(CheckPathInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Manager::CheckPathInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
     end
   end

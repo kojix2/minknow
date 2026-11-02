@@ -5,8 +5,16 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
+    timeout-minutes: 25
     strategy:
       fail-fast: false
       matrix:
@@ -45,7 +53,7 @@ jobs:
           test -z "$(git ls-files --others --exclude-standard src/generated)"
 
       - name: Run specs
-        run: crystal spec
+        run: crystal spec --order "${{ github.run_id }}"
 
       - name: Build examples
         run: |

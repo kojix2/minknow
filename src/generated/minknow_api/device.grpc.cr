@@ -3698,198 +3698,198 @@ module MinknowApi::Device
         GRPC::ProtoMarshaller(T).new
       end
 
-      abstract def get_device_info(request : GetDeviceInfoRequest, ctx : GRPC::ServerContext) : GetDeviceInfoResponse
-      abstract def get_device_state(request : GetDeviceStateRequest, ctx : GRPC::ServerContext) : GetDeviceStateResponse
-      abstract def stream_device_state(request : StreamDeviceStateRequest, writer : GRPC::ResponseStream(GetDeviceStateResponse), ctx : GRPC::ServerContext) : GRPC::Status
-      abstract def get_flow_cell_info(request : GetFlowCellInfoRequest, ctx : GRPC::ServerContext) : GetFlowCellInfoResponse
-      abstract def stream_flow_cell_info(request : StreamFlowCellInfoRequest, writer : GRPC::ResponseStream(GetFlowCellInfoResponse), ctx : GRPC::ServerContext) : GRPC::Status
-      abstract def set_user_specified_flow_cell_id(request : SetUserSpecifiedFlowCellIdRequest, ctx : GRPC::ServerContext) : SetUserSpecifiedFlowCellIdResponse
-      abstract def set_user_specified_product_code(request : SetUserSpecifiedProductCodeRequest, ctx : GRPC::ServerContext) : SetUserSpecifiedProductCodeResponse
-      abstract def get_channels_layout(request : GetChannelsLayoutRequest, ctx : GRPC::ServerContext) : GetChannelsLayoutResponse
-      abstract def reset_device_settings(request : ResetDeviceSettingsRequest, ctx : GRPC::ServerContext) : ResetDeviceSettingsResponse
-      abstract def set_calibration(request : SetCalibrationRequest, ctx : GRPC::ServerContext) : SetCalibrationResponse
-      abstract def clear_calibration(request : ClearCalibrationRequest, ctx : GRPC::ServerContext) : ClearCalibrationResponse
-      abstract def get_calibration(request : GetCalibrationRequest, ctx : GRPC::ServerContext) : GetCalibrationResponse
-      abstract def set_temperature(request : SetTemperatureRequest, ctx : GRPC::ServerContext) : SetTemperatureResponse
-      abstract def get_temperature(request : GetTemperatureRequest, ctx : GRPC::ServerContext) : GetTemperatureResponse
-      abstract def stream_temperature(request : StreamTemperatureRequest, writer : GRPC::ResponseStream(GetTemperatureResponse), ctx : GRPC::ServerContext) : GRPC::Status
-      abstract def unblock(request : UnblockRequest, ctx : GRPC::ServerContext) : UnblockResponse
-      abstract def cancel_unblocks(request : CancelUnblocksRequest, ctx : GRPC::ServerContext) : CancelUnblocksResponse
-      abstract def get_channel_configuration(request : GetChannelConfigurationRequest, ctx : GRPC::ServerContext) : GetChannelConfigurationResponse
-      abstract def set_channel_configuration(request : SetChannelConfigurationRequest, ctx : GRPC::ServerContext) : SetChannelConfigurationResponse
-      abstract def set_channel_configuration_all(request : SetChannelConfigurationAllRequest, ctx : GRPC::ServerContext) : SetChannelConfigurationAllResponse
-      abstract def set_saturation_config(request : SetSaturationConfigRequest, ctx : GRPC::ServerContext) : SetSaturationConfigResponse
-      abstract def get_saturation_config(request : GetSaturationConfigRequest, ctx : GRPC::ServerContext) : GetSaturationConfigResponse
-      abstract def get_sample_rate(request : GetSampleRateRequest, ctx : GRPC::ServerContext) : GetSampleRateResponse
-      abstract def set_sample_rate(request : SetSampleRateRequest, ctx : GRPC::ServerContext) : SetSampleRateResponse
-      abstract def get_bias_voltage(request : GetBiasVoltageRequest, ctx : GRPC::ServerContext) : GetBiasVoltageResponse
-      abstract def set_bias_voltage(request : SetBiasVoltageRequest, ctx : GRPC::ServerContext) : SetBiasVoltageResponse
-      abstract def dump_state(request : DumpStateRequest, ctx : GRPC::ServerContext) : DumpStateResponse
-      abstract def increment_flow_cell_use_count(request : IncrementFlowCellUseCountRequest, ctx : GRPC::ServerContext) : IncrementFlowCellUseCountResponse
-      abstract def set_flow_cell_barcode_kit(request : SetFlowCellBarcodeKitRequest, ctx : GRPC::ServerContext) : SetFlowCellBarcodeKitResponse
-      abstract def register_flow_cell_barcodes(request : RegisterFlowCellBarcodesRequest, ctx : GRPC::ServerContext) : RegisterFlowCellBarcodesResponse
+      abstract def get_device_info(request : ::MinknowApi::Device::GetDeviceInfoRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::GetDeviceInfoResponse
+      abstract def get_device_state(request : ::MinknowApi::Device::GetDeviceStateRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::GetDeviceStateResponse
+      abstract def stream_device_state(request : ::MinknowApi::Device::StreamDeviceStateRequest, writer : GRPC::ResponseStream(::MinknowApi::Device::GetDeviceStateResponse), ctx : GRPC::ServerContext) : GRPC::Status
+      abstract def get_flow_cell_info(request : ::MinknowApi::Device::GetFlowCellInfoRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::GetFlowCellInfoResponse
+      abstract def stream_flow_cell_info(request : ::MinknowApi::Device::StreamFlowCellInfoRequest, writer : GRPC::ResponseStream(::MinknowApi::Device::GetFlowCellInfoResponse), ctx : GRPC::ServerContext) : GRPC::Status
+      abstract def set_user_specified_flow_cell_id(request : ::MinknowApi::Device::SetUserSpecifiedFlowCellIdRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::SetUserSpecifiedFlowCellIdResponse
+      abstract def set_user_specified_product_code(request : ::MinknowApi::Device::SetUserSpecifiedProductCodeRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::SetUserSpecifiedProductCodeResponse
+      abstract def get_channels_layout(request : ::MinknowApi::Device::GetChannelsLayoutRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::GetChannelsLayoutResponse
+      abstract def reset_device_settings(request : ::MinknowApi::Device::ResetDeviceSettingsRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::ResetDeviceSettingsResponse
+      abstract def set_calibration(request : ::MinknowApi::Device::SetCalibrationRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::SetCalibrationResponse
+      abstract def clear_calibration(request : ::MinknowApi::Device::ClearCalibrationRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::ClearCalibrationResponse
+      abstract def get_calibration(request : ::MinknowApi::Device::GetCalibrationRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::GetCalibrationResponse
+      abstract def set_temperature(request : ::MinknowApi::Device::SetTemperatureRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::SetTemperatureResponse
+      abstract def get_temperature(request : ::MinknowApi::Device::GetTemperatureRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::GetTemperatureResponse
+      abstract def stream_temperature(request : ::MinknowApi::Device::StreamTemperatureRequest, writer : GRPC::ResponseStream(::MinknowApi::Device::GetTemperatureResponse), ctx : GRPC::ServerContext) : GRPC::Status
+      abstract def unblock(request : ::MinknowApi::Device::UnblockRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::UnblockResponse
+      abstract def cancel_unblocks(request : ::MinknowApi::Device::CancelUnblocksRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::CancelUnblocksResponse
+      abstract def get_channel_configuration(request : ::MinknowApi::Device::GetChannelConfigurationRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::GetChannelConfigurationResponse
+      abstract def set_channel_configuration(request : ::MinknowApi::Device::SetChannelConfigurationRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::SetChannelConfigurationResponse
+      abstract def set_channel_configuration_all(request : ::MinknowApi::Device::SetChannelConfigurationAllRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::SetChannelConfigurationAllResponse
+      abstract def set_saturation_config(request : ::MinknowApi::Device::SetSaturationConfigRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::SetSaturationConfigResponse
+      abstract def get_saturation_config(request : ::MinknowApi::Device::GetSaturationConfigRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::GetSaturationConfigResponse
+      abstract def get_sample_rate(request : ::MinknowApi::Device::GetSampleRateRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::GetSampleRateResponse
+      abstract def set_sample_rate(request : ::MinknowApi::Device::SetSampleRateRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::SetSampleRateResponse
+      abstract def get_bias_voltage(request : ::MinknowApi::Device::GetBiasVoltageRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::GetBiasVoltageResponse
+      abstract def set_bias_voltage(request : ::MinknowApi::Device::SetBiasVoltageRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::SetBiasVoltageResponse
+      abstract def dump_state(request : ::MinknowApi::Device::DumpStateRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::DumpStateResponse
+      abstract def increment_flow_cell_use_count(request : ::MinknowApi::Device::IncrementFlowCellUseCountRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::IncrementFlowCellUseCountResponse
+      abstract def set_flow_cell_barcode_kit(request : ::MinknowApi::Device::SetFlowCellBarcodeKitRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::SetFlowCellBarcodeKitResponse
+      abstract def register_flow_cell_barcodes(request : ::MinknowApi::Device::RegisterFlowCellBarcodesRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Device::RegisterFlowCellBarcodesResponse
 
       def dispatch(method : String, body : Bytes, ctx : GRPC::ServerContext) : {Bytes, GRPC::Status}
         case method
         when "get_device_info"
-          req_marshaller = marshaller_for(GetDeviceInfoRequest)
-          res_marshaller = marshaller_for(GetDeviceInfoResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::GetDeviceInfoRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::GetDeviceInfoResponse)
           req = req_marshaller.decode(body)
           resp = get_device_info(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_device_state"
-          req_marshaller = marshaller_for(GetDeviceStateRequest)
-          res_marshaller = marshaller_for(GetDeviceStateResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::GetDeviceStateRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::GetDeviceStateResponse)
           req = req_marshaller.decode(body)
           resp = get_device_state(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_flow_cell_info"
-          req_marshaller = marshaller_for(GetFlowCellInfoRequest)
-          res_marshaller = marshaller_for(GetFlowCellInfoResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::GetFlowCellInfoRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::GetFlowCellInfoResponse)
           req = req_marshaller.decode(body)
           resp = get_flow_cell_info(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_user_specified_flow_cell_id"
-          req_marshaller = marshaller_for(SetUserSpecifiedFlowCellIdRequest)
-          res_marshaller = marshaller_for(SetUserSpecifiedFlowCellIdResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::SetUserSpecifiedFlowCellIdRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::SetUserSpecifiedFlowCellIdResponse)
           req = req_marshaller.decode(body)
           resp = set_user_specified_flow_cell_id(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_user_specified_product_code"
-          req_marshaller = marshaller_for(SetUserSpecifiedProductCodeRequest)
-          res_marshaller = marshaller_for(SetUserSpecifiedProductCodeResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::SetUserSpecifiedProductCodeRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::SetUserSpecifiedProductCodeResponse)
           req = req_marshaller.decode(body)
           resp = set_user_specified_product_code(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_channels_layout"
-          req_marshaller = marshaller_for(GetChannelsLayoutRequest)
-          res_marshaller = marshaller_for(GetChannelsLayoutResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::GetChannelsLayoutRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::GetChannelsLayoutResponse)
           req = req_marshaller.decode(body)
           resp = get_channels_layout(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "reset_device_settings"
-          req_marshaller = marshaller_for(ResetDeviceSettingsRequest)
-          res_marshaller = marshaller_for(ResetDeviceSettingsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::ResetDeviceSettingsRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::ResetDeviceSettingsResponse)
           req = req_marshaller.decode(body)
           resp = reset_device_settings(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_calibration"
-          req_marshaller = marshaller_for(SetCalibrationRequest)
-          res_marshaller = marshaller_for(SetCalibrationResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::SetCalibrationRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::SetCalibrationResponse)
           req = req_marshaller.decode(body)
           resp = set_calibration(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "clear_calibration"
-          req_marshaller = marshaller_for(ClearCalibrationRequest)
-          res_marshaller = marshaller_for(ClearCalibrationResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::ClearCalibrationRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::ClearCalibrationResponse)
           req = req_marshaller.decode(body)
           resp = clear_calibration(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_calibration"
-          req_marshaller = marshaller_for(GetCalibrationRequest)
-          res_marshaller = marshaller_for(GetCalibrationResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::GetCalibrationRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::GetCalibrationResponse)
           req = req_marshaller.decode(body)
           resp = get_calibration(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_temperature"
-          req_marshaller = marshaller_for(SetTemperatureRequest)
-          res_marshaller = marshaller_for(SetTemperatureResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::SetTemperatureRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::SetTemperatureResponse)
           req = req_marshaller.decode(body)
           resp = set_temperature(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_temperature"
-          req_marshaller = marshaller_for(GetTemperatureRequest)
-          res_marshaller = marshaller_for(GetTemperatureResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::GetTemperatureRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::GetTemperatureResponse)
           req = req_marshaller.decode(body)
           resp = get_temperature(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "unblock"
-          req_marshaller = marshaller_for(UnblockRequest)
-          res_marshaller = marshaller_for(UnblockResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::UnblockRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::UnblockResponse)
           req = req_marshaller.decode(body)
           resp = unblock(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "cancel_unblocks"
-          req_marshaller = marshaller_for(CancelUnblocksRequest)
-          res_marshaller = marshaller_for(CancelUnblocksResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::CancelUnblocksRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::CancelUnblocksResponse)
           req = req_marshaller.decode(body)
           resp = cancel_unblocks(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_channel_configuration"
-          req_marshaller = marshaller_for(GetChannelConfigurationRequest)
-          res_marshaller = marshaller_for(GetChannelConfigurationResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::GetChannelConfigurationRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::GetChannelConfigurationResponse)
           req = req_marshaller.decode(body)
           resp = get_channel_configuration(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_channel_configuration"
-          req_marshaller = marshaller_for(SetChannelConfigurationRequest)
-          res_marshaller = marshaller_for(SetChannelConfigurationResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::SetChannelConfigurationRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::SetChannelConfigurationResponse)
           req = req_marshaller.decode(body)
           resp = set_channel_configuration(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_channel_configuration_all"
-          req_marshaller = marshaller_for(SetChannelConfigurationAllRequest)
-          res_marshaller = marshaller_for(SetChannelConfigurationAllResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::SetChannelConfigurationAllRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::SetChannelConfigurationAllResponse)
           req = req_marshaller.decode(body)
           resp = set_channel_configuration_all(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_saturation_config"
-          req_marshaller = marshaller_for(SetSaturationConfigRequest)
-          res_marshaller = marshaller_for(SetSaturationConfigResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::SetSaturationConfigRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::SetSaturationConfigResponse)
           req = req_marshaller.decode(body)
           resp = set_saturation_config(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_saturation_config"
-          req_marshaller = marshaller_for(GetSaturationConfigRequest)
-          res_marshaller = marshaller_for(GetSaturationConfigResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::GetSaturationConfigRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::GetSaturationConfigResponse)
           req = req_marshaller.decode(body)
           resp = get_saturation_config(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_sample_rate"
-          req_marshaller = marshaller_for(GetSampleRateRequest)
-          res_marshaller = marshaller_for(GetSampleRateResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::GetSampleRateRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::GetSampleRateResponse)
           req = req_marshaller.decode(body)
           resp = get_sample_rate(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_sample_rate"
-          req_marshaller = marshaller_for(SetSampleRateRequest)
-          res_marshaller = marshaller_for(SetSampleRateResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::SetSampleRateRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::SetSampleRateResponse)
           req = req_marshaller.decode(body)
           resp = set_sample_rate(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_bias_voltage"
-          req_marshaller = marshaller_for(GetBiasVoltageRequest)
-          res_marshaller = marshaller_for(GetBiasVoltageResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::GetBiasVoltageRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::GetBiasVoltageResponse)
           req = req_marshaller.decode(body)
           resp = get_bias_voltage(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_bias_voltage"
-          req_marshaller = marshaller_for(SetBiasVoltageRequest)
-          res_marshaller = marshaller_for(SetBiasVoltageResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::SetBiasVoltageRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::SetBiasVoltageResponse)
           req = req_marshaller.decode(body)
           resp = set_bias_voltage(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "dump_state"
-          req_marshaller = marshaller_for(DumpStateRequest)
-          res_marshaller = marshaller_for(DumpStateResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::DumpStateRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::DumpStateResponse)
           req = req_marshaller.decode(body)
           resp = dump_state(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "increment_flow_cell_use_count"
-          req_marshaller = marshaller_for(IncrementFlowCellUseCountRequest)
-          res_marshaller = marshaller_for(IncrementFlowCellUseCountResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::IncrementFlowCellUseCountRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::IncrementFlowCellUseCountResponse)
           req = req_marshaller.decode(body)
           resp = increment_flow_cell_use_count(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_flow_cell_barcode_kit"
-          req_marshaller = marshaller_for(SetFlowCellBarcodeKitRequest)
-          res_marshaller = marshaller_for(SetFlowCellBarcodeKitResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::SetFlowCellBarcodeKitRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::SetFlowCellBarcodeKitResponse)
           req = req_marshaller.decode(body)
           resp = set_flow_cell_barcode_kit(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "register_flow_cell_barcodes"
-          req_marshaller = marshaller_for(RegisterFlowCellBarcodesRequest)
-          res_marshaller = marshaller_for(RegisterFlowCellBarcodesResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Device::RegisterFlowCellBarcodesRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::RegisterFlowCellBarcodesResponse)
           req = req_marshaller.decode(body)
           resp = register_flow_cell_barcodes(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
@@ -3916,19 +3916,19 @@ module MinknowApi::Device
                                  writer : GRPC::RawResponseStream) : GRPC::Status
         case method
         when "stream_device_state"
-          req_marshaller = marshaller_for(StreamDeviceStateRequest)
-          res_marshaller = marshaller_for(GetDeviceStateResponse)
-          typed_writer = GRPC::ResponseStream(GetDeviceStateResponse).new(writer, res_marshaller)
+          req_marshaller = marshaller_for(::MinknowApi::Device::StreamDeviceStateRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::GetDeviceStateResponse)
+          typed_writer = GRPC::ResponseStream(::MinknowApi::Device::GetDeviceStateResponse).new(writer, res_marshaller)
           stream_device_state(req_marshaller.decode(body), typed_writer, ctx)
         when "stream_flow_cell_info"
-          req_marshaller = marshaller_for(StreamFlowCellInfoRequest)
-          res_marshaller = marshaller_for(GetFlowCellInfoResponse)
-          typed_writer = GRPC::ResponseStream(GetFlowCellInfoResponse).new(writer, res_marshaller)
+          req_marshaller = marshaller_for(::MinknowApi::Device::StreamFlowCellInfoRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::GetFlowCellInfoResponse)
+          typed_writer = GRPC::ResponseStream(::MinknowApi::Device::GetFlowCellInfoResponse).new(writer, res_marshaller)
           stream_flow_cell_info(req_marshaller.decode(body), typed_writer, ctx)
         when "stream_temperature"
-          req_marshaller = marshaller_for(StreamTemperatureRequest)
-          res_marshaller = marshaller_for(GetTemperatureResponse)
-          typed_writer = GRPC::ResponseStream(GetTemperatureResponse).new(writer, res_marshaller)
+          req_marshaller = marshaller_for(::MinknowApi::Device::StreamTemperatureRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Device::GetTemperatureResponse)
+          typed_writer = GRPC::ResponseStream(::MinknowApi::Device::GetTemperatureResponse).new(writer, res_marshaller)
           stream_temperature(req_marshaller.decode(body), typed_writer, ctx)
         else
           GRPC::Status.unimplemented("method #{method} not found")
@@ -3951,376 +3951,349 @@ module MinknowApi::Device
         GRPC::ProtoMarshaller(T).new
       end
 
-      def get_device_info(request : GetDeviceInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetDeviceInfoResponse
+      def get_device_info(request : ::MinknowApi::Device::GetDeviceInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::GetDeviceInfoResponse
         get_device_info_response(request, ctx).ok!
       end
 
-      def get_device_info_response(request : GetDeviceInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetDeviceInfoResponse)
-        req_marshaller = marshaller_for(GetDeviceInfoRequest)
-        res_marshaller = marshaller_for(GetDeviceInfoResponse)
+      def get_device_info_response(request : ::MinknowApi::Device::GetDeviceInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::GetDeviceInfoResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::GetDeviceInfoRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::GetDeviceInfoResponse)
         response = @channel.unary_call(FULL_NAME, "get_device_info", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetDeviceInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::GetDeviceInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_device_state(request : GetDeviceStateRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetDeviceStateResponse
+      def get_device_state(request : ::MinknowApi::Device::GetDeviceStateRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::GetDeviceStateResponse
         get_device_state_response(request, ctx).ok!
       end
 
-      def get_device_state_response(request : GetDeviceStateRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetDeviceStateResponse)
-        req_marshaller = marshaller_for(GetDeviceStateRequest)
-        res_marshaller = marshaller_for(GetDeviceStateResponse)
+      def get_device_state_response(request : ::MinknowApi::Device::GetDeviceStateRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::GetDeviceStateResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::GetDeviceStateRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::GetDeviceStateResponse)
         response = @channel.unary_call(FULL_NAME, "get_device_state", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetDeviceStateResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::GetDeviceStateResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def stream_device_state(request : StreamDeviceStateRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(GetDeviceStateResponse)
-        req_marshaller = marshaller_for(StreamDeviceStateRequest)
-        res_marshaller = marshaller_for(GetDeviceStateResponse)
+      def stream_device_state(request : ::MinknowApi::Device::StreamDeviceStateRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Device::GetDeviceStateResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::StreamDeviceStateRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::GetDeviceStateResponse)
         raw = @channel.open_server_stream(FULL_NAME, "stream_device_state", req_marshaller.encode(request), ctx)
-        stream = GRPC::ServerStream(GetDeviceStateResponse).new(-> { raw.headers }, -> { raw.status }, -> { raw.trailers }, -> { raw.cancel })
-        spawn do
-          begin
-            raw.each { |bytes| stream.push(res_marshaller.decode(bytes)) }
-            stream.finish
-          rescue ex
-            stream.finish(GRPC::Status.internal(ex.message || "error"))
-          end
-        end
-        stream
+        GRPC::ServerStream(::MinknowApi::Device::GetDeviceStateResponse).new(raw, res_marshaller)
       end
 
-      def get_flow_cell_info(request : GetFlowCellInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetFlowCellInfoResponse
+      def get_flow_cell_info(request : ::MinknowApi::Device::GetFlowCellInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::GetFlowCellInfoResponse
         get_flow_cell_info_response(request, ctx).ok!
       end
 
-      def get_flow_cell_info_response(request : GetFlowCellInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetFlowCellInfoResponse)
-        req_marshaller = marshaller_for(GetFlowCellInfoRequest)
-        res_marshaller = marshaller_for(GetFlowCellInfoResponse)
+      def get_flow_cell_info_response(request : ::MinknowApi::Device::GetFlowCellInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::GetFlowCellInfoResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::GetFlowCellInfoRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::GetFlowCellInfoResponse)
         response = @channel.unary_call(FULL_NAME, "get_flow_cell_info", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetFlowCellInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::GetFlowCellInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def stream_flow_cell_info(request : StreamFlowCellInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(GetFlowCellInfoResponse)
-        req_marshaller = marshaller_for(StreamFlowCellInfoRequest)
-        res_marshaller = marshaller_for(GetFlowCellInfoResponse)
+      def stream_flow_cell_info(request : ::MinknowApi::Device::StreamFlowCellInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Device::GetFlowCellInfoResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::StreamFlowCellInfoRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::GetFlowCellInfoResponse)
         raw = @channel.open_server_stream(FULL_NAME, "stream_flow_cell_info", req_marshaller.encode(request), ctx)
-        stream = GRPC::ServerStream(GetFlowCellInfoResponse).new(-> { raw.headers }, -> { raw.status }, -> { raw.trailers }, -> { raw.cancel })
-        spawn do
-          begin
-            raw.each { |bytes| stream.push(res_marshaller.decode(bytes)) }
-            stream.finish
-          rescue ex
-            stream.finish(GRPC::Status.internal(ex.message || "error"))
-          end
-        end
-        stream
+        GRPC::ServerStream(::MinknowApi::Device::GetFlowCellInfoResponse).new(raw, res_marshaller)
       end
 
-      def set_user_specified_flow_cell_id(request : SetUserSpecifiedFlowCellIdRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : SetUserSpecifiedFlowCellIdResponse
+      def set_user_specified_flow_cell_id(request : ::MinknowApi::Device::SetUserSpecifiedFlowCellIdRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::SetUserSpecifiedFlowCellIdResponse
         set_user_specified_flow_cell_id_response(request, ctx).ok!
       end
 
-      def set_user_specified_flow_cell_id_response(request : SetUserSpecifiedFlowCellIdRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(SetUserSpecifiedFlowCellIdResponse)
-        req_marshaller = marshaller_for(SetUserSpecifiedFlowCellIdRequest)
-        res_marshaller = marshaller_for(SetUserSpecifiedFlowCellIdResponse)
+      def set_user_specified_flow_cell_id_response(request : ::MinknowApi::Device::SetUserSpecifiedFlowCellIdRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::SetUserSpecifiedFlowCellIdResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::SetUserSpecifiedFlowCellIdRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::SetUserSpecifiedFlowCellIdResponse)
         response = @channel.unary_call(FULL_NAME, "set_user_specified_flow_cell_id", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(SetUserSpecifiedFlowCellIdResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::SetUserSpecifiedFlowCellIdResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def set_user_specified_product_code(request : SetUserSpecifiedProductCodeRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : SetUserSpecifiedProductCodeResponse
+      def set_user_specified_product_code(request : ::MinknowApi::Device::SetUserSpecifiedProductCodeRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::SetUserSpecifiedProductCodeResponse
         set_user_specified_product_code_response(request, ctx).ok!
       end
 
-      def set_user_specified_product_code_response(request : SetUserSpecifiedProductCodeRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(SetUserSpecifiedProductCodeResponse)
-        req_marshaller = marshaller_for(SetUserSpecifiedProductCodeRequest)
-        res_marshaller = marshaller_for(SetUserSpecifiedProductCodeResponse)
+      def set_user_specified_product_code_response(request : ::MinknowApi::Device::SetUserSpecifiedProductCodeRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::SetUserSpecifiedProductCodeResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::SetUserSpecifiedProductCodeRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::SetUserSpecifiedProductCodeResponse)
         response = @channel.unary_call(FULL_NAME, "set_user_specified_product_code", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(SetUserSpecifiedProductCodeResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::SetUserSpecifiedProductCodeResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_channels_layout(request : GetChannelsLayoutRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetChannelsLayoutResponse
+      def get_channels_layout(request : ::MinknowApi::Device::GetChannelsLayoutRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::GetChannelsLayoutResponse
         get_channels_layout_response(request, ctx).ok!
       end
 
-      def get_channels_layout_response(request : GetChannelsLayoutRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetChannelsLayoutResponse)
-        req_marshaller = marshaller_for(GetChannelsLayoutRequest)
-        res_marshaller = marshaller_for(GetChannelsLayoutResponse)
+      def get_channels_layout_response(request : ::MinknowApi::Device::GetChannelsLayoutRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::GetChannelsLayoutResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::GetChannelsLayoutRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::GetChannelsLayoutResponse)
         response = @channel.unary_call(FULL_NAME, "get_channels_layout", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetChannelsLayoutResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::GetChannelsLayoutResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def reset_device_settings(request : ResetDeviceSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ResetDeviceSettingsResponse
+      def reset_device_settings(request : ::MinknowApi::Device::ResetDeviceSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::ResetDeviceSettingsResponse
         reset_device_settings_response(request, ctx).ok!
       end
 
-      def reset_device_settings_response(request : ResetDeviceSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(ResetDeviceSettingsResponse)
-        req_marshaller = marshaller_for(ResetDeviceSettingsRequest)
-        res_marshaller = marshaller_for(ResetDeviceSettingsResponse)
+      def reset_device_settings_response(request : ::MinknowApi::Device::ResetDeviceSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::ResetDeviceSettingsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::ResetDeviceSettingsRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::ResetDeviceSettingsResponse)
         response = @channel.unary_call(FULL_NAME, "reset_device_settings", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(ResetDeviceSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::ResetDeviceSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def set_calibration(request : SetCalibrationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : SetCalibrationResponse
+      def set_calibration(request : ::MinknowApi::Device::SetCalibrationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::SetCalibrationResponse
         set_calibration_response(request, ctx).ok!
       end
 
-      def set_calibration_response(request : SetCalibrationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(SetCalibrationResponse)
-        req_marshaller = marshaller_for(SetCalibrationRequest)
-        res_marshaller = marshaller_for(SetCalibrationResponse)
+      def set_calibration_response(request : ::MinknowApi::Device::SetCalibrationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::SetCalibrationResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::SetCalibrationRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::SetCalibrationResponse)
         response = @channel.unary_call(FULL_NAME, "set_calibration", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(SetCalibrationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::SetCalibrationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def clear_calibration(request : ClearCalibrationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ClearCalibrationResponse
+      def clear_calibration(request : ::MinknowApi::Device::ClearCalibrationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::ClearCalibrationResponse
         clear_calibration_response(request, ctx).ok!
       end
 
-      def clear_calibration_response(request : ClearCalibrationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(ClearCalibrationResponse)
-        req_marshaller = marshaller_for(ClearCalibrationRequest)
-        res_marshaller = marshaller_for(ClearCalibrationResponse)
+      def clear_calibration_response(request : ::MinknowApi::Device::ClearCalibrationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::ClearCalibrationResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::ClearCalibrationRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::ClearCalibrationResponse)
         response = @channel.unary_call(FULL_NAME, "clear_calibration", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(ClearCalibrationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::ClearCalibrationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_calibration(request : GetCalibrationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetCalibrationResponse
+      def get_calibration(request : ::MinknowApi::Device::GetCalibrationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::GetCalibrationResponse
         get_calibration_response(request, ctx).ok!
       end
 
-      def get_calibration_response(request : GetCalibrationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetCalibrationResponse)
-        req_marshaller = marshaller_for(GetCalibrationRequest)
-        res_marshaller = marshaller_for(GetCalibrationResponse)
+      def get_calibration_response(request : ::MinknowApi::Device::GetCalibrationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::GetCalibrationResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::GetCalibrationRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::GetCalibrationResponse)
         response = @channel.unary_call(FULL_NAME, "get_calibration", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetCalibrationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::GetCalibrationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def set_temperature(request : SetTemperatureRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : SetTemperatureResponse
+      def set_temperature(request : ::MinknowApi::Device::SetTemperatureRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::SetTemperatureResponse
         set_temperature_response(request, ctx).ok!
       end
 
-      def set_temperature_response(request : SetTemperatureRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(SetTemperatureResponse)
-        req_marshaller = marshaller_for(SetTemperatureRequest)
-        res_marshaller = marshaller_for(SetTemperatureResponse)
+      def set_temperature_response(request : ::MinknowApi::Device::SetTemperatureRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::SetTemperatureResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::SetTemperatureRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::SetTemperatureResponse)
         response = @channel.unary_call(FULL_NAME, "set_temperature", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(SetTemperatureResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::SetTemperatureResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_temperature(request : GetTemperatureRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetTemperatureResponse
+      def get_temperature(request : ::MinknowApi::Device::GetTemperatureRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::GetTemperatureResponse
         get_temperature_response(request, ctx).ok!
       end
 
-      def get_temperature_response(request : GetTemperatureRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetTemperatureResponse)
-        req_marshaller = marshaller_for(GetTemperatureRequest)
-        res_marshaller = marshaller_for(GetTemperatureResponse)
+      def get_temperature_response(request : ::MinknowApi::Device::GetTemperatureRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::GetTemperatureResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::GetTemperatureRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::GetTemperatureResponse)
         response = @channel.unary_call(FULL_NAME, "get_temperature", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetTemperatureResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::GetTemperatureResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def stream_temperature(request : StreamTemperatureRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(GetTemperatureResponse)
-        req_marshaller = marshaller_for(StreamTemperatureRequest)
-        res_marshaller = marshaller_for(GetTemperatureResponse)
+      def stream_temperature(request : ::MinknowApi::Device::StreamTemperatureRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Device::GetTemperatureResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::StreamTemperatureRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::GetTemperatureResponse)
         raw = @channel.open_server_stream(FULL_NAME, "stream_temperature", req_marshaller.encode(request), ctx)
-        stream = GRPC::ServerStream(GetTemperatureResponse).new(-> { raw.headers }, -> { raw.status }, -> { raw.trailers }, -> { raw.cancel })
-        spawn do
-          begin
-            raw.each { |bytes| stream.push(res_marshaller.decode(bytes)) }
-            stream.finish
-          rescue ex
-            stream.finish(GRPC::Status.internal(ex.message || "error"))
-          end
-        end
-        stream
+        GRPC::ServerStream(::MinknowApi::Device::GetTemperatureResponse).new(raw, res_marshaller)
       end
 
-      def unblock(request : UnblockRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : UnblockResponse
+      def unblock(request : ::MinknowApi::Device::UnblockRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::UnblockResponse
         unblock_response(request, ctx).ok!
       end
 
-      def unblock_response(request : UnblockRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(UnblockResponse)
-        req_marshaller = marshaller_for(UnblockRequest)
-        res_marshaller = marshaller_for(UnblockResponse)
+      def unblock_response(request : ::MinknowApi::Device::UnblockRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::UnblockResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::UnblockRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::UnblockResponse)
         response = @channel.unary_call(FULL_NAME, "unblock", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(UnblockResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::UnblockResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def cancel_unblocks(request : CancelUnblocksRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : CancelUnblocksResponse
+      def cancel_unblocks(request : ::MinknowApi::Device::CancelUnblocksRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::CancelUnblocksResponse
         cancel_unblocks_response(request, ctx).ok!
       end
 
-      def cancel_unblocks_response(request : CancelUnblocksRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(CancelUnblocksResponse)
-        req_marshaller = marshaller_for(CancelUnblocksRequest)
-        res_marshaller = marshaller_for(CancelUnblocksResponse)
+      def cancel_unblocks_response(request : ::MinknowApi::Device::CancelUnblocksRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::CancelUnblocksResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::CancelUnblocksRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::CancelUnblocksResponse)
         response = @channel.unary_call(FULL_NAME, "cancel_unblocks", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(CancelUnblocksResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::CancelUnblocksResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_channel_configuration(request : GetChannelConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetChannelConfigurationResponse
+      def get_channel_configuration(request : ::MinknowApi::Device::GetChannelConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::GetChannelConfigurationResponse
         get_channel_configuration_response(request, ctx).ok!
       end
 
-      def get_channel_configuration_response(request : GetChannelConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetChannelConfigurationResponse)
-        req_marshaller = marshaller_for(GetChannelConfigurationRequest)
-        res_marshaller = marshaller_for(GetChannelConfigurationResponse)
+      def get_channel_configuration_response(request : ::MinknowApi::Device::GetChannelConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::GetChannelConfigurationResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::GetChannelConfigurationRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::GetChannelConfigurationResponse)
         response = @channel.unary_call(FULL_NAME, "get_channel_configuration", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetChannelConfigurationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::GetChannelConfigurationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def set_channel_configuration(request : SetChannelConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : SetChannelConfigurationResponse
+      def set_channel_configuration(request : ::MinknowApi::Device::SetChannelConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::SetChannelConfigurationResponse
         set_channel_configuration_response(request, ctx).ok!
       end
 
-      def set_channel_configuration_response(request : SetChannelConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(SetChannelConfigurationResponse)
-        req_marshaller = marshaller_for(SetChannelConfigurationRequest)
-        res_marshaller = marshaller_for(SetChannelConfigurationResponse)
+      def set_channel_configuration_response(request : ::MinknowApi::Device::SetChannelConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::SetChannelConfigurationResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::SetChannelConfigurationRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::SetChannelConfigurationResponse)
         response = @channel.unary_call(FULL_NAME, "set_channel_configuration", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(SetChannelConfigurationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::SetChannelConfigurationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def set_channel_configuration_all(request : SetChannelConfigurationAllRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : SetChannelConfigurationAllResponse
+      def set_channel_configuration_all(request : ::MinknowApi::Device::SetChannelConfigurationAllRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::SetChannelConfigurationAllResponse
         set_channel_configuration_all_response(request, ctx).ok!
       end
 
-      def set_channel_configuration_all_response(request : SetChannelConfigurationAllRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(SetChannelConfigurationAllResponse)
-        req_marshaller = marshaller_for(SetChannelConfigurationAllRequest)
-        res_marshaller = marshaller_for(SetChannelConfigurationAllResponse)
+      def set_channel_configuration_all_response(request : ::MinknowApi::Device::SetChannelConfigurationAllRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::SetChannelConfigurationAllResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::SetChannelConfigurationAllRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::SetChannelConfigurationAllResponse)
         response = @channel.unary_call(FULL_NAME, "set_channel_configuration_all", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(SetChannelConfigurationAllResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::SetChannelConfigurationAllResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def set_saturation_config(request : SetSaturationConfigRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : SetSaturationConfigResponse
+      def set_saturation_config(request : ::MinknowApi::Device::SetSaturationConfigRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::SetSaturationConfigResponse
         set_saturation_config_response(request, ctx).ok!
       end
 
-      def set_saturation_config_response(request : SetSaturationConfigRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(SetSaturationConfigResponse)
-        req_marshaller = marshaller_for(SetSaturationConfigRequest)
-        res_marshaller = marshaller_for(SetSaturationConfigResponse)
+      def set_saturation_config_response(request : ::MinknowApi::Device::SetSaturationConfigRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::SetSaturationConfigResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::SetSaturationConfigRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::SetSaturationConfigResponse)
         response = @channel.unary_call(FULL_NAME, "set_saturation_config", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(SetSaturationConfigResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::SetSaturationConfigResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_saturation_config(request : GetSaturationConfigRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetSaturationConfigResponse
+      def get_saturation_config(request : ::MinknowApi::Device::GetSaturationConfigRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::GetSaturationConfigResponse
         get_saturation_config_response(request, ctx).ok!
       end
 
-      def get_saturation_config_response(request : GetSaturationConfigRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetSaturationConfigResponse)
-        req_marshaller = marshaller_for(GetSaturationConfigRequest)
-        res_marshaller = marshaller_for(GetSaturationConfigResponse)
+      def get_saturation_config_response(request : ::MinknowApi::Device::GetSaturationConfigRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::GetSaturationConfigResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::GetSaturationConfigRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::GetSaturationConfigResponse)
         response = @channel.unary_call(FULL_NAME, "get_saturation_config", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetSaturationConfigResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::GetSaturationConfigResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_sample_rate(request : GetSampleRateRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetSampleRateResponse
+      def get_sample_rate(request : ::MinknowApi::Device::GetSampleRateRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::GetSampleRateResponse
         get_sample_rate_response(request, ctx).ok!
       end
 
-      def get_sample_rate_response(request : GetSampleRateRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetSampleRateResponse)
-        req_marshaller = marshaller_for(GetSampleRateRequest)
-        res_marshaller = marshaller_for(GetSampleRateResponse)
+      def get_sample_rate_response(request : ::MinknowApi::Device::GetSampleRateRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::GetSampleRateResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::GetSampleRateRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::GetSampleRateResponse)
         response = @channel.unary_call(FULL_NAME, "get_sample_rate", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetSampleRateResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::GetSampleRateResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def set_sample_rate(request : SetSampleRateRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : SetSampleRateResponse
+      def set_sample_rate(request : ::MinknowApi::Device::SetSampleRateRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::SetSampleRateResponse
         set_sample_rate_response(request, ctx).ok!
       end
 
-      def set_sample_rate_response(request : SetSampleRateRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(SetSampleRateResponse)
-        req_marshaller = marshaller_for(SetSampleRateRequest)
-        res_marshaller = marshaller_for(SetSampleRateResponse)
+      def set_sample_rate_response(request : ::MinknowApi::Device::SetSampleRateRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::SetSampleRateResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::SetSampleRateRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::SetSampleRateResponse)
         response = @channel.unary_call(FULL_NAME, "set_sample_rate", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(SetSampleRateResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::SetSampleRateResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_bias_voltage(request : GetBiasVoltageRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetBiasVoltageResponse
+      def get_bias_voltage(request : ::MinknowApi::Device::GetBiasVoltageRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::GetBiasVoltageResponse
         get_bias_voltage_response(request, ctx).ok!
       end
 
-      def get_bias_voltage_response(request : GetBiasVoltageRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetBiasVoltageResponse)
-        req_marshaller = marshaller_for(GetBiasVoltageRequest)
-        res_marshaller = marshaller_for(GetBiasVoltageResponse)
+      def get_bias_voltage_response(request : ::MinknowApi::Device::GetBiasVoltageRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::GetBiasVoltageResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::GetBiasVoltageRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::GetBiasVoltageResponse)
         response = @channel.unary_call(FULL_NAME, "get_bias_voltage", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetBiasVoltageResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::GetBiasVoltageResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def set_bias_voltage(request : SetBiasVoltageRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : SetBiasVoltageResponse
+      def set_bias_voltage(request : ::MinknowApi::Device::SetBiasVoltageRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::SetBiasVoltageResponse
         set_bias_voltage_response(request, ctx).ok!
       end
 
-      def set_bias_voltage_response(request : SetBiasVoltageRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(SetBiasVoltageResponse)
-        req_marshaller = marshaller_for(SetBiasVoltageRequest)
-        res_marshaller = marshaller_for(SetBiasVoltageResponse)
+      def set_bias_voltage_response(request : ::MinknowApi::Device::SetBiasVoltageRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::SetBiasVoltageResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::SetBiasVoltageRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::SetBiasVoltageResponse)
         response = @channel.unary_call(FULL_NAME, "set_bias_voltage", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(SetBiasVoltageResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::SetBiasVoltageResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def dump_state(request : DumpStateRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : DumpStateResponse
+      def dump_state(request : ::MinknowApi::Device::DumpStateRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::DumpStateResponse
         dump_state_response(request, ctx).ok!
       end
 
-      def dump_state_response(request : DumpStateRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(DumpStateResponse)
-        req_marshaller = marshaller_for(DumpStateRequest)
-        res_marshaller = marshaller_for(DumpStateResponse)
+      def dump_state_response(request : ::MinknowApi::Device::DumpStateRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::DumpStateResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::DumpStateRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::DumpStateResponse)
         response = @channel.unary_call(FULL_NAME, "dump_state", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(DumpStateResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::DumpStateResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def increment_flow_cell_use_count(request : IncrementFlowCellUseCountRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : IncrementFlowCellUseCountResponse
+      def increment_flow_cell_use_count(request : ::MinknowApi::Device::IncrementFlowCellUseCountRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::IncrementFlowCellUseCountResponse
         increment_flow_cell_use_count_response(request, ctx).ok!
       end
 
-      def increment_flow_cell_use_count_response(request : IncrementFlowCellUseCountRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(IncrementFlowCellUseCountResponse)
-        req_marshaller = marshaller_for(IncrementFlowCellUseCountRequest)
-        res_marshaller = marshaller_for(IncrementFlowCellUseCountResponse)
+      def increment_flow_cell_use_count_response(request : ::MinknowApi::Device::IncrementFlowCellUseCountRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::IncrementFlowCellUseCountResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::IncrementFlowCellUseCountRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::IncrementFlowCellUseCountResponse)
         response = @channel.unary_call(FULL_NAME, "increment_flow_cell_use_count", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(IncrementFlowCellUseCountResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::IncrementFlowCellUseCountResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def set_flow_cell_barcode_kit(request : SetFlowCellBarcodeKitRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : SetFlowCellBarcodeKitResponse
+      def set_flow_cell_barcode_kit(request : ::MinknowApi::Device::SetFlowCellBarcodeKitRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::SetFlowCellBarcodeKitResponse
         set_flow_cell_barcode_kit_response(request, ctx).ok!
       end
 
-      def set_flow_cell_barcode_kit_response(request : SetFlowCellBarcodeKitRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(SetFlowCellBarcodeKitResponse)
-        req_marshaller = marshaller_for(SetFlowCellBarcodeKitRequest)
-        res_marshaller = marshaller_for(SetFlowCellBarcodeKitResponse)
+      def set_flow_cell_barcode_kit_response(request : ::MinknowApi::Device::SetFlowCellBarcodeKitRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::SetFlowCellBarcodeKitResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::SetFlowCellBarcodeKitRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::SetFlowCellBarcodeKitResponse)
         response = @channel.unary_call(FULL_NAME, "set_flow_cell_barcode_kit", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(SetFlowCellBarcodeKitResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::SetFlowCellBarcodeKitResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def register_flow_cell_barcodes(request : RegisterFlowCellBarcodesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : RegisterFlowCellBarcodesResponse
+      def register_flow_cell_barcodes(request : ::MinknowApi::Device::RegisterFlowCellBarcodesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Device::RegisterFlowCellBarcodesResponse
         register_flow_cell_barcodes_response(request, ctx).ok!
       end
 
-      def register_flow_cell_barcodes_response(request : RegisterFlowCellBarcodesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(RegisterFlowCellBarcodesResponse)
-        req_marshaller = marshaller_for(RegisterFlowCellBarcodesRequest)
-        res_marshaller = marshaller_for(RegisterFlowCellBarcodesResponse)
+      def register_flow_cell_barcodes_response(request : ::MinknowApi::Device::RegisterFlowCellBarcodesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Device::RegisterFlowCellBarcodesResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Device::RegisterFlowCellBarcodesRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Device::RegisterFlowCellBarcodesResponse)
         response = @channel.unary_call(FULL_NAME, "register_flow_cell_barcodes", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(RegisterFlowCellBarcodesResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Device::RegisterFlowCellBarcodesResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
     end
   end

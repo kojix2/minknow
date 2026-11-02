@@ -8,6 +8,12 @@ Naming/QueryBoolMethods:
     - src/generated/**
     - src/generated/**/*
 
+# Protobuf permits enum aliases; the API schemas intentionally use them.
+Lint/DuplicateEnumValue:
+  Excluded:
+    - src/generated/**
+    - src/generated/**/*
+
 Lint/Typos:
   Excluded:
     - src/generated/**

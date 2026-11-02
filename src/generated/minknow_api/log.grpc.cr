@@ -438,22 +438,22 @@ module MinknowApi::Log
         GRPC::ProtoMarshaller(T).new
       end
 
-      abstract def get_user_messages(request : GetUserMessagesRequest, writer : GRPC::ResponseStream(UserMessage), ctx : GRPC::ServerContext) : GRPC::Status
-      abstract def send_user_message(request : SendUserMessageRequest, ctx : GRPC::ServerContext) : SendUserMessageResponse
-      abstract def send_ping(request : SendPingRequest, ctx : GRPC::ServerContext) : SendPingResponse
-      abstract def collect_pings(request : CollectPingsRequest, writer : GRPC::ResponseStream(CollectPingsResponse), ctx : GRPC::ServerContext) : GRPC::Status
+      abstract def get_user_messages(request : ::MinknowApi::Log::GetUserMessagesRequest, writer : GRPC::ResponseStream(::MinknowApi::Log::UserMessage), ctx : GRPC::ServerContext) : GRPC::Status
+      abstract def send_user_message(request : ::MinknowApi::Log::SendUserMessageRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Log::SendUserMessageResponse
+      abstract def send_ping(request : ::MinknowApi::Log::SendPingRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Log::SendPingResponse
+      abstract def collect_pings(request : ::MinknowApi::Log::CollectPingsRequest, writer : GRPC::ResponseStream(::MinknowApi::Log::CollectPingsResponse), ctx : GRPC::ServerContext) : GRPC::Status
 
       def dispatch(method : String, body : Bytes, ctx : GRPC::ServerContext) : {Bytes, GRPC::Status}
         case method
         when "send_user_message"
-          req_marshaller = marshaller_for(SendUserMessageRequest)
-          res_marshaller = marshaller_for(SendUserMessageResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Log::SendUserMessageRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Log::SendUserMessageResponse)
           req = req_marshaller.decode(body)
           resp = send_user_message(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "send_ping"
-          req_marshaller = marshaller_for(SendPingRequest)
-          res_marshaller = marshaller_for(SendPingResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Log::SendPingRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Log::SendPingResponse)
           req = req_marshaller.decode(body)
           resp = send_ping(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
@@ -479,14 +479,14 @@ module MinknowApi::Log
                                  writer : GRPC::RawResponseStream) : GRPC::Status
         case method
         when "get_user_messages"
-          req_marshaller = marshaller_for(GetUserMessagesRequest)
-          res_marshaller = marshaller_for(UserMessage)
-          typed_writer = GRPC::ResponseStream(UserMessage).new(writer, res_marshaller)
+          req_marshaller = marshaller_for(::MinknowApi::Log::GetUserMessagesRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Log::UserMessage)
+          typed_writer = GRPC::ResponseStream(::MinknowApi::Log::UserMessage).new(writer, res_marshaller)
           get_user_messages(req_marshaller.decode(body), typed_writer, ctx)
         when "collect_pings"
-          req_marshaller = marshaller_for(CollectPingsRequest)
-          res_marshaller = marshaller_for(CollectPingsResponse)
-          typed_writer = GRPC::ResponseStream(CollectPingsResponse).new(writer, res_marshaller)
+          req_marshaller = marshaller_for(::MinknowApi::Log::CollectPingsRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Log::CollectPingsResponse)
+          typed_writer = GRPC::ResponseStream(::MinknowApi::Log::CollectPingsResponse).new(writer, res_marshaller)
           collect_pings(req_marshaller.decode(body), typed_writer, ctx)
         else
           GRPC::Status.unimplemented("method #{method} not found")
@@ -509,60 +509,42 @@ module MinknowApi::Log
         GRPC::ProtoMarshaller(T).new
       end
 
-      def get_user_messages(request : GetUserMessagesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(UserMessage)
-        req_marshaller = marshaller_for(GetUserMessagesRequest)
-        res_marshaller = marshaller_for(UserMessage)
+      def get_user_messages(request : ::MinknowApi::Log::GetUserMessagesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Log::UserMessage)
+        req_marshaller = marshaller_for(::MinknowApi::Log::GetUserMessagesRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Log::UserMessage)
         raw = @channel.open_server_stream(FULL_NAME, "get_user_messages", req_marshaller.encode(request), ctx)
-        stream = GRPC::ServerStream(UserMessage).new(-> { raw.headers }, -> { raw.status }, -> { raw.trailers }, -> { raw.cancel })
-        spawn do
-          begin
-            raw.each { |bytes| stream.push(res_marshaller.decode(bytes)) }
-            stream.finish
-          rescue ex
-            stream.finish(GRPC::Status.internal(ex.message || "error"))
-          end
-        end
-        stream
+        GRPC::ServerStream(::MinknowApi::Log::UserMessage).new(raw, res_marshaller)
       end
 
-      def send_user_message(request : SendUserMessageRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : SendUserMessageResponse
+      def send_user_message(request : ::MinknowApi::Log::SendUserMessageRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Log::SendUserMessageResponse
         send_user_message_response(request, ctx).ok!
       end
 
-      def send_user_message_response(request : SendUserMessageRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(SendUserMessageResponse)
-        req_marshaller = marshaller_for(SendUserMessageRequest)
-        res_marshaller = marshaller_for(SendUserMessageResponse)
+      def send_user_message_response(request : ::MinknowApi::Log::SendUserMessageRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Log::SendUserMessageResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Log::SendUserMessageRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Log::SendUserMessageResponse)
         response = @channel.unary_call(FULL_NAME, "send_user_message", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(SendUserMessageResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Log::SendUserMessageResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def send_ping(request : SendPingRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : SendPingResponse
+      def send_ping(request : ::MinknowApi::Log::SendPingRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Log::SendPingResponse
         send_ping_response(request, ctx).ok!
       end
 
-      def send_ping_response(request : SendPingRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(SendPingResponse)
-        req_marshaller = marshaller_for(SendPingRequest)
-        res_marshaller = marshaller_for(SendPingResponse)
+      def send_ping_response(request : ::MinknowApi::Log::SendPingRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Log::SendPingResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Log::SendPingRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Log::SendPingResponse)
         response = @channel.unary_call(FULL_NAME, "send_ping", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(SendPingResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Log::SendPingResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def collect_pings(request : CollectPingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(CollectPingsResponse)
-        req_marshaller = marshaller_for(CollectPingsRequest)
-        res_marshaller = marshaller_for(CollectPingsResponse)
+      def collect_pings(request : ::MinknowApi::Log::CollectPingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Log::CollectPingsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Log::CollectPingsRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Log::CollectPingsResponse)
         raw = @channel.open_server_stream(FULL_NAME, "collect_pings", req_marshaller.encode(request), ctx)
-        stream = GRPC::ServerStream(CollectPingsResponse).new(-> { raw.headers }, -> { raw.status }, -> { raw.trailers }, -> { raw.cancel })
-        spawn do
-          begin
-            raw.each { |bytes| stream.push(res_marshaller.decode(bytes)) }
-            stream.finish
-          rescue ex
-            stream.finish(GRPC::Status.internal(ex.message || "error"))
-          end
-        end
-        stream
+        GRPC::ServerStream(::MinknowApi::Log::CollectPingsResponse).new(raw, res_marshaller)
       end
     end
   end

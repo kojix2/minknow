@@ -39,18 +39,18 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.key = reader.read_string
-            when 2
+            when {2, Proto::WireType::LENGTH_DELIMITED}
               msg.value = reader.read_embedded(2, wt) do |sub|
                 if current = msg.value
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  Google::Protobuf::Any.decode_partial(merged)
+                  Google::Protobuf::Any.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   Google::Protobuf::Any.decode_partial(sub)
                 end
@@ -110,8 +110,8 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             entry = reader.read_embedded(1, wt) { |sub| CriteriaValues::CriteriaEntry.decode_partial(sub) }
             msg.criteria[entry.key] = entry.value || Google::Protobuf::Any.new
           else
@@ -187,30 +187,30 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.acquisition_run_id = reader.read_string
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             msg.pause_criteria = reader.read_embedded(2, wt) do |sub|
               if current = msg.pause_criteria
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                CriteriaValues.decode_partial(merged)
+                CriteriaValues.decode_partial(sub.rewrap(merged.to_slice))
               else
                 CriteriaValues.decode_partial(sub)
               end
             end
-          when 3
+          when {3, Proto::WireType::LENGTH_DELIMITED}
             msg.stop_criteria = reader.read_embedded(3, wt) do |sub|
               if current = msg.stop_criteria
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                CriteriaValues.decode_partial(merged)
+                CriteriaValues.decode_partial(sub.rewrap(merged.to_slice))
               else
                 CriteriaValues.decode_partial(sub)
               end
@@ -265,7 +265,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -303,8 +303,8 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.acquisition_run_id = reader.read_string
           else
@@ -375,27 +375,27 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             msg.pause_criteria = reader.read_embedded(1, wt) do |sub|
               if current = msg.pause_criteria
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                CriteriaValues.decode_partial(merged)
+                CriteriaValues.decode_partial(sub.rewrap(merged.to_slice))
               else
                 CriteriaValues.decode_partial(sub)
               end
             end
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             msg.stop_criteria = reader.read_embedded(2, wt) do |sub|
               if current = msg.stop_criteria
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                CriteriaValues.decode_partial(merged)
+                CriteriaValues.decode_partial(sub.rewrap(merged.to_slice))
               else
                 CriteriaValues.decode_partial(sub)
               end
@@ -448,7 +448,7 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
+            case {fn, wt}
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -512,27 +512,27 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::LENGTH_DELIMITED}
               msg.min_time = reader.read_embedded(1, wt) do |sub|
                 if current = msg.min_time
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  Google::Protobuf::Timestamp.decode_partial(merged)
+                  Google::Protobuf::Timestamp.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   Google::Protobuf::Timestamp.decode_partial(sub)
                 end
               end
-            when 2
+            when {2, Proto::WireType::LENGTH_DELIMITED}
               msg.max_time = reader.read_embedded(2, wt) do |sub|
                 if current = msg.max_time
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  Google::Protobuf::Timestamp.decode_partial(merged)
+                  Google::Protobuf::Timestamp.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   Google::Protobuf::Timestamp.decode_partial(sub)
                 end
@@ -630,27 +630,27 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::LENGTH_DELIMITED}
               msg.not_estimated = reader.read_embedded(1, wt) do |sub|
                 if current = msg.not_estimated
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  EstimatedTimeRemainingUpdate::NotEstimated.decode_partial(merged)
+                  EstimatedTimeRemainingUpdate::NotEstimated.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   EstimatedTimeRemainingUpdate::NotEstimated.decode_partial(sub)
                 end
               end
-            when 2
+            when {2, Proto::WireType::LENGTH_DELIMITED}
               msg.estimated = reader.read_embedded(2, wt) do |sub|
                 if current = msg.estimated
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  EstimatedTimeRemainingUpdate::Estimated.decode_partial(merged)
+                  EstimatedTimeRemainingUpdate::Estimated.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   EstimatedTimeRemainingUpdate::Estimated.decode_partial(sub)
                 end
@@ -727,18 +727,18 @@ module MinknowApi
             reader = Proto::Wire::Reader.new(io)
             while tag = reader.read_tag
               fn, wt = tag
-              case fn
-              when 1
+              case {fn, wt}
+              when {1, Proto::WireType::LENGTH_DELIMITED}
                 reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
                 msg.key = reader.read_string
-              when 2
+              when {2, Proto::WireType::LENGTH_DELIMITED}
                 msg.value = reader.read_embedded(2, wt) do |sub|
                   if current = msg.value
                     merged = IO::Memory.new
                     current.encode_partial(merged)
                     IO.copy(sub, merged)
                     merged.rewind
-                    EstimatedTimeRemainingUpdate::EstimatedTime.decode_partial(merged)
+                    EstimatedTimeRemainingUpdate::EstimatedTime.decode_partial(sub.rewrap(merged.to_slice))
                   else
                     EstimatedTimeRemainingUpdate::EstimatedTime.decode_partial(sub)
                   end
@@ -798,8 +798,8 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::LENGTH_DELIMITED}
               entry = reader.read_embedded(1, wt) { |sub| EstimatedTimeRemainingUpdate::EstimatedTimes::EstimatedTimesEntry.decode_partial(sub) }
               msg.estimated_times[entry.key] = entry.value || EstimatedTimeRemainingUpdate::EstimatedTime.new
             else
@@ -871,27 +871,27 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             msg.pause_estimates = reader.read_embedded(1, wt) do |sub|
               if current = msg.pause_estimates
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                EstimatedTimeRemainingUpdate::EstimatedTimes.decode_partial(merged)
+                EstimatedTimeRemainingUpdate::EstimatedTimes.decode_partial(sub.rewrap(merged.to_slice))
               else
                 EstimatedTimeRemainingUpdate::EstimatedTimes.decode_partial(sub)
               end
             end
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             msg.stop_estimates = reader.read_embedded(2, wt) do |sub|
               if current = msg.stop_estimates
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                EstimatedTimeRemainingUpdate::EstimatedTimes.decode_partial(merged)
+                EstimatedTimeRemainingUpdate::EstimatedTimes.decode_partial(sub.rewrap(merged.to_slice))
               else
                 EstimatedTimeRemainingUpdate::EstimatedTimes.decode_partial(sub)
               end
@@ -960,13 +960,13 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::VARINT}
             reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.action = Proto::OpenEnum(ActionUpdate::Action).new(_raw)
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.criteria = reader.read_string
           else
@@ -1017,7 +1017,7 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
+            case {fn, wt}
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -1053,7 +1053,7 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
+            case {fn, wt}
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -1114,27 +1114,27 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             msg.started = reader.read_embedded(1, wt) do |sub|
               if current = msg.started
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                ScriptUpdate::Started.decode_partial(merged)
+                ScriptUpdate::Started.decode_partial(sub.rewrap(merged.to_slice))
               else
                 ScriptUpdate::Started.decode_partial(sub)
               end
             end
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             msg.criteria_updated = reader.read_embedded(2, wt) do |sub|
               if current = msg.criteria_updated
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                ScriptUpdate::CriteriaUpdated.decode_partial(merged)
+                ScriptUpdate::CriteriaUpdated.decode_partial(sub.rewrap(merged.to_slice))
               else
                 ScriptUpdate::CriteriaUpdated.decode_partial(sub)
               end
@@ -1189,8 +1189,8 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.name << reader.read_string
             else
@@ -1235,8 +1235,8 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.message = reader.read_string
             else
@@ -1324,27 +1324,27 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             msg.invalid_criteria = reader.read_embedded(1, wt) do |sub|
               if current = msg.invalid_criteria
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                ErrorUpdate::InvalidCriteria.decode_partial(merged)
+                ErrorUpdate::InvalidCriteria.decode_partial(sub.rewrap(merged.to_slice))
               else
                 ErrorUpdate::InvalidCriteria.decode_partial(sub)
               end
             end
-          when 15
+          when {15, Proto::WireType::LENGTH_DELIMITED}
             msg.other_error = reader.read_embedded(15, wt) do |sub|
               if current = msg.other_error
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                ErrorUpdate::OtherError.decode_partial(merged)
+                ErrorUpdate::OtherError.decode_partial(sub.rewrap(merged.to_slice))
               else
                 ErrorUpdate::OtherError.decode_partial(sub)
               end
@@ -1461,68 +1461,68 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             msg.estimated_time_remaining_update = reader.read_embedded(1, wt) do |sub|
               if current = msg.estimated_time_remaining_update
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                EstimatedTimeRemainingUpdate.decode_partial(merged)
+                EstimatedTimeRemainingUpdate.decode_partial(sub.rewrap(merged.to_slice))
               else
                 EstimatedTimeRemainingUpdate.decode_partial(sub)
               end
             end
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             msg.action_update = reader.read_embedded(2, wt) do |sub|
               if current = msg.action_update
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                ActionUpdate.decode_partial(merged)
+                ActionUpdate.decode_partial(sub.rewrap(merged.to_slice))
               else
                 ActionUpdate.decode_partial(sub)
               end
             end
-          when 3
+          when {3, Proto::WireType::LENGTH_DELIMITED}
             msg.script_update = reader.read_embedded(3, wt) do |sub|
               if current = msg.script_update
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                ScriptUpdate.decode_partial(merged)
+                ScriptUpdate.decode_partial(sub.rewrap(merged.to_slice))
               else
                 ScriptUpdate.decode_partial(sub)
               end
             end
-          when 5
+          when {5, Proto::WireType::LENGTH_DELIMITED}
             msg.current_progress_update = reader.read_embedded(5, wt) do |sub|
               if current = msg.current_progress_update
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                CriteriaValues.decode_partial(merged)
+                CriteriaValues.decode_partial(sub.rewrap(merged.to_slice))
               else
                 CriteriaValues.decode_partial(sub)
               end
             end
-          when 14
+          when {14, Proto::WireType::LENGTH_DELIMITED}
             msg.error_update = reader.read_embedded(14, wt) do |sub|
               if current = msg.error_update
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                ErrorUpdate.decode_partial(merged)
+                ErrorUpdate.decode_partial(sub.rewrap(merged.to_slice))
               else
                 ErrorUpdate.decode_partial(sub)
               end
             end
-          when 15
+          when {15, Proto::WireType::LENGTH_DELIMITED}
             msg.other << reader.read_embedded(15, wt) { |sub| Google::Protobuf::Any.decode_partial(sub) }
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
@@ -1604,18 +1604,18 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.acquisition_run_id = reader.read_string
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             msg.update = reader.read_embedded(2, wt) do |sub|
               if current = msg.update
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                Update.decode_partial(merged)
+                Update.decode_partial(sub.rewrap(merged.to_slice))
               else
                 Update.decode_partial(sub)
               end
@@ -1666,7 +1666,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1705,11 +1705,11 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.acquisition_run_id = reader.read_string
-          when 2
+          when {2, Proto::WireType::VARINT}
             reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
             msg.start_idx = reader.read_int64
           else
@@ -1786,30 +1786,30 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::VARINT}
             reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             msg.idx = reader.read_uint64
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             msg.time = reader.read_embedded(2, wt) do |sub|
               if current = msg.time
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                Google::Protobuf::Timestamp.decode_partial(merged)
+                Google::Protobuf::Timestamp.decode_partial(sub.rewrap(merged.to_slice))
               else
                 Google::Protobuf::Timestamp.decode_partial(sub)
               end
             end
-          when 3
+          when {3, Proto::WireType::LENGTH_DELIMITED}
             msg.update = reader.read_embedded(3, wt) do |sub|
               if current = msg.update
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                Update.decode_partial(merged)
+                Update.decode_partial(sub.rewrap(merged.to_slice))
               else
                 Update.decode_partial(sub)
               end

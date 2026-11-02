@@ -54,13 +54,23 @@ describe "generated Google protobuf types" do
     double.should_not eq(Google::Protobuf::DoubleValue.new)
   end
 
-  it "rejects mismatched wire types in floating wrappers" do
-    expect_raises(Proto::DecodeError, "wire type mismatch") do
-      Google::Protobuf::FloatValue.decode(Bytes[0x09, 0, 0, 0, 0, 0, 0, 0, 0])
-    end
-    expect_raises(Proto::DecodeError, "wire type mismatch") do
-      Google::Protobuf::DoubleValue.decode(Bytes[0x0d, 0, 0, 0, 0])
-    end
+  it "preserves other wire types as unknown fields like the official Protobuf runtime" do
+    float_wire = Bytes[0x09, 0, 0, 0, 0, 0, 0, 0, 0]
+    float = Google::Protobuf::FloatValue.decode(float_wire)
+    float.value.should eq(0.0_f32)
+    float.unknown_fields.size.should eq(1)
+    float.encode.should eq(float_wire)
+
+    double_wire = Bytes[0x0d, 0, 0, 0, 0]
+    double = Google::Protobuf::DoubleValue.decode(double_wire)
+    double.value.should eq(0.0_f64)
+    double.unknown_fields.size.should eq(1)
+    double.encode.should eq(double_wire)
+  end
+
+  it "rejects truncated floating wrapper payloads" do
+    expect_raises(Proto::DecodeError) { Google::Protobuf::FloatValue.decode(Bytes[0x0d, 0, 0]) }
+    expect_raises(Proto::DecodeError) { Google::Protobuf::DoubleValue.decode(Bytes[0x09, 0, 0]) }
   end
 
   it "round-trips Any payloads and unknown fields" do

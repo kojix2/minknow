@@ -24,7 +24,9 @@ The checked-in output includes real descriptor messages, not a placeholder.
 
 Run `crystal spec` to check the public wrapper and generated well-known types,
 including FloatValue/DoubleValue without Float extensions, positive and negative
-zero, non-finite values, unknown fields and malformed wire types. CI regenerates
+zero, non-finite values, unknown fields and truncated payloads. A known field
+number with a different wire type is preserved as an unknown field, matching
+the official Protobuf runtime. CI regenerates
 all files and checks for differences before running specs and compiling examples.
 
 Wrapper regression tests use a recording channel without a running MinKNOW
@@ -33,6 +35,16 @@ actions, required calibration ranges and protocol run IDs, fractional timeouts,
 and local authentication precedence, token files and manager-port lookup.
 `make gen` also regenerates the Google RPC status type required by the v2 API
 from its pinned schema under `vendor/google/rpc`.
+
+`spec/live_reads_integration_spec.cr` also exercises the actual generated
+`get_live_reads` client over local HTTP/2. It interleaves setup, a 128 KiB signal
+response and action acknowledgements, preserves successful and failed server
+completion, and reopens a stream after cancellation. The peer is a local test
+service; it does not connect to MinKNOW or operate sequencing hardware.
+
+CI shuffles examples with `github.run_id` as the reproducible seed. Replay a
+failure with `crystal spec --order SEED`. The gRPC repository additionally tests
+its candidate source against a pinned checkout of this consumer and schema.
 
 ## Release Checklist
 

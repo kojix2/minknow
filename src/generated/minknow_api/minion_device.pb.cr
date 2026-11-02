@@ -19,11 +19,11 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 5
+          case {fn, wt}
+          when {5, Proto::WireType::FIXED32}
             reader.expect_wire_type!(5, wt, Proto::WireType::FIXED32)
             msg.min = reader.read_float
-          when 6
+          when {6, Proto::WireType::FIXED32}
             reader.expect_wire_type!(6, wt, Proto::WireType::FIXED32)
             msg.max = reader.read_float
           else
@@ -93,14 +93,14 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::VARINT}
             reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             msg.clock_divider = reader.read_uint32
-          when 2
+          when {2, Proto::WireType::VARINT}
             reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
             msg.integration_time = reader.read_uint32
-          when 3
+          when {3, Proto::WireType::VARINT}
             reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
@@ -303,11 +303,11 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::VARINT}
               reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
               msg.key = reader.read_uint32
-            when 2
+            when {2, Proto::WireType::VARINT}
               reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
               _raw_u64 = reader.read_uint64
               _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
@@ -560,270 +560,270 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             msg.bias_voltage = reader.read_embedded(1, wt) do |sub|
               if current = msg.bias_voltage
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                Google::Protobuf::Int32Value.decode_partial(merged)
+                Google::Protobuf::Int32Value.decode_partial(sub.rewrap(merged.to_slice))
               else
                 Google::Protobuf::Int32Value.decode_partial(sub)
               end
             end
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             msg.sampling_frequency = reader.read_embedded(2, wt) do |sub|
               if current = msg.sampling_frequency
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                Google::Protobuf::UInt32Value.decode_partial(merged)
+                Google::Protobuf::UInt32Value.decode_partial(sub.rewrap(merged.to_slice))
               else
                 Google::Protobuf::UInt32Value.decode_partial(sub)
               end
             end
-          when 3
+          when {3, Proto::WireType::LENGTH_DELIMITED}
             entry = reader.read_embedded(3, wt) { |sub| MinionDeviceSettings::ChannelConfigEntry.decode_partial(sub) }
             msg.channel_config[entry.key] = entry.value
-          when 4
+          when {4, Proto::WireType::LENGTH_DELIMITED}
             msg.enable_temperature_control = reader.read_embedded(4, wt) do |sub|
               if current = msg.enable_temperature_control
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                Google::Protobuf::BoolValue.decode_partial(merged)
+                Google::Protobuf::BoolValue.decode_partial(sub.rewrap(merged.to_slice))
               else
                 Google::Protobuf::BoolValue.decode_partial(sub)
               end
             end
-          when 5
+          when {5, Proto::WireType::LENGTH_DELIMITED}
             msg.temperature_target = reader.read_embedded(5, wt) do |sub|
               if current = msg.temperature_target
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                TemperatureRange.decode_partial(merged)
+                TemperatureRange.decode_partial(sub.rewrap(merged.to_slice))
               else
                 TemperatureRange.decode_partial(sub)
               end
             end
-          when 6
+          when {6, Proto::WireType::VARINT}
             reader.expect_wire_type!(6, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.int_capacitor = Proto::OpenEnum(MinionDeviceSettings::IntegrationCapacitor).new(_raw)
-          when 7
+          when {7, Proto::WireType::LENGTH_DELIMITED}
             msg.test_current = reader.read_embedded(7, wt) do |sub|
               if current = msg.test_current
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                Google::Protobuf::UInt32Value.decode_partial(merged)
+                Google::Protobuf::UInt32Value.decode_partial(sub.rewrap(merged.to_slice))
               else
                 Google::Protobuf::UInt32Value.decode_partial(sub)
               end
             end
-          when 8
+          when {8, Proto::WireType::LENGTH_DELIMITED}
             msg.unblock_voltage = reader.read_embedded(8, wt) do |sub|
               if current = msg.unblock_voltage
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                Google::Protobuf::Int32Value.decode_partial(merged)
+                Google::Protobuf::Int32Value.decode_partial(sub.rewrap(merged.to_slice))
               else
                 Google::Protobuf::Int32Value.decode_partial(sub)
               end
             end
-          when 10
+          when {10, Proto::WireType::LENGTH_DELIMITED}
             msg.overcurrent_limit = reader.read_embedded(10, wt) do |sub|
               if current = msg.overcurrent_limit
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                Google::Protobuf::BoolValue.decode_partial(merged)
+                Google::Protobuf::BoolValue.decode_partial(sub.rewrap(merged.to_slice))
               else
                 Google::Protobuf::BoolValue.decode_partial(sub)
               end
             end
-          when 11
+          when {11, Proto::WireType::LENGTH_DELIMITED}
             msg.samples_to_reset = reader.read_embedded(11, wt) do |sub|
               if current = msg.samples_to_reset
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                Google::Protobuf::UInt32Value.decode_partial(merged)
+                Google::Protobuf::UInt32Value.decode_partial(sub.rewrap(merged.to_slice))
               else
                 Google::Protobuf::UInt32Value.decode_partial(sub)
               end
             end
-          when 12
+          when {12, Proto::WireType::VARINT}
             reader.expect_wire_type!(12, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.th_gain = Proto::OpenEnum(MinionDeviceSettings::Gain).new(_raw)
-          when 13
+          when {13, Proto::WireType::LENGTH_DELIMITED}
             msg.sinc_delay = reader.read_embedded(13, wt) do |sub|
               if current = msg.sinc_delay
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                Google::Protobuf::UInt32Value.decode_partial(merged)
+                Google::Protobuf::UInt32Value.decode_partial(sub.rewrap(merged.to_slice))
               else
                 Google::Protobuf::UInt32Value.decode_partial(sub)
               end
             end
-          when 14
+          when {14, Proto::WireType::LENGTH_DELIMITED}
             msg.th_sample_time = reader.read_embedded(14, wt) do |sub|
               if current = msg.th_sample_time
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                Google::Protobuf::FloatValue.decode_partial(merged)
+                Google::Protobuf::FloatValue.decode_partial(sub.rewrap(merged.to_slice))
               else
                 Google::Protobuf::FloatValue.decode_partial(sub)
               end
             end
-          when 15
+          when {15, Proto::WireType::LENGTH_DELIMITED}
             msg.int_reset_time = reader.read_embedded(15, wt) do |sub|
               if current = msg.int_reset_time
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                Google::Protobuf::FloatValue.decode_partial(merged)
+                Google::Protobuf::FloatValue.decode_partial(sub.rewrap(merged.to_slice))
               else
                 Google::Protobuf::FloatValue.decode_partial(sub)
               end
             end
-          when 16
+          when {16, Proto::WireType::VARINT}
             reader.expect_wire_type!(16, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.sinc_decimation = Proto::OpenEnum(MinionDeviceSettings::Decimation).new(_raw)
-          when 17
+          when {17, Proto::WireType::VARINT}
             reader.expect_wire_type!(17, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.low_pass_filter = Proto::OpenEnum(MinionDeviceSettings::LowPassFilter).new(_raw)
-          when 18
+          when {18, Proto::WireType::VARINT}
             reader.expect_wire_type!(18, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.non_overlap_clock = Proto::OpenEnum(MinionDeviceSettings::NonOverlapClock).new(_raw)
-          when 19
+          when {19, Proto::WireType::LENGTH_DELIMITED}
             msg.bias_current = reader.read_embedded(19, wt) do |sub|
               if current = msg.bias_current
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                Google::Protobuf::UInt32Value.decode_partial(merged)
+                Google::Protobuf::UInt32Value.decode_partial(sub.rewrap(merged.to_slice))
               else
                 Google::Protobuf::UInt32Value.decode_partial(sub)
               end
             end
-          when 20
+          when {20, Proto::WireType::LENGTH_DELIMITED}
             msg.compensation_capacitor = reader.read_embedded(20, wt) do |sub|
               if current = msg.compensation_capacitor
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                Google::Protobuf::UInt32Value.decode_partial(merged)
+                Google::Protobuf::UInt32Value.decode_partial(sub.rewrap(merged.to_slice))
               else
                 Google::Protobuf::UInt32Value.decode_partial(sub)
               end
             end
-          when 21
+          when {21, Proto::WireType::LENGTH_DELIMITED}
             msg.sampling_frequency_params = reader.read_embedded(21, wt) do |sub|
               if current = msg.sampling_frequency_params
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                SamplingFrequencyParameters.decode_partial(merged)
+                SamplingFrequencyParameters.decode_partial(sub.rewrap(merged.to_slice))
               else
                 SamplingFrequencyParameters.decode_partial(sub)
               end
             end
-          when 22
+          when {22, Proto::WireType::LENGTH_DELIMITED}
             msg.enable_asic_power = reader.read_embedded(22, wt) do |sub|
               if current = msg.enable_asic_power
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                Google::Protobuf::BoolValue.decode_partial(merged)
+                Google::Protobuf::BoolValue.decode_partial(sub.rewrap(merged.to_slice))
               else
                 Google::Protobuf::BoolValue.decode_partial(sub)
               end
             end
-          when 23
+          when {23, Proto::WireType::VARINT}
             reader.expect_wire_type!(23, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.fan_speed = Proto::OpenEnum(MinionDeviceSettings::FanSpeed).new(_raw)
-          when 24
+          when {24, Proto::WireType::LENGTH_DELIMITED}
             msg.allow_full_fan_stop = reader.read_embedded(24, wt) do |sub|
               if current = msg.allow_full_fan_stop
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                Google::Protobuf::BoolValue.decode_partial(merged)
+                Google::Protobuf::BoolValue.decode_partial(sub.rewrap(merged.to_slice))
               else
                 Google::Protobuf::BoolValue.decode_partial(sub)
               end
             end
-          when 25
+          when {25, Proto::WireType::LENGTH_DELIMITED}
             msg.enable_soft_temperature_control = reader.read_embedded(25, wt) do |sub|
               if current = msg.enable_soft_temperature_control
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                Google::Protobuf::BoolValue.decode_partial(merged)
+                Google::Protobuf::BoolValue.decode_partial(sub.rewrap(merged.to_slice))
               else
                 Google::Protobuf::BoolValue.decode_partial(sub)
               end
             end
-          when 26
+          when {26, Proto::WireType::LENGTH_DELIMITED}
             msg.enable_bias_voltage_lookup = reader.read_embedded(26, wt) do |sub|
               if current = msg.enable_bias_voltage_lookup
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                Google::Protobuf::BoolValue.decode_partial(merged)
+                Google::Protobuf::BoolValue.decode_partial(sub.rewrap(merged.to_slice))
               else
                 Google::Protobuf::BoolValue.decode_partial(sub)
               end
             end
-          when 27
+          when {27, Proto::WireType::VARINT}, {27, Proto::WireType::LENGTH_DELIMITED}
             if reader.packed_wire_type?(27, wt, Proto::WireType::VARINT)
-              reader.read_packed_varint { |v| msg.bias_voltage_lookup_table << v.to_i32! }
+              reader.read_packed_varint { |v| msg.bias_voltage_lookup_table << Proto::Wire::Reader.int32_from_varint(v) }
             else
               msg.bias_voltage_lookup_table << reader.read_int32
             end
-          when 28
+          when {28, Proto::WireType::LENGTH_DELIMITED}
             msg.samples_per_lut = reader.read_embedded(28, wt) do |sub|
               if current = msg.samples_per_lut
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                Google::Protobuf::UInt32Value.decode_partial(merged)
+                Google::Protobuf::UInt32Value.decode_partial(sub.rewrap(merged.to_slice))
               else
                 Google::Protobuf::UInt32Value.decode_partial(sub)
               end
@@ -1002,20 +1002,20 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             msg.settings = reader.read_embedded(1, wt) do |sub|
               if current = msg.settings
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                MinionDeviceSettings.decode_partial(merged)
+                MinionDeviceSettings.decode_partial(sub.rewrap(merged.to_slice))
               else
                 MinionDeviceSettings.decode_partial(sub)
               end
             end
-          when 2
+          when {2, Proto::WireType::VARINT}
             reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
@@ -1066,7 +1066,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1102,7 +1102,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1156,15 +1156,15 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             msg.settings = reader.read_embedded(1, wt) do |sub|
               if current = msg.settings
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                MinionDeviceSettings.decode_partial(merged)
+                MinionDeviceSettings.decode_partial(sub.rewrap(merged.to_slice))
               else
                 MinionDeviceSettings.decode_partial(sub)
               end
@@ -1210,7 +1210,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1248,8 +1248,8 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::VARINT}
             reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             msg.rpm = reader.read_uint32
           else

@@ -707,29 +707,29 @@ module MinknowApi::HardwareCheck
         GRPC::ProtoMarshaller(T).new
       end
 
-      abstract def start_hardware_check(request : StartHardwareCheckRequest, ctx : GRPC::ServerContext) : StartHardwareCheckResponse
-      abstract def stop_hardware_check(request : StopHardwareCheckRequest, ctx : GRPC::ServerContext) : StopHardwareCheckResponse
-      abstract def update_hardware_check_results(request : UpdateHardwareCheckResultsRequest, ctx : GRPC::ServerContext) : UpdateHardwareCheckResultsResponse
-      abstract def stream_hardware_check_results(request : StreamHardwareCheckResultsRequest, writer : GRPC::ResponseStream(StreamHardwareCheckResultsResponse), ctx : GRPC::ServerContext) : GRPC::Status
-      abstract def generate_hardware_check_report(request : GenerateHardwareCheckReportRequest, writer : GRPC::ResponseStream(GenerateHardwareCheckReportResponse), ctx : GRPC::ServerContext) : GRPC::Status
+      abstract def start_hardware_check(request : ::MinknowApi::HardwareCheck::StartHardwareCheckRequest, ctx : GRPC::ServerContext) : ::MinknowApi::HardwareCheck::StartHardwareCheckResponse
+      abstract def stop_hardware_check(request : ::MinknowApi::HardwareCheck::StopHardwareCheckRequest, ctx : GRPC::ServerContext) : ::MinknowApi::HardwareCheck::StopHardwareCheckResponse
+      abstract def update_hardware_check_results(request : ::MinknowApi::HardwareCheck::UpdateHardwareCheckResultsRequest, ctx : GRPC::ServerContext) : ::MinknowApi::HardwareCheck::UpdateHardwareCheckResultsResponse
+      abstract def stream_hardware_check_results(request : ::MinknowApi::HardwareCheck::StreamHardwareCheckResultsRequest, writer : GRPC::ResponseStream(::MinknowApi::HardwareCheck::StreamHardwareCheckResultsResponse), ctx : GRPC::ServerContext) : GRPC::Status
+      abstract def generate_hardware_check_report(request : ::MinknowApi::HardwareCheck::GenerateHardwareCheckReportRequest, writer : GRPC::ResponseStream(::MinknowApi::HardwareCheck::GenerateHardwareCheckReportResponse), ctx : GRPC::ServerContext) : GRPC::Status
 
       def dispatch(method : String, body : Bytes, ctx : GRPC::ServerContext) : {Bytes, GRPC::Status}
         case method
         when "start_hardware_check"
-          req_marshaller = marshaller_for(StartHardwareCheckRequest)
-          res_marshaller = marshaller_for(StartHardwareCheckResponse)
+          req_marshaller = marshaller_for(::MinknowApi::HardwareCheck::StartHardwareCheckRequest)
+          res_marshaller = marshaller_for(::MinknowApi::HardwareCheck::StartHardwareCheckResponse)
           req = req_marshaller.decode(body)
           resp = start_hardware_check(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "stop_hardware_check"
-          req_marshaller = marshaller_for(StopHardwareCheckRequest)
-          res_marshaller = marshaller_for(StopHardwareCheckResponse)
+          req_marshaller = marshaller_for(::MinknowApi::HardwareCheck::StopHardwareCheckRequest)
+          res_marshaller = marshaller_for(::MinknowApi::HardwareCheck::StopHardwareCheckResponse)
           req = req_marshaller.decode(body)
           resp = stop_hardware_check(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "update_hardware_check_results"
-          req_marshaller = marshaller_for(UpdateHardwareCheckResultsRequest)
-          res_marshaller = marshaller_for(UpdateHardwareCheckResultsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::HardwareCheck::UpdateHardwareCheckResultsRequest)
+          res_marshaller = marshaller_for(::MinknowApi::HardwareCheck::UpdateHardwareCheckResultsResponse)
           req = req_marshaller.decode(body)
           resp = update_hardware_check_results(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
@@ -755,14 +755,14 @@ module MinknowApi::HardwareCheck
                                  writer : GRPC::RawResponseStream) : GRPC::Status
         case method
         when "stream_hardware_check_results"
-          req_marshaller = marshaller_for(StreamHardwareCheckResultsRequest)
-          res_marshaller = marshaller_for(StreamHardwareCheckResultsResponse)
-          typed_writer = GRPC::ResponseStream(StreamHardwareCheckResultsResponse).new(writer, res_marshaller)
+          req_marshaller = marshaller_for(::MinknowApi::HardwareCheck::StreamHardwareCheckResultsRequest)
+          res_marshaller = marshaller_for(::MinknowApi::HardwareCheck::StreamHardwareCheckResultsResponse)
+          typed_writer = GRPC::ResponseStream(::MinknowApi::HardwareCheck::StreamHardwareCheckResultsResponse).new(writer, res_marshaller)
           stream_hardware_check_results(req_marshaller.decode(body), typed_writer, ctx)
         when "generate_hardware_check_report"
-          req_marshaller = marshaller_for(GenerateHardwareCheckReportRequest)
-          res_marshaller = marshaller_for(GenerateHardwareCheckReportResponse)
-          typed_writer = GRPC::ResponseStream(GenerateHardwareCheckReportResponse).new(writer, res_marshaller)
+          req_marshaller = marshaller_for(::MinknowApi::HardwareCheck::GenerateHardwareCheckReportRequest)
+          res_marshaller = marshaller_for(::MinknowApi::HardwareCheck::GenerateHardwareCheckReportResponse)
+          typed_writer = GRPC::ResponseStream(::MinknowApi::HardwareCheck::GenerateHardwareCheckReportResponse).new(writer, res_marshaller)
           generate_hardware_check_report(req_marshaller.decode(body), typed_writer, ctx)
         else
           GRPC::Status.unimplemented("method #{method} not found")
@@ -785,72 +785,54 @@ module MinknowApi::HardwareCheck
         GRPC::ProtoMarshaller(T).new
       end
 
-      def start_hardware_check(request : StartHardwareCheckRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : StartHardwareCheckResponse
+      def start_hardware_check(request : ::MinknowApi::HardwareCheck::StartHardwareCheckRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::HardwareCheck::StartHardwareCheckResponse
         start_hardware_check_response(request, ctx).ok!
       end
 
-      def start_hardware_check_response(request : StartHardwareCheckRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(StartHardwareCheckResponse)
-        req_marshaller = marshaller_for(StartHardwareCheckRequest)
-        res_marshaller = marshaller_for(StartHardwareCheckResponse)
+      def start_hardware_check_response(request : ::MinknowApi::HardwareCheck::StartHardwareCheckRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::HardwareCheck::StartHardwareCheckResponse)
+        req_marshaller = marshaller_for(::MinknowApi::HardwareCheck::StartHardwareCheckRequest)
+        res_marshaller = marshaller_for(::MinknowApi::HardwareCheck::StartHardwareCheckResponse)
         response = @channel.unary_call(FULL_NAME, "start_hardware_check", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(StartHardwareCheckResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::HardwareCheck::StartHardwareCheckResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def stop_hardware_check(request : StopHardwareCheckRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : StopHardwareCheckResponse
+      def stop_hardware_check(request : ::MinknowApi::HardwareCheck::StopHardwareCheckRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::HardwareCheck::StopHardwareCheckResponse
         stop_hardware_check_response(request, ctx).ok!
       end
 
-      def stop_hardware_check_response(request : StopHardwareCheckRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(StopHardwareCheckResponse)
-        req_marshaller = marshaller_for(StopHardwareCheckRequest)
-        res_marshaller = marshaller_for(StopHardwareCheckResponse)
+      def stop_hardware_check_response(request : ::MinknowApi::HardwareCheck::StopHardwareCheckRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::HardwareCheck::StopHardwareCheckResponse)
+        req_marshaller = marshaller_for(::MinknowApi::HardwareCheck::StopHardwareCheckRequest)
+        res_marshaller = marshaller_for(::MinknowApi::HardwareCheck::StopHardwareCheckResponse)
         response = @channel.unary_call(FULL_NAME, "stop_hardware_check", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(StopHardwareCheckResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::HardwareCheck::StopHardwareCheckResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def update_hardware_check_results(request : UpdateHardwareCheckResultsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : UpdateHardwareCheckResultsResponse
+      def update_hardware_check_results(request : ::MinknowApi::HardwareCheck::UpdateHardwareCheckResultsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::HardwareCheck::UpdateHardwareCheckResultsResponse
         update_hardware_check_results_response(request, ctx).ok!
       end
 
-      def update_hardware_check_results_response(request : UpdateHardwareCheckResultsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(UpdateHardwareCheckResultsResponse)
-        req_marshaller = marshaller_for(UpdateHardwareCheckResultsRequest)
-        res_marshaller = marshaller_for(UpdateHardwareCheckResultsResponse)
+      def update_hardware_check_results_response(request : ::MinknowApi::HardwareCheck::UpdateHardwareCheckResultsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::HardwareCheck::UpdateHardwareCheckResultsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::HardwareCheck::UpdateHardwareCheckResultsRequest)
+        res_marshaller = marshaller_for(::MinknowApi::HardwareCheck::UpdateHardwareCheckResultsResponse)
         response = @channel.unary_call(FULL_NAME, "update_hardware_check_results", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(UpdateHardwareCheckResultsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::HardwareCheck::UpdateHardwareCheckResultsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def stream_hardware_check_results(request : StreamHardwareCheckResultsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(StreamHardwareCheckResultsResponse)
-        req_marshaller = marshaller_for(StreamHardwareCheckResultsRequest)
-        res_marshaller = marshaller_for(StreamHardwareCheckResultsResponse)
+      def stream_hardware_check_results(request : ::MinknowApi::HardwareCheck::StreamHardwareCheckResultsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::HardwareCheck::StreamHardwareCheckResultsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::HardwareCheck::StreamHardwareCheckResultsRequest)
+        res_marshaller = marshaller_for(::MinknowApi::HardwareCheck::StreamHardwareCheckResultsResponse)
         raw = @channel.open_server_stream(FULL_NAME, "stream_hardware_check_results", req_marshaller.encode(request), ctx)
-        stream = GRPC::ServerStream(StreamHardwareCheckResultsResponse).new(-> { raw.headers }, -> { raw.status }, -> { raw.trailers }, -> { raw.cancel })
-        spawn do
-          begin
-            raw.each { |bytes| stream.push(res_marshaller.decode(bytes)) }
-            stream.finish
-          rescue ex
-            stream.finish(GRPC::Status.internal(ex.message || "error"))
-          end
-        end
-        stream
+        GRPC::ServerStream(::MinknowApi::HardwareCheck::StreamHardwareCheckResultsResponse).new(raw, res_marshaller)
       end
 
-      def generate_hardware_check_report(request : GenerateHardwareCheckReportRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(GenerateHardwareCheckReportResponse)
-        req_marshaller = marshaller_for(GenerateHardwareCheckReportRequest)
-        res_marshaller = marshaller_for(GenerateHardwareCheckReportResponse)
+      def generate_hardware_check_report(request : ::MinknowApi::HardwareCheck::GenerateHardwareCheckReportRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::HardwareCheck::GenerateHardwareCheckReportResponse)
+        req_marshaller = marshaller_for(::MinknowApi::HardwareCheck::GenerateHardwareCheckReportRequest)
+        res_marshaller = marshaller_for(::MinknowApi::HardwareCheck::GenerateHardwareCheckReportResponse)
         raw = @channel.open_server_stream(FULL_NAME, "generate_hardware_check_report", req_marshaller.encode(request), ctx)
-        stream = GRPC::ServerStream(GenerateHardwareCheckReportResponse).new(-> { raw.headers }, -> { raw.status }, -> { raw.trailers }, -> { raw.cancel })
-        spawn do
-          begin
-            raw.each { |bytes| stream.push(res_marshaller.decode(bytes)) }
-            stream.finish
-          rescue ex
-            stream.finish(GRPC::Status.internal(ex.message || "error"))
-          end
-        end
-        stream
+        GRPC::ServerStream(::MinknowApi::HardwareCheck::GenerateHardwareCheckReportResponse).new(raw, res_marshaller)
       end
     end
   end

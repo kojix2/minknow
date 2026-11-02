@@ -1087,57 +1087,57 @@ module MinknowApi::Instance
         GRPC::ProtoMarshaller(T).new
       end
 
-      abstract def get_version_info(request : GetVersionInfoRequest, ctx : GRPC::ServerContext) : GetVersionInfoResponse
-      abstract def get_output_directories(request : GetOutputDirectoriesRequest, ctx : GRPC::ServerContext) : OutputDirectories
-      abstract def get_default_output_directories(request : GetDefaultOutputDirectoriesRequest, ctx : GRPC::ServerContext) : OutputDirectories
-      abstract def set_output_directory(request : SetOutputDirectoryRequest, ctx : GRPC::ServerContext) : SetOutputDirectoryResponse
-      abstract def set_reads_directory(request : SetReadsDirectoryRequest, ctx : GRPC::ServerContext) : SetReadsDirectoryResponse
-      abstract def get_disk_space_info(request : GetDiskSpaceInfoRequest, ctx : GRPC::ServerContext) : GetDiskSpaceInfoResponse
-      abstract def stream_disk_space_info(request : StreamDiskSpaceInfoRequest, writer : GRPC::ResponseStream(GetDiskSpaceInfoResponse), ctx : GRPC::ServerContext) : GRPC::Status
-      abstract def get_machine_id(request : GetMachineIdRequest, ctx : GRPC::ServerContext) : GetMachineIdResponse
-      abstract def stream_instance_activity(request : StreamInstanceActivityRequest, writer : GRPC::ResponseStream(StreamInstanceActivityResponse), ctx : GRPC::ServerContext) : GRPC::Status
+      abstract def get_version_info(request : ::MinknowApi::Instance::GetVersionInfoRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Instance::GetVersionInfoResponse
+      abstract def get_output_directories(request : ::MinknowApi::Instance::GetOutputDirectoriesRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Instance::OutputDirectories
+      abstract def get_default_output_directories(request : ::MinknowApi::Instance::GetDefaultOutputDirectoriesRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Instance::OutputDirectories
+      abstract def set_output_directory(request : ::MinknowApi::Instance::SetOutputDirectoryRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Instance::SetOutputDirectoryResponse
+      abstract def set_reads_directory(request : ::MinknowApi::Instance::SetReadsDirectoryRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Instance::SetReadsDirectoryResponse
+      abstract def get_disk_space_info(request : ::MinknowApi::Instance::GetDiskSpaceInfoRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Instance::GetDiskSpaceInfoResponse
+      abstract def stream_disk_space_info(request : ::MinknowApi::Instance::StreamDiskSpaceInfoRequest, writer : GRPC::ResponseStream(::MinknowApi::Instance::GetDiskSpaceInfoResponse), ctx : GRPC::ServerContext) : GRPC::Status
+      abstract def get_machine_id(request : ::MinknowApi::Instance::GetMachineIdRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Instance::GetMachineIdResponse
+      abstract def stream_instance_activity(request : ::MinknowApi::Instance::StreamInstanceActivityRequest, writer : GRPC::ResponseStream(::MinknowApi::Instance::StreamInstanceActivityResponse), ctx : GRPC::ServerContext) : GRPC::Status
 
       def dispatch(method : String, body : Bytes, ctx : GRPC::ServerContext) : {Bytes, GRPC::Status}
         case method
         when "get_version_info"
-          req_marshaller = marshaller_for(GetVersionInfoRequest)
-          res_marshaller = marshaller_for(GetVersionInfoResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Instance::GetVersionInfoRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Instance::GetVersionInfoResponse)
           req = req_marshaller.decode(body)
           resp = get_version_info(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_output_directories"
-          req_marshaller = marshaller_for(GetOutputDirectoriesRequest)
-          res_marshaller = marshaller_for(OutputDirectories)
+          req_marshaller = marshaller_for(::MinknowApi::Instance::GetOutputDirectoriesRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Instance::OutputDirectories)
           req = req_marshaller.decode(body)
           resp = get_output_directories(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_default_output_directories"
-          req_marshaller = marshaller_for(GetDefaultOutputDirectoriesRequest)
-          res_marshaller = marshaller_for(OutputDirectories)
+          req_marshaller = marshaller_for(::MinknowApi::Instance::GetDefaultOutputDirectoriesRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Instance::OutputDirectories)
           req = req_marshaller.decode(body)
           resp = get_default_output_directories(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_output_directory"
-          req_marshaller = marshaller_for(SetOutputDirectoryRequest)
-          res_marshaller = marshaller_for(SetOutputDirectoryResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Instance::SetOutputDirectoryRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Instance::SetOutputDirectoryResponse)
           req = req_marshaller.decode(body)
           resp = set_output_directory(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_reads_directory"
-          req_marshaller = marshaller_for(SetReadsDirectoryRequest)
-          res_marshaller = marshaller_for(SetReadsDirectoryResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Instance::SetReadsDirectoryRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Instance::SetReadsDirectoryResponse)
           req = req_marshaller.decode(body)
           resp = set_reads_directory(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_disk_space_info"
-          req_marshaller = marshaller_for(GetDiskSpaceInfoRequest)
-          res_marshaller = marshaller_for(GetDiskSpaceInfoResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Instance::GetDiskSpaceInfoRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Instance::GetDiskSpaceInfoResponse)
           req = req_marshaller.decode(body)
           resp = get_disk_space_info(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_machine_id"
-          req_marshaller = marshaller_for(GetMachineIdRequest)
-          res_marshaller = marshaller_for(GetMachineIdResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Instance::GetMachineIdRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Instance::GetMachineIdResponse)
           req = req_marshaller.decode(body)
           resp = get_machine_id(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
@@ -1163,14 +1163,14 @@ module MinknowApi::Instance
                                  writer : GRPC::RawResponseStream) : GRPC::Status
         case method
         when "stream_disk_space_info"
-          req_marshaller = marshaller_for(StreamDiskSpaceInfoRequest)
-          res_marshaller = marshaller_for(GetDiskSpaceInfoResponse)
-          typed_writer = GRPC::ResponseStream(GetDiskSpaceInfoResponse).new(writer, res_marshaller)
+          req_marshaller = marshaller_for(::MinknowApi::Instance::StreamDiskSpaceInfoRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Instance::GetDiskSpaceInfoResponse)
+          typed_writer = GRPC::ResponseStream(::MinknowApi::Instance::GetDiskSpaceInfoResponse).new(writer, res_marshaller)
           stream_disk_space_info(req_marshaller.decode(body), typed_writer, ctx)
         when "stream_instance_activity"
-          req_marshaller = marshaller_for(StreamInstanceActivityRequest)
-          res_marshaller = marshaller_for(StreamInstanceActivityResponse)
-          typed_writer = GRPC::ResponseStream(StreamInstanceActivityResponse).new(writer, res_marshaller)
+          req_marshaller = marshaller_for(::MinknowApi::Instance::StreamInstanceActivityRequest)
+          res_marshaller = marshaller_for(::MinknowApi::Instance::StreamInstanceActivityResponse)
+          typed_writer = GRPC::ResponseStream(::MinknowApi::Instance::StreamInstanceActivityResponse).new(writer, res_marshaller)
           stream_instance_activity(req_marshaller.decode(body), typed_writer, ctx)
         else
           GRPC::Status.unimplemented("method #{method} not found")
@@ -1193,120 +1193,102 @@ module MinknowApi::Instance
         GRPC::ProtoMarshaller(T).new
       end
 
-      def get_version_info(request : GetVersionInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetVersionInfoResponse
+      def get_version_info(request : ::MinknowApi::Instance::GetVersionInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Instance::GetVersionInfoResponse
         get_version_info_response(request, ctx).ok!
       end
 
-      def get_version_info_response(request : GetVersionInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetVersionInfoResponse)
-        req_marshaller = marshaller_for(GetVersionInfoRequest)
-        res_marshaller = marshaller_for(GetVersionInfoResponse)
+      def get_version_info_response(request : ::MinknowApi::Instance::GetVersionInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Instance::GetVersionInfoResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Instance::GetVersionInfoRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Instance::GetVersionInfoResponse)
         response = @channel.unary_call(FULL_NAME, "get_version_info", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetVersionInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Instance::GetVersionInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_output_directories(request : GetOutputDirectoriesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : OutputDirectories
+      def get_output_directories(request : ::MinknowApi::Instance::GetOutputDirectoriesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Instance::OutputDirectories
         get_output_directories_response(request, ctx).ok!
       end
 
-      def get_output_directories_response(request : GetOutputDirectoriesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(OutputDirectories)
-        req_marshaller = marshaller_for(GetOutputDirectoriesRequest)
-        res_marshaller = marshaller_for(OutputDirectories)
+      def get_output_directories_response(request : ::MinknowApi::Instance::GetOutputDirectoriesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Instance::OutputDirectories)
+        req_marshaller = marshaller_for(::MinknowApi::Instance::GetOutputDirectoriesRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Instance::OutputDirectories)
         response = @channel.unary_call(FULL_NAME, "get_output_directories", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(OutputDirectories).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Instance::OutputDirectories).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_default_output_directories(request : GetDefaultOutputDirectoriesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : OutputDirectories
+      def get_default_output_directories(request : ::MinknowApi::Instance::GetDefaultOutputDirectoriesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Instance::OutputDirectories
         get_default_output_directories_response(request, ctx).ok!
       end
 
-      def get_default_output_directories_response(request : GetDefaultOutputDirectoriesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(OutputDirectories)
-        req_marshaller = marshaller_for(GetDefaultOutputDirectoriesRequest)
-        res_marshaller = marshaller_for(OutputDirectories)
+      def get_default_output_directories_response(request : ::MinknowApi::Instance::GetDefaultOutputDirectoriesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Instance::OutputDirectories)
+        req_marshaller = marshaller_for(::MinknowApi::Instance::GetDefaultOutputDirectoriesRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Instance::OutputDirectories)
         response = @channel.unary_call(FULL_NAME, "get_default_output_directories", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(OutputDirectories).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Instance::OutputDirectories).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def set_output_directory(request : SetOutputDirectoryRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : SetOutputDirectoryResponse
+      def set_output_directory(request : ::MinknowApi::Instance::SetOutputDirectoryRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Instance::SetOutputDirectoryResponse
         set_output_directory_response(request, ctx).ok!
       end
 
-      def set_output_directory_response(request : SetOutputDirectoryRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(SetOutputDirectoryResponse)
-        req_marshaller = marshaller_for(SetOutputDirectoryRequest)
-        res_marshaller = marshaller_for(SetOutputDirectoryResponse)
+      def set_output_directory_response(request : ::MinknowApi::Instance::SetOutputDirectoryRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Instance::SetOutputDirectoryResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Instance::SetOutputDirectoryRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Instance::SetOutputDirectoryResponse)
         response = @channel.unary_call(FULL_NAME, "set_output_directory", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(SetOutputDirectoryResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Instance::SetOutputDirectoryResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def set_reads_directory(request : SetReadsDirectoryRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : SetReadsDirectoryResponse
+      def set_reads_directory(request : ::MinknowApi::Instance::SetReadsDirectoryRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Instance::SetReadsDirectoryResponse
         set_reads_directory_response(request, ctx).ok!
       end
 
-      def set_reads_directory_response(request : SetReadsDirectoryRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(SetReadsDirectoryResponse)
-        req_marshaller = marshaller_for(SetReadsDirectoryRequest)
-        res_marshaller = marshaller_for(SetReadsDirectoryResponse)
+      def set_reads_directory_response(request : ::MinknowApi::Instance::SetReadsDirectoryRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Instance::SetReadsDirectoryResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Instance::SetReadsDirectoryRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Instance::SetReadsDirectoryResponse)
         response = @channel.unary_call(FULL_NAME, "set_reads_directory", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(SetReadsDirectoryResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Instance::SetReadsDirectoryResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_disk_space_info(request : GetDiskSpaceInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetDiskSpaceInfoResponse
+      def get_disk_space_info(request : ::MinknowApi::Instance::GetDiskSpaceInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Instance::GetDiskSpaceInfoResponse
         get_disk_space_info_response(request, ctx).ok!
       end
 
-      def get_disk_space_info_response(request : GetDiskSpaceInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetDiskSpaceInfoResponse)
-        req_marshaller = marshaller_for(GetDiskSpaceInfoRequest)
-        res_marshaller = marshaller_for(GetDiskSpaceInfoResponse)
+      def get_disk_space_info_response(request : ::MinknowApi::Instance::GetDiskSpaceInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Instance::GetDiskSpaceInfoResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Instance::GetDiskSpaceInfoRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Instance::GetDiskSpaceInfoResponse)
         response = @channel.unary_call(FULL_NAME, "get_disk_space_info", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetDiskSpaceInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Instance::GetDiskSpaceInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def stream_disk_space_info(request : StreamDiskSpaceInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(GetDiskSpaceInfoResponse)
-        req_marshaller = marshaller_for(StreamDiskSpaceInfoRequest)
-        res_marshaller = marshaller_for(GetDiskSpaceInfoResponse)
+      def stream_disk_space_info(request : ::MinknowApi::Instance::StreamDiskSpaceInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Instance::GetDiskSpaceInfoResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Instance::StreamDiskSpaceInfoRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Instance::GetDiskSpaceInfoResponse)
         raw = @channel.open_server_stream(FULL_NAME, "stream_disk_space_info", req_marshaller.encode(request), ctx)
-        stream = GRPC::ServerStream(GetDiskSpaceInfoResponse).new(-> { raw.headers }, -> { raw.status }, -> { raw.trailers }, -> { raw.cancel })
-        spawn do
-          begin
-            raw.each { |bytes| stream.push(res_marshaller.decode(bytes)) }
-            stream.finish
-          rescue ex
-            stream.finish(GRPC::Status.internal(ex.message || "error"))
-          end
-        end
-        stream
+        GRPC::ServerStream(::MinknowApi::Instance::GetDiskSpaceInfoResponse).new(raw, res_marshaller)
       end
 
-      def get_machine_id(request : GetMachineIdRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetMachineIdResponse
+      def get_machine_id(request : ::MinknowApi::Instance::GetMachineIdRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Instance::GetMachineIdResponse
         get_machine_id_response(request, ctx).ok!
       end
 
-      def get_machine_id_response(request : GetMachineIdRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetMachineIdResponse)
-        req_marshaller = marshaller_for(GetMachineIdRequest)
-        res_marshaller = marshaller_for(GetMachineIdResponse)
+      def get_machine_id_response(request : ::MinknowApi::Instance::GetMachineIdRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Instance::GetMachineIdResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Instance::GetMachineIdRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Instance::GetMachineIdResponse)
         response = @channel.unary_call(FULL_NAME, "get_machine_id", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetMachineIdResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::Instance::GetMachineIdResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def stream_instance_activity(request : StreamInstanceActivityRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(StreamInstanceActivityResponse)
-        req_marshaller = marshaller_for(StreamInstanceActivityRequest)
-        res_marshaller = marshaller_for(StreamInstanceActivityResponse)
+      def stream_instance_activity(request : ::MinknowApi::Instance::StreamInstanceActivityRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Instance::StreamInstanceActivityResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Instance::StreamInstanceActivityRequest)
+        res_marshaller = marshaller_for(::MinknowApi::Instance::StreamInstanceActivityResponse)
         raw = @channel.open_server_stream(FULL_NAME, "stream_instance_activity", req_marshaller.encode(request), ctx)
-        stream = GRPC::ServerStream(StreamInstanceActivityResponse).new(-> { raw.headers }, -> { raw.status }, -> { raw.trailers }, -> { raw.cancel })
-        spawn do
-          begin
-            raw.each { |bytes| stream.push(res_marshaller.decode(bytes)) }
-            stream.finish
-          rescue ex
-            stream.finish(GRPC::Status.internal(ex.message || "error"))
-          end
-        end
-        stream
+        GRPC::ServerStream(::MinknowApi::Instance::StreamInstanceActivityResponse).new(raw, res_marshaller)
       end
     end
   end

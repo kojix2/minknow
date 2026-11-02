@@ -75,7 +75,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -171,11 +171,11 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::VARINT}
               reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
               msg.is_gpu = reader.read_bool
-            when 2
+            when {2, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.gpus << reader.read_string
             else
@@ -255,50 +255,50 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.product_code = reader.read_string
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.description = reader.read_string
-          when 3
+          when {3, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(3, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.serial = reader.read_string
-          when 4
+          when {4, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(4, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.network_name = reader.read_string
-          when 16
+          when {16, Proto::WireType::VARINT}
             reader.expect_wire_type!(16, wt, Proto::WireType::VARINT)
             msg.needs_association = reader.read_bool
-          when 5
+          when {5, Proto::WireType::VARINT}
             reader.expect_wire_type!(5, wt, Proto::WireType::VARINT)
             msg.can_sequence_offline = reader.read_bool
-          when 17
+          when {17, Proto::WireType::VARINT}
             reader.expect_wire_type!(17, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.can_connect_to_usb_device = Proto::OpenEnum(DescribeHostResponse::HostUsbSequencerAvailability).new(_raw)
-          when 6
+          when {6, Proto::WireType::VARINT}
             reader.expect_wire_type!(6, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.can_basecall = Proto::OpenEnum(DescribeHostResponse::BasecallingAvailability).new(_raw)
-          when 7
+          when {7, Proto::WireType::LENGTH_DELIMITED}
             msg.current_basecalling_hardware = reader.read_embedded(7, wt) do |sub|
               if current = msg.current_basecalling_hardware
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                DescribeHostResponse::BasecallerSubstrate.decode_partial(merged)
+                DescribeHostResponse::BasecallerSubstrate.decode_partial(sub.rewrap(merged.to_slice))
               else
                 DescribeHostResponse::BasecallerSubstrate.decode_partial(sub)
               end
             end
-          when 8
+          when {8, Proto::WireType::LENGTH_DELIMITED}
             msg.available_basecalling_hardware << reader.read_embedded(8, wt) { |sub| DescribeHostResponse::BasecallerSubstrate.decode_partial(sub) }
-          when 9
+          when {9, Proto::WireType::VARINT}
             reader.expect_wire_type!(9, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
@@ -393,7 +393,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -434,8 +434,8 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::VARINT}
             reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             msg.is_live_basecalling_with_adaptive_sampling_recommended = reader.read_bool
           else
@@ -508,11 +508,11 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::VARINT}
               reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
               msg.x = reader.read_int32
-            when 2
+            when {2, Proto::WireType::VARINT}
               reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
               msg.y = reader.read_int32
             else
@@ -563,11 +563,11 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::VARINT}
               reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
               msg.secure = reader.read_uint32
-            when 3
+            when {3, Proto::WireType::VARINT}
               reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
               msg.secure_grpc_web = reader.read_uint32
             else
@@ -617,8 +617,8 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::VARINT}
               reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
               msg.group_id = reader.read_uint32
             else
@@ -719,86 +719,86 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.name = reader.read_string
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             msg.location = reader.read_embedded(2, wt) do |sub|
               if current = msg.location
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                FlowCellPosition::Location.decode_partial(merged)
+                FlowCellPosition::Location.decode_partial(sub.rewrap(merged.to_slice))
               else
                 FlowCellPosition::Location.decode_partial(sub)
               end
             end
-          when 3
+          when {3, Proto::WireType::VARINT}
             reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.state = Proto::OpenEnum(FlowCellPosition::State).new(_raw)
-          when 4
+          when {4, Proto::WireType::LENGTH_DELIMITED}
             msg.rpc_ports = reader.read_embedded(4, wt) do |sub|
               if current = msg.rpc_ports
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                FlowCellPosition::RpcPorts.decode_partial(merged)
+                FlowCellPosition::RpcPorts.decode_partial(sub.rewrap(merged.to_slice))
               else
                 FlowCellPosition::RpcPorts.decode_partial(sub)
               end
             end
-          when 5
+          when {5, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(5, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.error_info = reader.read_string
-          when 6
+          when {6, Proto::WireType::LENGTH_DELIMITED}
             msg.shared_hardware_group = reader.read_embedded(6, wt) do |sub|
               if current = msg.shared_hardware_group
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                FlowCellPosition::SharedHardwareGroup.decode_partial(merged)
+                FlowCellPosition::SharedHardwareGroup.decode_partial(sub.rewrap(merged.to_slice))
               else
                 FlowCellPosition::SharedHardwareGroup.decode_partial(sub)
               end
             end
-          when 7
+          when {7, Proto::WireType::VARINT}
             reader.expect_wire_type!(7, wt, Proto::WireType::VARINT)
             msg.is_integrated = reader.read_bool
-          when 8
+          when {8, Proto::WireType::VARINT}
             reader.expect_wire_type!(8, wt, Proto::WireType::VARINT)
             msg.can_sequence_offline = reader.read_bool
-          when 9
+          when {9, Proto::WireType::VARINT}
             reader.expect_wire_type!(9, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.protocol_state = Proto::OpenEnum(SimpleProtocolState).new(_raw)
-          when 10
+          when {10, Proto::WireType::VARINT}
             reader.expect_wire_type!(10, wt, Proto::WireType::VARINT)
             msg.is_simulated = reader.read_bool
-          when 11
+          when {11, Proto::WireType::VARINT}
             reader.expect_wire_type!(11, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.device_type = Proto::OpenEnum(MinknowApi::Device::GetDeviceInfoResponse::DeviceType).new(_raw)
-          when 12
+          when {12, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(12, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.parent_name = reader.read_string
-          when 13
+          when {13, Proto::WireType::VARINT}
             reader.expect_wire_type!(13, wt, Proto::WireType::VARINT)
             msg.firmware_is_updating = reader.read_bool
-          when 14
+          when {14, Proto::WireType::VARINT}
             reader.expect_wire_type!(14, wt, Proto::WireType::VARINT)
             msg.has_progress = reader.read_bool
-          when 15
+          when {15, Proto::WireType::VARINT}
             reader.expect_wire_type!(15, wt, Proto::WireType::VARINT)
             msg.progress_percent = reader.read_uint32
-          when 16
+          when {16, Proto::WireType::VARINT}
             reader.expect_wire_type!(16, wt, Proto::WireType::VARINT)
             msg.progress_eta_seconds = reader.read_uint32
           else
@@ -915,7 +915,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -964,11 +964,11 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::VARINT}
             reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             msg.total_count = reader.read_int32
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             msg.positions << reader.read_embedded(2, wt) { |sub| FlowCellPosition.decode_partial(sub) }
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
@@ -1016,7 +1016,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1069,12 +1069,12 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             msg.additions << reader.read_embedded(1, wt) { |sub| FlowCellPosition.decode_partial(sub) }
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             msg.changes << reader.read_embedded(2, wt) { |sub| FlowCellPosition.decode_partial(sub) }
-          when 3
+          when {3, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(3, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.removals << reader.read_string
           else
@@ -1133,11 +1133,11 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 3
+          case {fn, wt}
+          when {3, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(3, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.positions << reader.read_string
-          when 2
+          when {2, Proto::WireType::VARINT}
             reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
             msg.force = reader.read_bool
           else
@@ -1185,7 +1185,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1221,7 +1221,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1260,11 +1260,11 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::VARINT}
             reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             msg.secure = reader.read_uint32
-          when 3
+          when {3, Proto::WireType::VARINT}
             reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
             msg.secure_grpc_web = reader.read_uint32
           else
@@ -1312,7 +1312,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1380,14 +1380,14 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::VARINT}
             reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             msg.port = reader.read_uint32
-          when 3
+          when {3, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(3, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.ipc_path = reader.read_string
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.version = reader.read_string
           else
@@ -1441,7 +1441,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1479,8 +1479,8 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.path = reader.read_string
           else
@@ -1530,14 +1530,14 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.name = reader.read_string
-            when 2
+            when {2, Proto::WireType::VARINT}
               reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
               msg.directory_count = reader.read_int32
-            when 3
+            when {3, Proto::WireType::VARINT}
               reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
               msg.file_count = reader.read_int32
             else
@@ -1601,13 +1601,13 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             msg.directories << reader.read_embedded(1, wt) { |sub| ListProtocolOutputDirFilesResponse::DirectoryInfo.decode_partial(sub) }
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.files << reader.read_string
-          when 3
+          when {3, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(3, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.current_listed_path = reader.read_string
           else
@@ -1664,11 +1664,11 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.parent_path = reader.read_string
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.name = reader.read_string
           else
@@ -1718,8 +1718,8 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.path = reader.read_string
           else
@@ -1776,32 +1776,32 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.filesystem_id = reader.read_string
-          when 2
+          when {2, Proto::WireType::VARINT}
             reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
             msg.bytes_available = reader.read_uint64
-          when 3
+          when {3, Proto::WireType::VARINT}
             reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
             msg.bytes_capacity = reader.read_uint64
-          when 4
+          when {4, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(4, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.file_types_stored << reader.read_string
-          when 5
+          when {5, Proto::WireType::VARINT}
             reader.expect_wire_type!(5, wt, Proto::WireType::VARINT)
             msg.bytes_to_stop_cleanly = reader.read_uint64
-          when 6
+          when {6, Proto::WireType::VARINT}
             reader.expect_wire_type!(6, wt, Proto::WireType::VARINT)
             msg.bytes_when_alert_issued = reader.read_uint64
-          when 7
+          when {7, Proto::WireType::VARINT}
             reader.expect_wire_type!(7, wt, Proto::WireType::VARINT)
             msg.recommend_alert = reader.read_bool
-          when 8
+          when {8, Proto::WireType::VARINT}
             reader.expect_wire_type!(8, wt, Proto::WireType::VARINT)
             msg.recommend_stop = reader.read_bool
-          when 9
+          when {9, Proto::WireType::VARINT}
             reader.expect_wire_type!(9, wt, Proto::WireType::VARINT)
             msg.bytes_per_second = reader.read_int64
           else
@@ -1884,7 +1884,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1922,8 +1922,8 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::VARINT}
             reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             msg.period = reader.read_uint32
           else
@@ -1978,8 +1978,8 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             msg.filesystem_disk_space_info << reader.read_embedded(1, wt) { |sub| FilesystemDiskSpaceInfo.decode_partial(sub) }
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
@@ -2022,7 +2022,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -2069,11 +2069,11 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 2
+            case {fn, wt}
+            when {2, Proto::WireType::VARINT}
               reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
               msg.is_dual = reader.read_bool
-            when 3
+            when {3, Proto::WireType::VARINT}
               reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
               msg.is_both_ends = reader.read_bool
             else
@@ -2140,18 +2140,18 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.key = reader.read_string
-            when 2
+            when {2, Proto::WireType::LENGTH_DELIMITED}
               msg.value = reader.read_embedded(2, wt) do |sub|
                 if current = msg.value
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  GetBarcodeKitInfoResponse::BarcodeKitInfo.decode_partial(merged)
+                  GetBarcodeKitInfoResponse::BarcodeKitInfo.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   GetBarcodeKitInfoResponse::BarcodeKitInfo.decode_partial(sub)
                 end
@@ -2211,8 +2211,8 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             entry = reader.read_embedded(1, wt) { |sub| GetBarcodeKitInfoResponse::BarcodeKitInfoEntry.decode_partial(sub) }
             msg.barcode_kit_info[entry.key] = entry.value || GetBarcodeKitInfoResponse::BarcodeKitInfo.new
           else
@@ -2259,7 +2259,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -2297,8 +2297,8 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 2
+          case {fn, wt}
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.lamp_kits << reader.read_string
           else
@@ -2344,11 +2344,11 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.barcode_kit_names << reader.read_string
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.lamp_kit_name = reader.read_string
           else
@@ -2400,14 +2400,14 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.barcode_keys << reader.read_string
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.lamp_keys << reader.read_string
-          when 3
+          when {3, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(3, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.combined_keys << reader.read_string
           else
@@ -2460,7 +2460,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -2506,16 +2506,16 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.product_code = reader.read_string
-            when 2
+            when {2, Proto::WireType::VARINT}
               reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
               _raw_u64 = reader.read_uint64
               _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
               msg.connector_type = Proto::OpenEnum(MinknowApi::Device::FlowCellConnectorType).new(_raw)
-            when 3
+            when {3, Proto::WireType::VARINT}
               reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
               msg.cannot_live_basecall = reader.read_bool
             else
@@ -2577,8 +2577,8 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             msg.types << reader.read_embedded(1, wt) { |sub| GetFlowCellTypesResponse::Info.decode_partial(sub) }
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
@@ -2623,8 +2623,8 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.flow_cell_product_code = reader.read_string
           else
@@ -2701,41 +2701,41 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.product_code = reader.read_string
-            when 2
+            when {2, Proto::WireType::VARINT}, {2, Proto::WireType::LENGTH_DELIMITED}
               if reader.packed_wire_type?(2, wt, Proto::WireType::VARINT)
-                reader.read_packed_varint { |v| msg.barcoding_expansion_kits << v.to_i32! }
+                reader.read_packed_varint { |v| msg.barcoding_expansion_kits << Proto::Wire::Reader.int32_from_varint(v) }
               else
                 msg.barcoding_expansion_kits << reader.read_int32
               end
-            when 3
+            when {3, Proto::WireType::VARINT}
               reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
               msg.includes_barcoding = reader.read_bool
-            when 16
+            when {16, Proto::WireType::VARINT}
               reader.expect_wire_type!(16, wt, Proto::WireType::VARINT)
               msg.lamp_kit = reader.read_bool
-            when 4
+            when {4, Proto::WireType::VARINT}
               reader.expect_wire_type!(4, wt, Proto::WireType::VARINT)
               msg.has_control_protocol = reader.read_bool
-            when 17
+            when {17, Proto::WireType::VARINT}
               reader.expect_wire_type!(17, wt, Proto::WireType::VARINT)
               msg.no_sequencing_protocol = reader.read_bool
-            when 18
+            when {18, Proto::WireType::VARINT}
               reader.expect_wire_type!(18, wt, Proto::WireType::VARINT)
               msg.frequently_used = reader.read_bool
-            when 5
+            when {5, Proto::WireType::VARINT}
               reader.expect_wire_type!(5, wt, Proto::WireType::VARINT)
               msg.dna = reader.read_bool
-            when 6
+            when {6, Proto::WireType::VARINT}
               reader.expect_wire_type!(6, wt, Proto::WireType::VARINT)
               msg.rna = reader.read_bool
-            when 7
+            when {7, Proto::WireType::VARINT}
               reader.expect_wire_type!(7, wt, Proto::WireType::VARINT)
               msg.pcr = reader.read_bool
-            when 8
+            when {8, Proto::WireType::VARINT}
               reader.expect_wire_type!(8, wt, Proto::WireType::VARINT)
               msg.pcr_free = reader.read_bool
             else
@@ -2830,8 +2830,8 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.product_code = reader.read_string
             else
@@ -2887,10 +2887,10 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             msg.kits << reader.read_embedded(1, wt) { |sub| GetSequencingKitsResponse::Kit.decode_partial(sub) }
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             msg.barcoding_expansion_kits << reader.read_embedded(2, wt) { |sub| GetSequencingKitsResponse::BarcodingExpansionKit.decode_partial(sub) }
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
@@ -2940,11 +2940,11 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.name = reader.read_string
-          when 2
+          when {2, Proto::WireType::VARINT}
             reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
@@ -2994,7 +2994,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -3032,8 +3032,8 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.name = reader.read_string
           else
@@ -3076,7 +3076,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -3112,7 +3112,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -3150,8 +3150,8 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.path = reader.read_string
           else
@@ -3196,8 +3196,8 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.path = reader.read_string
           else
@@ -3250,20 +3250,20 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::FIXED32}
             reader.expect_wire_type!(1, wt, Proto::WireType::FIXED32)
             msg.estimated_load_time_seconds = reader.read_float
-          when 2
+          when {2, Proto::WireType::VARINT}
             reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
             msg.estimated_reference_size_bases = reader.read_uint64
-          when 3
+          when {3, Proto::WireType::VARINT}
             reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
             msg.recommended_live_usage = reader.read_bool
-          when 4
+          when {4, Proto::WireType::VARINT}
             reader.expect_wire_type!(4, wt, Proto::WireType::VARINT)
             msg.recommended_adaptive_sampling_usage = reader.read_bool
-          when 5
+          when {5, Proto::WireType::VARINT}
             reader.expect_wire_type!(5, wt, Proto::WireType::VARINT)
             msg.max_recommended_adaptive_sampling_bases = reader.read_uint64
           else
@@ -3328,8 +3328,8 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.position_name = reader.read_string
           else
@@ -3374,8 +3374,8 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.code = reader.read_string
           else
@@ -3421,11 +3421,11 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.position_name = reader.read_string
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.unlock_code = reader.read_string
           else
@@ -3478,8 +3478,8 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::VARINT}
             reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             msg.associated = reader.read_bool
           else
@@ -3522,7 +3522,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -3581,21 +3581,21 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.id = reader.read_string
-            when 2
+            when {2, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.name = reader.read_string
-            when 3
+            when {3, Proto::WireType::LENGTH_DELIMITED}
               msg.expiry = reader.read_embedded(3, wt) do |sub|
                 if current = msg.expiry
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  Google::Protobuf::Timestamp.decode_partial(merged)
+                  Google::Protobuf::Timestamp.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   Google::Protobuf::Timestamp.decode_partial(sub)
                 end
@@ -3660,8 +3660,8 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             msg.tokens << reader.read_embedded(1, wt) { |sub| ListDeveloperApiTokensResponse::DeveloperApiToken.decode_partial(sub) }
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
@@ -3723,18 +3723,18 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 2
+          case {fn, wt}
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.name = reader.read_string
-          when 3
+          when {3, Proto::WireType::LENGTH_DELIMITED}
             msg.expiry = reader.read_embedded(3, wt) do |sub|
               if current = msg.expiry
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                Google::Protobuf::Timestamp.decode_partial(merged)
+                Google::Protobuf::Timestamp.decode_partial(sub.rewrap(merged.to_slice))
               else
                 Google::Protobuf::Timestamp.decode_partial(sub)
               end
@@ -3788,11 +3788,11 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.id = reader.read_string
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.token = reader.read_string
           else
@@ -3842,8 +3842,8 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.id = reader.read_string
           else
@@ -3886,7 +3886,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -3926,14 +3926,14 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.flow_cell_product_code = reader.read_string
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.sequencing_kit = reader.read_string
-          when 3
+          when {3, Proto::WireType::VARINT}
             reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
@@ -4000,14 +4000,14 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.identifier = reader.read_string
-            when 2
+            when {2, Proto::WireType::VARINT}
               reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
               msg.requires_flow_cell_product_code = reader.read_bool
-            when 3
+            when {3, Proto::WireType::VARINT}
               reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
               msg.requires_sequencing_kit = reader.read_bool
             else
@@ -4069,8 +4069,8 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             msg.protocols << reader.read_embedded(1, wt) { |sub| FindProtocolsResponse::Protocol.decode_partial(sub) }
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
@@ -4157,23 +4157,23 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.identifier = reader.read_string
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             msg.components = reader.read_embedded(2, wt) do |sub|
               if current = msg.components
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                MinknowApi::ProtocolSettings::ProtocolIdentifierComponents.decode_partial(merged)
+                MinknowApi::ProtocolSettings::ProtocolIdentifierComponents.decode_partial(sub.rewrap(merged.to_slice))
               else
                 MinknowApi::ProtocolSettings::ProtocolIdentifierComponents.decode_partial(sub)
               end
             end
-          when 3
+          when {3, Proto::WireType::VARINT}
             reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
@@ -4283,51 +4283,51 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::LENGTH_DELIMITED}
               msg.basecalling_enabled = reader.read_embedded(1, wt) do |sub|
                 if current = msg.basecalling_enabled
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 4
+            when {4, Proto::WireType::LENGTH_DELIMITED}
               msg.basecall_model = reader.read_embedded(4, wt) do |sub|
                 if current = msg.basecall_model
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 20
+            when {20, Proto::WireType::LENGTH_DELIMITED}
               msg.modified_basecalling_models = reader.read_embedded(20, wt) do |sub|
                 if current = msg.modified_basecalling_models
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 21
+            when {21, Proto::WireType::LENGTH_DELIMITED}
               msg.poly_a_tail_length_estimation_enabled = reader.read_embedded(21, wt) do |sub|
                 if current = msg.poly_a_tail_length_estimation_enabled
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
@@ -4413,27 +4413,27 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::LENGTH_DELIMITED}
               msg.mux_scan_period = reader.read_embedded(1, wt) do |sub|
                 if current = msg.mux_scan_period
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 2
+            when {2, Proto::WireType::LENGTH_DELIMITED}
               msg.reserved_pores = reader.read_embedded(2, wt) do |sub|
                 if current = msg.reserved_pores
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
@@ -4521,39 +4521,39 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::LENGTH_DELIMITED}
               msg.trim_barcodes_enabled = reader.read_embedded(1, wt) do |sub|
                 if current = msg.trim_barcodes_enabled
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 2
+            when {2, Proto::WireType::LENGTH_DELIMITED}
               msg.require_barcodes_both_ends = reader.read_embedded(2, wt) do |sub|
                 if current = msg.require_barcodes_both_ends
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 3
+            when {3, Proto::WireType::LENGTH_DELIMITED}
               msg.custom_barcode_selection = reader.read_embedded(3, wt) do |sub|
                 if current = msg.custom_barcode_selection
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
@@ -4635,27 +4635,27 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::LENGTH_DELIMITED}
               msg.alignment_ref_file = reader.read_embedded(1, wt) do |sub|
                 if current = msg.alignment_ref_file
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 2
+            when {2, Proto::WireType::LENGTH_DELIMITED}
               msg.alignment_bed_file = reader.read_embedded(2, wt) do |sub|
                 if current = msg.alignment_bed_file
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
@@ -4863,183 +4863,183 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::LENGTH_DELIMITED}
               msg.fast_q_enabled = reader.read_embedded(1, wt) do |sub|
                 if current = msg.fast_q_enabled
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 2
+            when {2, Proto::WireType::LENGTH_DELIMITED}
               msg.fast_q_reads_per_file = reader.read_embedded(2, wt) do |sub|
                 if current = msg.fast_q_reads_per_file
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 3
+            when {3, Proto::WireType::LENGTH_DELIMITED}
               msg.fast_q_data_compression = reader.read_embedded(3, wt) do |sub|
                 if current = msg.fast_q_data_compression
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 4
+            when {4, Proto::WireType::LENGTH_DELIMITED}
               msg.bam_enabled = reader.read_embedded(4, wt) do |sub|
                 if current = msg.bam_enabled
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 5
+            when {5, Proto::WireType::LENGTH_DELIMITED}
               msg.pod5_enabled = reader.read_embedded(5, wt) do |sub|
                 if current = msg.pod5_enabled
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 6
+            when {6, Proto::WireType::LENGTH_DELIMITED}
               msg.bam_reads_per_file = reader.read_embedded(6, wt) do |sub|
                 if current = msg.bam_reads_per_file
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 7
+            when {7, Proto::WireType::LENGTH_DELIMITED}
               msg.fast_q_batch_duration = reader.read_embedded(7, wt) do |sub|
                 if current = msg.fast_q_batch_duration
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 8
+            when {8, Proto::WireType::LENGTH_DELIMITED}
               msg.bam_batch_duration = reader.read_embedded(8, wt) do |sub|
                 if current = msg.bam_batch_duration
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 9
+            when {9, Proto::WireType::LENGTH_DELIMITED}
               msg.pod5_batch_duration = reader.read_embedded(9, wt) do |sub|
                 if current = msg.pod5_batch_duration
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 10
+            when {10, Proto::WireType::LENGTH_DELIMITED}
               msg.split_fastq_files_by_barcode = reader.read_embedded(10, wt) do |sub|
                 if current = msg.split_fastq_files_by_barcode
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 11
+            when {11, Proto::WireType::LENGTH_DELIMITED}
               msg.split_bam_files_by_barcode = reader.read_embedded(11, wt) do |sub|
                 if current = msg.split_bam_files_by_barcode
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 12
+            when {12, Proto::WireType::LENGTH_DELIMITED}
               msg.split_pod5_files_by_barcode = reader.read_embedded(12, wt) do |sub|
                 if current = msg.split_pod5_files_by_barcode
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 13
+            when {13, Proto::WireType::LENGTH_DELIMITED}
               msg.bulk_file_raw = reader.read_embedded(13, wt) do |sub|
                 if current = msg.bulk_file_raw
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 14
+            when {14, Proto::WireType::LENGTH_DELIMITED}
               msg.bulk_file_events = reader.read_embedded(14, wt) do |sub|
                 if current = msg.bulk_file_events
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 15
+            when {15, Proto::WireType::LENGTH_DELIMITED}
               msg.bulk_file_read_table = reader.read_embedded(15, wt) do |sub|
                 if current = msg.bulk_file_read_table
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
@@ -5189,51 +5189,51 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::LENGTH_DELIMITED}
               msg.ref_file = reader.read_embedded(1, wt) do |sub|
                 if current = msg.ref_file
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 2
+            when {2, Proto::WireType::LENGTH_DELIMITED}
               msg.bed_file = reader.read_embedded(2, wt) do |sub|
                 if current = msg.bed_file
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 3
+            when {3, Proto::WireType::LENGTH_DELIMITED}
               msg.channel_start = reader.read_embedded(3, wt) do |sub|
                 if current = msg.channel_start
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 4
+            when {4, Proto::WireType::LENGTH_DELIMITED}
               msg.channel_end = reader.read_embedded(4, wt) do |sub|
                 if current = msg.channel_end
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
@@ -5339,51 +5339,51 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::LENGTH_DELIMITED}
               msg.read_filtering_min_qscore = reader.read_embedded(1, wt) do |sub|
                 if current = msg.read_filtering_min_qscore
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 2
+            when {2, Proto::WireType::LENGTH_DELIMITED}
               msg.read_filtering_min_read_length = reader.read_embedded(2, wt) do |sub|
                 if current = msg.read_filtering_min_read_length
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 3
+            when {3, Proto::WireType::LENGTH_DELIMITED}
               msg.read_filtering_max_read_length = reader.read_embedded(3, wt) do |sub|
                 if current = msg.read_filtering_max_read_length
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
               end
-            when 4
+            when {4, Proto::WireType::LENGTH_DELIMITED}
               msg.filter_unaligned = reader.read_embedded(4, wt) do |sub|
                 if current = msg.filter_unaligned
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(merged)
+                  MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub)
                 end
@@ -5530,101 +5530,101 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             msg.protocol = reader.read_embedded(1, wt) do |sub|
               if current = msg.protocol
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                MinknowApi::ProtocolSettings::ProtocolIdentifierComponents.decode_partial(merged)
+                MinknowApi::ProtocolSettings::ProtocolIdentifierComponents.decode_partial(sub.rewrap(merged.to_slice))
               else
                 MinknowApi::ProtocolSettings::ProtocolIdentifierComponents.decode_partial(sub)
               end
             end
-          when 3
+          when {3, Proto::WireType::LENGTH_DELIMITED}
             msg.basecalling = reader.read_embedded(3, wt) do |sub|
               if current = msg.basecalling
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                ListSettingsForProtocolResponse::Basecalling.decode_partial(merged)
+                ListSettingsForProtocolResponse::Basecalling.decode_partial(sub.rewrap(merged.to_slice))
               else
                 ListSettingsForProtocolResponse::Basecalling.decode_partial(sub)
               end
             end
-          when 5
+          when {5, Proto::WireType::LENGTH_DELIMITED}
             msg.protocol_settings << reader.read_embedded(5, wt) { |sub| MinknowApi::ProtocolSettings::ProtocolSetting.decode_partial(sub) }
-          when 6
+          when {6, Proto::WireType::LENGTH_DELIMITED}
             msg.miscellaneous = reader.read_embedded(6, wt) do |sub|
               if current = msg.miscellaneous
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                ListSettingsForProtocolResponse::Miscellaneous.decode_partial(merged)
+                ListSettingsForProtocolResponse::Miscellaneous.decode_partial(sub.rewrap(merged.to_slice))
               else
                 ListSettingsForProtocolResponse::Miscellaneous.decode_partial(sub)
               end
             end
-          when 7
+          when {7, Proto::WireType::LENGTH_DELIMITED}
             msg.barcoding = reader.read_embedded(7, wt) do |sub|
               if current = msg.barcoding
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                ListSettingsForProtocolResponse::Barcoding.decode_partial(merged)
+                ListSettingsForProtocolResponse::Barcoding.decode_partial(sub.rewrap(merged.to_slice))
               else
                 ListSettingsForProtocolResponse::Barcoding.decode_partial(sub)
               end
             end
-          when 8
+          when {8, Proto::WireType::LENGTH_DELIMITED}
             msg.alignment = reader.read_embedded(8, wt) do |sub|
               if current = msg.alignment
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                ListSettingsForProtocolResponse::Alignment.decode_partial(merged)
+                ListSettingsForProtocolResponse::Alignment.decode_partial(sub.rewrap(merged.to_slice))
               else
                 ListSettingsForProtocolResponse::Alignment.decode_partial(sub)
               end
             end
-          when 9
+          when {9, Proto::WireType::LENGTH_DELIMITED}
             msg.data_output = reader.read_embedded(9, wt) do |sub|
               if current = msg.data_output
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                ListSettingsForProtocolResponse::DataOutput.decode_partial(merged)
+                ListSettingsForProtocolResponse::DataOutput.decode_partial(sub.rewrap(merged.to_slice))
               else
                 ListSettingsForProtocolResponse::DataOutput.decode_partial(sub)
               end
             end
-          when 10
+          when {10, Proto::WireType::LENGTH_DELIMITED}
             msg.adaptive_sampling = reader.read_embedded(10, wt) do |sub|
               if current = msg.adaptive_sampling
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                ListSettingsForProtocolResponse::AdaptiveSampling.decode_partial(merged)
+                ListSettingsForProtocolResponse::AdaptiveSampling.decode_partial(sub.rewrap(merged.to_slice))
               else
                 ListSettingsForProtocolResponse::AdaptiveSampling.decode_partial(sub)
               end
             end
-          when 11
+          when {11, Proto::WireType::LENGTH_DELIMITED}
             msg.filtering = reader.read_embedded(11, wt) do |sub|
               if current = msg.filtering
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                ListSettingsForProtocolResponse::Filtering.decode_partial(merged)
+                ListSettingsForProtocolResponse::Filtering.decode_partial(sub.rewrap(merged.to_slice))
               else
                 ListSettingsForProtocolResponse::Filtering.decode_partial(sub)
               end
@@ -5707,8 +5707,8 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::VARINT}
             reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             msg.enabled = reader.read_bool
           else
@@ -5799,51 +5799,51 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 3
+          case {fn, wt}
+          when {3, Proto::WireType::LENGTH_DELIMITED}
             msg.feature_flags = reader.read_embedded(3, wt) do |sub|
               if current = msg.feature_flags
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                Feature.decode_partial(merged)
+                Feature.decode_partial(sub.rewrap(merged.to_slice))
               else
                 Feature.decode_partial(sub)
               end
             end
-          when 1
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             msg.enrich_deplete = reader.read_embedded(1, wt) do |sub|
               if current = msg.enrich_deplete
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                Feature.decode_partial(merged)
+                Feature.decode_partial(sub.rewrap(merged.to_slice))
               else
                 Feature.decode_partial(sub)
               end
             end
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             msg.barcode_balancing = reader.read_embedded(2, wt) do |sub|
               if current = msg.barcode_balancing
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                Feature.decode_partial(merged)
+                Feature.decode_partial(sub.rewrap(merged.to_slice))
               else
                 Feature.decode_partial(sub)
               end
             end
-          when 4
+          when {4, Proto::WireType::LENGTH_DELIMITED}
             msg.data_offload = reader.read_embedded(4, wt) do |sub|
               if current = msg.data_offload
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                Feature.decode_partial(merged)
+                Feature.decode_partial(sub.rewrap(merged.to_slice))
               else
                 Feature.decode_partial(sub)
               end
@@ -5901,7 +5901,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -5972,20 +5972,20 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::VARINT}
             reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.state = Proto::OpenEnum(GetFeaturesResponse::State).new(_raw)
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             msg.features = reader.read_embedded(2, wt) do |sub|
               if current = msg.features
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                FeatureList.decode_partial(merged)
+                FeatureList.decode_partial(sub.rewrap(merged.to_slice))
               else
                 FeatureList.decode_partial(sub)
               end
@@ -6054,15 +6054,15 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             msg.features = reader.read_embedded(1, wt) do |sub|
               if current = msg.features
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                FeatureList.decode_partial(merged)
+                FeatureList.decode_partial(sub.rewrap(merged.to_slice))
               else
                 FeatureList.decode_partial(sub)
               end
@@ -6108,7 +6108,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -6144,7 +6144,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -6180,7 +6180,7 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
+          case {fn, wt}
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -6226,17 +6226,17 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.bed_file_path = reader.read_string
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.index_file_path = reader.read_string
-          when 3
+          when {3, Proto::WireType::VARINT}
             reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
             msg.strict = reader.read_bool
-          when 4
+          when {4, Proto::WireType::VARINT}
             reader.expect_wire_type!(4, wt, Proto::WireType::VARINT)
             msg.stranded = reader.read_bool
           else
@@ -6299,8 +6299,8 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::VARINT}
             reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             msg.passed = reader.read_bool
           else
@@ -6354,20 +6354,20 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.flow_cell_product_code = reader.read_string
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.sequencing_kit = reader.read_string
-          when 3
+          when {3, Proto::WireType::VARINT}
             reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
             msg.sampling_rate = reader.read_int32
-          when 4
+          when {4, Proto::WireType::VARINT}
             reader.expect_wire_type!(4, wt, Proto::WireType::VARINT)
             msg.include_remote_configurations = reader.read_bool
-          when 5
+          when {5, Proto::WireType::VARINT}
             reader.expect_wire_type!(5, wt, Proto::WireType::VARINT)
             msg.include_outdated = reader.read_bool
           else
@@ -6441,20 +6441,20 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.name = reader.read_string
-            when 2
+            when {2, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.variant = reader.read_string
-            when 3
+            when {3, Proto::WireType::VARINT}
               reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
               msg.outdated = reader.read_bool
-            when 4
+            when {4, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(4, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.canonical_base = reader.read_string
-            when 5
+            when {5, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(5, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.context = reader.read_string
             else
@@ -6523,11 +6523,11 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.name = reader.read_string
-            when 2
+            when {2, Proto::WireType::VARINT}
               reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
               msg.outdated = reader.read_bool
             else
@@ -6597,22 +6597,22 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.name = reader.read_string
-            when 2
+            when {2, Proto::WireType::VARINT}
               reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
               msg.outdated = reader.read_bool
-            when 4
+            when {4, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(4, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.variant = reader.read_string
-            when 5
+            when {5, Proto::WireType::FIXED32}
               reader.expect_wire_type!(5, wt, Proto::WireType::FIXED32)
               msg.default_q_score_cutoff = reader.read_float
-            when 6
+            when {6, Proto::WireType::LENGTH_DELIMITED}
               msg.modified_models << reader.read_embedded(6, wt) { |sub| FindBasecallConfigurationsResponse::ModifiedModel.decode_partial(sub) }
-            when 7
+            when {7, Proto::WireType::LENGTH_DELIMITED}
               msg.stereo_models << reader.read_embedded(7, wt) { |sub| FindBasecallConfigurationsResponse::StereoModel.decode_partial(sub) }
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
@@ -6696,23 +6696,23 @@ module MinknowApi
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.name = reader.read_string
-            when 2
+            when {2, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.sample_type = reader.read_string
-            when 3
+            when {3, Proto::WireType::VARINT}
               reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
               msg.sampling_rate = reader.read_int32
-            when 4
+            when {4, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(4, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.flowcells << reader.read_string
-            when 5
+            when {5, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(5, wt, Proto::WireType::LENGTH_DELIMITED)
               msg.kits << reader.read_string
-            when 6
+            when {6, Proto::WireType::LENGTH_DELIMITED}
               msg.simplex_models << reader.read_embedded(6, wt) { |sub| FindBasecallConfigurationsResponse::SimplexModel.decode_partial(sub) }
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
@@ -6789,8 +6789,8 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             msg.configurations << reader.read_embedded(1, wt) { |sub| FindBasecallConfigurationsResponse::BasecallConfiguration.decode_partial(sub) }
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
@@ -6835,8 +6835,8 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.file_path = reader.read_string
           else
@@ -6906,25 +6906,25 @@ module MinknowApi
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::VARINT}
             reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             _raw = Proto::Wire::Reader.int32_from_varint(_raw_u64)
             msg.type_ = Proto::OpenEnum(CheckPathInfoResponse::Type).new(_raw)
-          when 2
+          when {2, Proto::WireType::VARINT}
             reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
             msg.is_readable = reader.read_bool
-          when 3
+          when {3, Proto::WireType::VARINT}
             reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
             msg.is_writable = reader.read_bool
-          when 4
+          when {4, Proto::WireType::VARINT}
             reader.expect_wire_type!(4, wt, Proto::WireType::VARINT)
             msg.bytes_used = reader.read_uint64
-          when 5
+          when {5, Proto::WireType::VARINT}
             reader.expect_wire_type!(5, wt, Proto::WireType::VARINT)
             msg.bytes_available = reader.read_uint64
-          when 6
+          when {6, Proto::WireType::VARINT}
             reader.expect_wire_type!(6, wt, Proto::WireType::VARINT)
             msg.bytes_capacity = reader.read_uint64
           else

@@ -1476,49 +1476,49 @@ module MinknowApi::PromethionDevice
         GRPC::ProtoMarshaller(T).new
       end
 
-      abstract def change_device_settings(request : ChangeDeviceSettingsRequest, ctx : GRPC::ServerContext) : ChangeDeviceSettingsResponse
-      abstract def get_device_settings(request : GetDeviceSettingsRequest, ctx : GRPC::ServerContext) : GetDeviceSettingsResponse
-      abstract def change_pixel_block_settings(request : ChangePixelBlockSettingsRequest, ctx : GRPC::ServerContext) : ChangePixelBlockSettingsResponse
-      abstract def get_pixel_block_settings(request : GetPixelBlockSettingsRequest, ctx : GRPC::ServerContext) : GetPixelBlockSettingsResponse
-      abstract def change_pixel_settings(request : ChangePixelSettingsRequest, ctx : GRPC::ServerContext) : ChangePixelSettingsResponse
-      abstract def get_pixel_settings(request : GetPixelSettingsRequest, ctx : GRPC::ServerContext) : GetPixelSettingsResponse
-      abstract def stream_temperature(request : StreamTemperatureRequest, writer : GRPC::ResponseStream(GetTemperatureResponse), ctx : GRPC::ServerContext) : GRPC::Status
+      abstract def change_device_settings(request : ::MinknowApi::PromethionDevice::ChangeDeviceSettingsRequest, ctx : GRPC::ServerContext) : ::MinknowApi::PromethionDevice::ChangeDeviceSettingsResponse
+      abstract def get_device_settings(request : ::MinknowApi::PromethionDevice::GetDeviceSettingsRequest, ctx : GRPC::ServerContext) : ::MinknowApi::PromethionDevice::GetDeviceSettingsResponse
+      abstract def change_pixel_block_settings(request : ::MinknowApi::PromethionDevice::ChangePixelBlockSettingsRequest, ctx : GRPC::ServerContext) : ::MinknowApi::PromethionDevice::ChangePixelBlockSettingsResponse
+      abstract def get_pixel_block_settings(request : ::MinknowApi::PromethionDevice::GetPixelBlockSettingsRequest, ctx : GRPC::ServerContext) : ::MinknowApi::PromethionDevice::GetPixelBlockSettingsResponse
+      abstract def change_pixel_settings(request : ::MinknowApi::PromethionDevice::ChangePixelSettingsRequest, ctx : GRPC::ServerContext) : ::MinknowApi::PromethionDevice::ChangePixelSettingsResponse
+      abstract def get_pixel_settings(request : ::MinknowApi::PromethionDevice::GetPixelSettingsRequest, ctx : GRPC::ServerContext) : ::MinknowApi::PromethionDevice::GetPixelSettingsResponse
+      abstract def stream_temperature(request : ::MinknowApi::PromethionDevice::StreamTemperatureRequest, writer : GRPC::ResponseStream(::MinknowApi::PromethionDevice::GetTemperatureResponse), ctx : GRPC::ServerContext) : GRPC::Status
 
       def dispatch(method : String, body : Bytes, ctx : GRPC::ServerContext) : {Bytes, GRPC::Status}
         case method
         when "change_device_settings"
-          req_marshaller = marshaller_for(ChangeDeviceSettingsRequest)
-          res_marshaller = marshaller_for(ChangeDeviceSettingsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::PromethionDevice::ChangeDeviceSettingsRequest)
+          res_marshaller = marshaller_for(::MinknowApi::PromethionDevice::ChangeDeviceSettingsResponse)
           req = req_marshaller.decode(body)
           resp = change_device_settings(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_device_settings"
-          req_marshaller = marshaller_for(GetDeviceSettingsRequest)
-          res_marshaller = marshaller_for(GetDeviceSettingsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::PromethionDevice::GetDeviceSettingsRequest)
+          res_marshaller = marshaller_for(::MinknowApi::PromethionDevice::GetDeviceSettingsResponse)
           req = req_marshaller.decode(body)
           resp = get_device_settings(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "change_pixel_block_settings"
-          req_marshaller = marshaller_for(ChangePixelBlockSettingsRequest)
-          res_marshaller = marshaller_for(ChangePixelBlockSettingsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::PromethionDevice::ChangePixelBlockSettingsRequest)
+          res_marshaller = marshaller_for(::MinknowApi::PromethionDevice::ChangePixelBlockSettingsResponse)
           req = req_marshaller.decode(body)
           resp = change_pixel_block_settings(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_pixel_block_settings"
-          req_marshaller = marshaller_for(GetPixelBlockSettingsRequest)
-          res_marshaller = marshaller_for(GetPixelBlockSettingsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::PromethionDevice::GetPixelBlockSettingsRequest)
+          res_marshaller = marshaller_for(::MinknowApi::PromethionDevice::GetPixelBlockSettingsResponse)
           req = req_marshaller.decode(body)
           resp = get_pixel_block_settings(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "change_pixel_settings"
-          req_marshaller = marshaller_for(ChangePixelSettingsRequest)
-          res_marshaller = marshaller_for(ChangePixelSettingsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::PromethionDevice::ChangePixelSettingsRequest)
+          res_marshaller = marshaller_for(::MinknowApi::PromethionDevice::ChangePixelSettingsResponse)
           req = req_marshaller.decode(body)
           resp = change_pixel_settings(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_pixel_settings"
-          req_marshaller = marshaller_for(GetPixelSettingsRequest)
-          res_marshaller = marshaller_for(GetPixelSettingsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::PromethionDevice::GetPixelSettingsRequest)
+          res_marshaller = marshaller_for(::MinknowApi::PromethionDevice::GetPixelSettingsResponse)
           req = req_marshaller.decode(body)
           resp = get_pixel_settings(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
@@ -1543,9 +1543,9 @@ module MinknowApi::PromethionDevice
                                  writer : GRPC::RawResponseStream) : GRPC::Status
         case method
         when "stream_temperature"
-          req_marshaller = marshaller_for(StreamTemperatureRequest)
-          res_marshaller = marshaller_for(GetTemperatureResponse)
-          typed_writer = GRPC::ResponseStream(GetTemperatureResponse).new(writer, res_marshaller)
+          req_marshaller = marshaller_for(::MinknowApi::PromethionDevice::StreamTemperatureRequest)
+          res_marshaller = marshaller_for(::MinknowApi::PromethionDevice::GetTemperatureResponse)
+          typed_writer = GRPC::ResponseStream(::MinknowApi::PromethionDevice::GetTemperatureResponse).new(writer, res_marshaller)
           stream_temperature(req_marshaller.decode(body), typed_writer, ctx)
         else
           GRPC::Status.unimplemented("method #{method} not found")
@@ -1568,92 +1568,83 @@ module MinknowApi::PromethionDevice
         GRPC::ProtoMarshaller(T).new
       end
 
-      def change_device_settings(request : ChangeDeviceSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ChangeDeviceSettingsResponse
+      def change_device_settings(request : ::MinknowApi::PromethionDevice::ChangeDeviceSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::PromethionDevice::ChangeDeviceSettingsResponse
         change_device_settings_response(request, ctx).ok!
       end
 
-      def change_device_settings_response(request : ChangeDeviceSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(ChangeDeviceSettingsResponse)
-        req_marshaller = marshaller_for(ChangeDeviceSettingsRequest)
-        res_marshaller = marshaller_for(ChangeDeviceSettingsResponse)
+      def change_device_settings_response(request : ::MinknowApi::PromethionDevice::ChangeDeviceSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::PromethionDevice::ChangeDeviceSettingsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::PromethionDevice::ChangeDeviceSettingsRequest)
+        res_marshaller = marshaller_for(::MinknowApi::PromethionDevice::ChangeDeviceSettingsResponse)
         response = @channel.unary_call(FULL_NAME, "change_device_settings", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(ChangeDeviceSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::PromethionDevice::ChangeDeviceSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_device_settings(request : GetDeviceSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetDeviceSettingsResponse
+      def get_device_settings(request : ::MinknowApi::PromethionDevice::GetDeviceSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::PromethionDevice::GetDeviceSettingsResponse
         get_device_settings_response(request, ctx).ok!
       end
 
-      def get_device_settings_response(request : GetDeviceSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetDeviceSettingsResponse)
-        req_marshaller = marshaller_for(GetDeviceSettingsRequest)
-        res_marshaller = marshaller_for(GetDeviceSettingsResponse)
+      def get_device_settings_response(request : ::MinknowApi::PromethionDevice::GetDeviceSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::PromethionDevice::GetDeviceSettingsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::PromethionDevice::GetDeviceSettingsRequest)
+        res_marshaller = marshaller_for(::MinknowApi::PromethionDevice::GetDeviceSettingsResponse)
         response = @channel.unary_call(FULL_NAME, "get_device_settings", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetDeviceSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::PromethionDevice::GetDeviceSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def change_pixel_block_settings(request : ChangePixelBlockSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ChangePixelBlockSettingsResponse
+      def change_pixel_block_settings(request : ::MinknowApi::PromethionDevice::ChangePixelBlockSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::PromethionDevice::ChangePixelBlockSettingsResponse
         change_pixel_block_settings_response(request, ctx).ok!
       end
 
-      def change_pixel_block_settings_response(request : ChangePixelBlockSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(ChangePixelBlockSettingsResponse)
-        req_marshaller = marshaller_for(ChangePixelBlockSettingsRequest)
-        res_marshaller = marshaller_for(ChangePixelBlockSettingsResponse)
+      def change_pixel_block_settings_response(request : ::MinknowApi::PromethionDevice::ChangePixelBlockSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::PromethionDevice::ChangePixelBlockSettingsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::PromethionDevice::ChangePixelBlockSettingsRequest)
+        res_marshaller = marshaller_for(::MinknowApi::PromethionDevice::ChangePixelBlockSettingsResponse)
         response = @channel.unary_call(FULL_NAME, "change_pixel_block_settings", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(ChangePixelBlockSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::PromethionDevice::ChangePixelBlockSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_pixel_block_settings(request : GetPixelBlockSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetPixelBlockSettingsResponse
+      def get_pixel_block_settings(request : ::MinknowApi::PromethionDevice::GetPixelBlockSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::PromethionDevice::GetPixelBlockSettingsResponse
         get_pixel_block_settings_response(request, ctx).ok!
       end
 
-      def get_pixel_block_settings_response(request : GetPixelBlockSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetPixelBlockSettingsResponse)
-        req_marshaller = marshaller_for(GetPixelBlockSettingsRequest)
-        res_marshaller = marshaller_for(GetPixelBlockSettingsResponse)
+      def get_pixel_block_settings_response(request : ::MinknowApi::PromethionDevice::GetPixelBlockSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::PromethionDevice::GetPixelBlockSettingsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::PromethionDevice::GetPixelBlockSettingsRequest)
+        res_marshaller = marshaller_for(::MinknowApi::PromethionDevice::GetPixelBlockSettingsResponse)
         response = @channel.unary_call(FULL_NAME, "get_pixel_block_settings", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetPixelBlockSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::PromethionDevice::GetPixelBlockSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def change_pixel_settings(request : ChangePixelSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ChangePixelSettingsResponse
+      def change_pixel_settings(request : ::MinknowApi::PromethionDevice::ChangePixelSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::PromethionDevice::ChangePixelSettingsResponse
         change_pixel_settings_response(request, ctx).ok!
       end
 
-      def change_pixel_settings_response(request : ChangePixelSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(ChangePixelSettingsResponse)
-        req_marshaller = marshaller_for(ChangePixelSettingsRequest)
-        res_marshaller = marshaller_for(ChangePixelSettingsResponse)
+      def change_pixel_settings_response(request : ::MinknowApi::PromethionDevice::ChangePixelSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::PromethionDevice::ChangePixelSettingsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::PromethionDevice::ChangePixelSettingsRequest)
+        res_marshaller = marshaller_for(::MinknowApi::PromethionDevice::ChangePixelSettingsResponse)
         response = @channel.unary_call(FULL_NAME, "change_pixel_settings", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(ChangePixelSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::PromethionDevice::ChangePixelSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_pixel_settings(request : GetPixelSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetPixelSettingsResponse
+      def get_pixel_settings(request : ::MinknowApi::PromethionDevice::GetPixelSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::PromethionDevice::GetPixelSettingsResponse
         get_pixel_settings_response(request, ctx).ok!
       end
 
-      def get_pixel_settings_response(request : GetPixelSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetPixelSettingsResponse)
-        req_marshaller = marshaller_for(GetPixelSettingsRequest)
-        res_marshaller = marshaller_for(GetPixelSettingsResponse)
+      def get_pixel_settings_response(request : ::MinknowApi::PromethionDevice::GetPixelSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::PromethionDevice::GetPixelSettingsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::PromethionDevice::GetPixelSettingsRequest)
+        res_marshaller = marshaller_for(::MinknowApi::PromethionDevice::GetPixelSettingsResponse)
         response = @channel.unary_call(FULL_NAME, "get_pixel_settings", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetPixelSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::PromethionDevice::GetPixelSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def stream_temperature(request : StreamTemperatureRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(GetTemperatureResponse)
-        req_marshaller = marshaller_for(StreamTemperatureRequest)
-        res_marshaller = marshaller_for(GetTemperatureResponse)
+      def stream_temperature(request : ::MinknowApi::PromethionDevice::StreamTemperatureRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::PromethionDevice::GetTemperatureResponse)
+        req_marshaller = marshaller_for(::MinknowApi::PromethionDevice::StreamTemperatureRequest)
+        res_marshaller = marshaller_for(::MinknowApi::PromethionDevice::GetTemperatureResponse)
         raw = @channel.open_server_stream(FULL_NAME, "stream_temperature", req_marshaller.encode(request), ctx)
-        stream = GRPC::ServerStream(GetTemperatureResponse).new(-> { raw.headers }, -> { raw.status }, -> { raw.trailers }, -> { raw.cancel })
-        spawn do
-          begin
-            raw.each { |bytes| stream.push(res_marshaller.decode(bytes)) }
-            stream.finish
-          rescue ex
-            stream.finish(GRPC::Status.internal(ex.message || "error"))
-          end
-        end
-        stream
+        GRPC::ServerStream(::MinknowApi::PromethionDevice::GetTemperatureResponse).new(raw, res_marshaller)
       end
     end
   end

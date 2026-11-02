@@ -29,14 +29,14 @@ module Google
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::VARINT}
             reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             msg.code = reader.read_int32
-          when 2
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.message = reader.read_string
-          when 3
+          when {3, Proto::WireType::LENGTH_DELIMITED}
             msg.details << reader.read_embedded(3, wt) { |sub| Google::Protobuf::Any.decode_partial(sub) }
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))

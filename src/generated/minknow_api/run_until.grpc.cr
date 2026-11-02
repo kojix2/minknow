@@ -1312,22 +1312,22 @@ module MinknowApi::RunUntil
         GRPC::ProtoMarshaller(T).new
       end
 
-      abstract def write_target_criteria(request : WriteTargetCriteriaRequest, ctx : GRPC::ServerContext) : WriteTargetCriteriaResponse
-      abstract def stream_target_criteria(request : StreamTargetCriteriaRequest, writer : GRPC::ResponseStream(StreamTargetCriteriaResponse), ctx : GRPC::ServerContext) : GRPC::Status
-      abstract def write_updates(request : WriteUpdatesRequest, ctx : GRPC::ServerContext) : WriteUpdatesResponse
-      abstract def stream_updates(request : StreamUpdatesRequest, writer : GRPC::ResponseStream(StreamUpdatesResponse), ctx : GRPC::ServerContext) : GRPC::Status
+      abstract def write_target_criteria(request : ::MinknowApi::RunUntil::WriteTargetCriteriaRequest, ctx : GRPC::ServerContext) : ::MinknowApi::RunUntil::WriteTargetCriteriaResponse
+      abstract def stream_target_criteria(request : ::MinknowApi::RunUntil::StreamTargetCriteriaRequest, writer : GRPC::ResponseStream(::MinknowApi::RunUntil::StreamTargetCriteriaResponse), ctx : GRPC::ServerContext) : GRPC::Status
+      abstract def write_updates(request : ::MinknowApi::RunUntil::WriteUpdatesRequest, ctx : GRPC::ServerContext) : ::MinknowApi::RunUntil::WriteUpdatesResponse
+      abstract def stream_updates(request : ::MinknowApi::RunUntil::StreamUpdatesRequest, writer : GRPC::ResponseStream(::MinknowApi::RunUntil::StreamUpdatesResponse), ctx : GRPC::ServerContext) : GRPC::Status
 
       def dispatch(method : String, body : Bytes, ctx : GRPC::ServerContext) : {Bytes, GRPC::Status}
         case method
         when "write_target_criteria"
-          req_marshaller = marshaller_for(WriteTargetCriteriaRequest)
-          res_marshaller = marshaller_for(WriteTargetCriteriaResponse)
+          req_marshaller = marshaller_for(::MinknowApi::RunUntil::WriteTargetCriteriaRequest)
+          res_marshaller = marshaller_for(::MinknowApi::RunUntil::WriteTargetCriteriaResponse)
           req = req_marshaller.decode(body)
           resp = write_target_criteria(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "write_updates"
-          req_marshaller = marshaller_for(WriteUpdatesRequest)
-          res_marshaller = marshaller_for(WriteUpdatesResponse)
+          req_marshaller = marshaller_for(::MinknowApi::RunUntil::WriteUpdatesRequest)
+          res_marshaller = marshaller_for(::MinknowApi::RunUntil::WriteUpdatesResponse)
           req = req_marshaller.decode(body)
           resp = write_updates(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
@@ -1353,14 +1353,14 @@ module MinknowApi::RunUntil
                                  writer : GRPC::RawResponseStream) : GRPC::Status
         case method
         when "stream_target_criteria"
-          req_marshaller = marshaller_for(StreamTargetCriteriaRequest)
-          res_marshaller = marshaller_for(StreamTargetCriteriaResponse)
-          typed_writer = GRPC::ResponseStream(StreamTargetCriteriaResponse).new(writer, res_marshaller)
+          req_marshaller = marshaller_for(::MinknowApi::RunUntil::StreamTargetCriteriaRequest)
+          res_marshaller = marshaller_for(::MinknowApi::RunUntil::StreamTargetCriteriaResponse)
+          typed_writer = GRPC::ResponseStream(::MinknowApi::RunUntil::StreamTargetCriteriaResponse).new(writer, res_marshaller)
           stream_target_criteria(req_marshaller.decode(body), typed_writer, ctx)
         when "stream_updates"
-          req_marshaller = marshaller_for(StreamUpdatesRequest)
-          res_marshaller = marshaller_for(StreamUpdatesResponse)
-          typed_writer = GRPC::ResponseStream(StreamUpdatesResponse).new(writer, res_marshaller)
+          req_marshaller = marshaller_for(::MinknowApi::RunUntil::StreamUpdatesRequest)
+          res_marshaller = marshaller_for(::MinknowApi::RunUntil::StreamUpdatesResponse)
+          typed_writer = GRPC::ResponseStream(::MinknowApi::RunUntil::StreamUpdatesResponse).new(writer, res_marshaller)
           stream_updates(req_marshaller.decode(body), typed_writer, ctx)
         else
           GRPC::Status.unimplemented("method #{method} not found")
@@ -1383,60 +1383,42 @@ module MinknowApi::RunUntil
         GRPC::ProtoMarshaller(T).new
       end
 
-      def write_target_criteria(request : WriteTargetCriteriaRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : WriteTargetCriteriaResponse
+      def write_target_criteria(request : ::MinknowApi::RunUntil::WriteTargetCriteriaRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::RunUntil::WriteTargetCriteriaResponse
         write_target_criteria_response(request, ctx).ok!
       end
 
-      def write_target_criteria_response(request : WriteTargetCriteriaRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(WriteTargetCriteriaResponse)
-        req_marshaller = marshaller_for(WriteTargetCriteriaRequest)
-        res_marshaller = marshaller_for(WriteTargetCriteriaResponse)
+      def write_target_criteria_response(request : ::MinknowApi::RunUntil::WriteTargetCriteriaRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::RunUntil::WriteTargetCriteriaResponse)
+        req_marshaller = marshaller_for(::MinknowApi::RunUntil::WriteTargetCriteriaRequest)
+        res_marshaller = marshaller_for(::MinknowApi::RunUntil::WriteTargetCriteriaResponse)
         response = @channel.unary_call(FULL_NAME, "write_target_criteria", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(WriteTargetCriteriaResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::RunUntil::WriteTargetCriteriaResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def stream_target_criteria(request : StreamTargetCriteriaRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(StreamTargetCriteriaResponse)
-        req_marshaller = marshaller_for(StreamTargetCriteriaRequest)
-        res_marshaller = marshaller_for(StreamTargetCriteriaResponse)
+      def stream_target_criteria(request : ::MinknowApi::RunUntil::StreamTargetCriteriaRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::RunUntil::StreamTargetCriteriaResponse)
+        req_marshaller = marshaller_for(::MinknowApi::RunUntil::StreamTargetCriteriaRequest)
+        res_marshaller = marshaller_for(::MinknowApi::RunUntil::StreamTargetCriteriaResponse)
         raw = @channel.open_server_stream(FULL_NAME, "stream_target_criteria", req_marshaller.encode(request), ctx)
-        stream = GRPC::ServerStream(StreamTargetCriteriaResponse).new(-> { raw.headers }, -> { raw.status }, -> { raw.trailers }, -> { raw.cancel })
-        spawn do
-          begin
-            raw.each { |bytes| stream.push(res_marshaller.decode(bytes)) }
-            stream.finish
-          rescue ex
-            stream.finish(GRPC::Status.internal(ex.message || "error"))
-          end
-        end
-        stream
+        GRPC::ServerStream(::MinknowApi::RunUntil::StreamTargetCriteriaResponse).new(raw, res_marshaller)
       end
 
-      def write_updates(request : WriteUpdatesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : WriteUpdatesResponse
+      def write_updates(request : ::MinknowApi::RunUntil::WriteUpdatesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::RunUntil::WriteUpdatesResponse
         write_updates_response(request, ctx).ok!
       end
 
-      def write_updates_response(request : WriteUpdatesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(WriteUpdatesResponse)
-        req_marshaller = marshaller_for(WriteUpdatesRequest)
-        res_marshaller = marshaller_for(WriteUpdatesResponse)
+      def write_updates_response(request : ::MinknowApi::RunUntil::WriteUpdatesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::RunUntil::WriteUpdatesResponse)
+        req_marshaller = marshaller_for(::MinknowApi::RunUntil::WriteUpdatesRequest)
+        res_marshaller = marshaller_for(::MinknowApi::RunUntil::WriteUpdatesResponse)
         response = @channel.unary_call(FULL_NAME, "write_updates", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(WriteUpdatesResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::RunUntil::WriteUpdatesResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def stream_updates(request : StreamUpdatesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(StreamUpdatesResponse)
-        req_marshaller = marshaller_for(StreamUpdatesRequest)
-        res_marshaller = marshaller_for(StreamUpdatesResponse)
+      def stream_updates(request : ::MinknowApi::RunUntil::StreamUpdatesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::RunUntil::StreamUpdatesResponse)
+        req_marshaller = marshaller_for(::MinknowApi::RunUntil::StreamUpdatesRequest)
+        res_marshaller = marshaller_for(::MinknowApi::RunUntil::StreamUpdatesResponse)
         raw = @channel.open_server_stream(FULL_NAME, "stream_updates", req_marshaller.encode(request), ctx)
-        stream = GRPC::ServerStream(StreamUpdatesResponse).new(-> { raw.headers }, -> { raw.status }, -> { raw.trailers }, -> { raw.cancel })
-        spawn do
-          begin
-            raw.each { |bytes| stream.push(res_marshaller.decode(bytes)) }
-            stream.finish
-          rescue ex
-            stream.finish(GRPC::Status.internal(ex.message || "error"))
-          end
-        end
-        stream
+        GRPC::ServerStream(::MinknowApi::RunUntil::StreamUpdatesResponse).new(raw, res_marshaller)
       end
     end
   end

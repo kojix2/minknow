@@ -25,8 +25,8 @@ module Google
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             msg.file << reader.read_embedded(1, wt) { |sub| FileDescriptorProto.decode_partial(sub) }
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
@@ -64,8 +64,12 @@ module Google
     class FileDescriptorProto
       include Proto::Message
 
-      property name : String = ""
-      property package : String = ""
+      getter? has_name : Bool = false
+      getter? has_package : Bool = false
+      getter? has_syntax : Bool = false
+
+      getter name : String = ""
+      getter package : String = ""
       property dependency : Array(String) = [] of String
       property public_dependency : Array(Int32) = [] of Int32
       property weak_dependency : Array(Int32) = [] of Int32
@@ -75,7 +79,40 @@ module Google
       property extension : Array(FieldDescriptorProto) = [] of FieldDescriptorProto
       property options : FileOptions? = nil
       property source_code_info : SourceCodeInfo? = nil
-      property syntax : String = ""
+      getter syntax : String = ""
+
+      def clear_name : Nil
+        @name = ""
+        @has_name = false
+      end
+
+      def name=(value : String) : String
+        @name = value
+        @has_name = true
+        value
+      end
+
+      def clear_package : Nil
+        @package = ""
+        @has_package = false
+      end
+
+      def package=(value : String) : String
+        @package = value
+        @has_package = true
+        value
+      end
+
+      def clear_syntax : Nil
+        @syntax = ""
+        @has_syntax = false
+      end
+
+      def syntax=(value : String) : String
+        @syntax = value
+        @has_syntax = true
+        value
+      end
 
       def has_options? : Bool
         !options.nil?
@@ -119,63 +156,63 @@ module Google
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.name = reader.read_string
-          when 2
+            msg.name = reader.read_string_unchecked
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.package = reader.read_string
-          when 3
+            msg.package = reader.read_string_unchecked
+          when {3, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(3, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.dependency << reader.read_string
-          when 10
+            msg.dependency << reader.read_string_unchecked
+          when {10, Proto::WireType::VARINT}, {10, Proto::WireType::LENGTH_DELIMITED}
             if reader.packed_wire_type?(10, wt, Proto::WireType::VARINT)
-              reader.read_packed_varint { |v| msg.public_dependency << v.to_i32! }
+              reader.read_packed_varint { |v| msg.public_dependency << Proto::Wire::Reader.int32_from_varint(v) }
             else
               msg.public_dependency << reader.read_int32
             end
-          when 11
+          when {11, Proto::WireType::VARINT}, {11, Proto::WireType::LENGTH_DELIMITED}
             if reader.packed_wire_type?(11, wt, Proto::WireType::VARINT)
-              reader.read_packed_varint { |v| msg.weak_dependency << v.to_i32! }
+              reader.read_packed_varint { |v| msg.weak_dependency << Proto::Wire::Reader.int32_from_varint(v) }
             else
               msg.weak_dependency << reader.read_int32
             end
-          when 4
+          when {4, Proto::WireType::LENGTH_DELIMITED}
             msg.message_type << reader.read_embedded(4, wt) { |sub| DescriptorProto.decode_partial(sub) }
-          when 5
+          when {5, Proto::WireType::LENGTH_DELIMITED}
             msg.enum_type << reader.read_embedded(5, wt) { |sub| EnumDescriptorProto.decode_partial(sub) }
-          when 6
+          when {6, Proto::WireType::LENGTH_DELIMITED}
             msg.service << reader.read_embedded(6, wt) { |sub| ServiceDescriptorProto.decode_partial(sub) }
-          when 7
+          when {7, Proto::WireType::LENGTH_DELIMITED}
             msg.extension << reader.read_embedded(7, wt) { |sub| FieldDescriptorProto.decode_partial(sub) }
-          when 8
+          when {8, Proto::WireType::LENGTH_DELIMITED}
             msg.options = reader.read_embedded(8, wt) do |sub|
               if current = msg.options
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                FileOptions.decode_partial(merged)
+                FileOptions.decode_partial(sub.rewrap(merged.to_slice))
               else
                 FileOptions.decode_partial(sub)
               end
             end
-          when 9
+          when {9, Proto::WireType::LENGTH_DELIMITED}
             msg.source_code_info = reader.read_embedded(9, wt) do |sub|
               if current = msg.source_code_info
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                SourceCodeInfo.decode_partial(merged)
+                SourceCodeInfo.decode_partial(sub.rewrap(merged.to_slice))
               else
                 SourceCodeInfo.decode_partial(sub)
               end
             end
-          when 12
+          when {12, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(12, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.syntax = reader.read_string
+            msg.syntax = reader.read_string_unchecked
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -191,13 +228,17 @@ module Google
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(name)
-        w.write_tag(2, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(package)
+        if has_name?
+          w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(name)
+        end
+        if has_package?
+          w.write_tag(2, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(package)
+        end
         dependency.each do |item|
           w.write_tag(3, Proto::WireType::LENGTH_DELIMITED)
-          w.write_string(item)
+          w.write_string_unchecked(item)
         end
         public_dependency.each do |item|
           w.write_tag(10, Proto::WireType::VARINT)
@@ -225,8 +266,10 @@ module Google
         if _v = source_code_info
           w.write_embedded(9) { |sub| _v.encode_partial(sub) }
         end
-        w.write_tag(12, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(syntax)
+        if has_syntax?
+          w.write_tag(12, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(syntax)
+        end
         write_unknown_fields(w)
       end
 
@@ -236,6 +279,9 @@ module Google
       end
 
       def ==(other : self) : Bool
+        return false unless has_name? == other.has_name?
+        return false unless has_package? == other.has_package?
+        return false unless has_syntax? == other.has_syntax?
         return false unless name == other.name
         return false unless package == other.package
         return false unless dependency == other.dependency
@@ -259,9 +305,34 @@ module Google
       class ExtensionRange
         include Proto::Message
 
-        property start : Int32 = 0
-        property end_ : Int32 = 0
+        getter? has_start : Bool = false
+        getter? has_end_ : Bool = false
+
+        getter start : Int32 = 0
+        getter end_ : Int32 = 0
         property options : ExtensionRangeOptions? = nil
+
+        def clear_start : Nil
+          @start = 0
+          @has_start = false
+        end
+
+        def start=(value : Int32) : Int32
+          @start = value
+          @has_start = true
+          value
+        end
+
+        def clear_end_ : Nil
+          @end_ = 0
+          @has_end_ = false
+        end
+
+        def end_=(value : Int32) : Int32
+          @end_ = value
+          @has_end_ = true
+          value
+        end
 
         def has_options? : Bool
           !options.nil?
@@ -284,21 +355,21 @@ module Google
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::VARINT}
               reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
               msg.start = reader.read_int32
-            when 2
+            when {2, Proto::WireType::VARINT}
               reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
               msg.end_ = reader.read_int32
-            when 3
+            when {3, Proto::WireType::LENGTH_DELIMITED}
               msg.options = reader.read_embedded(3, wt) do |sub|
                 if current = msg.options
                   merged = IO::Memory.new
                   current.encode_partial(merged)
                   IO.copy(sub, merged)
                   merged.rewind
-                  ExtensionRangeOptions.decode_partial(merged)
+                  ExtensionRangeOptions.decode_partial(sub.rewrap(merged.to_slice))
                 else
                   ExtensionRangeOptions.decode_partial(sub)
                 end
@@ -318,10 +389,14 @@ module Google
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          w.write_tag(1, Proto::WireType::VARINT)
-          w.write_int32(start)
-          w.write_tag(2, Proto::WireType::VARINT)
-          w.write_int32(end_)
+          if has_start?
+            w.write_tag(1, Proto::WireType::VARINT)
+            w.write_int32(start)
+          end
+          if has_end_?
+            w.write_tag(2, Proto::WireType::VARINT)
+            w.write_int32(end_)
+          end
           if _v = options
             w.write_embedded(3) { |sub| _v.encode_partial(sub) }
           end
@@ -334,6 +409,8 @@ module Google
         end
 
         def ==(other : self) : Bool
+          return false unless has_start? == other.has_start?
+          return false unless has_end_? == other.has_end_?
           return false unless start == other.start
           return false unless end_ == other.end_
           return false unless options == other.options
@@ -345,19 +422,44 @@ module Google
       class ReservedRange
         include Proto::Message
 
-        property start : Int32 = 0
-        property end_ : Int32 = 0
+        getter? has_start : Bool = false
+        getter? has_end_ : Bool = false
+
+        getter start : Int32 = 0
+        getter end_ : Int32 = 0
+
+        def clear_start : Nil
+          @start = 0
+          @has_start = false
+        end
+
+        def start=(value : Int32) : Int32
+          @start = value
+          @has_start = true
+          value
+        end
+
+        def clear_end_ : Nil
+          @end_ = 0
+          @has_end_ = false
+        end
+
+        def end_=(value : Int32) : Int32
+          @end_ = value
+          @has_end_ = true
+          value
+        end
 
         def self.decode_partial(io : IO) : self
           msg = new
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::VARINT}
               reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
               msg.start = reader.read_int32
-            when 2
+            when {2, Proto::WireType::VARINT}
               reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
               msg.end_ = reader.read_int32
             else
@@ -374,10 +476,14 @@ module Google
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          w.write_tag(1, Proto::WireType::VARINT)
-          w.write_int32(start)
-          w.write_tag(2, Proto::WireType::VARINT)
-          w.write_int32(end_)
+          if has_start?
+            w.write_tag(1, Proto::WireType::VARINT)
+            w.write_int32(start)
+          end
+          if has_end_?
+            w.write_tag(2, Proto::WireType::VARINT)
+            w.write_int32(end_)
+          end
           write_unknown_fields(w)
         end
 
@@ -386,6 +492,8 @@ module Google
         end
 
         def ==(other : self) : Bool
+          return false unless has_start? == other.has_start?
+          return false unless has_end_? == other.has_end_?
           return false unless start == other.start
           return false unless end_ == other.end_
           return false unless unknown_fields == other.unknown_fields
@@ -393,7 +501,9 @@ module Google
         end
       end
 
-      property name : String = ""
+      getter? has_name : Bool = false
+
+      getter name : String = ""
       property field : Array(FieldDescriptorProto) = [] of FieldDescriptorProto
       property extension : Array(FieldDescriptorProto) = [] of FieldDescriptorProto
       property nested_type : Array(DescriptorProto) = [] of DescriptorProto
@@ -403,6 +513,17 @@ module Google
       property options : MessageOptions? = nil
       property reserved_range : Array(DescriptorProto::ReservedRange) = [] of DescriptorProto::ReservedRange
       property reserved_name : Array(String) = [] of String
+
+      def clear_name : Nil
+        @name = ""
+        @has_name = false
+      end
+
+      def name=(value : String) : String
+        @name = value
+        @has_name = true
+        value
+      end
 
       def has_options? : Bool
         !options.nil?
@@ -446,39 +567,39 @@ module Google
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.name = reader.read_string
-          when 2
+            msg.name = reader.read_string_unchecked
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             msg.field << reader.read_embedded(2, wt) { |sub| FieldDescriptorProto.decode_partial(sub) }
-          when 6
+          when {6, Proto::WireType::LENGTH_DELIMITED}
             msg.extension << reader.read_embedded(6, wt) { |sub| FieldDescriptorProto.decode_partial(sub) }
-          when 3
+          when {3, Proto::WireType::LENGTH_DELIMITED}
             msg.nested_type << reader.read_embedded(3, wt) { |sub| DescriptorProto.decode_partial(sub) }
-          when 4
+          when {4, Proto::WireType::LENGTH_DELIMITED}
             msg.enum_type << reader.read_embedded(4, wt) { |sub| EnumDescriptorProto.decode_partial(sub) }
-          when 5
+          when {5, Proto::WireType::LENGTH_DELIMITED}
             msg.extension_range << reader.read_embedded(5, wt) { |sub| DescriptorProto::ExtensionRange.decode_partial(sub) }
-          when 8
+          when {8, Proto::WireType::LENGTH_DELIMITED}
             msg.oneof_decl << reader.read_embedded(8, wt) { |sub| OneofDescriptorProto.decode_partial(sub) }
-          when 7
+          when {7, Proto::WireType::LENGTH_DELIMITED}
             msg.options = reader.read_embedded(7, wt) do |sub|
               if current = msg.options
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                MessageOptions.decode_partial(merged)
+                MessageOptions.decode_partial(sub.rewrap(merged.to_slice))
               else
                 MessageOptions.decode_partial(sub)
               end
             end
-          when 9
+          when {9, Proto::WireType::LENGTH_DELIMITED}
             msg.reserved_range << reader.read_embedded(9, wt) { |sub| DescriptorProto::ReservedRange.decode_partial(sub) }
-          when 10
+          when {10, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(10, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.reserved_name << reader.read_string
+            msg.reserved_name << reader.read_string_unchecked
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -494,8 +615,10 @@ module Google
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(name)
+        if has_name?
+          w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(name)
+        end
         field.each do |item|
           w.write_embedded(2) { |sub| item.encode_partial(sub) }
         end
@@ -522,7 +645,7 @@ module Google
         end
         reserved_name.each do |item|
           w.write_tag(10, Proto::WireType::LENGTH_DELIMITED)
-          w.write_string(item)
+          w.write_string_unchecked(item)
         end
         write_unknown_fields(w)
       end
@@ -533,6 +656,7 @@ module Google
       end
 
       def ==(other : self) : Bool
+        return false unless has_name? == other.has_name?
         return false unless name == other.name
         return false unless field == other.field
         return false unless extension == other.extension
@@ -568,8 +692,8 @@ module Google
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 999
+          case {fn, wt}
+          when {999, Proto::WireType::LENGTH_DELIMITED}
             msg.uninterpreted_option << reader.read_embedded(999, wt) { |sub| UninterpretedOption.decode_partial(sub) }
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
@@ -665,20 +789,141 @@ module Google
         end
       end
 
-      property name : String = ""
-      property number : Int32 = 0
-      property label : FieldDescriptorProto::Label = FieldDescriptorProto::Label.new(0)
-      property type_ : FieldDescriptorProto::Type = FieldDescriptorProto::Type.new(0)
-      property type_name : String = ""
-      property extendee : String = ""
-      property default_value : String = ""
-      property oneof_index : Int32 = 0
-      property json_name : String = ""
+      getter? has_name : Bool = false
+      getter? has_number : Bool = false
+      getter? has_label : Bool = false
+      getter? has_type_ : Bool = false
+      getter? has_type_name : Bool = false
+      getter? has_extendee : Bool = false
+      getter? has_default_value : Bool = false
+      getter? has_oneof_index : Bool = false
+      getter? has_json_name : Bool = false
+      getter? has_proto3_optional : Bool = false
+
+      getter name : String = ""
+      getter number : Int32 = 0
+      getter label : FieldDescriptorProto::Label = FieldDescriptorProto::Label::LABEL_OPTIONAL
+      getter type_ : FieldDescriptorProto::Type = FieldDescriptorProto::Type::TYPE_DOUBLE
+      getter type_name : String = ""
+      getter extendee : String = ""
+      getter default_value : String = ""
+      getter oneof_index : Int32 = 0
+      getter json_name : String = ""
       property options : FieldOptions? = nil
       # ameba:disable Naming/QueryBoolMethods
-      property proto3_optional : Bool = false
+      getter proto3_optional : Bool = false
 
       # ameba:enable Naming/QueryBoolMethods
+
+      def clear_name : Nil
+        @name = ""
+        @has_name = false
+      end
+
+      def name=(value : String) : String
+        @name = value
+        @has_name = true
+        value
+      end
+
+      def clear_number : Nil
+        @number = 0
+        @has_number = false
+      end
+
+      def number=(value : Int32) : Int32
+        @number = value
+        @has_number = true
+        value
+      end
+
+      def clear_label : Nil
+        @label = FieldDescriptorProto::Label::LABEL_OPTIONAL
+        @has_label = false
+      end
+
+      def label=(value : FieldDescriptorProto::Label) : FieldDescriptorProto::Label
+        @label = value
+        @has_label = true
+        value
+      end
+
+      def clear_type_ : Nil
+        @type_ = FieldDescriptorProto::Type::TYPE_DOUBLE
+        @has_type_ = false
+      end
+
+      def type_=(value : FieldDescriptorProto::Type) : FieldDescriptorProto::Type
+        @type_ = value
+        @has_type_ = true
+        value
+      end
+
+      def clear_type_name : Nil
+        @type_name = ""
+        @has_type_name = false
+      end
+
+      def type_name=(value : String) : String
+        @type_name = value
+        @has_type_name = true
+        value
+      end
+
+      def clear_extendee : Nil
+        @extendee = ""
+        @has_extendee = false
+      end
+
+      def extendee=(value : String) : String
+        @extendee = value
+        @has_extendee = true
+        value
+      end
+
+      def clear_default_value : Nil
+        @default_value = ""
+        @has_default_value = false
+      end
+
+      def default_value=(value : String) : String
+        @default_value = value
+        @has_default_value = true
+        value
+      end
+
+      def clear_oneof_index : Nil
+        @oneof_index = 0
+        @has_oneof_index = false
+      end
+
+      def oneof_index=(value : Int32) : Int32
+        @oneof_index = value
+        @has_oneof_index = true
+        value
+      end
+
+      def clear_json_name : Nil
+        @json_name = ""
+        @has_json_name = false
+      end
+
+      def json_name=(value : String) : String
+        @json_name = value
+        @has_json_name = true
+        value
+      end
+
+      def clear_proto3_optional : Nil
+        @proto3_optional = false
+        @has_proto3_optional = false
+      end
+
+      def proto3_optional=(value : Bool) : Bool
+        @proto3_optional = value
+        @has_proto3_optional = true
+        value
+      end
 
       def has_options? : Bool
         !options.nil?
@@ -701,49 +946,49 @@ module Google
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.name = reader.read_string
-          when 3
+            msg.name = reader.read_string_unchecked
+          when {3, Proto::WireType::VARINT}
             reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
             msg.number = reader.read_int32
-          when 4
+          when {4, Proto::WireType::VARINT}
             reader.expect_wire_type!(4, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             msg.decode_known_enum(fn, _raw_u64) { |raw| msg.label = FieldDescriptorProto::Label.from_value(raw) }
-          when 5
+          when {5, Proto::WireType::VARINT}
             reader.expect_wire_type!(5, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             msg.decode_known_enum(fn, _raw_u64) { |raw| msg.type_ = FieldDescriptorProto::Type.from_value(raw) }
-          when 6
+          when {6, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(6, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.type_name = reader.read_string
-          when 2
+            msg.type_name = reader.read_string_unchecked
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.extendee = reader.read_string
-          when 7
+            msg.extendee = reader.read_string_unchecked
+          when {7, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(7, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.default_value = reader.read_string
-          when 9
+            msg.default_value = reader.read_string_unchecked
+          when {9, Proto::WireType::VARINT}
             reader.expect_wire_type!(9, wt, Proto::WireType::VARINT)
             msg.oneof_index = reader.read_int32
-          when 10
+          when {10, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(10, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.json_name = reader.read_string
-          when 8
+            msg.json_name = reader.read_string_unchecked
+          when {8, Proto::WireType::LENGTH_DELIMITED}
             msg.options = reader.read_embedded(8, wt) do |sub|
               if current = msg.options
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                FieldOptions.decode_partial(merged)
+                FieldOptions.decode_partial(sub.rewrap(merged.to_slice))
               else
                 FieldOptions.decode_partial(sub)
               end
             end
-          when 17
+          when {17, Proto::WireType::VARINT}
             reader.expect_wire_type!(17, wt, Proto::WireType::VARINT)
             msg.proto3_optional = reader.read_bool
           else
@@ -761,29 +1006,49 @@ module Google
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(name)
-        w.write_tag(3, Proto::WireType::VARINT)
-        w.write_int32(number)
-        w.write_tag(4, Proto::WireType::VARINT)
-        w.write_int32(label.value)
-        w.write_tag(5, Proto::WireType::VARINT)
-        w.write_int32(type_.value)
-        w.write_tag(6, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(type_name)
-        w.write_tag(2, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(extendee)
-        w.write_tag(7, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(default_value)
-        w.write_tag(9, Proto::WireType::VARINT)
-        w.write_int32(oneof_index)
-        w.write_tag(10, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(json_name)
+        if has_name?
+          w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(name)
+        end
+        if has_number?
+          w.write_tag(3, Proto::WireType::VARINT)
+          w.write_int32(number)
+        end
+        if has_label?
+          w.write_tag(4, Proto::WireType::VARINT)
+          w.write_int32(label.value)
+        end
+        if has_type_?
+          w.write_tag(5, Proto::WireType::VARINT)
+          w.write_int32(type_.value)
+        end
+        if has_type_name?
+          w.write_tag(6, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(type_name)
+        end
+        if has_extendee?
+          w.write_tag(2, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(extendee)
+        end
+        if has_default_value?
+          w.write_tag(7, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(default_value)
+        end
+        if has_oneof_index?
+          w.write_tag(9, Proto::WireType::VARINT)
+          w.write_int32(oneof_index)
+        end
+        if has_json_name?
+          w.write_tag(10, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(json_name)
+        end
         if _v = options
           w.write_embedded(8) { |sub| _v.encode_partial(sub) }
         end
-        w.write_tag(17, Proto::WireType::VARINT)
-        w.write_bool(proto3_optional)
+        if has_proto3_optional?
+          w.write_tag(17, Proto::WireType::VARINT)
+          w.write_bool(proto3_optional)
+        end
         write_unknown_fields(w)
       end
 
@@ -793,6 +1058,16 @@ module Google
       end
 
       def ==(other : self) : Bool
+        return false unless has_name? == other.has_name?
+        return false unless has_number? == other.has_number?
+        return false unless has_label? == other.has_label?
+        return false unless has_type_? == other.has_type_?
+        return false unless has_type_name? == other.has_type_name?
+        return false unless has_extendee? == other.has_extendee?
+        return false unless has_default_value? == other.has_default_value?
+        return false unless has_oneof_index? == other.has_oneof_index?
+        return false unless has_json_name? == other.has_json_name?
+        return false unless has_proto3_optional? == other.has_proto3_optional?
         return false unless name == other.name
         return false unless number == other.number
         return false unless label == other.label
@@ -812,8 +1087,21 @@ module Google
     class OneofDescriptorProto
       include Proto::Message
 
-      property name : String = ""
+      getter? has_name : Bool = false
+
+      getter name : String = ""
       property options : OneofOptions? = nil
+
+      def clear_name : Nil
+        @name = ""
+        @has_name = false
+      end
+
+      def name=(value : String) : String
+        @name = value
+        @has_name = true
+        value
+      end
 
       def has_options? : Bool
         !options.nil?
@@ -836,18 +1124,18 @@ module Google
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.name = reader.read_string
-          when 2
+            msg.name = reader.read_string_unchecked
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             msg.options = reader.read_embedded(2, wt) do |sub|
               if current = msg.options
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                OneofOptions.decode_partial(merged)
+                OneofOptions.decode_partial(sub.rewrap(merged.to_slice))
               else
                 OneofOptions.decode_partial(sub)
               end
@@ -867,8 +1155,10 @@ module Google
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(name)
+        if has_name?
+          w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(name)
+        end
         if _v = options
           w.write_embedded(2) { |sub| _v.encode_partial(sub) }
         end
@@ -881,6 +1171,7 @@ module Google
       end
 
       def ==(other : self) : Bool
+        return false unless has_name? == other.has_name?
         return false unless name == other.name
         return false unless options == other.options
         return false unless unknown_fields == other.unknown_fields
@@ -894,19 +1185,44 @@ module Google
       class EnumReservedRange
         include Proto::Message
 
-        property start : Int32 = 0
-        property end_ : Int32 = 0
+        getter? has_start : Bool = false
+        getter? has_end_ : Bool = false
+
+        getter start : Int32 = 0
+        getter end_ : Int32 = 0
+
+        def clear_start : Nil
+          @start = 0
+          @has_start = false
+        end
+
+        def start=(value : Int32) : Int32
+          @start = value
+          @has_start = true
+          value
+        end
+
+        def clear_end_ : Nil
+          @end_ = 0
+          @has_end_ = false
+        end
+
+        def end_=(value : Int32) : Int32
+          @end_ = value
+          @has_end_ = true
+          value
+        end
 
         def self.decode_partial(io : IO) : self
           msg = new
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::VARINT}
               reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
               msg.start = reader.read_int32
-            when 2
+            when {2, Proto::WireType::VARINT}
               reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
               msg.end_ = reader.read_int32
             else
@@ -923,10 +1239,14 @@ module Google
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          w.write_tag(1, Proto::WireType::VARINT)
-          w.write_int32(start)
-          w.write_tag(2, Proto::WireType::VARINT)
-          w.write_int32(end_)
+          if has_start?
+            w.write_tag(1, Proto::WireType::VARINT)
+            w.write_int32(start)
+          end
+          if has_end_?
+            w.write_tag(2, Proto::WireType::VARINT)
+            w.write_int32(end_)
+          end
           write_unknown_fields(w)
         end
 
@@ -935,6 +1255,8 @@ module Google
         end
 
         def ==(other : self) : Bool
+          return false unless has_start? == other.has_start?
+          return false unless has_end_? == other.has_end_?
           return false unless start == other.start
           return false unless end_ == other.end_
           return false unless unknown_fields == other.unknown_fields
@@ -942,11 +1264,24 @@ module Google
         end
       end
 
-      property name : String = ""
+      getter? has_name : Bool = false
+
+      getter name : String = ""
       property value : Array(EnumValueDescriptorProto) = [] of EnumValueDescriptorProto
       property options : EnumOptions? = nil
       property reserved_range : Array(EnumDescriptorProto::EnumReservedRange) = [] of EnumDescriptorProto::EnumReservedRange
       property reserved_name : Array(String) = [] of String
+
+      def clear_name : Nil
+        @name = ""
+        @has_name = false
+      end
+
+      def name=(value : String) : String
+        @name = value
+        @has_name = true
+        value
+      end
 
       def has_options? : Bool
         !options.nil?
@@ -975,29 +1310,29 @@ module Google
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.name = reader.read_string
-          when 2
+            msg.name = reader.read_string_unchecked
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             msg.value << reader.read_embedded(2, wt) { |sub| EnumValueDescriptorProto.decode_partial(sub) }
-          when 3
+          when {3, Proto::WireType::LENGTH_DELIMITED}
             msg.options = reader.read_embedded(3, wt) do |sub|
               if current = msg.options
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                EnumOptions.decode_partial(merged)
+                EnumOptions.decode_partial(sub.rewrap(merged.to_slice))
               else
                 EnumOptions.decode_partial(sub)
               end
             end
-          when 4
+          when {4, Proto::WireType::LENGTH_DELIMITED}
             msg.reserved_range << reader.read_embedded(4, wt) { |sub| EnumDescriptorProto::EnumReservedRange.decode_partial(sub) }
-          when 5
+          when {5, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(5, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.reserved_name << reader.read_string
+            msg.reserved_name << reader.read_string_unchecked
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -1013,8 +1348,10 @@ module Google
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(name)
+        if has_name?
+          w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(name)
+        end
         value.each do |item|
           w.write_embedded(2) { |sub| item.encode_partial(sub) }
         end
@@ -1026,7 +1363,7 @@ module Google
         end
         reserved_name.each do |item|
           w.write_tag(5, Proto::WireType::LENGTH_DELIMITED)
-          w.write_string(item)
+          w.write_string_unchecked(item)
         end
         write_unknown_fields(w)
       end
@@ -1037,6 +1374,7 @@ module Google
       end
 
       def ==(other : self) : Bool
+        return false unless has_name? == other.has_name?
         return false unless name == other.name
         return false unless value == other.value
         return false unless options == other.options
@@ -1050,9 +1388,34 @@ module Google
     class EnumValueDescriptorProto
       include Proto::Message
 
-      property name : String = ""
-      property number : Int32 = 0
+      getter? has_name : Bool = false
+      getter? has_number : Bool = false
+
+      getter name : String = ""
+      getter number : Int32 = 0
       property options : EnumValueOptions? = nil
+
+      def clear_name : Nil
+        @name = ""
+        @has_name = false
+      end
+
+      def name=(value : String) : String
+        @name = value
+        @has_name = true
+        value
+      end
+
+      def clear_number : Nil
+        @number = 0
+        @has_number = false
+      end
+
+      def number=(value : Int32) : Int32
+        @number = value
+        @has_number = true
+        value
+      end
 
       def has_options? : Bool
         !options.nil?
@@ -1075,21 +1438,21 @@ module Google
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.name = reader.read_string
-          when 2
+            msg.name = reader.read_string_unchecked
+          when {2, Proto::WireType::VARINT}
             reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
             msg.number = reader.read_int32
-          when 3
+          when {3, Proto::WireType::LENGTH_DELIMITED}
             msg.options = reader.read_embedded(3, wt) do |sub|
               if current = msg.options
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                EnumValueOptions.decode_partial(merged)
+                EnumValueOptions.decode_partial(sub.rewrap(merged.to_slice))
               else
                 EnumValueOptions.decode_partial(sub)
               end
@@ -1109,10 +1472,14 @@ module Google
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(name)
-        w.write_tag(2, Proto::WireType::VARINT)
-        w.write_int32(number)
+        if has_name?
+          w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(name)
+        end
+        if has_number?
+          w.write_tag(2, Proto::WireType::VARINT)
+          w.write_int32(number)
+        end
         if _v = options
           w.write_embedded(3) { |sub| _v.encode_partial(sub) }
         end
@@ -1125,6 +1492,8 @@ module Google
       end
 
       def ==(other : self) : Bool
+        return false unless has_name? == other.has_name?
+        return false unless has_number? == other.has_number?
         return false unless name == other.name
         return false unless number == other.number
         return false unless options == other.options
@@ -1136,9 +1505,22 @@ module Google
     class ServiceDescriptorProto
       include Proto::Message
 
-      property name : String = ""
+      getter? has_name : Bool = false
+
+      getter name : String = ""
       property method : Array(MethodDescriptorProto) = [] of MethodDescriptorProto
       property options : ServiceOptions? = nil
+
+      def clear_name : Nil
+        @name = ""
+        @has_name = false
+      end
+
+      def name=(value : String) : String
+        @name = value
+        @has_name = true
+        value
+      end
 
       def has_options? : Bool
         !options.nil?
@@ -1164,20 +1546,20 @@ module Google
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.name = reader.read_string
-          when 2
+            msg.name = reader.read_string_unchecked
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             msg.method << reader.read_embedded(2, wt) { |sub| MethodDescriptorProto.decode_partial(sub) }
-          when 3
+          when {3, Proto::WireType::LENGTH_DELIMITED}
             msg.options = reader.read_embedded(3, wt) do |sub|
               if current = msg.options
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                ServiceOptions.decode_partial(merged)
+                ServiceOptions.decode_partial(sub.rewrap(merged.to_slice))
               else
                 ServiceOptions.decode_partial(sub)
               end
@@ -1197,8 +1579,10 @@ module Google
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(name)
+        if has_name?
+          w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(name)
+        end
         method.each do |item|
           w.write_embedded(2) { |sub| item.encode_partial(sub) }
         end
@@ -1214,6 +1598,7 @@ module Google
       end
 
       def ==(other : self) : Bool
+        return false unless has_name? == other.has_name?
         return false unless name == other.name
         return false unless method == other.method
         return false unless options == other.options
@@ -1225,17 +1610,78 @@ module Google
     class MethodDescriptorProto
       include Proto::Message
 
-      property name : String = ""
-      property input_type : String = ""
-      property output_type : String = ""
+      getter? has_name : Bool = false
+      getter? has_input_type : Bool = false
+      getter? has_output_type : Bool = false
+      getter? has_client_streaming : Bool = false
+      getter? has_server_streaming : Bool = false
+
+      getter name : String = ""
+      getter input_type : String = ""
+      getter output_type : String = ""
       property options : MethodOptions? = nil
       # ameba:disable Naming/QueryBoolMethods
-      property client_streaming : Bool = false
+      getter client_streaming : Bool = false
       # ameba:enable Naming/QueryBoolMethods
       # ameba:disable Naming/QueryBoolMethods
-      property server_streaming : Bool = false
+      getter server_streaming : Bool = false
 
       # ameba:enable Naming/QueryBoolMethods
+
+      def clear_name : Nil
+        @name = ""
+        @has_name = false
+      end
+
+      def name=(value : String) : String
+        @name = value
+        @has_name = true
+        value
+      end
+
+      def clear_input_type : Nil
+        @input_type = ""
+        @has_input_type = false
+      end
+
+      def input_type=(value : String) : String
+        @input_type = value
+        @has_input_type = true
+        value
+      end
+
+      def clear_output_type : Nil
+        @output_type = ""
+        @has_output_type = false
+      end
+
+      def output_type=(value : String) : String
+        @output_type = value
+        @has_output_type = true
+        value
+      end
+
+      def clear_client_streaming : Nil
+        @client_streaming = false
+        @has_client_streaming = false
+      end
+
+      def client_streaming=(value : Bool) : Bool
+        @client_streaming = value
+        @has_client_streaming = true
+        value
+      end
+
+      def clear_server_streaming : Nil
+        @server_streaming = false
+        @has_server_streaming = false
+      end
+
+      def server_streaming=(value : Bool) : Bool
+        @server_streaming = value
+        @has_server_streaming = true
+        value
+      end
 
       def has_options? : Bool
         !options.nil?
@@ -1258,32 +1704,32 @@ module Google
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.name = reader.read_string
-          when 2
+            msg.name = reader.read_string_unchecked
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.input_type = reader.read_string
-          when 3
+            msg.input_type = reader.read_string_unchecked
+          when {3, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(3, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.output_type = reader.read_string
-          when 4
+            msg.output_type = reader.read_string_unchecked
+          when {4, Proto::WireType::LENGTH_DELIMITED}
             msg.options = reader.read_embedded(4, wt) do |sub|
               if current = msg.options
                 merged = IO::Memory.new
                 current.encode_partial(merged)
                 IO.copy(sub, merged)
                 merged.rewind
-                MethodOptions.decode_partial(merged)
+                MethodOptions.decode_partial(sub.rewrap(merged.to_slice))
               else
                 MethodOptions.decode_partial(sub)
               end
             end
-          when 5
+          when {5, Proto::WireType::VARINT}
             reader.expect_wire_type!(5, wt, Proto::WireType::VARINT)
             msg.client_streaming = reader.read_bool
-          when 6
+          when {6, Proto::WireType::VARINT}
             reader.expect_wire_type!(6, wt, Proto::WireType::VARINT)
             msg.server_streaming = reader.read_bool
           else
@@ -1301,19 +1747,29 @@ module Google
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(name)
-        w.write_tag(2, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(input_type)
-        w.write_tag(3, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(output_type)
+        if has_name?
+          w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(name)
+        end
+        if has_input_type?
+          w.write_tag(2, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(input_type)
+        end
+        if has_output_type?
+          w.write_tag(3, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(output_type)
+        end
         if _v = options
           w.write_embedded(4) { |sub| _v.encode_partial(sub) }
         end
-        w.write_tag(5, Proto::WireType::VARINT)
-        w.write_bool(client_streaming)
-        w.write_tag(6, Proto::WireType::VARINT)
-        w.write_bool(server_streaming)
+        if has_client_streaming?
+          w.write_tag(5, Proto::WireType::VARINT)
+          w.write_bool(client_streaming)
+        end
+        if has_server_streaming?
+          w.write_tag(6, Proto::WireType::VARINT)
+          w.write_bool(server_streaming)
+        end
         write_unknown_fields(w)
       end
 
@@ -1323,6 +1779,11 @@ module Google
       end
 
       def ==(other : self) : Bool
+        return false unless has_name? == other.has_name?
+        return false unless has_input_type? == other.has_input_type?
+        return false unless has_output_type? == other.has_output_type?
+        return false unless has_client_streaming? == other.has_client_streaming?
+        return false unless has_server_streaming? == other.has_server_streaming?
         return false unless name == other.name
         return false unless input_type == other.input_type
         return false unless output_type == other.output_type
@@ -1351,45 +1812,286 @@ module Google
         end
       end
 
-      property java_package : String = ""
-      property java_outer_classname : String = ""
+      getter? has_java_package : Bool = false
+      getter? has_java_outer_classname : Bool = false
+      getter? has_java_multiple_files : Bool = false
+      getter? has_java_generate_equals_and_hash : Bool = false
+      getter? has_java_string_check_utf8 : Bool = false
+      getter? has_optimize_for : Bool = false
+      getter? has_go_package : Bool = false
+      getter? has_cc_generic_services : Bool = false
+      getter? has_java_generic_services : Bool = false
+      getter? has_py_generic_services : Bool = false
+      getter? has_php_generic_services : Bool = false
+      getter? has_deprecated : Bool = false
+      getter? has_cc_enable_arenas : Bool = false
+      getter? has_objc_class_prefix : Bool = false
+      getter? has_csharp_namespace : Bool = false
+      getter? has_swift_prefix : Bool = false
+      getter? has_php_class_prefix : Bool = false
+      getter? has_php_namespace : Bool = false
+      getter? has_php_metadata_namespace : Bool = false
+      getter? has_ruby_package : Bool = false
+
+      getter java_package : String = ""
+      getter java_outer_classname : String = ""
       # ameba:disable Naming/QueryBoolMethods
-      property java_multiple_files : Bool = false
+      getter java_multiple_files : Bool = false
       # ameba:enable Naming/QueryBoolMethods
       # ameba:disable Naming/QueryBoolMethods
-      property java_generate_equals_and_hash : Bool = false
+      getter java_generate_equals_and_hash : Bool = false
       # ameba:enable Naming/QueryBoolMethods
       # ameba:disable Naming/QueryBoolMethods
-      property java_string_check_utf8 : Bool = false
+      getter java_string_check_utf8 : Bool = false
       # ameba:enable Naming/QueryBoolMethods
-      property optimize_for : FileOptions::OptimizeMode = FileOptions::OptimizeMode::SPEED
-      property go_package : String = ""
+      getter optimize_for : FileOptions::OptimizeMode = FileOptions::OptimizeMode::SPEED
+      getter go_package : String = ""
       # ameba:disable Naming/QueryBoolMethods
-      property cc_generic_services : Bool = false
-      # ameba:enable Naming/QueryBoolMethods
-      # ameba:disable Naming/QueryBoolMethods
-      property java_generic_services : Bool = false
+      getter cc_generic_services : Bool = false
       # ameba:enable Naming/QueryBoolMethods
       # ameba:disable Naming/QueryBoolMethods
-      property py_generic_services : Bool = false
+      getter java_generic_services : Bool = false
       # ameba:enable Naming/QueryBoolMethods
       # ameba:disable Naming/QueryBoolMethods
-      property php_generic_services : Bool = false
+      getter py_generic_services : Bool = false
       # ameba:enable Naming/QueryBoolMethods
       # ameba:disable Naming/QueryBoolMethods
-      property deprecated : Bool = false
+      getter php_generic_services : Bool = false
       # ameba:enable Naming/QueryBoolMethods
       # ameba:disable Naming/QueryBoolMethods
-      property cc_enable_arenas : Bool = true
+      getter deprecated : Bool = false
       # ameba:enable Naming/QueryBoolMethods
-      property objc_class_prefix : String = ""
-      property csharp_namespace : String = ""
-      property swift_prefix : String = ""
-      property php_class_prefix : String = ""
-      property php_namespace : String = ""
-      property php_metadata_namespace : String = ""
-      property ruby_package : String = ""
+      # ameba:disable Naming/QueryBoolMethods
+      getter cc_enable_arenas : Bool = true
+      # ameba:enable Naming/QueryBoolMethods
+      getter objc_class_prefix : String = ""
+      getter csharp_namespace : String = ""
+      getter swift_prefix : String = ""
+      getter php_class_prefix : String = ""
+      getter php_namespace : String = ""
+      getter php_metadata_namespace : String = ""
+      getter ruby_package : String = ""
       property uninterpreted_option : Array(UninterpretedOption) = [] of UninterpretedOption
+
+      def clear_java_package : Nil
+        @java_package = ""
+        @has_java_package = false
+      end
+
+      def java_package=(value : String) : String
+        @java_package = value
+        @has_java_package = true
+        value
+      end
+
+      def clear_java_outer_classname : Nil
+        @java_outer_classname = ""
+        @has_java_outer_classname = false
+      end
+
+      def java_outer_classname=(value : String) : String
+        @java_outer_classname = value
+        @has_java_outer_classname = true
+        value
+      end
+
+      def clear_java_multiple_files : Nil
+        @java_multiple_files = false
+        @has_java_multiple_files = false
+      end
+
+      def java_multiple_files=(value : Bool) : Bool
+        @java_multiple_files = value
+        @has_java_multiple_files = true
+        value
+      end
+
+      def clear_java_generate_equals_and_hash : Nil
+        @java_generate_equals_and_hash = false
+        @has_java_generate_equals_and_hash = false
+      end
+
+      def java_generate_equals_and_hash=(value : Bool) : Bool
+        @java_generate_equals_and_hash = value
+        @has_java_generate_equals_and_hash = true
+        value
+      end
+
+      def clear_java_string_check_utf8 : Nil
+        @java_string_check_utf8 = false
+        @has_java_string_check_utf8 = false
+      end
+
+      def java_string_check_utf8=(value : Bool) : Bool
+        @java_string_check_utf8 = value
+        @has_java_string_check_utf8 = true
+        value
+      end
+
+      def clear_optimize_for : Nil
+        @optimize_for = FileOptions::OptimizeMode::SPEED
+        @has_optimize_for = false
+      end
+
+      def optimize_for=(value : FileOptions::OptimizeMode) : FileOptions::OptimizeMode
+        @optimize_for = value
+        @has_optimize_for = true
+        value
+      end
+
+      def clear_go_package : Nil
+        @go_package = ""
+        @has_go_package = false
+      end
+
+      def go_package=(value : String) : String
+        @go_package = value
+        @has_go_package = true
+        value
+      end
+
+      def clear_cc_generic_services : Nil
+        @cc_generic_services = false
+        @has_cc_generic_services = false
+      end
+
+      def cc_generic_services=(value : Bool) : Bool
+        @cc_generic_services = value
+        @has_cc_generic_services = true
+        value
+      end
+
+      def clear_java_generic_services : Nil
+        @java_generic_services = false
+        @has_java_generic_services = false
+      end
+
+      def java_generic_services=(value : Bool) : Bool
+        @java_generic_services = value
+        @has_java_generic_services = true
+        value
+      end
+
+      def clear_py_generic_services : Nil
+        @py_generic_services = false
+        @has_py_generic_services = false
+      end
+
+      def py_generic_services=(value : Bool) : Bool
+        @py_generic_services = value
+        @has_py_generic_services = true
+        value
+      end
+
+      def clear_php_generic_services : Nil
+        @php_generic_services = false
+        @has_php_generic_services = false
+      end
+
+      def php_generic_services=(value : Bool) : Bool
+        @php_generic_services = value
+        @has_php_generic_services = true
+        value
+      end
+
+      def clear_deprecated : Nil
+        @deprecated = false
+        @has_deprecated = false
+      end
+
+      def deprecated=(value : Bool) : Bool
+        @deprecated = value
+        @has_deprecated = true
+        value
+      end
+
+      def clear_cc_enable_arenas : Nil
+        @cc_enable_arenas = true
+        @has_cc_enable_arenas = false
+      end
+
+      def cc_enable_arenas=(value : Bool) : Bool
+        @cc_enable_arenas = value
+        @has_cc_enable_arenas = true
+        value
+      end
+
+      def clear_objc_class_prefix : Nil
+        @objc_class_prefix = ""
+        @has_objc_class_prefix = false
+      end
+
+      def objc_class_prefix=(value : String) : String
+        @objc_class_prefix = value
+        @has_objc_class_prefix = true
+        value
+      end
+
+      def clear_csharp_namespace : Nil
+        @csharp_namespace = ""
+        @has_csharp_namespace = false
+      end
+
+      def csharp_namespace=(value : String) : String
+        @csharp_namespace = value
+        @has_csharp_namespace = true
+        value
+      end
+
+      def clear_swift_prefix : Nil
+        @swift_prefix = ""
+        @has_swift_prefix = false
+      end
+
+      def swift_prefix=(value : String) : String
+        @swift_prefix = value
+        @has_swift_prefix = true
+        value
+      end
+
+      def clear_php_class_prefix : Nil
+        @php_class_prefix = ""
+        @has_php_class_prefix = false
+      end
+
+      def php_class_prefix=(value : String) : String
+        @php_class_prefix = value
+        @has_php_class_prefix = true
+        value
+      end
+
+      def clear_php_namespace : Nil
+        @php_namespace = ""
+        @has_php_namespace = false
+      end
+
+      def php_namespace=(value : String) : String
+        @php_namespace = value
+        @has_php_namespace = true
+        value
+      end
+
+      def clear_php_metadata_namespace : Nil
+        @php_metadata_namespace = ""
+        @has_php_metadata_namespace = false
+      end
+
+      def php_metadata_namespace=(value : String) : String
+        @php_metadata_namespace = value
+        @has_php_metadata_namespace = true
+        value
+      end
+
+      def clear_ruby_package : Nil
+        @ruby_package = ""
+        @has_ruby_package = false
+      end
+
+      def ruby_package=(value : String) : String
+        @ruby_package = value
+        @has_ruby_package = true
+        value
+      end
 
       def validate_required! : Nil
       end
@@ -1406,69 +2108,69 @@ module Google
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.java_package = reader.read_string
-          when 8
+            msg.java_package = reader.read_string_unchecked
+          when {8, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(8, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.java_outer_classname = reader.read_string
-          when 10
+            msg.java_outer_classname = reader.read_string_unchecked
+          when {10, Proto::WireType::VARINT}
             reader.expect_wire_type!(10, wt, Proto::WireType::VARINT)
             msg.java_multiple_files = reader.read_bool
-          when 20
+          when {20, Proto::WireType::VARINT}
             reader.expect_wire_type!(20, wt, Proto::WireType::VARINT)
             msg.java_generate_equals_and_hash = reader.read_bool
-          when 27
+          when {27, Proto::WireType::VARINT}
             reader.expect_wire_type!(27, wt, Proto::WireType::VARINT)
             msg.java_string_check_utf8 = reader.read_bool
-          when 9
+          when {9, Proto::WireType::VARINT}
             reader.expect_wire_type!(9, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             msg.decode_known_enum(fn, _raw_u64) { |raw| msg.optimize_for = FileOptions::OptimizeMode.from_value(raw) }
-          when 11
+          when {11, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(11, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.go_package = reader.read_string
-          when 16
+            msg.go_package = reader.read_string_unchecked
+          when {16, Proto::WireType::VARINT}
             reader.expect_wire_type!(16, wt, Proto::WireType::VARINT)
             msg.cc_generic_services = reader.read_bool
-          when 17
+          when {17, Proto::WireType::VARINT}
             reader.expect_wire_type!(17, wt, Proto::WireType::VARINT)
             msg.java_generic_services = reader.read_bool
-          when 18
+          when {18, Proto::WireType::VARINT}
             reader.expect_wire_type!(18, wt, Proto::WireType::VARINT)
             msg.py_generic_services = reader.read_bool
-          when 42
+          when {42, Proto::WireType::VARINT}
             reader.expect_wire_type!(42, wt, Proto::WireType::VARINT)
             msg.php_generic_services = reader.read_bool
-          when 23
+          when {23, Proto::WireType::VARINT}
             reader.expect_wire_type!(23, wt, Proto::WireType::VARINT)
             msg.deprecated = reader.read_bool
-          when 31
+          when {31, Proto::WireType::VARINT}
             reader.expect_wire_type!(31, wt, Proto::WireType::VARINT)
             msg.cc_enable_arenas = reader.read_bool
-          when 36
+          when {36, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(36, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.objc_class_prefix = reader.read_string
-          when 37
+            msg.objc_class_prefix = reader.read_string_unchecked
+          when {37, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(37, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.csharp_namespace = reader.read_string
-          when 39
+            msg.csharp_namespace = reader.read_string_unchecked
+          when {39, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(39, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.swift_prefix = reader.read_string
-          when 40
+            msg.swift_prefix = reader.read_string_unchecked
+          when {40, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(40, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.php_class_prefix = reader.read_string
-          when 41
+            msg.php_class_prefix = reader.read_string_unchecked
+          when {41, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(41, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.php_namespace = reader.read_string
-          when 44
+            msg.php_namespace = reader.read_string_unchecked
+          when {44, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(44, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.php_metadata_namespace = reader.read_string
-          when 45
+            msg.php_metadata_namespace = reader.read_string_unchecked
+          when {45, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(45, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.ruby_package = reader.read_string
-          when 999
+            msg.ruby_package = reader.read_string_unchecked
+          when {999, Proto::WireType::LENGTH_DELIMITED}
             msg.uninterpreted_option << reader.read_embedded(999, wt) { |sub| UninterpretedOption.decode_partial(sub) }
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
@@ -1485,46 +2187,86 @@ module Google
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(java_package)
-        w.write_tag(8, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(java_outer_classname)
-        w.write_tag(10, Proto::WireType::VARINT)
-        w.write_bool(java_multiple_files)
-        w.write_tag(20, Proto::WireType::VARINT)
-        w.write_bool(java_generate_equals_and_hash)
-        w.write_tag(27, Proto::WireType::VARINT)
-        w.write_bool(java_string_check_utf8)
-        w.write_tag(9, Proto::WireType::VARINT)
-        w.write_int32(optimize_for.value)
-        w.write_tag(11, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(go_package)
-        w.write_tag(16, Proto::WireType::VARINT)
-        w.write_bool(cc_generic_services)
-        w.write_tag(17, Proto::WireType::VARINT)
-        w.write_bool(java_generic_services)
-        w.write_tag(18, Proto::WireType::VARINT)
-        w.write_bool(py_generic_services)
-        w.write_tag(42, Proto::WireType::VARINT)
-        w.write_bool(php_generic_services)
-        w.write_tag(23, Proto::WireType::VARINT)
-        w.write_bool(deprecated)
-        w.write_tag(31, Proto::WireType::VARINT)
-        w.write_bool(cc_enable_arenas)
-        w.write_tag(36, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(objc_class_prefix)
-        w.write_tag(37, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(csharp_namespace)
-        w.write_tag(39, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(swift_prefix)
-        w.write_tag(40, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(php_class_prefix)
-        w.write_tag(41, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(php_namespace)
-        w.write_tag(44, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(php_metadata_namespace)
-        w.write_tag(45, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(ruby_package)
+        if has_java_package?
+          w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(java_package)
+        end
+        if has_java_outer_classname?
+          w.write_tag(8, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(java_outer_classname)
+        end
+        if has_java_multiple_files?
+          w.write_tag(10, Proto::WireType::VARINT)
+          w.write_bool(java_multiple_files)
+        end
+        if has_java_generate_equals_and_hash?
+          w.write_tag(20, Proto::WireType::VARINT)
+          w.write_bool(java_generate_equals_and_hash)
+        end
+        if has_java_string_check_utf8?
+          w.write_tag(27, Proto::WireType::VARINT)
+          w.write_bool(java_string_check_utf8)
+        end
+        if has_optimize_for?
+          w.write_tag(9, Proto::WireType::VARINT)
+          w.write_int32(optimize_for.value)
+        end
+        if has_go_package?
+          w.write_tag(11, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(go_package)
+        end
+        if has_cc_generic_services?
+          w.write_tag(16, Proto::WireType::VARINT)
+          w.write_bool(cc_generic_services)
+        end
+        if has_java_generic_services?
+          w.write_tag(17, Proto::WireType::VARINT)
+          w.write_bool(java_generic_services)
+        end
+        if has_py_generic_services?
+          w.write_tag(18, Proto::WireType::VARINT)
+          w.write_bool(py_generic_services)
+        end
+        if has_php_generic_services?
+          w.write_tag(42, Proto::WireType::VARINT)
+          w.write_bool(php_generic_services)
+        end
+        if has_deprecated?
+          w.write_tag(23, Proto::WireType::VARINT)
+          w.write_bool(deprecated)
+        end
+        if has_cc_enable_arenas?
+          w.write_tag(31, Proto::WireType::VARINT)
+          w.write_bool(cc_enable_arenas)
+        end
+        if has_objc_class_prefix?
+          w.write_tag(36, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(objc_class_prefix)
+        end
+        if has_csharp_namespace?
+          w.write_tag(37, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(csharp_namespace)
+        end
+        if has_swift_prefix?
+          w.write_tag(39, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(swift_prefix)
+        end
+        if has_php_class_prefix?
+          w.write_tag(40, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(php_class_prefix)
+        end
+        if has_php_namespace?
+          w.write_tag(41, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(php_namespace)
+        end
+        if has_php_metadata_namespace?
+          w.write_tag(44, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(php_metadata_namespace)
+        end
+        if has_ruby_package?
+          w.write_tag(45, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(ruby_package)
+        end
         uninterpreted_option.each do |item|
           w.write_embedded(999) { |sub| item.encode_partial(sub) }
         end
@@ -1537,6 +2279,26 @@ module Google
       end
 
       def ==(other : self) : Bool
+        return false unless has_java_package? == other.has_java_package?
+        return false unless has_java_outer_classname? == other.has_java_outer_classname?
+        return false unless has_java_multiple_files? == other.has_java_multiple_files?
+        return false unless has_java_generate_equals_and_hash? == other.has_java_generate_equals_and_hash?
+        return false unless has_java_string_check_utf8? == other.has_java_string_check_utf8?
+        return false unless has_optimize_for? == other.has_optimize_for?
+        return false unless has_go_package? == other.has_go_package?
+        return false unless has_cc_generic_services? == other.has_cc_generic_services?
+        return false unless has_java_generic_services? == other.has_java_generic_services?
+        return false unless has_py_generic_services? == other.has_py_generic_services?
+        return false unless has_php_generic_services? == other.has_php_generic_services?
+        return false unless has_deprecated? == other.has_deprecated?
+        return false unless has_cc_enable_arenas? == other.has_cc_enable_arenas?
+        return false unless has_objc_class_prefix? == other.has_objc_class_prefix?
+        return false unless has_csharp_namespace? == other.has_csharp_namespace?
+        return false unless has_swift_prefix? == other.has_swift_prefix?
+        return false unless has_php_class_prefix? == other.has_php_class_prefix?
+        return false unless has_php_namespace? == other.has_php_namespace?
+        return false unless has_php_metadata_namespace? == other.has_php_metadata_namespace?
+        return false unless has_ruby_package? == other.has_ruby_package?
         return false unless java_package == other.java_package
         return false unless java_outer_classname == other.java_outer_classname
         return false unless java_multiple_files == other.java_multiple_files
@@ -1566,19 +2328,68 @@ module Google
     class MessageOptions
       include Proto::Message
 
+      getter? has_message_set_wire_format : Bool = false
+      getter? has_no_standard_descriptor_accessor : Bool = false
+      getter? has_deprecated : Bool = false
+      getter? has_map_entry : Bool = false
+
       # ameba:disable Naming/QueryBoolMethods
-      property message_set_wire_format : Bool = false
+      getter message_set_wire_format : Bool = false
       # ameba:enable Naming/QueryBoolMethods
       # ameba:disable Naming/QueryBoolMethods
-      property no_standard_descriptor_accessor : Bool = false
+      getter no_standard_descriptor_accessor : Bool = false
       # ameba:enable Naming/QueryBoolMethods
       # ameba:disable Naming/QueryBoolMethods
-      property deprecated : Bool = false
+      getter deprecated : Bool = false
       # ameba:enable Naming/QueryBoolMethods
       # ameba:disable Naming/QueryBoolMethods
-      property map_entry : Bool = false
+      getter map_entry : Bool = false
       # ameba:enable Naming/QueryBoolMethods
       property uninterpreted_option : Array(UninterpretedOption) = [] of UninterpretedOption
+
+      def clear_message_set_wire_format : Nil
+        @message_set_wire_format = false
+        @has_message_set_wire_format = false
+      end
+
+      def message_set_wire_format=(value : Bool) : Bool
+        @message_set_wire_format = value
+        @has_message_set_wire_format = true
+        value
+      end
+
+      def clear_no_standard_descriptor_accessor : Nil
+        @no_standard_descriptor_accessor = false
+        @has_no_standard_descriptor_accessor = false
+      end
+
+      def no_standard_descriptor_accessor=(value : Bool) : Bool
+        @no_standard_descriptor_accessor = value
+        @has_no_standard_descriptor_accessor = true
+        value
+      end
+
+      def clear_deprecated : Nil
+        @deprecated = false
+        @has_deprecated = false
+      end
+
+      def deprecated=(value : Bool) : Bool
+        @deprecated = value
+        @has_deprecated = true
+        value
+      end
+
+      def clear_map_entry : Nil
+        @map_entry = false
+        @has_map_entry = false
+      end
+
+      def map_entry=(value : Bool) : Bool
+        @map_entry = value
+        @has_map_entry = true
+        value
+      end
 
       def validate_required! : Nil
       end
@@ -1595,20 +2406,20 @@ module Google
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::VARINT}
             reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             msg.message_set_wire_format = reader.read_bool
-          when 2
+          when {2, Proto::WireType::VARINT}
             reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
             msg.no_standard_descriptor_accessor = reader.read_bool
-          when 3
+          when {3, Proto::WireType::VARINT}
             reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
             msg.deprecated = reader.read_bool
-          when 7
+          when {7, Proto::WireType::VARINT}
             reader.expect_wire_type!(7, wt, Proto::WireType::VARINT)
             msg.map_entry = reader.read_bool
-          when 999
+          when {999, Proto::WireType::LENGTH_DELIMITED}
             msg.uninterpreted_option << reader.read_embedded(999, wt) { |sub| UninterpretedOption.decode_partial(sub) }
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
@@ -1625,14 +2436,22 @@ module Google
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        w.write_tag(1, Proto::WireType::VARINT)
-        w.write_bool(message_set_wire_format)
-        w.write_tag(2, Proto::WireType::VARINT)
-        w.write_bool(no_standard_descriptor_accessor)
-        w.write_tag(3, Proto::WireType::VARINT)
-        w.write_bool(deprecated)
-        w.write_tag(7, Proto::WireType::VARINT)
-        w.write_bool(map_entry)
+        if has_message_set_wire_format?
+          w.write_tag(1, Proto::WireType::VARINT)
+          w.write_bool(message_set_wire_format)
+        end
+        if has_no_standard_descriptor_accessor?
+          w.write_tag(2, Proto::WireType::VARINT)
+          w.write_bool(no_standard_descriptor_accessor)
+        end
+        if has_deprecated?
+          w.write_tag(3, Proto::WireType::VARINT)
+          w.write_bool(deprecated)
+        end
+        if has_map_entry?
+          w.write_tag(7, Proto::WireType::VARINT)
+          w.write_bool(map_entry)
+        end
         uninterpreted_option.each do |item|
           w.write_embedded(999) { |sub| item.encode_partial(sub) }
         end
@@ -1645,6 +2464,10 @@ module Google
       end
 
       def ==(other : self) : Bool
+        return false unless has_message_set_wire_format? == other.has_message_set_wire_format?
+        return false unless has_no_standard_descriptor_accessor? == other.has_no_standard_descriptor_accessor?
+        return false unless has_deprecated? == other.has_deprecated?
+        return false unless has_map_entry? == other.has_map_entry?
         return false unless message_set_wire_format == other.message_set_wire_format
         return false unless no_standard_descriptor_accessor == other.no_standard_descriptor_accessor
         return false unless deprecated == other.deprecated
@@ -1686,24 +2509,109 @@ module Google
         end
       end
 
-      property ctype : FieldOptions::CType = FieldOptions::CType::STRING
+      getter? has_ctype : Bool = false
+      getter? has_packed : Bool = false
+      getter? has_jstype : Bool = false
+      getter? has_lazy : Bool = false
+      getter? has_unverified_lazy : Bool = false
+      getter? has_deprecated : Bool = false
+      getter? has_weak : Bool = false
+
+      getter ctype : FieldOptions::CType = FieldOptions::CType::STRING
       # ameba:disable Naming/QueryBoolMethods
-      property packed : Bool = false
+      getter packed : Bool = false
       # ameba:enable Naming/QueryBoolMethods
-      property jstype : FieldOptions::JSType = FieldOptions::JSType::JS_NORMAL
+      getter jstype : FieldOptions::JSType = FieldOptions::JSType::JS_NORMAL
       # ameba:disable Naming/QueryBoolMethods
-      property lazy : Bool = false
+      getter lazy : Bool = false
       # ameba:enable Naming/QueryBoolMethods
       # ameba:disable Naming/QueryBoolMethods
-      property unverified_lazy : Bool = false
+      getter unverified_lazy : Bool = false
       # ameba:enable Naming/QueryBoolMethods
       # ameba:disable Naming/QueryBoolMethods
-      property deprecated : Bool = false
+      getter deprecated : Bool = false
       # ameba:enable Naming/QueryBoolMethods
       # ameba:disable Naming/QueryBoolMethods
-      property weak : Bool = false
+      getter weak : Bool = false
       # ameba:enable Naming/QueryBoolMethods
       property uninterpreted_option : Array(UninterpretedOption) = [] of UninterpretedOption
+
+      def clear_ctype : Nil
+        @ctype = FieldOptions::CType::STRING
+        @has_ctype = false
+      end
+
+      def ctype=(value : FieldOptions::CType) : FieldOptions::CType
+        @ctype = value
+        @has_ctype = true
+        value
+      end
+
+      def clear_packed : Nil
+        @packed = false
+        @has_packed = false
+      end
+
+      def packed=(value : Bool) : Bool
+        @packed = value
+        @has_packed = true
+        value
+      end
+
+      def clear_jstype : Nil
+        @jstype = FieldOptions::JSType::JS_NORMAL
+        @has_jstype = false
+      end
+
+      def jstype=(value : FieldOptions::JSType) : FieldOptions::JSType
+        @jstype = value
+        @has_jstype = true
+        value
+      end
+
+      def clear_lazy : Nil
+        @lazy = false
+        @has_lazy = false
+      end
+
+      def lazy=(value : Bool) : Bool
+        @lazy = value
+        @has_lazy = true
+        value
+      end
+
+      def clear_unverified_lazy : Nil
+        @unverified_lazy = false
+        @has_unverified_lazy = false
+      end
+
+      def unverified_lazy=(value : Bool) : Bool
+        @unverified_lazy = value
+        @has_unverified_lazy = true
+        value
+      end
+
+      def clear_deprecated : Nil
+        @deprecated = false
+        @has_deprecated = false
+      end
+
+      def deprecated=(value : Bool) : Bool
+        @deprecated = value
+        @has_deprecated = true
+        value
+      end
+
+      def clear_weak : Nil
+        @weak = false
+        @has_weak = false
+      end
+
+      def weak=(value : Bool) : Bool
+        @weak = value
+        @has_weak = true
+        value
+      end
 
       def validate_required! : Nil
       end
@@ -1720,31 +2628,31 @@ module Google
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::VARINT}
             reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             msg.decode_known_enum(fn, _raw_u64) { |raw| msg.ctype = FieldOptions::CType.from_value(raw) }
-          when 2
+          when {2, Proto::WireType::VARINT}
             reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
             msg.packed = reader.read_bool
-          when 6
+          when {6, Proto::WireType::VARINT}
             reader.expect_wire_type!(6, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             msg.decode_known_enum(fn, _raw_u64) { |raw| msg.jstype = FieldOptions::JSType.from_value(raw) }
-          when 5
+          when {5, Proto::WireType::VARINT}
             reader.expect_wire_type!(5, wt, Proto::WireType::VARINT)
             msg.lazy = reader.read_bool
-          when 15
+          when {15, Proto::WireType::VARINT}
             reader.expect_wire_type!(15, wt, Proto::WireType::VARINT)
             msg.unverified_lazy = reader.read_bool
-          when 3
+          when {3, Proto::WireType::VARINT}
             reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
             msg.deprecated = reader.read_bool
-          when 10
+          when {10, Proto::WireType::VARINT}
             reader.expect_wire_type!(10, wt, Proto::WireType::VARINT)
             msg.weak = reader.read_bool
-          when 999
+          when {999, Proto::WireType::LENGTH_DELIMITED}
             msg.uninterpreted_option << reader.read_embedded(999, wt) { |sub| UninterpretedOption.decode_partial(sub) }
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
@@ -1761,20 +2669,34 @@ module Google
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        w.write_tag(1, Proto::WireType::VARINT)
-        w.write_int32(ctype.value)
-        w.write_tag(2, Proto::WireType::VARINT)
-        w.write_bool(packed)
-        w.write_tag(6, Proto::WireType::VARINT)
-        w.write_int32(jstype.value)
-        w.write_tag(5, Proto::WireType::VARINT)
-        w.write_bool(lazy)
-        w.write_tag(15, Proto::WireType::VARINT)
-        w.write_bool(unverified_lazy)
-        w.write_tag(3, Proto::WireType::VARINT)
-        w.write_bool(deprecated)
-        w.write_tag(10, Proto::WireType::VARINT)
-        w.write_bool(weak)
+        if has_ctype?
+          w.write_tag(1, Proto::WireType::VARINT)
+          w.write_int32(ctype.value)
+        end
+        if has_packed?
+          w.write_tag(2, Proto::WireType::VARINT)
+          w.write_bool(packed)
+        end
+        if has_jstype?
+          w.write_tag(6, Proto::WireType::VARINT)
+          w.write_int32(jstype.value)
+        end
+        if has_lazy?
+          w.write_tag(5, Proto::WireType::VARINT)
+          w.write_bool(lazy)
+        end
+        if has_unverified_lazy?
+          w.write_tag(15, Proto::WireType::VARINT)
+          w.write_bool(unverified_lazy)
+        end
+        if has_deprecated?
+          w.write_tag(3, Proto::WireType::VARINT)
+          w.write_bool(deprecated)
+        end
+        if has_weak?
+          w.write_tag(10, Proto::WireType::VARINT)
+          w.write_bool(weak)
+        end
         uninterpreted_option.each do |item|
           w.write_embedded(999) { |sub| item.encode_partial(sub) }
         end
@@ -1787,6 +2709,13 @@ module Google
       end
 
       def ==(other : self) : Bool
+        return false unless has_ctype? == other.has_ctype?
+        return false unless has_packed? == other.has_packed?
+        return false unless has_jstype? == other.has_jstype?
+        return false unless has_lazy? == other.has_lazy?
+        return false unless has_unverified_lazy? == other.has_unverified_lazy?
+        return false unless has_deprecated? == other.has_deprecated?
+        return false unless has_weak? == other.has_weak?
         return false unless ctype == other.ctype
         return false unless packed == other.packed
         return false unless jstype == other.jstype
@@ -1820,8 +2749,8 @@ module Google
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 999
+          case {fn, wt}
+          when {999, Proto::WireType::LENGTH_DELIMITED}
             msg.uninterpreted_option << reader.read_embedded(999, wt) { |sub| UninterpretedOption.decode_partial(sub) }
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
@@ -1859,13 +2788,38 @@ module Google
     class EnumOptions
       include Proto::Message
 
+      getter? has_allow_alias : Bool = false
+      getter? has_deprecated : Bool = false
+
       # ameba:disable Naming/QueryBoolMethods
-      property allow_alias : Bool = false
+      getter allow_alias : Bool = false
       # ameba:enable Naming/QueryBoolMethods
       # ameba:disable Naming/QueryBoolMethods
-      property deprecated : Bool = false
+      getter deprecated : Bool = false
       # ameba:enable Naming/QueryBoolMethods
       property uninterpreted_option : Array(UninterpretedOption) = [] of UninterpretedOption
+
+      def clear_allow_alias : Nil
+        @allow_alias = false
+        @has_allow_alias = false
+      end
+
+      def allow_alias=(value : Bool) : Bool
+        @allow_alias = value
+        @has_allow_alias = true
+        value
+      end
+
+      def clear_deprecated : Nil
+        @deprecated = false
+        @has_deprecated = false
+      end
+
+      def deprecated=(value : Bool) : Bool
+        @deprecated = value
+        @has_deprecated = true
+        value
+      end
 
       def validate_required! : Nil
       end
@@ -1882,14 +2836,14 @@ module Google
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 2
+          case {fn, wt}
+          when {2, Proto::WireType::VARINT}
             reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
             msg.allow_alias = reader.read_bool
-          when 3
+          when {3, Proto::WireType::VARINT}
             reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
             msg.deprecated = reader.read_bool
-          when 999
+          when {999, Proto::WireType::LENGTH_DELIMITED}
             msg.uninterpreted_option << reader.read_embedded(999, wt) { |sub| UninterpretedOption.decode_partial(sub) }
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
@@ -1906,10 +2860,14 @@ module Google
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        w.write_tag(2, Proto::WireType::VARINT)
-        w.write_bool(allow_alias)
-        w.write_tag(3, Proto::WireType::VARINT)
-        w.write_bool(deprecated)
+        if has_allow_alias?
+          w.write_tag(2, Proto::WireType::VARINT)
+          w.write_bool(allow_alias)
+        end
+        if has_deprecated?
+          w.write_tag(3, Proto::WireType::VARINT)
+          w.write_bool(deprecated)
+        end
         uninterpreted_option.each do |item|
           w.write_embedded(999) { |sub| item.encode_partial(sub) }
         end
@@ -1922,6 +2880,8 @@ module Google
       end
 
       def ==(other : self) : Bool
+        return false unless has_allow_alias? == other.has_allow_alias?
+        return false unless has_deprecated? == other.has_deprecated?
         return false unless allow_alias == other.allow_alias
         return false unless deprecated == other.deprecated
         return false unless uninterpreted_option == other.uninterpreted_option
@@ -1933,10 +2893,23 @@ module Google
     class EnumValueOptions
       include Proto::Message
 
+      getter? has_deprecated : Bool = false
+
       # ameba:disable Naming/QueryBoolMethods
-      property deprecated : Bool = false
+      getter deprecated : Bool = false
       # ameba:enable Naming/QueryBoolMethods
       property uninterpreted_option : Array(UninterpretedOption) = [] of UninterpretedOption
+
+      def clear_deprecated : Nil
+        @deprecated = false
+        @has_deprecated = false
+      end
+
+      def deprecated=(value : Bool) : Bool
+        @deprecated = value
+        @has_deprecated = true
+        value
+      end
 
       def validate_required! : Nil
       end
@@ -1953,11 +2926,11 @@ module Google
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::VARINT}
             reader.expect_wire_type!(1, wt, Proto::WireType::VARINT)
             msg.deprecated = reader.read_bool
-          when 999
+          when {999, Proto::WireType::LENGTH_DELIMITED}
             msg.uninterpreted_option << reader.read_embedded(999, wt) { |sub| UninterpretedOption.decode_partial(sub) }
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
@@ -1974,8 +2947,10 @@ module Google
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        w.write_tag(1, Proto::WireType::VARINT)
-        w.write_bool(deprecated)
+        if has_deprecated?
+          w.write_tag(1, Proto::WireType::VARINT)
+          w.write_bool(deprecated)
+        end
         uninterpreted_option.each do |item|
           w.write_embedded(999) { |sub| item.encode_partial(sub) }
         end
@@ -1988,6 +2963,7 @@ module Google
       end
 
       def ==(other : self) : Bool
+        return false unless has_deprecated? == other.has_deprecated?
         return false unless deprecated == other.deprecated
         return false unless uninterpreted_option == other.uninterpreted_option
         return false unless unknown_fields == other.unknown_fields
@@ -1998,10 +2974,23 @@ module Google
     class ServiceOptions
       include Proto::Message
 
+      getter? has_deprecated : Bool = false
+
       # ameba:disable Naming/QueryBoolMethods
-      property deprecated : Bool = false
+      getter deprecated : Bool = false
       # ameba:enable Naming/QueryBoolMethods
       property uninterpreted_option : Array(UninterpretedOption) = [] of UninterpretedOption
+
+      def clear_deprecated : Nil
+        @deprecated = false
+        @has_deprecated = false
+      end
+
+      def deprecated=(value : Bool) : Bool
+        @deprecated = value
+        @has_deprecated = true
+        value
+      end
 
       def validate_required! : Nil
       end
@@ -2018,11 +3007,11 @@ module Google
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 33
+          case {fn, wt}
+          when {33, Proto::WireType::VARINT}
             reader.expect_wire_type!(33, wt, Proto::WireType::VARINT)
             msg.deprecated = reader.read_bool
-          when 999
+          when {999, Proto::WireType::LENGTH_DELIMITED}
             msg.uninterpreted_option << reader.read_embedded(999, wt) { |sub| UninterpretedOption.decode_partial(sub) }
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
@@ -2039,8 +3028,10 @@ module Google
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        w.write_tag(33, Proto::WireType::VARINT)
-        w.write_bool(deprecated)
+        if has_deprecated?
+          w.write_tag(33, Proto::WireType::VARINT)
+          w.write_bool(deprecated)
+        end
         uninterpreted_option.each do |item|
           w.write_embedded(999) { |sub| item.encode_partial(sub) }
         end
@@ -2053,6 +3044,7 @@ module Google
       end
 
       def ==(other : self) : Bool
+        return false unless has_deprecated? == other.has_deprecated?
         return false unless deprecated == other.deprecated
         return false unless uninterpreted_option == other.uninterpreted_option
         return false unless unknown_fields == other.unknown_fields
@@ -2077,11 +3069,36 @@ module Google
         end
       end
 
+      getter? has_deprecated : Bool = false
+      getter? has_idempotency_level : Bool = false
+
       # ameba:disable Naming/QueryBoolMethods
-      property deprecated : Bool = false
+      getter deprecated : Bool = false
       # ameba:enable Naming/QueryBoolMethods
-      property idempotency_level : MethodOptions::IdempotencyLevel = MethodOptions::IdempotencyLevel::IDEMPOTENCY_UNKNOWN
+      getter idempotency_level : MethodOptions::IdempotencyLevel = MethodOptions::IdempotencyLevel::IDEMPOTENCY_UNKNOWN
       property uninterpreted_option : Array(UninterpretedOption) = [] of UninterpretedOption
+
+      def clear_deprecated : Nil
+        @deprecated = false
+        @has_deprecated = false
+      end
+
+      def deprecated=(value : Bool) : Bool
+        @deprecated = value
+        @has_deprecated = true
+        value
+      end
+
+      def clear_idempotency_level : Nil
+        @idempotency_level = MethodOptions::IdempotencyLevel::IDEMPOTENCY_UNKNOWN
+        @has_idempotency_level = false
+      end
+
+      def idempotency_level=(value : MethodOptions::IdempotencyLevel) : MethodOptions::IdempotencyLevel
+        @idempotency_level = value
+        @has_idempotency_level = true
+        value
+      end
 
       def validate_required! : Nil
       end
@@ -2098,15 +3115,15 @@ module Google
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 33
+          case {fn, wt}
+          when {33, Proto::WireType::VARINT}
             reader.expect_wire_type!(33, wt, Proto::WireType::VARINT)
             msg.deprecated = reader.read_bool
-          when 34
+          when {34, Proto::WireType::VARINT}
             reader.expect_wire_type!(34, wt, Proto::WireType::VARINT)
             _raw_u64 = reader.read_uint64
             msg.decode_known_enum(fn, _raw_u64) { |raw| msg.idempotency_level = MethodOptions::IdempotencyLevel.from_value(raw) }
-          when 999
+          when {999, Proto::WireType::LENGTH_DELIMITED}
             msg.uninterpreted_option << reader.read_embedded(999, wt) { |sub| UninterpretedOption.decode_partial(sub) }
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
@@ -2123,10 +3140,14 @@ module Google
 
       def encode_partial(io : IO) : Nil
         w = Proto::Wire::Writer.new(io)
-        w.write_tag(33, Proto::WireType::VARINT)
-        w.write_bool(deprecated)
-        w.write_tag(34, Proto::WireType::VARINT)
-        w.write_int32(idempotency_level.value)
+        if has_deprecated?
+          w.write_tag(33, Proto::WireType::VARINT)
+          w.write_bool(deprecated)
+        end
+        if has_idempotency_level?
+          w.write_tag(34, Proto::WireType::VARINT)
+          w.write_int32(idempotency_level.value)
+        end
         uninterpreted_option.each do |item|
           w.write_embedded(999) { |sub| item.encode_partial(sub) }
         end
@@ -2139,6 +3160,8 @@ module Google
       end
 
       def ==(other : self) : Bool
+        return false unless has_deprecated? == other.has_deprecated?
+        return false unless has_idempotency_level? == other.has_idempotency_level?
         return false unless deprecated == other.deprecated
         return false unless idempotency_level == other.idempotency_level
         return false unless uninterpreted_option == other.uninterpreted_option
@@ -2153,22 +3176,56 @@ module Google
       class NamePart
         include Proto::Message
 
-        property name_part : String = ""
+        getter? has_name_part : Bool = false
+        getter? has_is_extension : Bool = false
+
+        getter name_part : String = ""
         # ameba:disable Naming/QueryBoolMethods
-        property is_extension : Bool = false
+        getter is_extension : Bool = false
 
         # ameba:enable Naming/QueryBoolMethods
+
+        def clear_name_part : Nil
+          @name_part = ""
+          @has_name_part = false
+        end
+
+        def name_part=(value : String) : String
+          @name_part = value
+          @has_name_part = true
+          value
+        end
+
+        def clear_is_extension : Nil
+          @is_extension = false
+          @has_is_extension = false
+        end
+
+        def is_extension=(value : Bool) : Bool
+          @is_extension = value
+          @has_is_extension = true
+          value
+        end
+
+        def validate_required! : Nil
+          raise Proto::RequiredFieldError.new("Missing required field: name_part") unless has_name_part?
+          raise Proto::RequiredFieldError.new("Missing required field: is_extension") unless has_is_extension?
+        end
+
+        def validate_required_deep! : Nil
+          validate_required!
+        end
 
         def self.decode_partial(io : IO) : self
           msg = new
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(1, wt, Proto::WireType::LENGTH_DELIMITED)
-              msg.name_part = reader.read_string
-            when 2
+              msg.name_part = reader.read_string_unchecked
+            when {2, Proto::WireType::VARINT}
               reader.expect_wire_type!(2, wt, Proto::WireType::VARINT)
               msg.is_extension = reader.read_bool
             else
@@ -2180,23 +3237,31 @@ module Google
 
         def self.decode(io : IO) : self
           msg = decode_partial(io)
+          msg.validate_required_deep!
           msg
         end
 
         def encode_partial(io : IO) : Nil
           w = Proto::Wire::Writer.new(io)
-          w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
-          w.write_string(name_part)
-          w.write_tag(2, Proto::WireType::VARINT)
-          w.write_bool(is_extension)
+          if has_name_part?
+            w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
+            w.write_string_unchecked(name_part)
+          end
+          if has_is_extension?
+            w.write_tag(2, Proto::WireType::VARINT)
+            w.write_bool(is_extension)
+          end
           write_unknown_fields(w)
         end
 
         def encode(io : IO) : Nil
+          validate_required_deep!
           encode_partial(io)
         end
 
         def ==(other : self) : Bool
+          return false unless has_name_part? == other.has_name_part?
+          return false unless has_is_extension? == other.has_is_extension?
           return false unless name_part == other.name_part
           return false unless is_extension == other.is_extension
           return false unless unknown_fields == other.unknown_fields
@@ -2204,13 +3269,86 @@ module Google
         end
       end
 
+      getter? has_identifier_value : Bool = false
+      getter? has_positive_int_value : Bool = false
+      getter? has_negative_int_value : Bool = false
+      getter? has_double_value : Bool = false
+      getter? has_string_value : Bool = false
+      getter? has_aggregate_value : Bool = false
+
       property name : Array(UninterpretedOption::NamePart) = [] of UninterpretedOption::NamePart
-      property identifier_value : String = ""
-      property positive_int_value : UInt64 = 0
-      property negative_int_value : Int64 = 0
-      property double_value : Float64 = 0.0_f64
-      property string_value : Bytes = Bytes.empty
-      property aggregate_value : String = ""
+      getter identifier_value : String = ""
+      getter positive_int_value : UInt64 = 0
+      getter negative_int_value : Int64 = 0
+      getter double_value : Float64 = 0.0_f64
+      getter string_value : Bytes = Bytes.empty
+      getter aggregate_value : String = ""
+
+      def clear_identifier_value : Nil
+        @identifier_value = ""
+        @has_identifier_value = false
+      end
+
+      def identifier_value=(value : String) : String
+        @identifier_value = value
+        @has_identifier_value = true
+        value
+      end
+
+      def clear_positive_int_value : Nil
+        @positive_int_value = 0
+        @has_positive_int_value = false
+      end
+
+      def positive_int_value=(value : UInt64) : UInt64
+        @positive_int_value = value
+        @has_positive_int_value = true
+        value
+      end
+
+      def clear_negative_int_value : Nil
+        @negative_int_value = 0
+        @has_negative_int_value = false
+      end
+
+      def negative_int_value=(value : Int64) : Int64
+        @negative_int_value = value
+        @has_negative_int_value = true
+        value
+      end
+
+      def clear_double_value : Nil
+        @double_value = 0.0_f64
+        @has_double_value = false
+      end
+
+      def double_value=(value : Float64) : Float64
+        @double_value = value
+        @has_double_value = true
+        value
+      end
+
+      def clear_string_value : Nil
+        @string_value = Bytes.empty
+        @has_string_value = false
+      end
+
+      def string_value=(value : Bytes) : Bytes
+        @string_value = value
+        @has_string_value = true
+        value
+      end
+
+      def clear_aggregate_value : Nil
+        @aggregate_value = ""
+        @has_aggregate_value = false
+      end
+
+      def aggregate_value=(value : String) : String
+        @aggregate_value = value
+        @has_aggregate_value = true
+        value
+      end
 
       def validate_required! : Nil
       end
@@ -2227,27 +3365,27 @@ module Google
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 2
+          case {fn, wt}
+          when {2, Proto::WireType::LENGTH_DELIMITED}
             msg.name << reader.read_embedded(2, wt) { |sub| UninterpretedOption::NamePart.decode_partial(sub) }
-          when 3
+          when {3, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(3, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.identifier_value = reader.read_string
-          when 4
+            msg.identifier_value = reader.read_string_unchecked
+          when {4, Proto::WireType::VARINT}
             reader.expect_wire_type!(4, wt, Proto::WireType::VARINT)
             msg.positive_int_value = reader.read_uint64
-          when 5
+          when {5, Proto::WireType::VARINT}
             reader.expect_wire_type!(5, wt, Proto::WireType::VARINT)
             msg.negative_int_value = reader.read_int64
-          when 6
+          when {6, Proto::WireType::FIXED64}
             reader.expect_wire_type!(6, wt, Proto::WireType::FIXED64)
             msg.double_value = reader.read_double
-          when 7
+          when {7, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(7, wt, Proto::WireType::LENGTH_DELIMITED)
             msg.string_value = reader.read_bytes
-          when 8
+          when {8, Proto::WireType::LENGTH_DELIMITED}
             reader.expect_wire_type!(8, wt, Proto::WireType::LENGTH_DELIMITED)
-            msg.aggregate_value = reader.read_string
+            msg.aggregate_value = reader.read_string_unchecked
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
@@ -2266,18 +3404,30 @@ module Google
         name.each do |item|
           w.write_embedded(2) { |sub| item.encode_partial(sub) }
         end
-        w.write_tag(3, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(identifier_value)
-        w.write_tag(4, Proto::WireType::VARINT)
-        w.write_uint64(positive_int_value)
-        w.write_tag(5, Proto::WireType::VARINT)
-        w.write_int64(negative_int_value)
-        w.write_tag(6, Proto::WireType::FIXED64)
-        w.write_double(double_value)
-        w.write_tag(7, Proto::WireType::LENGTH_DELIMITED)
-        w.write_bytes(string_value)
-        w.write_tag(8, Proto::WireType::LENGTH_DELIMITED)
-        w.write_string(aggregate_value)
+        if has_identifier_value?
+          w.write_tag(3, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(identifier_value)
+        end
+        if has_positive_int_value?
+          w.write_tag(4, Proto::WireType::VARINT)
+          w.write_uint64(positive_int_value)
+        end
+        if has_negative_int_value?
+          w.write_tag(5, Proto::WireType::VARINT)
+          w.write_int64(negative_int_value)
+        end
+        if has_double_value?
+          w.write_tag(6, Proto::WireType::FIXED64)
+          w.write_double(double_value)
+        end
+        if has_string_value?
+          w.write_tag(7, Proto::WireType::LENGTH_DELIMITED)
+          w.write_bytes(string_value)
+        end
+        if has_aggregate_value?
+          w.write_tag(8, Proto::WireType::LENGTH_DELIMITED)
+          w.write_string_unchecked(aggregate_value)
+        end
         write_unknown_fields(w)
       end
 
@@ -2287,6 +3437,12 @@ module Google
       end
 
       def ==(other : self) : Bool
+        return false unless has_identifier_value? == other.has_identifier_value?
+        return false unless has_positive_int_value? == other.has_positive_int_value?
+        return false unless has_negative_int_value? == other.has_negative_int_value?
+        return false unless has_double_value? == other.has_double_value?
+        return false unless has_string_value? == other.has_string_value?
+        return false unless has_aggregate_value? == other.has_aggregate_value?
         return false unless name == other.name
         return false unless identifier_value == other.identifier_value
         return false unless positive_int_value == other.positive_int_value
@@ -2305,39 +3461,64 @@ module Google
       class Location
         include Proto::Message
 
+        getter? has_leading_comments : Bool = false
+        getter? has_trailing_comments : Bool = false
+
         property path : Array(Int32) = [] of Int32
         property span : Array(Int32) = [] of Int32
-        property leading_comments : String = ""
-        property trailing_comments : String = ""
+        getter leading_comments : String = ""
+        getter trailing_comments : String = ""
         property leading_detached_comments : Array(String) = [] of String
+
+        def clear_leading_comments : Nil
+          @leading_comments = ""
+          @has_leading_comments = false
+        end
+
+        def leading_comments=(value : String) : String
+          @leading_comments = value
+          @has_leading_comments = true
+          value
+        end
+
+        def clear_trailing_comments : Nil
+          @trailing_comments = ""
+          @has_trailing_comments = false
+        end
+
+        def trailing_comments=(value : String) : String
+          @trailing_comments = value
+          @has_trailing_comments = true
+          value
+        end
 
         def self.decode_partial(io : IO) : self
           msg = new
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::VARINT}, {1, Proto::WireType::LENGTH_DELIMITED}
               if reader.packed_wire_type?(1, wt, Proto::WireType::VARINT)
-                reader.read_packed_varint { |v| msg.path << v.to_i32! }
+                reader.read_packed_varint { |v| msg.path << Proto::Wire::Reader.int32_from_varint(v) }
               else
                 msg.path << reader.read_int32
               end
-            when 2
+            when {2, Proto::WireType::VARINT}, {2, Proto::WireType::LENGTH_DELIMITED}
               if reader.packed_wire_type?(2, wt, Proto::WireType::VARINT)
-                reader.read_packed_varint { |v| msg.span << v.to_i32! }
+                reader.read_packed_varint { |v| msg.span << Proto::Wire::Reader.int32_from_varint(v) }
               else
                 msg.span << reader.read_int32
               end
-            when 3
+            when {3, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(3, wt, Proto::WireType::LENGTH_DELIMITED)
-              msg.leading_comments = reader.read_string
-            when 4
+              msg.leading_comments = reader.read_string_unchecked
+            when {4, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(4, wt, Proto::WireType::LENGTH_DELIMITED)
-              msg.trailing_comments = reader.read_string
-            when 6
+              msg.trailing_comments = reader.read_string_unchecked
+            when {6, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(6, wt, Proto::WireType::LENGTH_DELIMITED)
-              msg.leading_detached_comments << reader.read_string
+              msg.leading_detached_comments << reader.read_string_unchecked
             else
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
@@ -2360,13 +3541,17 @@ module Google
             sub = Proto::Wire::Writer.new(buf)
             span.each { |item| sub.write_int32(item) }
           end
-          w.write_tag(3, Proto::WireType::LENGTH_DELIMITED)
-          w.write_string(leading_comments)
-          w.write_tag(4, Proto::WireType::LENGTH_DELIMITED)
-          w.write_string(trailing_comments)
+          if has_leading_comments?
+            w.write_tag(3, Proto::WireType::LENGTH_DELIMITED)
+            w.write_string_unchecked(leading_comments)
+          end
+          if has_trailing_comments?
+            w.write_tag(4, Proto::WireType::LENGTH_DELIMITED)
+            w.write_string_unchecked(trailing_comments)
+          end
           leading_detached_comments.each do |item|
             w.write_tag(6, Proto::WireType::LENGTH_DELIMITED)
-            w.write_string(item)
+            w.write_string_unchecked(item)
           end
           write_unknown_fields(w)
         end
@@ -2376,6 +3561,8 @@ module Google
         end
 
         def ==(other : self) : Bool
+          return false unless has_leading_comments? == other.has_leading_comments?
+          return false unless has_trailing_comments? == other.has_trailing_comments?
           return false unless path == other.path
           return false unless span == other.span
           return false unless leading_comments == other.leading_comments
@@ -2403,8 +3590,8 @@ module Google
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             msg.location << reader.read_embedded(1, wt) { |sub| SourceCodeInfo::Location.decode_partial(sub) }
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
@@ -2445,30 +3632,67 @@ module Google
       class Annotation
         include Proto::Message
 
+        getter? has_source_file : Bool = false
+        getter? has_begin_ : Bool = false
+        getter? has_end_ : Bool = false
+
         property path : Array(Int32) = [] of Int32
-        property source_file : String = ""
-        property begin_ : Int32 = 0
-        property end_ : Int32 = 0
+        getter source_file : String = ""
+        getter begin_ : Int32 = 0
+        getter end_ : Int32 = 0
+
+        def clear_source_file : Nil
+          @source_file = ""
+          @has_source_file = false
+        end
+
+        def source_file=(value : String) : String
+          @source_file = value
+          @has_source_file = true
+          value
+        end
+
+        def clear_begin_ : Nil
+          @begin_ = 0
+          @has_begin_ = false
+        end
+
+        def begin_=(value : Int32) : Int32
+          @begin_ = value
+          @has_begin_ = true
+          value
+        end
+
+        def clear_end_ : Nil
+          @end_ = 0
+          @has_end_ = false
+        end
+
+        def end_=(value : Int32) : Int32
+          @end_ = value
+          @has_end_ = true
+          value
+        end
 
         def self.decode_partial(io : IO) : self
           msg = new
           reader = Proto::Wire::Reader.new(io)
           while tag = reader.read_tag
             fn, wt = tag
-            case fn
-            when 1
+            case {fn, wt}
+            when {1, Proto::WireType::VARINT}, {1, Proto::WireType::LENGTH_DELIMITED}
               if reader.packed_wire_type?(1, wt, Proto::WireType::VARINT)
-                reader.read_packed_varint { |v| msg.path << v.to_i32! }
+                reader.read_packed_varint { |v| msg.path << Proto::Wire::Reader.int32_from_varint(v) }
               else
                 msg.path << reader.read_int32
               end
-            when 2
+            when {2, Proto::WireType::LENGTH_DELIMITED}
               reader.expect_wire_type!(2, wt, Proto::WireType::LENGTH_DELIMITED)
-              msg.source_file = reader.read_string
-            when 3
+              msg.source_file = reader.read_string_unchecked
+            when {3, Proto::WireType::VARINT}
               reader.expect_wire_type!(3, wt, Proto::WireType::VARINT)
               msg.begin_ = reader.read_int32
-            when 4
+            when {4, Proto::WireType::VARINT}
               reader.expect_wire_type!(4, wt, Proto::WireType::VARINT)
               msg.end_ = reader.read_int32
             else
@@ -2489,12 +3713,18 @@ module Google
             sub = Proto::Wire::Writer.new(buf)
             path.each { |item| sub.write_int32(item) }
           end
-          w.write_tag(2, Proto::WireType::LENGTH_DELIMITED)
-          w.write_string(source_file)
-          w.write_tag(3, Proto::WireType::VARINT)
-          w.write_int32(begin_)
-          w.write_tag(4, Proto::WireType::VARINT)
-          w.write_int32(end_)
+          if has_source_file?
+            w.write_tag(2, Proto::WireType::LENGTH_DELIMITED)
+            w.write_string_unchecked(source_file)
+          end
+          if has_begin_?
+            w.write_tag(3, Proto::WireType::VARINT)
+            w.write_int32(begin_)
+          end
+          if has_end_?
+            w.write_tag(4, Proto::WireType::VARINT)
+            w.write_int32(end_)
+          end
           write_unknown_fields(w)
         end
 
@@ -2503,6 +3733,9 @@ module Google
         end
 
         def ==(other : self) : Bool
+          return false unless has_source_file? == other.has_source_file?
+          return false unless has_begin_? == other.has_begin_?
+          return false unless has_end_? == other.has_end_?
           return false unless path == other.path
           return false unless source_file == other.source_file
           return false unless begin_ == other.begin_
@@ -2529,8 +3762,8 @@ module Google
         reader = Proto::Wire::Reader.new(io)
         while tag = reader.read_tag
           fn, wt = tag
-          case fn
-          when 1
+          case {fn, wt}
+          when {1, Proto::WireType::LENGTH_DELIMITED}
             msg.annotation_ << reader.read_embedded(1, wt) { |sub| GeneratedCodeInfo::Annotation.decode_partial(sub) }
           else
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))

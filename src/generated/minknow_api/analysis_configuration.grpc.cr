@@ -6232,125 +6232,125 @@ module MinknowApi::AnalysisConfiguration
         GRPC::ProtoMarshaller(T).new
       end
 
-      abstract def get_analysis_configuration(request : GetAnalysisConfigurationRequest, ctx : GRPC::ServerContext) : AnalysisConfiguration
-      abstract def set_analysis_configuration(request : AnalysisConfiguration, ctx : GRPC::ServerContext) : SetAnalysisConfigurationResponse
-      abstract def reset_analysis_configuration(request : ResetAnalysisConfigurationRequest, ctx : GRPC::ServerContext) : ResetAnalysisConfigurationResponse
-      abstract def set_analysis_enabled_state(request : SetAnalysisEnabledStateRequest, ctx : GRPC::ServerContext) : SetAnalysisEnabledStateResponse
-      abstract def get_channel_states_desc(request : GetChannelStatesDescRequest, ctx : GRPC::ServerContext) : GetChannelStatesDescResponse
-      abstract def get_summary(request : GetSummaryRequest, ctx : GRPC::ServerContext) : GetSummaryResponse
-      abstract def set_basecaller_configuration(request : SetBasecallerConfigurationRequest, ctx : GRPC::ServerContext) : SetBasecallerConfigurationResponse
-      abstract def preload_basecaller_configuration(request : SetBasecallerConfigurationRequest, ctx : GRPC::ServerContext) : SetBasecallerConfigurationResponse
-      abstract def get_basecaller_configuration(request : GetBasecallerConfigurationRequest, ctx : GRPC::ServerContext) : BasecallerConfiguration
-      abstract def get_pore_type_configuration(request : GetPoreTypeConfigurationRequest, ctx : GRPC::ServerContext) : PoreTypeConfiguration
-      abstract def set_pore_type_configuration(request : PoreTypeConfiguration, ctx : GRPC::ServerContext) : SetPoreTypeConfigurationResponse
-      abstract def set_writer_configuration(request : WriterConfiguration, ctx : GRPC::ServerContext) : SetWriterConfigurationResponse
-      abstract def get_writer_configuration(request : GetWriterConfigurationRequest, ctx : GRPC::ServerContext) : WriterConfiguration
-      abstract def get_read_classifications(request : GetReadClassificationsRequest, ctx : GRPC::ServerContext) : GetReadClassificationsResponse
-      abstract def get_dynamic_analysis_configuration(request : GetDynamicAnalysisConfigurationRequest, ctx : GRPC::ServerContext) : DynamicAnalysisConfiguration
-      abstract def set_dynamic_analysis_configuration(request : DynamicAnalysisConfiguration, ctx : GRPC::ServerContext) : SetDynamicAnalysisConfigurationResponse
-      abstract def find_basecall_configuration_defaults(request : FindBasecallConfigurationDefaultsRequest, ctx : GRPC::ServerContext) : FindBasecallConfigurationDefaultsResponse
+      abstract def get_analysis_configuration(request : ::MinknowApi::AnalysisConfiguration::GetAnalysisConfigurationRequest, ctx : GRPC::ServerContext) : ::MinknowApi::AnalysisConfiguration::AnalysisConfiguration
+      abstract def set_analysis_configuration(request : ::MinknowApi::AnalysisConfiguration::AnalysisConfiguration, ctx : GRPC::ServerContext) : ::MinknowApi::AnalysisConfiguration::SetAnalysisConfigurationResponse
+      abstract def reset_analysis_configuration(request : ::MinknowApi::AnalysisConfiguration::ResetAnalysisConfigurationRequest, ctx : GRPC::ServerContext) : ::MinknowApi::AnalysisConfiguration::ResetAnalysisConfigurationResponse
+      abstract def set_analysis_enabled_state(request : ::MinknowApi::AnalysisConfiguration::SetAnalysisEnabledStateRequest, ctx : GRPC::ServerContext) : ::MinknowApi::AnalysisConfiguration::SetAnalysisEnabledStateResponse
+      abstract def get_channel_states_desc(request : ::MinknowApi::AnalysisConfiguration::GetChannelStatesDescRequest, ctx : GRPC::ServerContext) : ::MinknowApi::AnalysisConfiguration::GetChannelStatesDescResponse
+      abstract def get_summary(request : ::MinknowApi::AnalysisConfiguration::GetSummaryRequest, ctx : GRPC::ServerContext) : ::MinknowApi::AnalysisConfiguration::GetSummaryResponse
+      abstract def set_basecaller_configuration(request : ::MinknowApi::AnalysisConfiguration::SetBasecallerConfigurationRequest, ctx : GRPC::ServerContext) : ::MinknowApi::AnalysisConfiguration::SetBasecallerConfigurationResponse
+      abstract def preload_basecaller_configuration(request : ::MinknowApi::AnalysisConfiguration::SetBasecallerConfigurationRequest, ctx : GRPC::ServerContext) : ::MinknowApi::AnalysisConfiguration::SetBasecallerConfigurationResponse
+      abstract def get_basecaller_configuration(request : ::MinknowApi::AnalysisConfiguration::GetBasecallerConfigurationRequest, ctx : GRPC::ServerContext) : ::MinknowApi::AnalysisConfiguration::BasecallerConfiguration
+      abstract def get_pore_type_configuration(request : ::MinknowApi::AnalysisConfiguration::GetPoreTypeConfigurationRequest, ctx : GRPC::ServerContext) : ::MinknowApi::AnalysisConfiguration::PoreTypeConfiguration
+      abstract def set_pore_type_configuration(request : ::MinknowApi::AnalysisConfiguration::PoreTypeConfiguration, ctx : GRPC::ServerContext) : ::MinknowApi::AnalysisConfiguration::SetPoreTypeConfigurationResponse
+      abstract def set_writer_configuration(request : ::MinknowApi::AnalysisConfiguration::WriterConfiguration, ctx : GRPC::ServerContext) : ::MinknowApi::AnalysisConfiguration::SetWriterConfigurationResponse
+      abstract def get_writer_configuration(request : ::MinknowApi::AnalysisConfiguration::GetWriterConfigurationRequest, ctx : GRPC::ServerContext) : ::MinknowApi::AnalysisConfiguration::WriterConfiguration
+      abstract def get_read_classifications(request : ::MinknowApi::AnalysisConfiguration::GetReadClassificationsRequest, ctx : GRPC::ServerContext) : ::MinknowApi::AnalysisConfiguration::GetReadClassificationsResponse
+      abstract def get_dynamic_analysis_configuration(request : ::MinknowApi::AnalysisConfiguration::GetDynamicAnalysisConfigurationRequest, ctx : GRPC::ServerContext) : ::MinknowApi::AnalysisConfiguration::DynamicAnalysisConfiguration
+      abstract def set_dynamic_analysis_configuration(request : ::MinknowApi::AnalysisConfiguration::DynamicAnalysisConfiguration, ctx : GRPC::ServerContext) : ::MinknowApi::AnalysisConfiguration::SetDynamicAnalysisConfigurationResponse
+      abstract def find_basecall_configuration_defaults(request : ::MinknowApi::AnalysisConfiguration::FindBasecallConfigurationDefaultsRequest, ctx : GRPC::ServerContext) : ::MinknowApi::AnalysisConfiguration::FindBasecallConfigurationDefaultsResponse
 
       def dispatch(method : String, body : Bytes, ctx : GRPC::ServerContext) : {Bytes, GRPC::Status}
         case method
         when "get_analysis_configuration"
-          req_marshaller = marshaller_for(GetAnalysisConfigurationRequest)
-          res_marshaller = marshaller_for(AnalysisConfiguration)
+          req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::GetAnalysisConfigurationRequest)
+          res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::AnalysisConfiguration)
           req = req_marshaller.decode(body)
           resp = get_analysis_configuration(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_analysis_configuration"
-          req_marshaller = marshaller_for(AnalysisConfiguration)
-          res_marshaller = marshaller_for(SetAnalysisConfigurationResponse)
+          req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::AnalysisConfiguration)
+          res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::SetAnalysisConfigurationResponse)
           req = req_marshaller.decode(body)
           resp = set_analysis_configuration(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "reset_analysis_configuration"
-          req_marshaller = marshaller_for(ResetAnalysisConfigurationRequest)
-          res_marshaller = marshaller_for(ResetAnalysisConfigurationResponse)
+          req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::ResetAnalysisConfigurationRequest)
+          res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::ResetAnalysisConfigurationResponse)
           req = req_marshaller.decode(body)
           resp = reset_analysis_configuration(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_analysis_enabled_state"
-          req_marshaller = marshaller_for(SetAnalysisEnabledStateRequest)
-          res_marshaller = marshaller_for(SetAnalysisEnabledStateResponse)
+          req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::SetAnalysisEnabledStateRequest)
+          res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::SetAnalysisEnabledStateResponse)
           req = req_marshaller.decode(body)
           resp = set_analysis_enabled_state(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_channel_states_desc"
-          req_marshaller = marshaller_for(GetChannelStatesDescRequest)
-          res_marshaller = marshaller_for(GetChannelStatesDescResponse)
+          req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::GetChannelStatesDescRequest)
+          res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::GetChannelStatesDescResponse)
           req = req_marshaller.decode(body)
           resp = get_channel_states_desc(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_summary"
-          req_marshaller = marshaller_for(GetSummaryRequest)
-          res_marshaller = marshaller_for(GetSummaryResponse)
+          req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::GetSummaryRequest)
+          res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::GetSummaryResponse)
           req = req_marshaller.decode(body)
           resp = get_summary(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_basecaller_configuration"
-          req_marshaller = marshaller_for(SetBasecallerConfigurationRequest)
-          res_marshaller = marshaller_for(SetBasecallerConfigurationResponse)
+          req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::SetBasecallerConfigurationRequest)
+          res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::SetBasecallerConfigurationResponse)
           req = req_marshaller.decode(body)
           resp = set_basecaller_configuration(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "preload_basecaller_configuration"
-          req_marshaller = marshaller_for(SetBasecallerConfigurationRequest)
-          res_marshaller = marshaller_for(SetBasecallerConfigurationResponse)
+          req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::SetBasecallerConfigurationRequest)
+          res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::SetBasecallerConfigurationResponse)
           req = req_marshaller.decode(body)
           resp = preload_basecaller_configuration(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_basecaller_configuration"
-          req_marshaller = marshaller_for(GetBasecallerConfigurationRequest)
-          res_marshaller = marshaller_for(BasecallerConfiguration)
+          req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::GetBasecallerConfigurationRequest)
+          res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::BasecallerConfiguration)
           req = req_marshaller.decode(body)
           resp = get_basecaller_configuration(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_pore_type_configuration"
-          req_marshaller = marshaller_for(GetPoreTypeConfigurationRequest)
-          res_marshaller = marshaller_for(PoreTypeConfiguration)
+          req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::GetPoreTypeConfigurationRequest)
+          res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::PoreTypeConfiguration)
           req = req_marshaller.decode(body)
           resp = get_pore_type_configuration(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_pore_type_configuration"
-          req_marshaller = marshaller_for(PoreTypeConfiguration)
-          res_marshaller = marshaller_for(SetPoreTypeConfigurationResponse)
+          req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::PoreTypeConfiguration)
+          res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::SetPoreTypeConfigurationResponse)
           req = req_marshaller.decode(body)
           resp = set_pore_type_configuration(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_writer_configuration"
-          req_marshaller = marshaller_for(WriterConfiguration)
-          res_marshaller = marshaller_for(SetWriterConfigurationResponse)
+          req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::WriterConfiguration)
+          res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::SetWriterConfigurationResponse)
           req = req_marshaller.decode(body)
           resp = set_writer_configuration(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_writer_configuration"
-          req_marshaller = marshaller_for(GetWriterConfigurationRequest)
-          res_marshaller = marshaller_for(WriterConfiguration)
+          req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::GetWriterConfigurationRequest)
+          res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::WriterConfiguration)
           req = req_marshaller.decode(body)
           resp = get_writer_configuration(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_read_classifications"
-          req_marshaller = marshaller_for(GetReadClassificationsRequest)
-          res_marshaller = marshaller_for(GetReadClassificationsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::GetReadClassificationsRequest)
+          res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::GetReadClassificationsResponse)
           req = req_marshaller.decode(body)
           resp = get_read_classifications(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_dynamic_analysis_configuration"
-          req_marshaller = marshaller_for(GetDynamicAnalysisConfigurationRequest)
-          res_marshaller = marshaller_for(DynamicAnalysisConfiguration)
+          req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::GetDynamicAnalysisConfigurationRequest)
+          res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::DynamicAnalysisConfiguration)
           req = req_marshaller.decode(body)
           resp = get_dynamic_analysis_configuration(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_dynamic_analysis_configuration"
-          req_marshaller = marshaller_for(DynamicAnalysisConfiguration)
-          res_marshaller = marshaller_for(SetDynamicAnalysisConfigurationResponse)
+          req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::DynamicAnalysisConfiguration)
+          res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::SetDynamicAnalysisConfigurationResponse)
           req = req_marshaller.decode(body)
           resp = set_dynamic_analysis_configuration(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "find_basecall_configuration_defaults"
-          req_marshaller = marshaller_for(FindBasecallConfigurationDefaultsRequest)
-          res_marshaller = marshaller_for(FindBasecallConfigurationDefaultsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::FindBasecallConfigurationDefaultsRequest)
+          res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::FindBasecallConfigurationDefaultsResponse)
           req = req_marshaller.decode(body)
           resp = find_basecall_configuration_defaults(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
@@ -6375,208 +6375,208 @@ module MinknowApi::AnalysisConfiguration
         GRPC::ProtoMarshaller(T).new
       end
 
-      def get_analysis_configuration(request : GetAnalysisConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : AnalysisConfiguration
+      def get_analysis_configuration(request : ::MinknowApi::AnalysisConfiguration::GetAnalysisConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::AnalysisConfiguration::AnalysisConfiguration
         get_analysis_configuration_response(request, ctx).ok!
       end
 
-      def get_analysis_configuration_response(request : GetAnalysisConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(AnalysisConfiguration)
-        req_marshaller = marshaller_for(GetAnalysisConfigurationRequest)
-        res_marshaller = marshaller_for(AnalysisConfiguration)
+      def get_analysis_configuration_response(request : ::MinknowApi::AnalysisConfiguration::GetAnalysisConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::AnalysisConfiguration)
+        req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::GetAnalysisConfigurationRequest)
+        res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::AnalysisConfiguration)
         response = @channel.unary_call(FULL_NAME, "get_analysis_configuration", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(AnalysisConfiguration).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::AnalysisConfiguration).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def set_analysis_configuration(request : AnalysisConfiguration, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : SetAnalysisConfigurationResponse
+      def set_analysis_configuration(request : ::MinknowApi::AnalysisConfiguration::AnalysisConfiguration, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::AnalysisConfiguration::SetAnalysisConfigurationResponse
         set_analysis_configuration_response(request, ctx).ok!
       end
 
-      def set_analysis_configuration_response(request : AnalysisConfiguration, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(SetAnalysisConfigurationResponse)
-        req_marshaller = marshaller_for(AnalysisConfiguration)
-        res_marshaller = marshaller_for(SetAnalysisConfigurationResponse)
+      def set_analysis_configuration_response(request : ::MinknowApi::AnalysisConfiguration::AnalysisConfiguration, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::SetAnalysisConfigurationResponse)
+        req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::AnalysisConfiguration)
+        res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::SetAnalysisConfigurationResponse)
         response = @channel.unary_call(FULL_NAME, "set_analysis_configuration", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(SetAnalysisConfigurationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::SetAnalysisConfigurationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def reset_analysis_configuration(request : ResetAnalysisConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ResetAnalysisConfigurationResponse
+      def reset_analysis_configuration(request : ::MinknowApi::AnalysisConfiguration::ResetAnalysisConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::AnalysisConfiguration::ResetAnalysisConfigurationResponse
         reset_analysis_configuration_response(request, ctx).ok!
       end
 
-      def reset_analysis_configuration_response(request : ResetAnalysisConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(ResetAnalysisConfigurationResponse)
-        req_marshaller = marshaller_for(ResetAnalysisConfigurationRequest)
-        res_marshaller = marshaller_for(ResetAnalysisConfigurationResponse)
+      def reset_analysis_configuration_response(request : ::MinknowApi::AnalysisConfiguration::ResetAnalysisConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::ResetAnalysisConfigurationResponse)
+        req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::ResetAnalysisConfigurationRequest)
+        res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::ResetAnalysisConfigurationResponse)
         response = @channel.unary_call(FULL_NAME, "reset_analysis_configuration", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(ResetAnalysisConfigurationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::ResetAnalysisConfigurationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def set_analysis_enabled_state(request : SetAnalysisEnabledStateRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : SetAnalysisEnabledStateResponse
+      def set_analysis_enabled_state(request : ::MinknowApi::AnalysisConfiguration::SetAnalysisEnabledStateRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::AnalysisConfiguration::SetAnalysisEnabledStateResponse
         set_analysis_enabled_state_response(request, ctx).ok!
       end
 
-      def set_analysis_enabled_state_response(request : SetAnalysisEnabledStateRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(SetAnalysisEnabledStateResponse)
-        req_marshaller = marshaller_for(SetAnalysisEnabledStateRequest)
-        res_marshaller = marshaller_for(SetAnalysisEnabledStateResponse)
+      def set_analysis_enabled_state_response(request : ::MinknowApi::AnalysisConfiguration::SetAnalysisEnabledStateRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::SetAnalysisEnabledStateResponse)
+        req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::SetAnalysisEnabledStateRequest)
+        res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::SetAnalysisEnabledStateResponse)
         response = @channel.unary_call(FULL_NAME, "set_analysis_enabled_state", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(SetAnalysisEnabledStateResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::SetAnalysisEnabledStateResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_channel_states_desc(request : GetChannelStatesDescRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetChannelStatesDescResponse
+      def get_channel_states_desc(request : ::MinknowApi::AnalysisConfiguration::GetChannelStatesDescRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::AnalysisConfiguration::GetChannelStatesDescResponse
         get_channel_states_desc_response(request, ctx).ok!
       end
 
-      def get_channel_states_desc_response(request : GetChannelStatesDescRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetChannelStatesDescResponse)
-        req_marshaller = marshaller_for(GetChannelStatesDescRequest)
-        res_marshaller = marshaller_for(GetChannelStatesDescResponse)
+      def get_channel_states_desc_response(request : ::MinknowApi::AnalysisConfiguration::GetChannelStatesDescRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::GetChannelStatesDescResponse)
+        req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::GetChannelStatesDescRequest)
+        res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::GetChannelStatesDescResponse)
         response = @channel.unary_call(FULL_NAME, "get_channel_states_desc", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetChannelStatesDescResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::GetChannelStatesDescResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_summary(request : GetSummaryRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetSummaryResponse
+      def get_summary(request : ::MinknowApi::AnalysisConfiguration::GetSummaryRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::AnalysisConfiguration::GetSummaryResponse
         get_summary_response(request, ctx).ok!
       end
 
-      def get_summary_response(request : GetSummaryRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetSummaryResponse)
-        req_marshaller = marshaller_for(GetSummaryRequest)
-        res_marshaller = marshaller_for(GetSummaryResponse)
+      def get_summary_response(request : ::MinknowApi::AnalysisConfiguration::GetSummaryRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::GetSummaryResponse)
+        req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::GetSummaryRequest)
+        res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::GetSummaryResponse)
         response = @channel.unary_call(FULL_NAME, "get_summary", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetSummaryResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::GetSummaryResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def set_basecaller_configuration(request : SetBasecallerConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : SetBasecallerConfigurationResponse
+      def set_basecaller_configuration(request : ::MinknowApi::AnalysisConfiguration::SetBasecallerConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::AnalysisConfiguration::SetBasecallerConfigurationResponse
         set_basecaller_configuration_response(request, ctx).ok!
       end
 
-      def set_basecaller_configuration_response(request : SetBasecallerConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(SetBasecallerConfigurationResponse)
-        req_marshaller = marshaller_for(SetBasecallerConfigurationRequest)
-        res_marshaller = marshaller_for(SetBasecallerConfigurationResponse)
+      def set_basecaller_configuration_response(request : ::MinknowApi::AnalysisConfiguration::SetBasecallerConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::SetBasecallerConfigurationResponse)
+        req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::SetBasecallerConfigurationRequest)
+        res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::SetBasecallerConfigurationResponse)
         response = @channel.unary_call(FULL_NAME, "set_basecaller_configuration", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(SetBasecallerConfigurationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::SetBasecallerConfigurationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def preload_basecaller_configuration(request : SetBasecallerConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : SetBasecallerConfigurationResponse
+      def preload_basecaller_configuration(request : ::MinknowApi::AnalysisConfiguration::SetBasecallerConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::AnalysisConfiguration::SetBasecallerConfigurationResponse
         preload_basecaller_configuration_response(request, ctx).ok!
       end
 
-      def preload_basecaller_configuration_response(request : SetBasecallerConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(SetBasecallerConfigurationResponse)
-        req_marshaller = marshaller_for(SetBasecallerConfigurationRequest)
-        res_marshaller = marshaller_for(SetBasecallerConfigurationResponse)
+      def preload_basecaller_configuration_response(request : ::MinknowApi::AnalysisConfiguration::SetBasecallerConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::SetBasecallerConfigurationResponse)
+        req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::SetBasecallerConfigurationRequest)
+        res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::SetBasecallerConfigurationResponse)
         response = @channel.unary_call(FULL_NAME, "preload_basecaller_configuration", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(SetBasecallerConfigurationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::SetBasecallerConfigurationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_basecaller_configuration(request : GetBasecallerConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : BasecallerConfiguration
+      def get_basecaller_configuration(request : ::MinknowApi::AnalysisConfiguration::GetBasecallerConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::AnalysisConfiguration::BasecallerConfiguration
         get_basecaller_configuration_response(request, ctx).ok!
       end
 
-      def get_basecaller_configuration_response(request : GetBasecallerConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(BasecallerConfiguration)
-        req_marshaller = marshaller_for(GetBasecallerConfigurationRequest)
-        res_marshaller = marshaller_for(BasecallerConfiguration)
+      def get_basecaller_configuration_response(request : ::MinknowApi::AnalysisConfiguration::GetBasecallerConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::BasecallerConfiguration)
+        req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::GetBasecallerConfigurationRequest)
+        res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::BasecallerConfiguration)
         response = @channel.unary_call(FULL_NAME, "get_basecaller_configuration", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(BasecallerConfiguration).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::BasecallerConfiguration).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_pore_type_configuration(request : GetPoreTypeConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : PoreTypeConfiguration
+      def get_pore_type_configuration(request : ::MinknowApi::AnalysisConfiguration::GetPoreTypeConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::AnalysisConfiguration::PoreTypeConfiguration
         get_pore_type_configuration_response(request, ctx).ok!
       end
 
-      def get_pore_type_configuration_response(request : GetPoreTypeConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(PoreTypeConfiguration)
-        req_marshaller = marshaller_for(GetPoreTypeConfigurationRequest)
-        res_marshaller = marshaller_for(PoreTypeConfiguration)
+      def get_pore_type_configuration_response(request : ::MinknowApi::AnalysisConfiguration::GetPoreTypeConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::PoreTypeConfiguration)
+        req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::GetPoreTypeConfigurationRequest)
+        res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::PoreTypeConfiguration)
         response = @channel.unary_call(FULL_NAME, "get_pore_type_configuration", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(PoreTypeConfiguration).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::PoreTypeConfiguration).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def set_pore_type_configuration(request : PoreTypeConfiguration, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : SetPoreTypeConfigurationResponse
+      def set_pore_type_configuration(request : ::MinknowApi::AnalysisConfiguration::PoreTypeConfiguration, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::AnalysisConfiguration::SetPoreTypeConfigurationResponse
         set_pore_type_configuration_response(request, ctx).ok!
       end
 
-      def set_pore_type_configuration_response(request : PoreTypeConfiguration, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(SetPoreTypeConfigurationResponse)
-        req_marshaller = marshaller_for(PoreTypeConfiguration)
-        res_marshaller = marshaller_for(SetPoreTypeConfigurationResponse)
+      def set_pore_type_configuration_response(request : ::MinknowApi::AnalysisConfiguration::PoreTypeConfiguration, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::SetPoreTypeConfigurationResponse)
+        req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::PoreTypeConfiguration)
+        res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::SetPoreTypeConfigurationResponse)
         response = @channel.unary_call(FULL_NAME, "set_pore_type_configuration", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(SetPoreTypeConfigurationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::SetPoreTypeConfigurationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def set_writer_configuration(request : WriterConfiguration, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : SetWriterConfigurationResponse
+      def set_writer_configuration(request : ::MinknowApi::AnalysisConfiguration::WriterConfiguration, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::AnalysisConfiguration::SetWriterConfigurationResponse
         set_writer_configuration_response(request, ctx).ok!
       end
 
-      def set_writer_configuration_response(request : WriterConfiguration, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(SetWriterConfigurationResponse)
-        req_marshaller = marshaller_for(WriterConfiguration)
-        res_marshaller = marshaller_for(SetWriterConfigurationResponse)
+      def set_writer_configuration_response(request : ::MinknowApi::AnalysisConfiguration::WriterConfiguration, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::SetWriterConfigurationResponse)
+        req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::WriterConfiguration)
+        res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::SetWriterConfigurationResponse)
         response = @channel.unary_call(FULL_NAME, "set_writer_configuration", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(SetWriterConfigurationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::SetWriterConfigurationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_writer_configuration(request : GetWriterConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : WriterConfiguration
+      def get_writer_configuration(request : ::MinknowApi::AnalysisConfiguration::GetWriterConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::AnalysisConfiguration::WriterConfiguration
         get_writer_configuration_response(request, ctx).ok!
       end
 
-      def get_writer_configuration_response(request : GetWriterConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(WriterConfiguration)
-        req_marshaller = marshaller_for(GetWriterConfigurationRequest)
-        res_marshaller = marshaller_for(WriterConfiguration)
+      def get_writer_configuration_response(request : ::MinknowApi::AnalysisConfiguration::GetWriterConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::WriterConfiguration)
+        req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::GetWriterConfigurationRequest)
+        res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::WriterConfiguration)
         response = @channel.unary_call(FULL_NAME, "get_writer_configuration", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(WriterConfiguration).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::WriterConfiguration).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_read_classifications(request : GetReadClassificationsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetReadClassificationsResponse
+      def get_read_classifications(request : ::MinknowApi::AnalysisConfiguration::GetReadClassificationsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::AnalysisConfiguration::GetReadClassificationsResponse
         get_read_classifications_response(request, ctx).ok!
       end
 
-      def get_read_classifications_response(request : GetReadClassificationsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetReadClassificationsResponse)
-        req_marshaller = marshaller_for(GetReadClassificationsRequest)
-        res_marshaller = marshaller_for(GetReadClassificationsResponse)
+      def get_read_classifications_response(request : ::MinknowApi::AnalysisConfiguration::GetReadClassificationsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::GetReadClassificationsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::GetReadClassificationsRequest)
+        res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::GetReadClassificationsResponse)
         response = @channel.unary_call(FULL_NAME, "get_read_classifications", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetReadClassificationsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::GetReadClassificationsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_dynamic_analysis_configuration(request : GetDynamicAnalysisConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : DynamicAnalysisConfiguration
+      def get_dynamic_analysis_configuration(request : ::MinknowApi::AnalysisConfiguration::GetDynamicAnalysisConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::AnalysisConfiguration::DynamicAnalysisConfiguration
         get_dynamic_analysis_configuration_response(request, ctx).ok!
       end
 
-      def get_dynamic_analysis_configuration_response(request : GetDynamicAnalysisConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(DynamicAnalysisConfiguration)
-        req_marshaller = marshaller_for(GetDynamicAnalysisConfigurationRequest)
-        res_marshaller = marshaller_for(DynamicAnalysisConfiguration)
+      def get_dynamic_analysis_configuration_response(request : ::MinknowApi::AnalysisConfiguration::GetDynamicAnalysisConfigurationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::DynamicAnalysisConfiguration)
+        req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::GetDynamicAnalysisConfigurationRequest)
+        res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::DynamicAnalysisConfiguration)
         response = @channel.unary_call(FULL_NAME, "get_dynamic_analysis_configuration", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(DynamicAnalysisConfiguration).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::DynamicAnalysisConfiguration).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def set_dynamic_analysis_configuration(request : DynamicAnalysisConfiguration, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : SetDynamicAnalysisConfigurationResponse
+      def set_dynamic_analysis_configuration(request : ::MinknowApi::AnalysisConfiguration::DynamicAnalysisConfiguration, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::AnalysisConfiguration::SetDynamicAnalysisConfigurationResponse
         set_dynamic_analysis_configuration_response(request, ctx).ok!
       end
 
-      def set_dynamic_analysis_configuration_response(request : DynamicAnalysisConfiguration, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(SetDynamicAnalysisConfigurationResponse)
-        req_marshaller = marshaller_for(DynamicAnalysisConfiguration)
-        res_marshaller = marshaller_for(SetDynamicAnalysisConfigurationResponse)
+      def set_dynamic_analysis_configuration_response(request : ::MinknowApi::AnalysisConfiguration::DynamicAnalysisConfiguration, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::SetDynamicAnalysisConfigurationResponse)
+        req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::DynamicAnalysisConfiguration)
+        res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::SetDynamicAnalysisConfigurationResponse)
         response = @channel.unary_call(FULL_NAME, "set_dynamic_analysis_configuration", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(SetDynamicAnalysisConfigurationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::SetDynamicAnalysisConfigurationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def find_basecall_configuration_defaults(request : FindBasecallConfigurationDefaultsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : FindBasecallConfigurationDefaultsResponse
+      def find_basecall_configuration_defaults(request : ::MinknowApi::AnalysisConfiguration::FindBasecallConfigurationDefaultsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::AnalysisConfiguration::FindBasecallConfigurationDefaultsResponse
         find_basecall_configuration_defaults_response(request, ctx).ok!
       end
 
-      def find_basecall_configuration_defaults_response(request : FindBasecallConfigurationDefaultsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(FindBasecallConfigurationDefaultsResponse)
-        req_marshaller = marshaller_for(FindBasecallConfigurationDefaultsRequest)
-        res_marshaller = marshaller_for(FindBasecallConfigurationDefaultsResponse)
+      def find_basecall_configuration_defaults_response(request : ::MinknowApi::AnalysisConfiguration::FindBasecallConfigurationDefaultsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::FindBasecallConfigurationDefaultsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::FindBasecallConfigurationDefaultsRequest)
+        res_marshaller = marshaller_for(::MinknowApi::AnalysisConfiguration::FindBasecallConfigurationDefaultsResponse)
         response = @channel.unary_call(FULL_NAME, "find_basecall_configuration_defaults", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(FindBasecallConfigurationDefaultsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::AnalysisConfiguration::FindBasecallConfigurationDefaultsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
     end
   end

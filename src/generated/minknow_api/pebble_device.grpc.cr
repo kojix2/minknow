@@ -1084,41 +1084,41 @@ module MinknowApi::PebbleDevice
         GRPC::ProtoMarshaller(T).new
       end
 
-      abstract def change_device_settings(request : ChangeDeviceSettingsRequest, ctx : GRPC::ServerContext) : ChangeDeviceSettingsResponse
-      abstract def get_device_settings(request : GetDeviceSettingsRequest, ctx : GRPC::ServerContext) : GetDeviceSettingsResponse
-      abstract def change_channel_settings(request : ChangeChannelSettingsRequest, ctx : GRPC::ServerContext) : ChangeChannelSettingsResponse
-      abstract def get_channel_settings(request : GetChannelSettingsRequest, ctx : GRPC::ServerContext) : GetChannelSettingsResponse
-      abstract def change_research_only_settings(request : ChangeResearchOnlySettingsRequest, ctx : GRPC::ServerContext) : ChangeResearchOnlySettingsResponse
+      abstract def change_device_settings(request : ::MinknowApi::PebbleDevice::ChangeDeviceSettingsRequest, ctx : GRPC::ServerContext) : ::MinknowApi::PebbleDevice::ChangeDeviceSettingsResponse
+      abstract def get_device_settings(request : ::MinknowApi::PebbleDevice::GetDeviceSettingsRequest, ctx : GRPC::ServerContext) : ::MinknowApi::PebbleDevice::GetDeviceSettingsResponse
+      abstract def change_channel_settings(request : ::MinknowApi::PebbleDevice::ChangeChannelSettingsRequest, ctx : GRPC::ServerContext) : ::MinknowApi::PebbleDevice::ChangeChannelSettingsResponse
+      abstract def get_channel_settings(request : ::MinknowApi::PebbleDevice::GetChannelSettingsRequest, ctx : GRPC::ServerContext) : ::MinknowApi::PebbleDevice::GetChannelSettingsResponse
+      abstract def change_research_only_settings(request : ::MinknowApi::PebbleDevice::ChangeResearchOnlySettingsRequest, ctx : GRPC::ServerContext) : ::MinknowApi::PebbleDevice::ChangeResearchOnlySettingsResponse
 
       def dispatch(method : String, body : Bytes, ctx : GRPC::ServerContext) : {Bytes, GRPC::Status}
         case method
         when "change_device_settings"
-          req_marshaller = marshaller_for(ChangeDeviceSettingsRequest)
-          res_marshaller = marshaller_for(ChangeDeviceSettingsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::PebbleDevice::ChangeDeviceSettingsRequest)
+          res_marshaller = marshaller_for(::MinknowApi::PebbleDevice::ChangeDeviceSettingsResponse)
           req = req_marshaller.decode(body)
           resp = change_device_settings(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_device_settings"
-          req_marshaller = marshaller_for(GetDeviceSettingsRequest)
-          res_marshaller = marshaller_for(GetDeviceSettingsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::PebbleDevice::GetDeviceSettingsRequest)
+          res_marshaller = marshaller_for(::MinknowApi::PebbleDevice::GetDeviceSettingsResponse)
           req = req_marshaller.decode(body)
           resp = get_device_settings(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "change_channel_settings"
-          req_marshaller = marshaller_for(ChangeChannelSettingsRequest)
-          res_marshaller = marshaller_for(ChangeChannelSettingsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::PebbleDevice::ChangeChannelSettingsRequest)
+          res_marshaller = marshaller_for(::MinknowApi::PebbleDevice::ChangeChannelSettingsResponse)
           req = req_marshaller.decode(body)
           resp = change_channel_settings(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_channel_settings"
-          req_marshaller = marshaller_for(GetChannelSettingsRequest)
-          res_marshaller = marshaller_for(GetChannelSettingsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::PebbleDevice::GetChannelSettingsRequest)
+          res_marshaller = marshaller_for(::MinknowApi::PebbleDevice::GetChannelSettingsResponse)
           req = req_marshaller.decode(body)
           resp = get_channel_settings(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "change_research_only_settings"
-          req_marshaller = marshaller_for(ChangeResearchOnlySettingsRequest)
-          res_marshaller = marshaller_for(ChangeResearchOnlySettingsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::PebbleDevice::ChangeResearchOnlySettingsRequest)
+          res_marshaller = marshaller_for(::MinknowApi::PebbleDevice::ChangeResearchOnlySettingsResponse)
           req = req_marshaller.decode(body)
           resp = change_research_only_settings(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
@@ -1143,64 +1143,64 @@ module MinknowApi::PebbleDevice
         GRPC::ProtoMarshaller(T).new
       end
 
-      def change_device_settings(request : ChangeDeviceSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ChangeDeviceSettingsResponse
+      def change_device_settings(request : ::MinknowApi::PebbleDevice::ChangeDeviceSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::PebbleDevice::ChangeDeviceSettingsResponse
         change_device_settings_response(request, ctx).ok!
       end
 
-      def change_device_settings_response(request : ChangeDeviceSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(ChangeDeviceSettingsResponse)
-        req_marshaller = marshaller_for(ChangeDeviceSettingsRequest)
-        res_marshaller = marshaller_for(ChangeDeviceSettingsResponse)
+      def change_device_settings_response(request : ::MinknowApi::PebbleDevice::ChangeDeviceSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::PebbleDevice::ChangeDeviceSettingsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::PebbleDevice::ChangeDeviceSettingsRequest)
+        res_marshaller = marshaller_for(::MinknowApi::PebbleDevice::ChangeDeviceSettingsResponse)
         response = @channel.unary_call(FULL_NAME, "change_device_settings", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(ChangeDeviceSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::PebbleDevice::ChangeDeviceSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_device_settings(request : GetDeviceSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetDeviceSettingsResponse
+      def get_device_settings(request : ::MinknowApi::PebbleDevice::GetDeviceSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::PebbleDevice::GetDeviceSettingsResponse
         get_device_settings_response(request, ctx).ok!
       end
 
-      def get_device_settings_response(request : GetDeviceSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetDeviceSettingsResponse)
-        req_marshaller = marshaller_for(GetDeviceSettingsRequest)
-        res_marshaller = marshaller_for(GetDeviceSettingsResponse)
+      def get_device_settings_response(request : ::MinknowApi::PebbleDevice::GetDeviceSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::PebbleDevice::GetDeviceSettingsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::PebbleDevice::GetDeviceSettingsRequest)
+        res_marshaller = marshaller_for(::MinknowApi::PebbleDevice::GetDeviceSettingsResponse)
         response = @channel.unary_call(FULL_NAME, "get_device_settings", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetDeviceSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::PebbleDevice::GetDeviceSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def change_channel_settings(request : ChangeChannelSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ChangeChannelSettingsResponse
+      def change_channel_settings(request : ::MinknowApi::PebbleDevice::ChangeChannelSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::PebbleDevice::ChangeChannelSettingsResponse
         change_channel_settings_response(request, ctx).ok!
       end
 
-      def change_channel_settings_response(request : ChangeChannelSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(ChangeChannelSettingsResponse)
-        req_marshaller = marshaller_for(ChangeChannelSettingsRequest)
-        res_marshaller = marshaller_for(ChangeChannelSettingsResponse)
+      def change_channel_settings_response(request : ::MinknowApi::PebbleDevice::ChangeChannelSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::PebbleDevice::ChangeChannelSettingsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::PebbleDevice::ChangeChannelSettingsRequest)
+        res_marshaller = marshaller_for(::MinknowApi::PebbleDevice::ChangeChannelSettingsResponse)
         response = @channel.unary_call(FULL_NAME, "change_channel_settings", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(ChangeChannelSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::PebbleDevice::ChangeChannelSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def get_channel_settings(request : GetChannelSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GetChannelSettingsResponse
+      def get_channel_settings(request : ::MinknowApi::PebbleDevice::GetChannelSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::PebbleDevice::GetChannelSettingsResponse
         get_channel_settings_response(request, ctx).ok!
       end
 
-      def get_channel_settings_response(request : GetChannelSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(GetChannelSettingsResponse)
-        req_marshaller = marshaller_for(GetChannelSettingsRequest)
-        res_marshaller = marshaller_for(GetChannelSettingsResponse)
+      def get_channel_settings_response(request : ::MinknowApi::PebbleDevice::GetChannelSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::PebbleDevice::GetChannelSettingsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::PebbleDevice::GetChannelSettingsRequest)
+        res_marshaller = marshaller_for(::MinknowApi::PebbleDevice::GetChannelSettingsResponse)
         response = @channel.unary_call(FULL_NAME, "get_channel_settings", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(GetChannelSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::PebbleDevice::GetChannelSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
-      def change_research_only_settings(request : ChangeResearchOnlySettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ChangeResearchOnlySettingsResponse
+      def change_research_only_settings(request : ::MinknowApi::PebbleDevice::ChangeResearchOnlySettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::PebbleDevice::ChangeResearchOnlySettingsResponse
         change_research_only_settings_response(request, ctx).ok!
       end
 
-      def change_research_only_settings_response(request : ChangeResearchOnlySettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(ChangeResearchOnlySettingsResponse)
-        req_marshaller = marshaller_for(ChangeResearchOnlySettingsRequest)
-        res_marshaller = marshaller_for(ChangeResearchOnlySettingsResponse)
+      def change_research_only_settings_response(request : ::MinknowApi::PebbleDevice::ChangeResearchOnlySettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::PebbleDevice::ChangeResearchOnlySettingsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::PebbleDevice::ChangeResearchOnlySettingsRequest)
+        res_marshaller = marshaller_for(::MinknowApi::PebbleDevice::ChangeResearchOnlySettingsResponse)
         response = @channel.unary_call(FULL_NAME, "change_research_only_settings", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
-        GRPC::UnaryResponse(ChangeResearchOnlySettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
+        GRPC::UnaryResponse(::MinknowApi::PebbleDevice::ChangeResearchOnlySettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
     end
   end
