@@ -6462,7 +6462,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1584" target="_blank">
+      <a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1733" target="_blank">
         generated/minknow_api/acquisition.pb.cr
       </a>
     
@@ -6492,7 +6492,12 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#decode%28io%3AIO%29%3Aself-class-method" class="signature"><strong>.decode</strong>(io : IO) : <span class="k">self</span></a>
+        <a href="#decode%28bytes%3ABytes%2C%2A%2Coptions%3AProto%3A%3ADecodeOptions%29%3Aself-class-method" class="signature"><strong>.decode</strong>(bytes : Bytes, *, options : Proto::DecodeOptions) : <span class="k">self</span></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decode%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3ADecodeOptions%3DProto%3A%3ADecodeOptions.new%29%3Aself-class-method" class="signature"><strong>.decode</strong>(io : IO, *, options _proto_options : Proto::DecodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">DecodeOptions</span>.new) : <span class="k">self</span></a>
         
       </li>
     
@@ -6502,7 +6507,12 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#decode_partial%28io%3AIO%29%3Aself-class-method" class="signature"><strong>.decode_partial</strong>(io : IO) : <span class="k">self</span></a>
+        <a href="#decode_partial%28bytes%3ABytes%2C%2A%2Coptions%3AProto%3A%3ADecodeOptions%29%3Aself-class-method" class="signature"><strong>.decode_partial</strong>(bytes : Bytes, *, options : Proto::DecodeOptions) : <span class="k">self</span></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decode_partial%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3ADecodeOptions%3DProto%3A%3ADecodeOptions.new%29%3Aself-class-method" class="signature"><strong>.decode_partial</strong>(io : IO, *, options _proto_options : Proto::DecodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">DecodeOptions</span>.new) : <span class="k">self</span></a>
         
       </li>
     
@@ -6744,12 +6754,12 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#encode%28io%3AIO%29%3ANil-instance-method" class="signature"><strong>#encode</strong>(io : IO) : Nil</a>
+        <a href="#encode%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3AEncodeOptions%3DProto%3A%3AEncodeOptions.new%29%3ANil-instance-method" class="signature"><strong>#encode</strong>(io : IO, *, options _proto_options : Proto::EncodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">EncodeOptions</span>.new) : Nil</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#encode_partial%28io%3AIO%29%3ANil-instance-method" class="signature"><strong>#encode_partial</strong>(io : IO) : Nil</a>
+        <a href="#encode_partial%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3AEncodeOptions%3DProto%3A%3AEncodeOptions.new%29%3ANil-instance-method" class="signature"><strong>#encode_partial</strong>(io : IO, *, options _proto_options : Proto::EncodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">EncodeOptions</span>.new) : Nil</a>
         
       </li>
     
@@ -6826,6 +6836,11 @@
         <a href="#lamp_kit%3D%28lamp_kit%3AString%29-instance-method" class="signature"><strong>#lamp_kit=</strong>(lamp_kit : String)</a>
         
           <div class="summary"><p>ameba:enable Naming/QueryBoolMethods</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#merge_from_partial%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3ADecodeOptions%3DProto%3A%3ADecodeOptions.new%29%3ANil-instance-method" class="signature"><strong>#merge_from_partial</strong>(io : IO, *, options _proto_options : Proto::DecodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">DecodeOptions</span>.new) : Nil</a>
         
       </li>
     
@@ -6989,23 +7004,39 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1585" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1734" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="decode(io:IO):self-class-method">
+    <div class="entry-detail" id="decode(bytes:Bytes,*,options:Proto::DecodeOptions):self-class-method">
       <div class="signature">
         
-        def self.<strong>decode</strong>(io : IO) : <span class="k">self</span>
+        def self.<strong>decode</strong>(bytes : Bytes, *, options : Proto::DecodeOptions) : <span class="k">self</span>
 
-        <a class="method-permalink" href="#decode%28io%3AIO%29%3Aself-class-method">#</a>
+        <a class="method-permalink" href="#decode%28bytes%3ABytes%2C%2A%2Coptions%3AProto%3A%3ADecodeOptions%29%3Aself-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1812" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1734" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decode(io:IO,*,options_proto_options:Proto::DecodeOptions=Proto::DecodeOptions.new):self-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode</strong>(io : IO, *, options _proto_options : Proto::DecodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">DecodeOptions</span>.new) : <span class="k">self</span>
+
+        <a class="method-permalink" href="#decode%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3ADecodeOptions%3DProto%3A%3ADecodeOptions.new%29%3Aself-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1982" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7021,23 +7052,39 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1585" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1734" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="decode_partial(io:IO):self-class-method">
+    <div class="entry-detail" id="decode_partial(bytes:Bytes,*,options:Proto::DecodeOptions):self-class-method">
       <div class="signature">
         
-        def self.<strong>decode_partial</strong>(io : IO) : <span class="k">self</span>
+        def self.<strong>decode_partial</strong>(bytes : Bytes, *, options : Proto::DecodeOptions) : <span class="k">self</span>
 
-        <a class="method-permalink" href="#decode_partial%28io%3AIO%29%3Aself-class-method">#</a>
+        <a class="method-permalink" href="#decode_partial%28bytes%3ABytes%2C%2A%2Coptions%3AProto%3A%3ADecodeOptions%29%3Aself-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1692" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1734" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decode_partial(io:IO,*,options_proto_options:Proto::DecodeOptions=Proto::DecodeOptions.new):self-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode_partial</strong>(io : IO, *, options _proto_options : Proto::DecodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">DecodeOptions</span>.new) : <span class="k">self</span>
+
+        <a class="method-permalink" href="#decode_partial%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3ADecodeOptions%3DProto%3A%3ADecodeOptions.new%29%3Aself-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1841" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7078,7 +7125,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1931" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L2101" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7094,7 +7141,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1613" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1762" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7110,7 +7157,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1613" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1762" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7131,7 +7178,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1610" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1759" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7152,7 +7199,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1610" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1759" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7173,7 +7220,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1612" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1761" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7194,7 +7241,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1612" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1761" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7216,7 +7263,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1630" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1779" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7238,7 +7285,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1630" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1779" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7260,7 +7307,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1606" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1755" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7282,7 +7329,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1606" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1755" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7303,7 +7350,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1608" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1757" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7324,7 +7371,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1608" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1757" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7340,7 +7387,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1593" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1742" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7361,7 +7408,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1599" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1748" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7377,7 +7424,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1648" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1797" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7398,7 +7445,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1597" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1746" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7419,7 +7466,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1597" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1746" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7435,7 +7482,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1600" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1749" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7451,7 +7498,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1655" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1804" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7467,7 +7514,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1601" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1750" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7483,7 +7530,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1601" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1750" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7504,7 +7551,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1634" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1783" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7525,7 +7572,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1634" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1783" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7546,7 +7593,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1632" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1781" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7567,7 +7614,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1632" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1781" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7583,7 +7630,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1639" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1788" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7599,7 +7646,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1639" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1788" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7620,7 +7667,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1636" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1785" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7641,7 +7688,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1636" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1785" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7657,7 +7704,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1642" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1791" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7673,7 +7720,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1670" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1819" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7689,7 +7736,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1678" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1827" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7710,7 +7757,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1603" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1752" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7731,39 +7778,39 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1603" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1752" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="encode(io:IO):Nil-instance-method">
+    <div class="entry-detail" id="encode(io:IO,*,options_proto_options:Proto::EncodeOptions=Proto::EncodeOptions.new):Nil-instance-method">
       <div class="signature">
         
-        def <strong>encode</strong>(io : IO) : Nil
+        def <strong>encode</strong>(io : IO, *, options _proto_options : Proto::EncodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">EncodeOptions</span>.new) : Nil
 
-        <a class="method-permalink" href="#encode%28io%3AIO%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#encode%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3AEncodeOptions%3DProto%3A%3AEncodeOptions.new%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1926" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L2096" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="encode_partial(io:IO):Nil-instance-method">
+    <div class="entry-detail" id="encode_partial(io:IO,*,options_proto_options:Proto::EncodeOptions=Proto::EncodeOptions.new):Nil-instance-method">
       <div class="signature">
         
-        def <strong>encode_partial</strong>(io : IO) : Nil
+        def <strong>encode_partial</strong>(io : IO, *, options _proto_options : Proto::EncodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">EncodeOptions</span>.new) : Nil
 
-        <a class="method-permalink" href="#encode_partial%28io%3AIO%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#encode_partial%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3AEncodeOptions%3DProto%3A%3AEncodeOptions.new%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1818" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1988" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7779,7 +7826,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1637" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1786" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7795,7 +7842,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1637" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1786" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7816,7 +7863,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1621" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1770" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7837,7 +7884,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1621" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1770" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7859,7 +7906,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1624" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1773" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7881,7 +7928,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1624" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1773" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7897,7 +7944,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1666" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1815" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7913,7 +7960,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1674" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1823" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7934,7 +7981,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1615" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1764" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7955,7 +8002,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1615" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1764" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7976,7 +8023,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1617" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1766" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7997,7 +8044,23 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1617" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1766" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="merge_from_partial(io:IO,*,options_proto_options:Proto::DecodeOptions=Proto::DecodeOptions.new):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>merge_from_partial</strong>(io : IO, *, options _proto_options : Proto::DecodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">DecodeOptions</span>.new) : Nil
+
+        <a class="method-permalink" href="#merge_from_partial%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3ADecodeOptions%3DProto%3A%3ADecodeOptions.new%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1847" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -8019,7 +8082,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1627" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1776" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -8041,7 +8104,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1627" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1776" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -8057,7 +8120,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1595" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1744" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -8073,7 +8136,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1595" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1744" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -8089,7 +8152,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1618" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1767" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -8105,7 +8168,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1618" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1767" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -8121,7 +8184,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1619" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1768" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -8137,7 +8200,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1619" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1768" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -8153,7 +8216,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1638" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1787" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -8169,7 +8232,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1638" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1787" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -8185,7 +8248,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1640" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1789" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -8201,7 +8264,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1640" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1789" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -8217,7 +8280,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1682" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1831" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -8233,7 +8296,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/acquisition.pb.cr#L1685" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/acquisition.pb.cr#L1834" target="_blank">View source</a>]
         
       </div>
     </div>

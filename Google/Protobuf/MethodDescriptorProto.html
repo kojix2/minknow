@@ -6462,7 +6462,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1610" target="_blank">
+      <a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1727" target="_blank">
         generated/google/protobuf/descriptor.pb.cr
       </a>
     
@@ -6492,7 +6492,12 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#decode%28io%3AIO%29%3Aself-class-method" class="signature"><strong>.decode</strong>(io : IO) : <span class="k">self</span></a>
+        <a href="#decode%28bytes%3ABytes%2C%2A%2Coptions%3AProto%3A%3ADecodeOptions%29%3Aself-class-method" class="signature"><strong>.decode</strong>(bytes : Bytes, *, options : Proto::DecodeOptions) : <span class="k">self</span></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decode%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3ADecodeOptions%3DProto%3A%3ADecodeOptions.new%29%3Aself-class-method" class="signature"><strong>.decode</strong>(io : IO, *, options _proto_options : Proto::DecodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">DecodeOptions</span>.new) : <span class="k">self</span></a>
         
       </li>
     
@@ -6502,7 +6507,12 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#decode_partial%28io%3AIO%29%3Aself-class-method" class="signature"><strong>.decode_partial</strong>(io : IO) : <span class="k">self</span></a>
+        <a href="#decode_partial%28bytes%3ABytes%2C%2A%2Coptions%3AProto%3A%3ADecodeOptions%29%3Aself-class-method" class="signature"><strong>.decode_partial</strong>(bytes : Bytes, *, options : Proto::DecodeOptions) : <span class="k">self</span></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decode_partial%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3ADecodeOptions%3DProto%3A%3ADecodeOptions.new%29%3Aself-class-method" class="signature"><strong>.decode_partial</strong>(io : IO, *, options _proto_options : Proto::DecodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">DecodeOptions</span>.new) : <span class="k">self</span></a>
         
       </li>
     
@@ -6574,12 +6584,12 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#encode%28io%3AIO%29%3ANil-instance-method" class="signature"><strong>#encode</strong>(io : IO) : Nil</a>
+        <a href="#encode%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3AEncodeOptions%3DProto%3A%3AEncodeOptions.new%29%3ANil-instance-method" class="signature"><strong>#encode</strong>(io : IO, *, options _proto_options : Proto::EncodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">EncodeOptions</span>.new) : Nil</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#encode_partial%28io%3AIO%29%3ANil-instance-method" class="signature"><strong>#encode_partial</strong>(io : IO) : Nil</a>
+        <a href="#encode_partial%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3AEncodeOptions%3DProto%3A%3AEncodeOptions.new%29%3ANil-instance-method" class="signature"><strong>#encode_partial</strong>(io : IO, *, options _proto_options : Proto::EncodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">EncodeOptions</span>.new) : Nil</a>
         
       </li>
     
@@ -6620,6 +6630,11 @@
     
       <li class="entry-summary">
         <a href="#input_type%3D%28value%3AString%29%3AString-instance-method" class="signature"><strong>#input_type=</strong>(value : String) : String</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#merge_from_partial%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3ADecodeOptions%3DProto%3A%3ADecodeOptions.new%29%3ANil-instance-method" class="signature"><strong>#merge_from_partial</strong>(io : IO, *, options _proto_options : Proto::DecodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">DecodeOptions</span>.new) : Nil</a>
         
       </li>
     
@@ -6761,23 +6776,39 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1611" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1728" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="decode(io:IO):self-class-method">
+    <div class="entry-detail" id="decode(bytes:Bytes,*,options:Proto::DecodeOptions):self-class-method">
       <div class="signature">
         
-        def self.<strong>decode</strong>(io : IO) : <span class="k">self</span>
+        def self.<strong>decode</strong>(bytes : Bytes, *, options : Proto::DecodeOptions) : <span class="k">self</span>
 
-        <a class="method-permalink" href="#decode%28io%3AIO%29%3Aself-class-method">#</a>
+        <a class="method-permalink" href="#decode%28bytes%3ABytes%2C%2A%2Coptions%3AProto%3A%3ADecodeOptions%29%3Aself-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1742" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1728" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decode(io:IO,*,options_proto_options:Proto::DecodeOptions=Proto::DecodeOptions.new):self-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode</strong>(io : IO, *, options _proto_options : Proto::DecodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">DecodeOptions</span>.new) : <span class="k">self</span>
+
+        <a class="method-permalink" href="#decode%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3ADecodeOptions%3DProto%3A%3ADecodeOptions.new%29%3Aself-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1870" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6793,23 +6824,39 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1611" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1728" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="decode_partial(io:IO):self-class-method">
+    <div class="entry-detail" id="decode_partial(bytes:Bytes,*,options:Proto::DecodeOptions):self-class-method">
       <div class="signature">
         
-        def self.<strong>decode_partial</strong>(io : IO) : <span class="k">self</span>
+        def self.<strong>decode_partial</strong>(bytes : Bytes, *, options : Proto::DecodeOptions) : <span class="k">self</span>
 
-        <a class="method-permalink" href="#decode_partial%28io%3AIO%29%3Aself-class-method">#</a>
+        <a class="method-permalink" href="#decode_partial%28bytes%3ABytes%2C%2A%2Coptions%3AProto%3A%3ADecodeOptions%29%3Aself-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1702" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1728" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decode_partial(io:IO,*,options_proto_options:Proto::DecodeOptions=Proto::DecodeOptions.new):self-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode_partial</strong>(io : IO, *, options _proto_options : Proto::DecodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">DecodeOptions</span>.new) : <span class="k">self</span>
+
+        <a class="method-permalink" href="#decode_partial%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3ADecodeOptions%3DProto%3A%3ADecodeOptions.new%29%3Aself-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1819" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6850,7 +6897,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1781" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1909" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6866,7 +6913,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1664" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1781" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6882,7 +6929,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1642" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1759" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6898,7 +6945,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1631" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1748" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6914,7 +6961,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1690" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1807" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6930,7 +6977,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1653" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1770" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6946,7 +6993,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1675" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1792" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6967,7 +7014,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1624" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1741" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6983,39 +7030,39 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1669" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1786" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="encode(io:IO):Nil-instance-method">
+    <div class="entry-detail" id="encode(io:IO,*,options_proto_options:Proto::EncodeOptions=Proto::EncodeOptions.new):Nil-instance-method">
       <div class="signature">
         
-        def <strong>encode</strong>(io : IO) : Nil
+        def <strong>encode</strong>(io : IO, *, options _proto_options : Proto::EncodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">EncodeOptions</span>.new) : Nil
 
-        <a class="method-permalink" href="#encode%28io%3AIO%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#encode%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3AEncodeOptions%3DProto%3A%3AEncodeOptions.new%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1776" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1904" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="encode_partial(io:IO):Nil-instance-method">
+    <div class="entry-detail" id="encode_partial(io:IO,*,options_proto_options:Proto::EncodeOptions=Proto::EncodeOptions.new):Nil-instance-method">
       <div class="signature">
         
-        def <strong>encode_partial</strong>(io : IO) : Nil
+        def <strong>encode_partial</strong>(io : IO, *, options _proto_options : Proto::EncodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">EncodeOptions</span>.new) : Nil
 
-        <a class="method-permalink" href="#encode_partial%28io%3AIO%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#encode_partial%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3AEncodeOptions%3DProto%3A%3AEncodeOptions.new%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1748" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1876" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7031,7 +7078,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1616" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1733" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7047,7 +7094,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1614" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1731" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7063,7 +7110,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1613" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1730" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7079,7 +7126,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1686" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1803" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7095,7 +7142,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1615" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1732" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7111,7 +7158,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1617" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1734" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7127,7 +7174,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1620" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1737" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7143,7 +7190,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1647" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1764" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="merge_from_partial(io:IO,*,options_proto_options:Proto::DecodeOptions=Proto::DecodeOptions.new):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>merge_from_partial</strong>(io : IO, *, options _proto_options : Proto::DecodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">DecodeOptions</span>.new) : Nil
+
+        <a class="method-permalink" href="#merge_from_partial%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3ADecodeOptions%3DProto%3A%3ADecodeOptions.new%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1825" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7159,7 +7222,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1619" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1736" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7175,7 +7238,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1636" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1753" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7191,7 +7254,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1622" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1739" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7207,7 +7270,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1622" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1739" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7223,7 +7286,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1621" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1738" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7239,7 +7302,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1658" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1775" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7261,7 +7324,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1627" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1744" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7277,7 +7340,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1680" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1797" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7293,7 +7356,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1694" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1811" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7309,7 +7372,7 @@ ameba:disable Naming/QueryBoolMethods</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/google/protobuf/descriptor.pb.cr#L1697" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/google/protobuf/descriptor.pb.cr#L1814" target="_blank">View source</a>]
         
       </div>
     </div>

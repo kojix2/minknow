@@ -6462,7 +6462,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4700" target="_blank">
+      <a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5221" target="_blank">
         generated/minknow_api/manager.pb.cr
       </a>
     
@@ -6492,7 +6492,12 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#decode%28io%3AIO%29%3Aself-class-method" class="signature"><strong>.decode</strong>(io : IO) : <span class="k">self</span></a>
+        <a href="#decode%28bytes%3ABytes%2C%2A%2Coptions%3AProto%3A%3ADecodeOptions%29%3Aself-class-method" class="signature"><strong>.decode</strong>(bytes : Bytes, *, options : Proto::DecodeOptions) : <span class="k">self</span></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decode%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3ADecodeOptions%3DProto%3A%3ADecodeOptions.new%29%3Aself-class-method" class="signature"><strong>.decode</strong>(io : IO, *, options _proto_options : Proto::DecodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">DecodeOptions</span>.new) : <span class="k">self</span></a>
         
       </li>
     
@@ -6502,7 +6507,12 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#decode_partial%28io%3AIO%29%3Aself-class-method" class="signature"><strong>.decode_partial</strong>(io : IO) : <span class="k">self</span></a>
+        <a href="#decode_partial%28bytes%3ABytes%2C%2A%2Coptions%3AProto%3A%3ADecodeOptions%29%3Aself-class-method" class="signature"><strong>.decode_partial</strong>(bytes : Bytes, *, options : Proto::DecodeOptions) : <span class="k">self</span></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#decode_partial%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3ADecodeOptions%3DProto%3A%3ADecodeOptions.new%29%3Aself-class-method" class="signature"><strong>.decode_partial</strong>(io : IO, *, options _proto_options : Proto::DecodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">DecodeOptions</span>.new) : <span class="k">self</span></a>
         
       </li>
     
@@ -6667,12 +6677,12 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#encode%28io%3AIO%29%3ANil-instance-method" class="signature"><strong>#encode</strong>(io : IO) : Nil</a>
+        <a href="#encode%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3AEncodeOptions%3DProto%3A%3AEncodeOptions.new%29%3ANil-instance-method" class="signature"><strong>#encode</strong>(io : IO, *, options _proto_options : Proto::EncodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">EncodeOptions</span>.new) : Nil</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#encode_partial%28io%3AIO%29%3ANil-instance-method" class="signature"><strong>#encode_partial</strong>(io : IO) : Nil</a>
+        <a href="#encode_partial%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3AEncodeOptions%3DProto%3A%3AEncodeOptions.new%29%3ANil-instance-method" class="signature"><strong>#encode_partial</strong>(io : IO, *, options _proto_options : Proto::EncodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">EncodeOptions</span>.new) : Nil</a>
         
       </li>
     
@@ -6788,6 +6798,11 @@
     
       <li class="entry-summary">
         <a href="#has_split_pod5_files_by_barcode%3F%3ABool-instance-method" class="signature"><strong>#has_split_pod5_files_by_barcode?</strong> : Bool</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#merge_from_partial%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3ADecodeOptions%3DProto%3A%3ADecodeOptions.new%29%3ANil-instance-method" class="signature"><strong>#merge_from_partial</strong>(io : IO, *, options _proto_options : Proto::DecodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">DecodeOptions</span>.new) : Nil</a>
         
       </li>
     
@@ -6937,23 +6952,39 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4701" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5222" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="decode(io:IO):self-class-method">
+    <div class="entry-detail" id="decode(bytes:Bytes,*,options:Proto::DecodeOptions):self-class-method">
       <div class="signature">
         
-        def self.<strong>decode</strong>(io : IO) : <span class="k">self</span>
+        def self.<strong>decode</strong>(bytes : Bytes, *, options : Proto::DecodeOptions) : <span class="k">self</span>
 
-        <a class="method-permalink" href="#decode%28io%3AIO%29%3Aself-class-method">#</a>
+        <a class="method-permalink" href="#decode%28bytes%3ABytes%2C%2A%2Coptions%3AProto%3A%3ADecodeOptions%29%3Aself-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L5054" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5222" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decode(io:IO,*,options_proto_options:Proto::DecodeOptions=Proto::DecodeOptions.new):self-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode</strong>(io : IO, *, options _proto_options : Proto::DecodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">DecodeOptions</span>.new) : <span class="k">self</span>
+
+        <a class="method-permalink" href="#decode%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3ADecodeOptions%3DProto%3A%3ADecodeOptions.new%29%3Aself-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5656" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6969,23 +7000,39 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4701" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5222" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="decode_partial(io:IO):self-class-method">
+    <div class="entry-detail" id="decode_partial(bytes:Bytes,*,options:Proto::DecodeOptions):self-class-method">
       <div class="signature">
         
-        def self.<strong>decode_partial</strong>(io : IO) : <span class="k">self</span>
+        def self.<strong>decode_partial</strong>(bytes : Bytes, *, options : Proto::DecodeOptions) : <span class="k">self</span>
 
-        <a class="method-permalink" href="#decode_partial%28io%3AIO%29%3Aself-class-method">#</a>
+        <a class="method-permalink" href="#decode_partial%28bytes%3ABytes%2C%2A%2Coptions%3AProto%3A%3ADecodeOptions%29%3Aself-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4861" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5222" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="decode_partial(io:IO,*,options_proto_options:Proto::DecodeOptions=Proto::DecodeOptions.new):self-class-method">
+      <div class="signature">
+        
+        def self.<strong>decode_partial</strong>(io : IO, *, options _proto_options : Proto::DecodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">DecodeOptions</span>.new) : <span class="k">self</span>
+
+        <a class="method-permalink" href="#decode_partial%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3ADecodeOptions%3DProto%3A%3ADecodeOptions.new%29%3Aself-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5382" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7026,7 +7073,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L5115" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5717" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7042,7 +7089,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4710" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5231" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7058,7 +7105,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4710" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5231" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7074,7 +7121,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4706" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5227" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7090,7 +7137,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4706" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5227" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7106,7 +7153,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4708" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5229" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7122,7 +7169,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4708" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5229" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7138,7 +7185,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4716" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5237" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7154,7 +7201,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4716" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5237" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7170,7 +7217,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4715" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5236" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7186,7 +7233,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4715" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5236" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7202,7 +7249,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4717" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5238" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7218,7 +7265,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4717" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5238" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7234,7 +7281,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4779" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5300" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7250,7 +7297,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4747" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5268" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7266,7 +7313,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4763" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5284" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7282,7 +7329,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4827" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5348" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7298,7 +7345,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4819" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5340" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7314,7 +7361,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4835" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5356" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7330,7 +7377,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4771" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5292" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7346,7 +7393,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4739" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5260" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7362,7 +7409,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4723" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5244" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7378,7 +7425,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4731" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5252" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7394,7 +7441,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4787" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5308" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7410,7 +7457,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4755" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5276" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7426,7 +7473,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4803" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5324" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7442,7 +7489,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4795" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5316" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7458,39 +7505,39 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4811" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5332" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="encode(io:IO):Nil-instance-method">
+    <div class="entry-detail" id="encode(io:IO,*,options_proto_options:Proto::EncodeOptions=Proto::EncodeOptions.new):Nil-instance-method">
       <div class="signature">
         
-        def <strong>encode</strong>(io : IO) : Nil
+        def <strong>encode</strong>(io : IO, *, options _proto_options : Proto::EncodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">EncodeOptions</span>.new) : Nil
 
-        <a class="method-permalink" href="#encode%28io%3AIO%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#encode%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3AEncodeOptions%3DProto%3A%3AEncodeOptions.new%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L5110" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5712" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="encode_partial(io:IO):Nil-instance-method">
+    <div class="entry-detail" id="encode_partial(io:IO,*,options_proto_options:Proto::EncodeOptions=Proto::EncodeOptions.new):Nil-instance-method">
       <div class="signature">
         
-        def <strong>encode_partial</strong>(io : IO) : Nil
+        def <strong>encode_partial</strong>(io : IO, *, options _proto_options : Proto::EncodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">EncodeOptions</span>.new) : Nil
 
-        <a class="method-permalink" href="#encode_partial%28io%3AIO%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#encode_partial%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3AEncodeOptions%3DProto%3A%3AEncodeOptions.new%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L5060" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5662" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7506,7 +7553,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4709" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5230" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7522,7 +7569,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4709" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5230" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7538,7 +7585,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4705" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5226" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7554,7 +7601,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4705" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5226" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7570,7 +7617,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4703" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5224" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7586,7 +7633,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4703" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5224" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7602,7 +7649,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4704" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5225" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7618,7 +7665,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4704" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5225" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7634,7 +7681,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4775" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5296" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7650,7 +7697,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4743" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5264" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7666,7 +7713,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4759" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5280" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7682,7 +7729,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4823" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5344" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7698,7 +7745,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4815" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5336" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7714,7 +7761,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4831" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5352" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7730,7 +7777,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4767" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5288" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7746,7 +7793,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4735" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5256" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7762,7 +7809,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4719" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5240" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7778,7 +7825,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4727" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5248" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7794,7 +7841,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4783" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5304" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7810,7 +7857,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4751" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5272" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7826,7 +7873,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4799" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5320" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7842,7 +7889,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4791" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5312" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7858,7 +7905,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4807" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5328" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="merge_from_partial(io:IO,*,options_proto_options:Proto::DecodeOptions=Proto::DecodeOptions.new):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>merge_from_partial</strong>(io : IO, *, options _proto_options : Proto::DecodeOptions = <span class="t">Proto</span><span class="t">::</span><span class="t">DecodeOptions</span>.new) : Nil
+
+        <a class="method-permalink" href="#merge_from_partial%28io%3AIO%2C%2A%2Coptions_proto_options%3AProto%3A%3ADecodeOptions%3DProto%3A%3ADecodeOptions.new%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5388" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7874,7 +7937,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4711" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5232" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7890,7 +7953,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4711" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5232" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7906,7 +7969,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4707" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5228" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7922,7 +7985,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4707" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5228" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7938,7 +8001,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4713" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5234" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7954,7 +8017,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4713" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5234" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7970,7 +8033,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4712" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5233" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7986,7 +8049,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4712" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5233" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -8002,7 +8065,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4714" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5235" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -8018,7 +8081,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4714" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5235" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -8034,7 +8097,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4839" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5360" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -8050,7 +8113,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/generated/minknow_api/manager.pb.cr#L4842" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/generated/minknow_api/manager.pb.cr#L5363" target="_blank">View source</a>]
         
       </div>
     </div>

@@ -6448,6 +6448,17 @@ manager <span class="o">=</span> <span class="t">Minknow</span><span class="t">:
 <code>device</code>, <code>data</code>, <code>protocol</code>, <code>acquisition</code> and <code>instance</code> methods expose service
 wrappers. For a first connection check without an attached sequencer, run:</p>
 <pre><code class="language-sh">crystal run examples/manager_info.cr</code></pre>
+<p>Pass <code>endpoint_config:</code> to <code>ConnectionConfig</code> to configure the gRPC channel.
+For a short control call, create a fresh context with a deadline; a live-read
+stream can instead use a separate context without a short fixed deadline:</p>
+<pre><code class="language-crystal">config <span class="o">=</span> <span class="t">Minknow</span><span class="t">::</span><span class="t">ConnectionConfig</span>.new(
+  endpoint_config: <span class="t">GRPC</span><span class="t">::</span><span class="t">EndpointConfig</span>.new(connect_timeout: <span class="n">5</span>.seconds))
+control_context <span class="o">=</span> config.client_context(deadline: <span class="n">5</span>.seconds)
+manager <span class="o">=</span> <span class="t">Minknow</span><span class="t">::</span><span class="t">Manager</span>.new(config)
+positions <span class="o">=</span> manager.fetch_flow_cell_positions(control_context)
+<span class="c"># A position-specific connection also accepts explicit contexts, e.g.</span>
+<span class="c"># connection.device(control_context) or connection.data(config.client_context).</span>
+manager.channel.close</code></pre>
 <h2><a id="authentication" class="anchor" href="#authentication">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
@@ -6472,6 +6483,10 @@ the lookup environment setting; <code>local_auth_lookup_port:</code> selects its
 <p>Generated sources are included; ordinary use does not need <code>protoc</code>.
 Run <code>crystal spec</code>. See <a href="examples/README.md">examples</a> for runnable commands and
 <a href="DEVELOPMENT.md">DEVELOPMENT.md</a> for API regeneration and release checks.</p>
+<p><code>crystal spec spec/live_reads_large.cr</code> is an additional local-server test for
+a 9 MiB signal field, setup and action responses. The committed <code>shard.lock</code>
+and generated stubs include the required proto.cr and grpc.cr APIs; install
+the matching dependencies with <code>shards install --frozen</code>.</p>
 <p>License: <a href="LICENSE">MIT</a>.</p>
 </div>
 </body>

@@ -6448,7 +6448,7 @@
   </h2>
   
     
-      <a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/minknow.cr#L17" target="_blank">
+      <a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/minknow.cr#L17" target="_blank">
         minknow.cr
       </a>
     
@@ -6500,7 +6500,7 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28host%3AString%3D%22127.0.0.1%22%2Cport%3AInt32%3D9501%2Ctls%3ABool%3Dtrue%2Cmetadata%3AHash%28String%2CString%29%7CNil%3Dnil%2Cca_certificate_path%3AString%7CNil%3Dnil%2Cclient_certificate_chain_path%3AString%7CNil%3DENV%5B%22MINKNOW_API_CLIENT_CERTIFICATE_CHAIN%22%5D%3F%2Cclient_private_key_path%3AString%7CNil%3DENV%5B%22MINKNOW_API_CLIENT_KEY%22%5D%3F%2Cauthentication_token%3AString%7CNil%3DENV%5B%22MINKNOW_AUTH_TOKEN%22%5D%3F%2Cprotocol_token%3AString%7CNil%3DENV%5B%22PROTOCOL_TOKEN%22%5D%3F%2Cauto_local_auth%3ABool%7CNil%3Dnil%2Clocal_auth_lookup_port%3AInt32%7CNil%3Dnil%29-class-method" class="signature"><strong>.new</strong>(host : String = <span class="s">&quot;127.0.0.1&quot;</span>, port : Int32 = <span class="n">9501</span>, tls : Bool = <span class="n">true</span>, metadata : Hash(String, String) | Nil = <span class="n">nil</span>, ca_certificate_path : String | Nil = <span class="n">nil</span>, client_certificate_chain_path : String | Nil = <span class="t">ENV</span>[<span class="s">&quot;MINKNOW_API_CLIENT_CERTIFICATE_CHAIN&quot;</span>]?, client_private_key_path : String | Nil = <span class="t">ENV</span>[<span class="s">&quot;MINKNOW_API_CLIENT_KEY&quot;</span>]?, authentication_token : String | Nil = <span class="t">ENV</span>[<span class="s">&quot;MINKNOW_AUTH_TOKEN&quot;</span>]?, protocol_token : String | Nil = <span class="t">ENV</span>[<span class="s">&quot;PROTOCOL_TOKEN&quot;</span>]?, auto_local_auth : Bool | Nil = <span class="n">nil</span>, local_auth_lookup_port : Int32 | Nil = <span class="n">nil</span>)</a>
+        <a href="#new%28host%3AString%3D%22127.0.0.1%22%2Cport%3AInt32%3D9501%2Ctls%3ABool%3Dtrue%2Cmetadata%3AHash%28String%2CString%29%7CNil%3Dnil%2Cca_certificate_path%3AString%7CNil%3Dnil%2Cclient_certificate_chain_path%3AString%7CNil%3DENV%5B%22MINKNOW_API_CLIENT_CERTIFICATE_CHAIN%22%5D%3F%2Cclient_private_key_path%3AString%7CNil%3DENV%5B%22MINKNOW_API_CLIENT_KEY%22%5D%3F%2Cauthentication_token%3AString%7CNil%3DENV%5B%22MINKNOW_AUTH_TOKEN%22%5D%3F%2Cprotocol_token%3AString%7CNil%3DENV%5B%22PROTOCOL_TOKEN%22%5D%3F%2Cauto_local_auth%3ABool%7CNil%3Dnil%2Clocal_auth_lookup_port%3AInt32%7CNil%3Dnil%2Cendpoint_config%3AGRPC%3A%3AEndpointConfig%3DGRPC%3A%3AEndpointConfig.new%29-class-method" class="signature"><strong>.new</strong>(host : String = <span class="s">&quot;127.0.0.1&quot;</span>, port : Int32 = <span class="n">9501</span>, tls : Bool = <span class="n">true</span>, metadata : Hash(String, String) | Nil = <span class="n">nil</span>, ca_certificate_path : String | Nil = <span class="n">nil</span>, client_certificate_chain_path : String | Nil = <span class="t">ENV</span>[<span class="s">&quot;MINKNOW_API_CLIENT_CERTIFICATE_CHAIN&quot;</span>]?, client_private_key_path : String | Nil = <span class="t">ENV</span>[<span class="s">&quot;MINKNOW_API_CLIENT_KEY&quot;</span>]?, authentication_token : String | Nil = <span class="t">ENV</span>[<span class="s">&quot;MINKNOW_AUTH_TOKEN&quot;</span>]?, protocol_token : String | Nil = <span class="t">ENV</span>[<span class="s">&quot;PROTOCOL_TOKEN&quot;</span>]?, auto_local_auth : Bool | Nil = <span class="n">nil</span>, local_auth_lookup_port : Int32 | Nil = <span class="n">nil</span>, endpoint_config : GRPC::EndpointConfig = <span class="t">GRPC</span><span class="t">::</span><span class="t">EndpointConfig</span>.new)</a>
         
       </li>
     
@@ -6558,7 +6558,7 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#client_context%3AGRPC%3A%3AClientContext-instance-method" class="signature"><strong>#client_context</strong> : GRPC::ClientContext</a>
+        <a href="#client_context%28%2A%2Cdeadline%3ATime%3A%3ASpan%7CTime%7CNil%3Dnil%29%3AGRPC%3A%3AClientContext-instance-method" class="signature"><strong>#client_context</strong>(*, deadline : Time::Span | Time | Nil = <span class="n">nil</span>) : GRPC::ClientContext</a>
         
       </li>
     
@@ -6569,6 +6569,11 @@
     
       <li class="entry-summary">
         <a href="#effective_metadata%3AHash%28String%2CString%29-instance-method" class="signature"><strong>#effective_metadata</strong> : Hash(String, String)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#endpoint_config%3AGRPC%3A%3AEndpointConfig-instance-method" class="signature"><strong>#endpoint_config</strong> : GRPC::EndpointConfig</a>
         
       </li>
     
@@ -6676,18 +6681,18 @@
     Constructor Detail
   </h2>
   
-    <div class="entry-detail" id="new(host:String=&quot;127.0.0.1&quot;,port:Int32=9501,tls:Bool=true,metadata:Hash(String,String)|Nil=nil,ca_certificate_path:String|Nil=nil,client_certificate_chain_path:String|Nil=ENV[&quot;MINKNOW_API_CLIENT_CERTIFICATE_CHAIN&quot;]?,client_private_key_path:String|Nil=ENV[&quot;MINKNOW_API_CLIENT_KEY&quot;]?,authentication_token:String|Nil=ENV[&quot;MINKNOW_AUTH_TOKEN&quot;]?,protocol_token:String|Nil=ENV[&quot;PROTOCOL_TOKEN&quot;]?,auto_local_auth:Bool|Nil=nil,local_auth_lookup_port:Int32|Nil=nil)-class-method">
+    <div class="entry-detail" id="new(host:String=&quot;127.0.0.1&quot;,port:Int32=9501,tls:Bool=true,metadata:Hash(String,String)|Nil=nil,ca_certificate_path:String|Nil=nil,client_certificate_chain_path:String|Nil=ENV[&quot;MINKNOW_API_CLIENT_CERTIFICATE_CHAIN&quot;]?,client_private_key_path:String|Nil=ENV[&quot;MINKNOW_API_CLIENT_KEY&quot;]?,authentication_token:String|Nil=ENV[&quot;MINKNOW_AUTH_TOKEN&quot;]?,protocol_token:String|Nil=ENV[&quot;PROTOCOL_TOKEN&quot;]?,auto_local_auth:Bool|Nil=nil,local_auth_lookup_port:Int32|Nil=nil,endpoint_config:GRPC::EndpointConfig=GRPC::EndpointConfig.new)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(host : String = <span class="s">&quot;127.0.0.1&quot;</span>, port : Int32 = <span class="n">9501</span>, tls : Bool = <span class="n">true</span>, metadata : Hash(String, String) | Nil = <span class="n">nil</span>, ca_certificate_path : String | Nil = <span class="n">nil</span>, client_certificate_chain_path : String | Nil = <span class="t">ENV</span>[<span class="s">&quot;MINKNOW_API_CLIENT_CERTIFICATE_CHAIN&quot;</span>]?, client_private_key_path : String | Nil = <span class="t">ENV</span>[<span class="s">&quot;MINKNOW_API_CLIENT_KEY&quot;</span>]?, authentication_token : String | Nil = <span class="t">ENV</span>[<span class="s">&quot;MINKNOW_AUTH_TOKEN&quot;</span>]?, protocol_token : String | Nil = <span class="t">ENV</span>[<span class="s">&quot;PROTOCOL_TOKEN&quot;</span>]?, auto_local_auth : Bool | Nil = <span class="n">nil</span>, local_auth_lookup_port : Int32 | Nil = <span class="n">nil</span>)
+        def self.<strong>new</strong>(host : String = <span class="s">&quot;127.0.0.1&quot;</span>, port : Int32 = <span class="n">9501</span>, tls : Bool = <span class="n">true</span>, metadata : Hash(String, String) | Nil = <span class="n">nil</span>, ca_certificate_path : String | Nil = <span class="n">nil</span>, client_certificate_chain_path : String | Nil = <span class="t">ENV</span>[<span class="s">&quot;MINKNOW_API_CLIENT_CERTIFICATE_CHAIN&quot;</span>]?, client_private_key_path : String | Nil = <span class="t">ENV</span>[<span class="s">&quot;MINKNOW_API_CLIENT_KEY&quot;</span>]?, authentication_token : String | Nil = <span class="t">ENV</span>[<span class="s">&quot;MINKNOW_AUTH_TOKEN&quot;</span>]?, protocol_token : String | Nil = <span class="t">ENV</span>[<span class="s">&quot;PROTOCOL_TOKEN&quot;</span>]?, auto_local_auth : Bool | Nil = <span class="n">nil</span>, local_auth_lookup_port : Int32 | Nil = <span class="n">nil</span>, endpoint_config : GRPC::EndpointConfig = <span class="t">GRPC</span><span class="t">::</span><span class="t">EndpointConfig</span>.new)
 
-        <a class="method-permalink" href="#new%28host%3AString%3D%22127.0.0.1%22%2Cport%3AInt32%3D9501%2Ctls%3ABool%3Dtrue%2Cmetadata%3AHash%28String%2CString%29%7CNil%3Dnil%2Cca_certificate_path%3AString%7CNil%3Dnil%2Cclient_certificate_chain_path%3AString%7CNil%3DENV%5B%22MINKNOW_API_CLIENT_CERTIFICATE_CHAIN%22%5D%3F%2Cclient_private_key_path%3AString%7CNil%3DENV%5B%22MINKNOW_API_CLIENT_KEY%22%5D%3F%2Cauthentication_token%3AString%7CNil%3DENV%5B%22MINKNOW_AUTH_TOKEN%22%5D%3F%2Cprotocol_token%3AString%7CNil%3DENV%5B%22PROTOCOL_TOKEN%22%5D%3F%2Cauto_local_auth%3ABool%7CNil%3Dnil%2Clocal_auth_lookup_port%3AInt32%7CNil%3Dnil%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28host%3AString%3D%22127.0.0.1%22%2Cport%3AInt32%3D9501%2Ctls%3ABool%3Dtrue%2Cmetadata%3AHash%28String%2CString%29%7CNil%3Dnil%2Cca_certificate_path%3AString%7CNil%3Dnil%2Cclient_certificate_chain_path%3AString%7CNil%3DENV%5B%22MINKNOW_API_CLIENT_CERTIFICATE_CHAIN%22%5D%3F%2Cclient_private_key_path%3AString%7CNil%3DENV%5B%22MINKNOW_API_CLIENT_KEY%22%5D%3F%2Cauthentication_token%3AString%7CNil%3DENV%5B%22MINKNOW_AUTH_TOKEN%22%5D%3F%2Cprotocol_token%3AString%7CNil%3DENV%5B%22PROTOCOL_TOKEN%22%5D%3F%2Cauto_local_auth%3ABool%7CNil%3Dnil%2Clocal_auth_lookup_port%3AInt32%7CNil%3Dnil%2Cendpoint_config%3AGRPC%3A%3AEndpointConfig%3DGRPC%3A%3AEndpointConfig.new%29-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/minknow.cr#L43" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/minknow.cr#L44" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6719,7 +6724,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/minknow.cr#L75" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/minknow.cr#L78" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6735,7 +6740,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/minknow.cr#L38" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/minknow.cr#L38" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6751,7 +6756,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/minknow.cr#L40" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/minknow.cr#L40" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6767,7 +6772,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/minknow.cr#L35" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/minknow.cr#L35" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6783,7 +6788,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/minknow.cr#L84" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/minknow.cr#L87" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6799,7 +6804,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/minknow.cr#L36" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/minknow.cr#L36" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6815,23 +6820,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/minknow.cr#L152" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/minknow.cr#L156" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="client_context:GRPC::ClientContext-instance-method">
+    <div class="entry-detail" id="client_context(*,deadline:Time::Span|Time|Nil=nil):GRPC::ClientContext-instance-method">
       <div class="signature">
         
-        def <strong>client_context</strong> : GRPC::ClientContext
+        def <strong>client_context</strong>(*, deadline : Time::Span | Time | Nil = <span class="n">nil</span>) : GRPC::ClientContext
 
-        <a class="method-permalink" href="#client_context%3AGRPC%3A%3AClientContext-instance-method">#</a>
+        <a class="method-permalink" href="#client_context%28%2A%2Cdeadline%3ATime%3A%3ASpan%7CTime%7CNil%3Dnil%29%3AGRPC%3A%3AClientContext-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/minknow.cr#L80" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/minknow.cr#L83" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6847,7 +6852,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/minknow.cr#L37" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/minknow.cr#L37" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6863,7 +6868,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/minknow.cr#L134" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/minknow.cr#L138" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="endpoint_config:GRPC::EndpointConfig-instance-method">
+      <div class="signature">
+        
+        def <strong>endpoint_config</strong> : GRPC::EndpointConfig
+
+        <a class="method-permalink" href="#endpoint_config%3AGRPC%3A%3AEndpointConfig-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/minknow.cr#L42" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6879,7 +6900,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/minknow.cr#L31" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/minknow.cr#L31" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6895,7 +6916,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/minknow.cr#L118" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/minknow.cr#L122" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6911,7 +6932,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/minknow.cr#L88" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/minknow.cr#L91" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6927,7 +6948,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/minknow.cr#L41" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/minknow.cr#L41" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6943,7 +6964,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/minknow.cr#L105" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/minknow.cr#L109" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6959,7 +6980,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/minknow.cr#L109" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/minknow.cr#L113" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6975,7 +6996,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/minknow.cr#L34" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/minknow.cr#L34" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -6991,7 +7012,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/minknow.cr#L32" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/minknow.cr#L32" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7007,7 +7028,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/minknow.cr#L39" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/minknow.cr#L39" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7023,7 +7044,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/minknow.cr#L33" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/minknow.cr#L33" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7039,7 +7060,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/minknow.cr#L156" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/minknow.cr#L160" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -7055,7 +7076,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/kojix2/minknow/blob/69015f7f8f30da6a04440ec21288cfb49f6465e7/src/minknow.cr#L59" target="_blank">View source</a>]
+          [<a href="https://github.com/kojix2/minknow/blob/848333d96cddc0e93fa9b6a03d52f83e4bec4b8d/src/minknow.cr#L61" target="_blank">View source</a>]
         
       </div>
     </div>
