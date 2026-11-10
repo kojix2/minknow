@@ -39,6 +39,7 @@ module Minknow
     getter protocol_token : String?
     getter auto_local_auth : Bool?
     getter local_auth_lookup_port : Int32?
+    getter endpoint_config : GRPC::EndpointConfig
 
     def initialize(
       @host : String = "127.0.0.1",
@@ -52,6 +53,7 @@ module Minknow
       @protocol_token : String? = ENV["PROTOCOL_TOKEN"]?,
       @auto_local_auth : Bool? = nil,
       @local_auth_lookup_port : Int32? = nil,
+      @endpoint_config : GRPC::EndpointConfig = GRPC::EndpointConfig.new,
     )
       @metadata = metadata || {} of String => String
     end
@@ -69,6 +71,7 @@ module Minknow
         protocol_token: protocol_token,
         auto_local_auth: auto_local_auth,
         local_auth_lookup_port: local_auth_lookup_port || self.port,
+        endpoint_config: endpoint_config,
       )
     end
 
@@ -77,12 +80,12 @@ module Minknow
       "#{scheme}://#{host}:#{port}"
     end
 
-    def client_context : GRPC::ClientContext
-      GRPC::ClientContext.new(metadata: effective_metadata)
+    def client_context(*, deadline : Time::Span | Time? = nil) : GRPC::ClientContext
+      GRPC::ClientContext.new(metadata: effective_metadata, deadline: deadline)
     end
 
     def channel : GRPC::Channel
-      GRPC::Channel.new(address, tls_context: tls_context)
+      GRPC::Channel.new(address, tls_context: tls_context, endpoint_config: endpoint_config)
     end
 
     def local_auth_lookup_config : self
@@ -99,6 +102,7 @@ module Minknow
         protocol_token: nil,
         auto_local_auth: false,
         local_auth_lookup_port: lookup_port,
+        endpoint_config: endpoint_config,
       )
     end
 
@@ -298,20 +302,40 @@ module Minknow
       @instance ||= InstanceService.new(channel, ctx)
     end
 
+    def instance(ctx : GRPC::ClientContext) : InstanceService
+      InstanceService.new(channel, ctx)
+    end
+
     def device : DeviceService
       @device ||= DeviceService.new(channel, ctx)
+    end
+
+    def device(ctx : GRPC::ClientContext) : DeviceService
+      DeviceService.new(channel, ctx)
     end
 
     def protocol : ProtocolService
       @protocol ||= ProtocolService.new(channel, ctx)
     end
 
+    def protocol(ctx : GRPC::ClientContext) : ProtocolService
+      ProtocolService.new(channel, ctx)
+    end
+
     def data : DataService
       @data ||= DataService.new(channel, ctx)
     end
 
+    def data(ctx : GRPC::ClientContext) : DataService
+      DataService.new(channel, ctx)
+    end
+
     def acquisition : AcquisitionService
       @acquisition ||= AcquisitionService.new(channel, ctx)
+    end
+
+    def acquisition(ctx : GRPC::ClientContext) : AcquisitionService
+      AcquisitionService.new(channel, ctx)
     end
   end
 

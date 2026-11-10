@@ -42,6 +42,21 @@ wrappers. For a first connection check without an attached sequencer, run:
 crystal run examples/manager_info.cr
 ```
 
+Pass `endpoint_config:` to `ConnectionConfig` to configure the gRPC channel.
+For a short control call, create a fresh context with a deadline; a live-read
+stream can instead use a separate context without a short fixed deadline:
+
+```crystal
+config = Minknow::ConnectionConfig.new(
+  endpoint_config: GRPC::EndpointConfig.new(connect_timeout: 5.seconds))
+control_context = config.client_context(deadline: 5.seconds)
+manager = Minknow::Manager.new(config)
+positions = manager.fetch_flow_cell_positions(control_context)
+# A position-specific connection also accepts explicit contexts, e.g.
+# connection.device(control_context) or connection.data(config.client_context).
+manager.channel.close
+```
+
 ## Authentication
 
 Connections use TLS by default. Configure host/port/TLS through `ConnectionConfig`;
