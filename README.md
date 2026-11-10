@@ -79,4 +79,9 @@ Generated sources are included; ordinary use does not need `protoc`.
 Run `crystal spec`. See [examples](examples/README.md) for runnable commands and
 [DEVELOPMENT.md](DEVELOPMENT.md) for API regeneration and release checks.
 
+`crystal spec spec/live_reads_large.cr` is an additional local-server test for
+a 9 MiB signal field, setup and action responses. It requires the updated
+`proto.cr` and `grpc.cr` runtimes and MinKNOW stubs regenerated with both
+updated plugins; the currently locked releases do not yet provide those APIs.
+
 License: [MIT](LICENSE).
