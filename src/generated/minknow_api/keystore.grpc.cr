@@ -498,6 +498,11 @@ module MinknowApi::Keystore
         GRPC::ProtoMarshaller(T).new
       end
 
+      protected def marshaller_for(type : T.class, ctx : GRPC::ServerContext) : GRPC::Marshaller(T) forall T
+        options = ctx.protobuf_options
+        options ? GRPC::ProtoMarshaller(T).new(options: options) : marshaller_for(type)
+      end
+
       abstract def store(request : ::MinknowApi::Keystore::StoreRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Keystore::StoreResponse
       abstract def remove(request : ::MinknowApi::Keystore::RemoveRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Keystore::RemoveResponse
       abstract def get_one(request : ::MinknowApi::Keystore::GetOneRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Keystore::GetOneResponse
@@ -507,26 +512,26 @@ module MinknowApi::Keystore
       def dispatch(method : String, body : Bytes, ctx : GRPC::ServerContext) : {Bytes, GRPC::Status}
         case method
         when "store"
-          req_marshaller = marshaller_for(::MinknowApi::Keystore::StoreRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Keystore::StoreResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Keystore::StoreRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Keystore::StoreResponse, ctx)
           req = req_marshaller.decode(body)
           resp = store(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "remove"
-          req_marshaller = marshaller_for(::MinknowApi::Keystore::RemoveRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Keystore::RemoveResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Keystore::RemoveRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Keystore::RemoveResponse, ctx)
           req = req_marshaller.decode(body)
           resp = remove(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_one"
-          req_marshaller = marshaller_for(::MinknowApi::Keystore::GetOneRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Keystore::GetOneResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Keystore::GetOneRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Keystore::GetOneResponse, ctx)
           req = req_marshaller.decode(body)
           resp = get_one(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get"
-          req_marshaller = marshaller_for(::MinknowApi::Keystore::GetRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Keystore::GetResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Keystore::GetRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Keystore::GetResponse, ctx)
           req = req_marshaller.decode(body)
           resp = get(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
@@ -551,8 +556,8 @@ module MinknowApi::Keystore
                                  writer : GRPC::RawResponseStream) : GRPC::Status
         case method
         when "watch"
-          req_marshaller = marshaller_for(::MinknowApi::Keystore::WatchRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Keystore::WatchResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Keystore::WatchRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Keystore::WatchResponse, ctx)
           typed_writer = GRPC::ResponseStream(::MinknowApi::Keystore::WatchResponse).new(writer, res_marshaller)
           watch(req_marshaller.decode(body), typed_writer, ctx)
         else
@@ -576,13 +581,18 @@ module MinknowApi::Keystore
         GRPC::ProtoMarshaller(T).new
       end
 
+      protected def marshaller_for(type : T.class, ctx : GRPC::ClientContext) : GRPC::Marshaller(T) forall T
+        options = ctx.protobuf_options
+        options ? GRPC::ProtoMarshaller(T).new(options: options) : marshaller_for(type)
+      end
+
       def store(request : ::MinknowApi::Keystore::StoreRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Keystore::StoreResponse
         store_response(request, ctx).ok!
       end
 
       def store_response(request : ::MinknowApi::Keystore::StoreRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Keystore::StoreResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Keystore::StoreRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Keystore::StoreResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Keystore::StoreRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Keystore::StoreResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "store", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Keystore::StoreResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -593,8 +603,8 @@ module MinknowApi::Keystore
       end
 
       def remove_response(request : ::MinknowApi::Keystore::RemoveRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Keystore::RemoveResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Keystore::RemoveRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Keystore::RemoveResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Keystore::RemoveRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Keystore::RemoveResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "remove", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Keystore::RemoveResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -605,8 +615,8 @@ module MinknowApi::Keystore
       end
 
       def get_one_response(request : ::MinknowApi::Keystore::GetOneRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Keystore::GetOneResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Keystore::GetOneRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Keystore::GetOneResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Keystore::GetOneRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Keystore::GetOneResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "get_one", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Keystore::GetOneResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -617,16 +627,16 @@ module MinknowApi::Keystore
       end
 
       def get_response(request : ::MinknowApi::Keystore::GetRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Keystore::GetResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Keystore::GetRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Keystore::GetResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Keystore::GetRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Keystore::GetResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "get", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Keystore::GetResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
       def watch(request : ::MinknowApi::Keystore::WatchRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Keystore::WatchResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Keystore::WatchRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Keystore::WatchResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Keystore::WatchRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Keystore::WatchResponse, ctx)
         raw = @channel.open_server_stream(FULL_NAME, "watch", req_marshaller.encode(request), ctx)
         GRPC::ServerStream(::MinknowApi::Keystore::WatchResponse).new(raw, res_marshaller)
       end

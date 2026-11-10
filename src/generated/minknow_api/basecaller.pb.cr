@@ -57,9 +57,15 @@ module MinknowApi
     class ListConfigsByKitRequest
       include Proto::Message
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -67,21 +73,21 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
+        nil
+      end
+
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
-        msg
-      end
-
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
-        encode_partial(io)
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -98,9 +104,15 @@ module MinknowApi
 
         property configs : Array(String) = [] of String
 
-        def self.decode_partial(io : IO) : self
+        def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
           msg = new
-          reader = Proto::Wire::Reader.new(io)
+          msg.merge_from_partial(io, options: _proto_options)
+          msg
+        end
+
+        def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+          msg = self
+          reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
           while tag = reader.read_tag
             fn, wt = tag
             case {fn, wt}
@@ -111,16 +123,16 @@ module MinknowApi
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
+          nil
+        end
+
+        def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+          msg = decode_partial(io, options: _proto_options)
           msg
         end
 
-        def self.decode(io : IO) : self
-          msg = decode_partial(io)
-          msg
-        end
-
-        def encode_partial(io : IO) : Nil
-          w = Proto::Wire::Writer.new(io)
+        def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+          w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
           configs.each do |item|
             w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
             w.write_string(item)
@@ -128,8 +140,8 @@ module MinknowApi
           write_unknown_fields(w)
         end
 
-        def encode(io : IO) : Nil
-          encode_partial(io)
+        def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+          encode_partial(io, options: _proto_options)
         end
 
         def ==(other : self) : Bool
@@ -164,9 +176,15 @@ module MinknowApi
             value.try &.validate_required_deep!
           end
 
-          def self.decode_partial(io : IO) : self
+          def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
             msg = new
-            reader = Proto::Wire::Reader.new(io)
+            msg.merge_from_partial(io, options: _proto_options)
+            msg
+          end
+
+          def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+            msg = self
+            reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
             while tag = reader.read_tag
               fn, wt = tag
               case {fn, wt}
@@ -176,11 +194,16 @@ module MinknowApi
               when {2, Proto::WireType::LENGTH_DELIMITED}
                 msg.value = reader.read_embedded(2, wt) do |sub|
                   if current = msg.value
-                    merged = IO::Memory.new
-                    current.encode_partial(merged)
-                    IO.copy(sub, merged)
-                    merged.rewind
-                    ListConfigsByKitResponse::ConfigList.decode_partial(sub.rewrap(merged.to_slice))
+                    if current.responds_to?(:merge_from_partial)
+                      current.merge_from_partial(sub)
+                      current
+                    else
+                      merged = Proto::Wire::EmbeddedOutput.new(sub.max_field_length)
+                      current.encode_partial(merged)
+                      IO.copy(sub, merged)
+                      merged.rewind
+                      ListConfigsByKitResponse::ConfigList.decode_partial(sub.rewrap(merged.to_slice))
+                    end
                   else
                     ListConfigsByKitResponse::ConfigList.decode_partial(sub)
                   end
@@ -189,17 +212,17 @@ module MinknowApi
                 msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
               end
             end
-            msg
+            nil
           end
 
-          def self.decode(io : IO) : self
-            msg = decode_partial(io)
+          def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+            msg = decode_partial(io, options: _proto_options)
             msg.validate_required_deep!
             msg
           end
 
-          def encode_partial(io : IO) : Nil
-            w = Proto::Wire::Writer.new(io)
+          def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+            w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
             if !key.empty?
               w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
               w.write_string(key)
@@ -210,9 +233,9 @@ module MinknowApi
             write_unknown_fields(w)
           end
 
-          def encode(io : IO) : Nil
+          def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
             validate_required_deep!
-            encode_partial(io)
+            encode_partial(io, options: _proto_options)
           end
 
           def ==(other : self) : Bool
@@ -235,9 +258,15 @@ module MinknowApi
           end
         end
 
-        def self.decode_partial(io : IO) : self
+        def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
           msg = new
-          reader = Proto::Wire::Reader.new(io)
+          msg.merge_from_partial(io, options: _proto_options)
+          msg
+        end
+
+        def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+          msg = self
+          reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
           while tag = reader.read_tag
             fn, wt = tag
             case {fn, wt}
@@ -248,17 +277,17 @@ module MinknowApi
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
-          msg
+          nil
         end
 
-        def self.decode(io : IO) : self
-          msg = decode_partial(io)
+        def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+          msg = decode_partial(io, options: _proto_options)
           msg.validate_required_deep!
           msg
         end
 
-        def encode_partial(io : IO) : Nil
-          w = Proto::Wire::Writer.new(io)
+        def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+          w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
           kit_configs.each do |k, v|
             entry = ListConfigsByKitResponse::PerFlowCell::KitConfigsEntry.new
             entry.key = k
@@ -268,9 +297,9 @@ module MinknowApi
           write_unknown_fields(w)
         end
 
-        def encode(io : IO) : Nil
+        def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
           validate_required_deep!
-          encode_partial(io)
+          encode_partial(io, options: _proto_options)
         end
 
         def ==(other : self) : Bool
@@ -302,9 +331,15 @@ module MinknowApi
           value.try &.validate_required_deep!
         end
 
-        def self.decode_partial(io : IO) : self
+        def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
           msg = new
-          reader = Proto::Wire::Reader.new(io)
+          msg.merge_from_partial(io, options: _proto_options)
+          msg
+        end
+
+        def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+          msg = self
+          reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
           while tag = reader.read_tag
             fn, wt = tag
             case {fn, wt}
@@ -314,11 +349,16 @@ module MinknowApi
             when {2, Proto::WireType::LENGTH_DELIMITED}
               msg.value = reader.read_embedded(2, wt) do |sub|
                 if current = msg.value
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  ListConfigsByKitResponse::PerFlowCell.decode_partial(sub.rewrap(merged.to_slice))
+                  if current.responds_to?(:merge_from_partial)
+                    current.merge_from_partial(sub)
+                    current
+                  else
+                    merged = Proto::Wire::EmbeddedOutput.new(sub.max_field_length)
+                    current.encode_partial(merged)
+                    IO.copy(sub, merged)
+                    merged.rewind
+                    ListConfigsByKitResponse::PerFlowCell.decode_partial(sub.rewrap(merged.to_slice))
+                  end
                 else
                   ListConfigsByKitResponse::PerFlowCell.decode_partial(sub)
                 end
@@ -327,17 +367,17 @@ module MinknowApi
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
-          msg
+          nil
         end
 
-        def self.decode(io : IO) : self
-          msg = decode_partial(io)
+        def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+          msg = decode_partial(io, options: _proto_options)
           msg.validate_required_deep!
           msg
         end
 
-        def encode_partial(io : IO) : Nil
-          w = Proto::Wire::Writer.new(io)
+        def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+          w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
           if !key.empty?
             w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
             w.write_string(key)
@@ -348,9 +388,9 @@ module MinknowApi
           write_unknown_fields(w)
         end
 
-        def encode(io : IO) : Nil
+        def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
           validate_required_deep!
-          encode_partial(io)
+          encode_partial(io, options: _proto_options)
         end
 
         def ==(other : self) : Bool
@@ -373,9 +413,15 @@ module MinknowApi
         end
       end
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -386,17 +432,17 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
-        msg
+        nil
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg.validate_required_deep!
         msg
       end
 
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         flow_cell_configs.each do |k, v|
           entry = ListConfigsByKitResponse::FlowCellConfigsEntry.new
           entry.key = k
@@ -406,9 +452,9 @@ module MinknowApi
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
         validate_required_deep!
-        encode_partial(io)
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -517,9 +563,15 @@ module MinknowApi
         min_score_read_splitting.try &.validate_required_deep!
       end
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -538,11 +590,16 @@ module MinknowApi
           when {16, Proto::WireType::LENGTH_DELIMITED}
             msg.model_names = reader.read_embedded(16, wt) do |sub|
               if current = msg.model_names
-                merged = IO::Memory.new
-                current.encode_partial(merged)
-                IO.copy(sub, merged)
-                merged.rewind
-                MinknowApi::AnalysisConfiguration::BasecallerConfiguration::ModelNames.decode_partial(sub.rewrap(merged.to_slice))
+                if current.responds_to?(:merge_from_partial)
+                  current.merge_from_partial(sub)
+                  current
+                else
+                  merged = Proto::Wire::EmbeddedOutput.new(sub.max_field_length)
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::AnalysisConfiguration::BasecallerConfiguration::ModelNames.decode_partial(sub.rewrap(merged.to_slice))
+                end
               else
                 MinknowApi::AnalysisConfiguration::BasecallerConfiguration::ModelNames.decode_partial(sub)
               end
@@ -562,11 +619,16 @@ module MinknowApi
           when {10, Proto::WireType::LENGTH_DELIMITED}
             msg.barcoding_configuration = reader.read_embedded(10, wt) do |sub|
               if current = msg.barcoding_configuration
-                merged = IO::Memory.new
-                current.encode_partial(merged)
-                IO.copy(sub, merged)
-                merged.rewind
-                MinknowApi::AnalysisConfiguration::BarcodingConfiguration.decode_partial(sub.rewrap(merged.to_slice))
+                if current.responds_to?(:merge_from_partial)
+                  current.merge_from_partial(sub)
+                  current
+                else
+                  merged = Proto::Wire::EmbeddedOutput.new(sub.max_field_length)
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::AnalysisConfiguration::BarcodingConfiguration.decode_partial(sub.rewrap(merged.to_slice))
+                end
               else
                 MinknowApi::AnalysisConfiguration::BarcodingConfiguration.decode_partial(sub)
               end
@@ -574,11 +636,16 @@ module MinknowApi
           when {11, Proto::WireType::LENGTH_DELIMITED}
             msg.alignment_configuration = reader.read_embedded(11, wt) do |sub|
               if current = msg.alignment_configuration
-                merged = IO::Memory.new
-                current.encode_partial(merged)
-                IO.copy(sub, merged)
-                merged.rewind
-                MinknowApi::AnalysisConfiguration::AlignmentConfiguration.decode_partial(sub.rewrap(merged.to_slice))
+                if current.responds_to?(:merge_from_partial)
+                  current.merge_from_partial(sub)
+                  current
+                else
+                  merged = Proto::Wire::EmbeddedOutput.new(sub.max_field_length)
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::AnalysisConfiguration::AlignmentConfiguration.decode_partial(sub.rewrap(merged.to_slice))
+                end
               else
                 MinknowApi::AnalysisConfiguration::AlignmentConfiguration.decode_partial(sub)
               end
@@ -592,11 +659,16 @@ module MinknowApi
           when {14, Proto::WireType::LENGTH_DELIMITED}
             msg.min_score_read_splitting = reader.read_embedded(14, wt) do |sub|
               if current = msg.min_score_read_splitting
-                merged = IO::Memory.new
-                current.encode_partial(merged)
-                IO.copy(sub, merged)
-                merged.rewind
-                Google::Protobuf::FloatValue.decode_partial(sub.rewrap(merged.to_slice))
+                if current.responds_to?(:merge_from_partial)
+                  current.merge_from_partial(sub)
+                  current
+                else
+                  merged = Proto::Wire::EmbeddedOutput.new(sub.max_field_length)
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::FloatValue.decode_partial(sub.rewrap(merged.to_slice))
+                end
               else
                 Google::Protobuf::FloatValue.decode_partial(sub)
               end
@@ -608,17 +680,17 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
-        msg
+        nil
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg.validate_required_deep!
         msg
       end
 
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         if !name.empty?
           w.write_tag(12, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(name)
@@ -680,9 +752,9 @@ module MinknowApi
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
         validate_required_deep!
-        encode_partial(io)
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -712,9 +784,15 @@ module MinknowApi
 
       property id : String = ""
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -725,16 +803,16 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
+        nil
+      end
+
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
-        msg
-      end
-
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         if !id.empty?
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(id)
@@ -742,8 +820,8 @@ module MinknowApi
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
-        encode_partial(io)
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -796,9 +874,15 @@ module MinknowApi
         barcoding_configuration.try &.validate_required_deep!
       end
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -820,11 +904,16 @@ module MinknowApi
           when {10, Proto::WireType::LENGTH_DELIMITED}
             msg.barcoding_configuration = reader.read_embedded(10, wt) do |sub|
               if current = msg.barcoding_configuration
-                merged = IO::Memory.new
-                current.encode_partial(merged)
-                IO.copy(sub, merged)
-                merged.rewind
-                MinknowApi::AnalysisConfiguration::BarcodingConfiguration.decode_partial(sub.rewrap(merged.to_slice))
+                if current.responds_to?(:merge_from_partial)
+                  current.merge_from_partial(sub)
+                  current
+                else
+                  merged = Proto::Wire::EmbeddedOutput.new(sub.max_field_length)
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::AnalysisConfiguration::BarcodingConfiguration.decode_partial(sub.rewrap(merged.to_slice))
+                end
               else
                 MinknowApi::AnalysisConfiguration::BarcodingConfiguration.decode_partial(sub)
               end
@@ -838,17 +927,17 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
-        msg
+        nil
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg.validate_required_deep!
         msg
       end
 
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         if !name.empty?
           w.write_tag(11, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(name)
@@ -879,9 +968,9 @@ module MinknowApi
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
         validate_required_deep!
-        encode_partial(io)
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -902,9 +991,15 @@ module MinknowApi
 
       property id : String = ""
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -915,16 +1010,16 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
+        nil
+      end
+
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
-        msg
-      end
-
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         if !id.empty?
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(id)
@@ -932,8 +1027,8 @@ module MinknowApi
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
-        encode_partial(io)
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -970,9 +1065,15 @@ module MinknowApi
         alignment_configuration.try &.validate_required_deep!
       end
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -991,11 +1092,16 @@ module MinknowApi
           when {6, Proto::WireType::LENGTH_DELIMITED}
             msg.alignment_configuration = reader.read_embedded(6, wt) do |sub|
               if current = msg.alignment_configuration
-                merged = IO::Memory.new
-                current.encode_partial(merged)
-                IO.copy(sub, merged)
-                merged.rewind
-                MinknowApi::AnalysisConfiguration::AlignmentConfiguration.decode_partial(sub.rewrap(merged.to_slice))
+                if current.responds_to?(:merge_from_partial)
+                  current.merge_from_partial(sub)
+                  current
+                else
+                  merged = Proto::Wire::EmbeddedOutput.new(sub.max_field_length)
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::AnalysisConfiguration::AlignmentConfiguration.decode_partial(sub.rewrap(merged.to_slice))
+                end
               else
                 MinknowApi::AnalysisConfiguration::AlignmentConfiguration.decode_partial(sub)
               end
@@ -1004,17 +1110,17 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
-        msg
+        nil
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg.validate_required_deep!
         msg
       end
 
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         if !name.empty?
           w.write_tag(7, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(name)
@@ -1037,9 +1143,9 @@ module MinknowApi
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
         validate_required_deep!
-        encode_partial(io)
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -1058,9 +1164,15 @@ module MinknowApi
 
       property id : String = ""
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -1071,16 +1183,16 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
+        nil
+      end
+
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
-        msg
-      end
-
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         if !id.empty?
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(id)
@@ -1088,8 +1200,8 @@ module MinknowApi
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
-        encode_partial(io)
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -1124,9 +1236,15 @@ module MinknowApi
           value.try &.validate_required_deep!
         end
 
-        def self.decode_partial(io : IO) : self
+        def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
           msg = new
-          reader = Proto::Wire::Reader.new(io)
+          msg.merge_from_partial(io, options: _proto_options)
+          msg
+        end
+
+        def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+          msg = self
+          reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
           while tag = reader.read_tag
             fn, wt = tag
             case {fn, wt}
@@ -1136,11 +1254,16 @@ module MinknowApi
             when {2, Proto::WireType::LENGTH_DELIMITED}
               msg.value = reader.read_embedded(2, wt) do |sub|
                 if current = msg.value
-                  merged = IO::Memory.new
-                  current.encode_partial(merged)
-                  IO.copy(sub, merged)
-                  merged.rewind
-                  MinknowApi::ProtocolSettings::ProtocolSetting::ProtocolSettingValue.decode_partial(sub.rewrap(merged.to_slice))
+                  if current.responds_to?(:merge_from_partial)
+                    current.merge_from_partial(sub)
+                    current
+                  else
+                    merged = Proto::Wire::EmbeddedOutput.new(sub.max_field_length)
+                    current.encode_partial(merged)
+                    IO.copy(sub, merged)
+                    merged.rewind
+                    MinknowApi::ProtocolSettings::ProtocolSetting::ProtocolSettingValue.decode_partial(sub.rewrap(merged.to_slice))
+                  end
                 else
                   MinknowApi::ProtocolSettings::ProtocolSetting::ProtocolSettingValue.decode_partial(sub)
                 end
@@ -1149,17 +1272,17 @@ module MinknowApi
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
-          msg
+          nil
         end
 
-        def self.decode(io : IO) : self
-          msg = decode_partial(io)
+        def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+          msg = decode_partial(io, options: _proto_options)
           msg.validate_required_deep!
           msg
         end
 
-        def encode_partial(io : IO) : Nil
-          w = Proto::Wire::Writer.new(io)
+        def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+          w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
           if !key.empty?
             w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
             w.write_string(key)
@@ -1170,9 +1293,9 @@ module MinknowApi
           write_unknown_fields(w)
         end
 
-        def encode(io : IO) : Nil
+        def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
           validate_required_deep!
-          encode_partial(io)
+          encode_partial(io, options: _proto_options)
         end
 
         def ==(other : self) : Bool
@@ -1202,9 +1325,15 @@ module MinknowApi
         end
       end
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -1236,17 +1365,17 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
-        msg
+        nil
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg.validate_required_deep!
         msg
       end
 
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         if !identifier.empty?
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(identifier)
@@ -1284,9 +1413,9 @@ module MinknowApi
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
         validate_required_deep!
-        encode_partial(io)
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -1414,20 +1543,31 @@ module MinknowApi
         analysis_workflow_request.try &.validate_required_deep!
       end
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
           when {2, Proto::WireType::LENGTH_DELIMITED}
             msg.start_basecalling_request = reader.read_embedded(2, wt) do |sub|
               if current = msg.start_basecalling_request
-                merged = IO::Memory.new
-                current.encode_partial(merged)
-                IO.copy(sub, merged)
-                merged.rewind
-                StartBasecallingRequest.decode_partial(sub.rewrap(merged.to_slice))
+                if current.responds_to?(:merge_from_partial)
+                  current.merge_from_partial(sub)
+                  current
+                else
+                  merged = Proto::Wire::EmbeddedOutput.new(sub.max_field_length)
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  StartBasecallingRequest.decode_partial(sub.rewrap(merged.to_slice))
+                end
               else
                 StartBasecallingRequest.decode_partial(sub)
               end
@@ -1435,11 +1575,16 @@ module MinknowApi
           when {3, Proto::WireType::LENGTH_DELIMITED}
             msg.start_barcoding_request = reader.read_embedded(3, wt) do |sub|
               if current = msg.start_barcoding_request
-                merged = IO::Memory.new
-                current.encode_partial(merged)
-                IO.copy(sub, merged)
-                merged.rewind
-                StartBarcodingRequest.decode_partial(sub.rewrap(merged.to_slice))
+                if current.responds_to?(:merge_from_partial)
+                  current.merge_from_partial(sub)
+                  current
+                else
+                  merged = Proto::Wire::EmbeddedOutput.new(sub.max_field_length)
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  StartBarcodingRequest.decode_partial(sub.rewrap(merged.to_slice))
+                end
               else
                 StartBarcodingRequest.decode_partial(sub)
               end
@@ -1447,11 +1592,16 @@ module MinknowApi
           when {4, Proto::WireType::LENGTH_DELIMITED}
             msg.start_alignment_request = reader.read_embedded(4, wt) do |sub|
               if current = msg.start_alignment_request
-                merged = IO::Memory.new
-                current.encode_partial(merged)
-                IO.copy(sub, merged)
-                merged.rewind
-                StartAlignmentRequest.decode_partial(sub.rewrap(merged.to_slice))
+                if current.responds_to?(:merge_from_partial)
+                  current.merge_from_partial(sub)
+                  current
+                else
+                  merged = Proto::Wire::EmbeddedOutput.new(sub.max_field_length)
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  StartAlignmentRequest.decode_partial(sub.rewrap(merged.to_slice))
+                end
               else
                 StartAlignmentRequest.decode_partial(sub)
               end
@@ -1459,11 +1609,16 @@ module MinknowApi
           when {5, Proto::WireType::LENGTH_DELIMITED}
             msg.start_post_processing_protocol_request = reader.read_embedded(5, wt) do |sub|
               if current = msg.start_post_processing_protocol_request
-                merged = IO::Memory.new
-                current.encode_partial(merged)
-                IO.copy(sub, merged)
-                merged.rewind
-                StartPostProcessingProtocolRequest.decode_partial(sub.rewrap(merged.to_slice))
+                if current.responds_to?(:merge_from_partial)
+                  current.merge_from_partial(sub)
+                  current
+                else
+                  merged = Proto::Wire::EmbeddedOutput.new(sub.max_field_length)
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  StartPostProcessingProtocolRequest.decode_partial(sub.rewrap(merged.to_slice))
+                end
               else
                 StartPostProcessingProtocolRequest.decode_partial(sub)
               end
@@ -1471,11 +1626,16 @@ module MinknowApi
           when {6, Proto::WireType::LENGTH_DELIMITED}
             msg.proxy_request = reader.read_embedded(6, wt) do |sub|
               if current = msg.proxy_request
-                merged = IO::Memory.new
-                current.encode_partial(merged)
-                IO.copy(sub, merged)
-                merged.rewind
-                MinknowApi::AnalysisWorkflows::ProxyRequest.decode_partial(sub.rewrap(merged.to_slice))
+                if current.responds_to?(:merge_from_partial)
+                  current.merge_from_partial(sub)
+                  current
+                else
+                  merged = Proto::Wire::EmbeddedOutput.new(sub.max_field_length)
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::AnalysisWorkflows::ProxyRequest.decode_partial(sub.rewrap(merged.to_slice))
+                end
               else
                 MinknowApi::AnalysisWorkflows::ProxyRequest.decode_partial(sub)
               end
@@ -1483,11 +1643,16 @@ module MinknowApi
           when {7, Proto::WireType::LENGTH_DELIMITED}
             msg.analysis_workflow_request = reader.read_embedded(7, wt) do |sub|
               if current = msg.analysis_workflow_request
-                merged = IO::Memory.new
-                current.encode_partial(merged)
-                IO.copy(sub, merged)
-                merged.rewind
-                MinknowApi::AnalysisWorkflows::AnalysisWorkflowRequest.decode_partial(sub.rewrap(merged.to_slice))
+                if current.responds_to?(:merge_from_partial)
+                  current.merge_from_partial(sub)
+                  current
+                else
+                  merged = Proto::Wire::EmbeddedOutput.new(sub.max_field_length)
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  MinknowApi::AnalysisWorkflows::AnalysisWorkflowRequest.decode_partial(sub.rewrap(merged.to_slice))
+                end
               else
                 MinknowApi::AnalysisWorkflows::AnalysisWorkflowRequest.decode_partial(sub)
               end
@@ -1496,17 +1661,17 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
-        msg
+        nil
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg.validate_required_deep!
         msg
       end
 
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         if start_request_case == StartRequestCase::START_BASECALLING_REQUEST
           if _v = start_basecalling_request
             w.write_embedded(2) { |sub| _v.encode_partial(sub) }
@@ -1540,9 +1705,9 @@ module MinknowApi
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
         validate_required_deep!
-        encode_partial(io)
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -1563,9 +1728,15 @@ module MinknowApi
 
       property id : String = ""
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -1576,16 +1747,16 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
+        nil
+      end
+
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
-        msg
-      end
-
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         if !id.empty?
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(id)
@@ -1593,8 +1764,8 @@ module MinknowApi
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
-        encode_partial(io)
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -1609,9 +1780,15 @@ module MinknowApi
 
       property id : String = ""
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -1622,16 +1799,16 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
+        nil
+      end
+
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
-        msg
-      end
-
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         if !id.empty?
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(id)
@@ -1639,8 +1816,8 @@ module MinknowApi
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
-        encode_partial(io)
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -1653,9 +1830,15 @@ module MinknowApi
     class CancelResponse
       include Proto::Message
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -1663,21 +1846,21 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
+        nil
+      end
+
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
-        msg
-      end
-
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
-        encode_partial(io)
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -1803,9 +1986,15 @@ module MinknowApi
         estimated_end_time.try &.validate_required_deep!
       end
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -1815,11 +2004,16 @@ module MinknowApi
           when {2, Proto::WireType::LENGTH_DELIMITED}
             msg.start_basecalling_request = reader.read_embedded(2, wt) do |sub|
               if current = msg.start_basecalling_request
-                merged = IO::Memory.new
-                current.encode_partial(merged)
-                IO.copy(sub, merged)
-                merged.rewind
-                StartBasecallingRequest.decode_partial(sub.rewrap(merged.to_slice))
+                if current.responds_to?(:merge_from_partial)
+                  current.merge_from_partial(sub)
+                  current
+                else
+                  merged = Proto::Wire::EmbeddedOutput.new(sub.max_field_length)
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  StartBasecallingRequest.decode_partial(sub.rewrap(merged.to_slice))
+                end
               else
                 StartBasecallingRequest.decode_partial(sub)
               end
@@ -1827,11 +2021,16 @@ module MinknowApi
           when {11, Proto::WireType::LENGTH_DELIMITED}
             msg.start_barcoding_request = reader.read_embedded(11, wt) do |sub|
               if current = msg.start_barcoding_request
-                merged = IO::Memory.new
-                current.encode_partial(merged)
-                IO.copy(sub, merged)
-                merged.rewind
-                StartBarcodingRequest.decode_partial(sub.rewrap(merged.to_slice))
+                if current.responds_to?(:merge_from_partial)
+                  current.merge_from_partial(sub)
+                  current
+                else
+                  merged = Proto::Wire::EmbeddedOutput.new(sub.max_field_length)
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  StartBarcodingRequest.decode_partial(sub.rewrap(merged.to_slice))
+                end
               else
                 StartBarcodingRequest.decode_partial(sub)
               end
@@ -1839,11 +2038,16 @@ module MinknowApi
           when {12, Proto::WireType::LENGTH_DELIMITED}
             msg.start_alignment_request = reader.read_embedded(12, wt) do |sub|
               if current = msg.start_alignment_request
-                merged = IO::Memory.new
-                current.encode_partial(merged)
-                IO.copy(sub, merged)
-                merged.rewind
-                StartAlignmentRequest.decode_partial(sub.rewrap(merged.to_slice))
+                if current.responds_to?(:merge_from_partial)
+                  current.merge_from_partial(sub)
+                  current
+                else
+                  merged = Proto::Wire::EmbeddedOutput.new(sub.max_field_length)
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  StartAlignmentRequest.decode_partial(sub.rewrap(merged.to_slice))
+                end
               else
                 StartAlignmentRequest.decode_partial(sub)
               end
@@ -1851,11 +2055,16 @@ module MinknowApi
           when {13, Proto::WireType::LENGTH_DELIMITED}
             msg.start_post_processing_protocol_request = reader.read_embedded(13, wt) do |sub|
               if current = msg.start_post_processing_protocol_request
-                merged = IO::Memory.new
-                current.encode_partial(merged)
-                IO.copy(sub, merged)
-                merged.rewind
-                StartPostProcessingProtocolRequest.decode_partial(sub.rewrap(merged.to_slice))
+                if current.responds_to?(:merge_from_partial)
+                  current.merge_from_partial(sub)
+                  current
+                else
+                  merged = Proto::Wire::EmbeddedOutput.new(sub.max_field_length)
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  StartPostProcessingProtocolRequest.decode_partial(sub.rewrap(merged.to_slice))
+                end
               else
                 StartPostProcessingProtocolRequest.decode_partial(sub)
               end
@@ -1880,11 +2089,16 @@ module MinknowApi
           when {8, Proto::WireType::LENGTH_DELIMITED}
             msg.start_time = reader.read_embedded(8, wt) do |sub|
               if current = msg.start_time
-                merged = IO::Memory.new
-                current.encode_partial(merged)
-                IO.copy(sub, merged)
-                merged.rewind
-                Google::Protobuf::Timestamp.decode_partial(sub.rewrap(merged.to_slice))
+                if current.responds_to?(:merge_from_partial)
+                  current.merge_from_partial(sub)
+                  current
+                else
+                  merged = Proto::Wire::EmbeddedOutput.new(sub.max_field_length)
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::Timestamp.decode_partial(sub.rewrap(merged.to_slice))
+                end
               else
                 Google::Protobuf::Timestamp.decode_partial(sub)
               end
@@ -1892,11 +2106,16 @@ module MinknowApi
           when {9, Proto::WireType::LENGTH_DELIMITED}
             msg.end_time = reader.read_embedded(9, wt) do |sub|
               if current = msg.end_time
-                merged = IO::Memory.new
-                current.encode_partial(merged)
-                IO.copy(sub, merged)
-                merged.rewind
-                Google::Protobuf::Timestamp.decode_partial(sub.rewrap(merged.to_slice))
+                if current.responds_to?(:merge_from_partial)
+                  current.merge_from_partial(sub)
+                  current
+                else
+                  merged = Proto::Wire::EmbeddedOutput.new(sub.max_field_length)
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::Timestamp.decode_partial(sub.rewrap(merged.to_slice))
+                end
               else
                 Google::Protobuf::Timestamp.decode_partial(sub)
               end
@@ -1904,11 +2123,16 @@ module MinknowApi
           when {10, Proto::WireType::LENGTH_DELIMITED}
             msg.estimated_end_time = reader.read_embedded(10, wt) do |sub|
               if current = msg.estimated_end_time
-                merged = IO::Memory.new
-                current.encode_partial(merged)
-                IO.copy(sub, merged)
-                merged.rewind
-                Google::Protobuf::Timestamp.decode_partial(sub.rewrap(merged.to_slice))
+                if current.responds_to?(:merge_from_partial)
+                  current.merge_from_partial(sub)
+                  current
+                else
+                  merged = Proto::Wire::EmbeddedOutput.new(sub.max_field_length)
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  Google::Protobuf::Timestamp.decode_partial(sub.rewrap(merged.to_slice))
+                end
               else
                 Google::Protobuf::Timestamp.decode_partial(sub)
               end
@@ -1917,17 +2141,17 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
-        msg
+        nil
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg.validate_required_deep!
         msg
       end
 
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         if !id.empty?
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(id)
@@ -1984,9 +2208,9 @@ module MinknowApi
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
         validate_required_deep!
-        encode_partial(io)
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -2017,9 +2241,15 @@ module MinknowApi
 
         property ids : Array(String) = [] of String
 
-        def self.decode_partial(io : IO) : self
+        def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
           msg = new
-          reader = Proto::Wire::Reader.new(io)
+          msg.merge_from_partial(io, options: _proto_options)
+          msg
+        end
+
+        def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+          msg = self
+          reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
           while tag = reader.read_tag
             fn, wt = tag
             case {fn, wt}
@@ -2030,16 +2260,16 @@ module MinknowApi
               msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
             end
           end
+          nil
+        end
+
+        def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+          msg = decode_partial(io, options: _proto_options)
           msg
         end
 
-        def self.decode(io : IO) : self
-          msg = decode_partial(io)
-          msg
-        end
-
-        def encode_partial(io : IO) : Nil
-          w = Proto::Wire::Writer.new(io)
+        def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+          w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
           ids.each do |item|
             w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
             w.write_string(item)
@@ -2047,8 +2277,8 @@ module MinknowApi
           write_unknown_fields(w)
         end
 
-        def encode(io : IO) : Nil
-          encode_partial(io)
+        def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+          encode_partial(io, options: _proto_options)
         end
 
         def ==(other : self) : Bool
@@ -2111,9 +2341,15 @@ module MinknowApi
         list.try &.validate_required_deep!
       end
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -2128,11 +2364,16 @@ module MinknowApi
           when {3, Proto::WireType::LENGTH_DELIMITED}
             msg.list = reader.read_embedded(3, wt) do |sub|
               if current = msg.list
-                merged = IO::Memory.new
-                current.encode_partial(merged)
-                IO.copy(sub, merged)
-                merged.rewind
-                GetInfoRequest::IdList.decode_partial(sub.rewrap(merged.to_slice))
+                if current.responds_to?(:merge_from_partial)
+                  current.merge_from_partial(sub)
+                  current
+                else
+                  merged = Proto::Wire::EmbeddedOutput.new(sub.max_field_length)
+                  current.encode_partial(merged)
+                  IO.copy(sub, merged)
+                  merged.rewind
+                  GetInfoRequest::IdList.decode_partial(sub.rewrap(merged.to_slice))
+                end
               else
                 GetInfoRequest::IdList.decode_partial(sub)
               end
@@ -2141,17 +2382,17 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
-        msg
+        nil
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg.validate_required_deep!
         msg
       end
 
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         if selection_case == SelectionCase::PRESET
           w.write_tag(1, Proto::WireType::VARINT)
           w.write_int32(preset.raw)
@@ -2168,9 +2409,9 @@ module MinknowApi
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
         validate_required_deep!
-        encode_partial(io)
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -2198,9 +2439,15 @@ module MinknowApi
         end
       end
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -2210,26 +2457,26 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
-        msg
+        nil
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg.validate_required_deep!
         msg
       end
 
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         runs.each do |item|
           w.write_embedded(1) { |sub| item.encode_partial(sub) }
         end
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
         validate_required_deep!
-        encode_partial(io)
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -2244,9 +2491,15 @@ module MinknowApi
 
       property ids : Array(String) = [] of String
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -2257,16 +2510,16 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
+        nil
+      end
+
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
-        msg
-      end
-
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         ids.each do |item|
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(item)
@@ -2274,8 +2527,8 @@ module MinknowApi
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
-        encode_partial(io)
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -2288,9 +2541,15 @@ module MinknowApi
     class ClearInfoResponse
       include Proto::Message
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -2298,21 +2557,21 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
+        nil
+      end
+
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
-        msg
-      end
-
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
-        encode_partial(io)
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -2330,9 +2589,15 @@ module MinknowApi
 
       # ameba:enable Naming/QueryBoolMethods
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -2346,16 +2611,16 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
+        nil
+      end
+
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
-        msg
-      end
-
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         if !id.empty?
           w.write_tag(2, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(id)
@@ -2367,8 +2632,8 @@ module MinknowApi
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
-        encode_partial(io)
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -2394,9 +2659,15 @@ module MinknowApi
         end
       end
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -2406,26 +2677,26 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
-        msg
+        nil
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg.validate_required_deep!
         msg
       end
 
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         runs.each do |item|
           w.write_embedded(1) { |sub| item.encode_partial(sub) }
         end
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
         validate_required_deep!
-        encode_partial(io)
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -2441,9 +2712,15 @@ module MinknowApi
       property input_alignment_reference : String = ""
       property output_alignment_index : String = ""
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -2457,16 +2734,16 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
+        nil
+      end
+
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
-        msg
-      end
-
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         if !input_alignment_reference.empty?
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(input_alignment_reference)
@@ -2478,8 +2755,8 @@ module MinknowApi
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
-        encode_partial(io)
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -2493,9 +2770,15 @@ module MinknowApi
     class MakeAlignmentIndexResponse
       include Proto::Message
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -2503,21 +2786,21 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
+        nil
+      end
+
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
-        msg
-      end
-
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
-        encode_partial(io)
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -2529,9 +2812,15 @@ module MinknowApi
     class ListPostProcessingProtocolsRequest
       include Proto::Message
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -2539,21 +2828,21 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
+        nil
+      end
+
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
-        msg
-      end
-
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
-        encode_partial(io)
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -2571,9 +2860,15 @@ module MinknowApi
       property description : String = ""
       property provider : Proto::OpenEnum(PostProcessingProvider) = Proto::OpenEnum(PostProcessingProvider).new(0)
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -2598,16 +2893,16 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
+        nil
+      end
+
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
-        msg
-      end
-
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         if !identifier.empty?
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(identifier)
@@ -2631,8 +2926,8 @@ module MinknowApi
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
-        encode_partial(io)
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -2661,9 +2956,15 @@ module MinknowApi
         end
       end
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -2673,26 +2974,26 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
-        msg
+        nil
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg.validate_required_deep!
         msg
       end
 
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         protocols.each do |item|
           w.write_embedded(1) { |sub| item.encode_partial(sub) }
         end
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
         validate_required_deep!
-        encode_partial(io)
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -2707,9 +3008,15 @@ module MinknowApi
 
       property identifier : String = ""
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -2720,16 +3027,16 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
+        nil
+      end
+
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
-        msg
-      end
-
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         if !identifier.empty?
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(identifier)
@@ -2737,8 +3044,8 @@ module MinknowApi
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
-        encode_partial(io)
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -2772,9 +3079,15 @@ module MinknowApi
         end
       end
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -2793,17 +3106,17 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
-        msg
+        nil
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg.validate_required_deep!
         msg
       end
 
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         if requires_fast5_input
           w.write_tag(1, Proto::WireType::VARINT)
           w.write_bool(requires_fast5_input)
@@ -2822,9 +3135,9 @@ module MinknowApi
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
         validate_required_deep!
-        encode_partial(io)
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -2843,9 +3156,15 @@ module MinknowApi
       property id : String = ""
       property progress : Float32 = 0.0_f32
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -2859,16 +3178,16 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
+        nil
+      end
+
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
-        msg
-      end
-
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         if !id.empty?
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(id)
@@ -2880,8 +3199,8 @@ module MinknowApi
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
-        encode_partial(io)
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -2895,9 +3214,15 @@ module MinknowApi
     class UpdateProgressResponse
       include Proto::Message
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -2905,21 +3230,21 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
+        nil
+      end
+
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
-        msg
-      end
-
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
-        encode_partial(io)
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -2933,9 +3258,15 @@ module MinknowApi
 
       property ping_data : String = ""
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -2946,16 +3277,16 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
+        nil
+      end
+
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
-        msg
-      end
-
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         if !ping_data.empty?
           w.write_tag(1, Proto::WireType::LENGTH_DELIMITED)
           w.write_string(ping_data)
@@ -2963,8 +3294,8 @@ module MinknowApi
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
-        encode_partial(io)
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool
@@ -2977,9 +3308,15 @@ module MinknowApi
     class SendPingResponse
       include Proto::Message
 
-      def self.decode_partial(io : IO) : self
+      def self.decode_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
         msg = new
-        reader = Proto::Wire::Reader.new(io)
+        msg.merge_from_partial(io, options: _proto_options)
+        msg
+      end
+
+      def merge_from_partial(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : Nil
+        msg = self
+        reader = Proto::Wire::Reader.new(io, max_message_size: _proto_options.max_message_size, max_field_length: _proto_options.max_field_length, max_recursion_depth: _proto_options.max_recursion_depth)
         while tag = reader.read_tag
           fn, wt = tag
           case {fn, wt}
@@ -2987,21 +3324,21 @@ module MinknowApi
             msg.capture_unknown_field(reader.read_unknown_field(fn, wt))
           end
         end
+        nil
+      end
+
+      def self.decode(io : IO, *, options _proto_options : Proto::DecodeOptions = Proto::DecodeOptions.new) : self
+        msg = decode_partial(io, options: _proto_options)
         msg
       end
 
-      def self.decode(io : IO) : self
-        msg = decode_partial(io)
-        msg
-      end
-
-      def encode_partial(io : IO) : Nil
-        w = Proto::Wire::Writer.new(io)
+      def encode_partial(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        w = Proto::Wire::Writer.new(io, max_field_length: _proto_options.max_field_length)
         write_unknown_fields(w)
       end
 
-      def encode(io : IO) : Nil
-        encode_partial(io)
+      def encode(io : IO, *, options _proto_options : Proto::EncodeOptions = Proto::EncodeOptions.new) : Nil
+        encode_partial(io, options: _proto_options)
       end
 
       def ==(other : self) : Bool

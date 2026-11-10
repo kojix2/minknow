@@ -343,6 +343,11 @@ module MinknowApi::Notifications
         GRPC::ProtoMarshaller(T).new
       end
 
+      protected def marshaller_for(type : T.class, ctx : GRPC::ServerContext) : GRPC::Marshaller(T) forall T
+        options = ctx.protobuf_options
+        options ? GRPC::ProtoMarshaller(T).new(options: options) : marshaller_for(type)
+      end
+
       abstract def stream_notifications(request : ::MinknowApi::Notifications::StreamNotificationsRequest, writer : GRPC::ResponseStream(::MinknowApi::Notifications::StreamNotificationsResponse), ctx : GRPC::ServerContext) : GRPC::Status
       abstract def mark_notifications_as_read(request : ::MinknowApi::Notifications::MarkNotificationsAsReadRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Notifications::MarkNotificationsAsReadResponse
       abstract def create_notification(request : ::MinknowApi::Notifications::CreateNotificationRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Notifications::CreateNotificationResponse
@@ -350,14 +355,14 @@ module MinknowApi::Notifications
       def dispatch(method : String, body : Bytes, ctx : GRPC::ServerContext) : {Bytes, GRPC::Status}
         case method
         when "mark_notifications_as_read"
-          req_marshaller = marshaller_for(::MinknowApi::Notifications::MarkNotificationsAsReadRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Notifications::MarkNotificationsAsReadResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Notifications::MarkNotificationsAsReadRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Notifications::MarkNotificationsAsReadResponse, ctx)
           req = req_marshaller.decode(body)
           resp = mark_notifications_as_read(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "create_notification"
-          req_marshaller = marshaller_for(::MinknowApi::Notifications::CreateNotificationRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Notifications::CreateNotificationResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Notifications::CreateNotificationRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Notifications::CreateNotificationResponse, ctx)
           req = req_marshaller.decode(body)
           resp = create_notification(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
@@ -382,8 +387,8 @@ module MinknowApi::Notifications
                                  writer : GRPC::RawResponseStream) : GRPC::Status
         case method
         when "stream_notifications"
-          req_marshaller = marshaller_for(::MinknowApi::Notifications::StreamNotificationsRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Notifications::StreamNotificationsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Notifications::StreamNotificationsRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Notifications::StreamNotificationsResponse, ctx)
           typed_writer = GRPC::ResponseStream(::MinknowApi::Notifications::StreamNotificationsResponse).new(writer, res_marshaller)
           stream_notifications(req_marshaller.decode(body), typed_writer, ctx)
         else
@@ -407,9 +412,14 @@ module MinknowApi::Notifications
         GRPC::ProtoMarshaller(T).new
       end
 
+      protected def marshaller_for(type : T.class, ctx : GRPC::ClientContext) : GRPC::Marshaller(T) forall T
+        options = ctx.protobuf_options
+        options ? GRPC::ProtoMarshaller(T).new(options: options) : marshaller_for(type)
+      end
+
       def stream_notifications(request : ::MinknowApi::Notifications::StreamNotificationsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Notifications::StreamNotificationsResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Notifications::StreamNotificationsRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Notifications::StreamNotificationsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Notifications::StreamNotificationsRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Notifications::StreamNotificationsResponse, ctx)
         raw = @channel.open_server_stream(FULL_NAME, "stream_notifications", req_marshaller.encode(request), ctx)
         GRPC::ServerStream(::MinknowApi::Notifications::StreamNotificationsResponse).new(raw, res_marshaller)
       end
@@ -419,8 +429,8 @@ module MinknowApi::Notifications
       end
 
       def mark_notifications_as_read_response(request : ::MinknowApi::Notifications::MarkNotificationsAsReadRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Notifications::MarkNotificationsAsReadResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Notifications::MarkNotificationsAsReadRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Notifications::MarkNotificationsAsReadResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Notifications::MarkNotificationsAsReadRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Notifications::MarkNotificationsAsReadResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "mark_notifications_as_read", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Notifications::MarkNotificationsAsReadResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -431,8 +441,8 @@ module MinknowApi::Notifications
       end
 
       def create_notification_response(request : ::MinknowApi::Notifications::CreateNotificationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Notifications::CreateNotificationResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Notifications::CreateNotificationRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Notifications::CreateNotificationResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Notifications::CreateNotificationRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Notifications::CreateNotificationResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "create_notification", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Notifications::CreateNotificationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)

@@ -5089,6 +5089,11 @@ module MinknowApi::Protocol
         GRPC::ProtoMarshaller(T).new
       end
 
+      protected def marshaller_for(type : T.class, ctx : GRPC::ServerContext) : GRPC::Marshaller(T) forall T
+        options = ctx.protobuf_options
+        options ? GRPC::ProtoMarshaller(T).new(options: options) : marshaller_for(type)
+      end
+
       abstract def start_protocol(request : ::MinknowApi::Protocol::StartProtocolRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Protocol::StartProtocolResponse
       abstract def stop_protocol(request : ::MinknowApi::Protocol::StopProtocolRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Protocol::StopProtocolResponse
       abstract def pause_protocol(request : ::MinknowApi::Protocol::PauseProtocolRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Protocol::PauseProtocolResponse
@@ -5120,140 +5125,140 @@ module MinknowApi::Protocol
       def dispatch(method : String, body : Bytes, ctx : GRPC::ServerContext) : {Bytes, GRPC::Status}
         case method
         when "start_protocol"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::StartProtocolRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::StartProtocolResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::StartProtocolRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::StartProtocolResponse, ctx)
           req = req_marshaller.decode(body)
           resp = start_protocol(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "stop_protocol"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::StopProtocolRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::StopProtocolResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::StopProtocolRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::StopProtocolResponse, ctx)
           req = req_marshaller.decode(body)
           resp = stop_protocol(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "pause_protocol"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::PauseProtocolRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::PauseProtocolResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::PauseProtocolRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::PauseProtocolResponse, ctx)
           req = req_marshaller.decode(body)
           resp = pause_protocol(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "resume_protocol"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::ResumeProtocolRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::ResumeProtocolResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::ResumeProtocolRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::ResumeProtocolResponse, ctx)
           req = req_marshaller.decode(body)
           resp = resume_protocol(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "trigger_mux_scan"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::TriggerMuxScanRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::TriggerMuxScanResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::TriggerMuxScanRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::TriggerMuxScanResponse, ctx)
           req = req_marshaller.decode(body)
           resp = trigger_mux_scan(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "wait_for_finished"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::WaitForFinishedRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::ProtocolRunInfo)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::WaitForFinishedRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::ProtocolRunInfo, ctx)
           req = req_marshaller.decode(body)
           resp = wait_for_finished(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_run_info"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::GetRunInfoRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::ProtocolRunInfo)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::GetRunInfoRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::ProtocolRunInfo, ctx)
           req = req_marshaller.decode(body)
           resp = get_run_info(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "list_protocol_runs"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::ListProtocolRunsRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::ListProtocolRunsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::ListProtocolRunsRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::ListProtocolRunsResponse, ctx)
           req = req_marshaller.decode(body)
           resp = list_protocol_runs(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_current_protocol_run"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::GetCurrentProtocolRunRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::ProtocolRunInfo)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::GetCurrentProtocolRunRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::ProtocolRunInfo, ctx)
           req = req_marshaller.decode(body)
           resp = get_current_protocol_run(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "list_protocols"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::ListProtocolsRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::ListProtocolsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::ListProtocolsRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::ListProtocolsResponse, ctx)
           req = req_marshaller.decode(body)
           resp = list_protocols(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_context_info"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::GetContextInfoRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::GetContextInfoResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::GetContextInfoRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::GetContextInfoResponse, ctx)
           req = req_marshaller.decode(body)
           resp = get_context_info(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_context_info"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::SetContextInfoRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::SetContextInfoResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::SetContextInfoRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::SetContextInfoResponse, ctx)
           req = req_marshaller.decode(body)
           resp = set_context_info(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_protocol_purpose"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::GetProtocolPurposeRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::GetProtocolPurposeResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::GetProtocolPurposeRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::GetProtocolPurposeResponse, ctx)
           req = req_marshaller.decode(body)
           resp = get_protocol_purpose(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_protocol_purpose"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::SetProtocolPurposeRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::SetProtocolPurposeResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::SetProtocolPurposeRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::SetProtocolPurposeResponse, ctx)
           req = req_marshaller.decode(body)
           resp = set_protocol_purpose(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "list_protocol_group_ids"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::ListProtocolGroupIdsRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::ListProtocolGroupIdsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::ListProtocolGroupIdsRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::ListProtocolGroupIdsResponse, ctx)
           req = req_marshaller.decode(body)
           resp = list_protocol_group_ids(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "begin_hardware_check"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::BeginHardwareCheckRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::BeginHardwareCheckResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::BeginHardwareCheckRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::BeginHardwareCheckResponse, ctx)
           req = req_marshaller.decode(body)
           resp = begin_hardware_check(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "begin_platform_qc"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::BeginPlatformQcRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::BeginPlatformQcResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::BeginPlatformQcRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::BeginPlatformQcResponse, ctx)
           req = req_marshaller.decode(body)
           resp = begin_platform_qc(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "begin_protocol"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::BeginProtocolRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::BeginProtocolResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::BeginProtocolRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::BeginProtocolResponse, ctx)
           req = req_marshaller.decode(body)
           resp = begin_protocol(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_platform_qc_result"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::SetPlatformQcResultRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::SetPlatformQcResultResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::SetPlatformQcResultRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::SetPlatformQcResultResponse, ctx)
           req = req_marshaller.decode(body)
           resp = set_platform_qc_result(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_hardware_check_result"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::SetHardwareCheckResultRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::SetHardwareCheckResultResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::SetHardwareCheckResultRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::SetHardwareCheckResultResponse, ctx)
           req = req_marshaller.decode(body)
           resp = set_hardware_check_result(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "associate_post_processing_analysis_for_protocol"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::AssociatePostProcessingAnalysisRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::AssociatePostProcessingAnalysisResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::AssociatePostProcessingAnalysisRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::AssociatePostProcessingAnalysisResponse, ctx)
           req = req_marshaller.decode(body)
           resp = associate_post_processing_analysis_for_protocol(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "clear_protocol_history_data"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::ClearProtocolHistoryDataRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::ClearProtocolHistoryDataResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::ClearProtocolHistoryDataRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::ClearProtocolHistoryDataResponse, ctx)
           req = req_marshaller.decode(body)
           resp = clear_protocol_history_data(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_protocol_script_restartable"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::SetProtocolRestartableRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::SetProtocolRestartableResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::SetProtocolRestartableRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::SetProtocolRestartableResponse, ctx)
           req = req_marshaller.decode(body)
           resp = set_protocol_script_restartable(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
@@ -5280,18 +5285,18 @@ module MinknowApi::Protocol
                                  writer : GRPC::RawResponseStream) : GRPC::Status
         case method
         when "watch_current_protocol_run"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::WatchCurrentProtocolRunRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::ProtocolRunInfo)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::WatchCurrentProtocolRunRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::ProtocolRunInfo, ctx)
           typed_writer = GRPC::ResponseStream(::MinknowApi::Protocol::ProtocolRunInfo).new(writer, res_marshaller)
           watch_current_protocol_run(req_marshaller.decode(body), typed_writer, ctx)
         when "generate_run_report"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::GenerateRunReportRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::GenerateRunReportResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::GenerateRunReportRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::GenerateRunReportResponse, ctx)
           typed_writer = GRPC::ResponseStream(::MinknowApi::Protocol::GenerateRunReportResponse).new(writer, res_marshaller)
           generate_run_report(req_marshaller.decode(body), typed_writer, ctx)
         when "watch_clearing_historic_data"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::WatchClearingHistoricDataRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::ClearedHistoricData)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::WatchClearingHistoricDataRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::ClearedHistoricData, ctx)
           typed_writer = GRPC::ResponseStream(::MinknowApi::Protocol::ClearedHistoricData).new(writer, res_marshaller)
           watch_clearing_historic_data(req_marshaller.decode(body), typed_writer, ctx)
         else
@@ -5315,8 +5320,8 @@ module MinknowApi::Protocol
                                writer : GRPC::RawResponseStream) : GRPC::Status
         case method
         when "protocol_phase_management"
-          req_marshaller = marshaller_for(::MinknowApi::Protocol::ProtocolPhaseManagementRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Protocol::ProtocolPhaseManagementResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Protocol::ProtocolPhaseManagementRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Protocol::ProtocolPhaseManagementResponse, ctx)
           reqs = GRPC::RequestStream(::MinknowApi::Protocol::ProtocolPhaseManagementRequest).new(requests.ch, req_marshaller)
           typed_writer = GRPC::ResponseStream(::MinknowApi::Protocol::ProtocolPhaseManagementResponse).new(writer, res_marshaller)
           protocol_phase_management(reqs, typed_writer, ctx)
@@ -5341,13 +5346,18 @@ module MinknowApi::Protocol
         GRPC::ProtoMarshaller(T).new
       end
 
+      protected def marshaller_for(type : T.class, ctx : GRPC::ClientContext) : GRPC::Marshaller(T) forall T
+        options = ctx.protobuf_options
+        options ? GRPC::ProtoMarshaller(T).new(options: options) : marshaller_for(type)
+      end
+
       def start_protocol(request : ::MinknowApi::Protocol::StartProtocolRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Protocol::StartProtocolResponse
         start_protocol_response(request, ctx).ok!
       end
 
       def start_protocol_response(request : ::MinknowApi::Protocol::StartProtocolRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Protocol::StartProtocolResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::StartProtocolRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::StartProtocolResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::StartProtocolRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::StartProtocolResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "start_protocol", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Protocol::StartProtocolResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -5358,8 +5368,8 @@ module MinknowApi::Protocol
       end
 
       def stop_protocol_response(request : ::MinknowApi::Protocol::StopProtocolRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Protocol::StopProtocolResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::StopProtocolRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::StopProtocolResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::StopProtocolRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::StopProtocolResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "stop_protocol", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Protocol::StopProtocolResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -5370,8 +5380,8 @@ module MinknowApi::Protocol
       end
 
       def pause_protocol_response(request : ::MinknowApi::Protocol::PauseProtocolRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Protocol::PauseProtocolResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::PauseProtocolRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::PauseProtocolResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::PauseProtocolRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::PauseProtocolResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "pause_protocol", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Protocol::PauseProtocolResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -5382,8 +5392,8 @@ module MinknowApi::Protocol
       end
 
       def resume_protocol_response(request : ::MinknowApi::Protocol::ResumeProtocolRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Protocol::ResumeProtocolResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::ResumeProtocolRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::ResumeProtocolResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::ResumeProtocolRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::ResumeProtocolResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "resume_protocol", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Protocol::ResumeProtocolResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -5394,8 +5404,8 @@ module MinknowApi::Protocol
       end
 
       def trigger_mux_scan_response(request : ::MinknowApi::Protocol::TriggerMuxScanRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Protocol::TriggerMuxScanResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::TriggerMuxScanRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::TriggerMuxScanResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::TriggerMuxScanRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::TriggerMuxScanResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "trigger_mux_scan", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Protocol::TriggerMuxScanResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -5406,8 +5416,8 @@ module MinknowApi::Protocol
       end
 
       def wait_for_finished_response(request : ::MinknowApi::Protocol::WaitForFinishedRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Protocol::ProtocolRunInfo)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::WaitForFinishedRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::ProtocolRunInfo)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::WaitForFinishedRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::ProtocolRunInfo, ctx)
         response = @channel.unary_call(FULL_NAME, "wait_for_finished", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Protocol::ProtocolRunInfo).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -5418,8 +5428,8 @@ module MinknowApi::Protocol
       end
 
       def get_run_info_response(request : ::MinknowApi::Protocol::GetRunInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Protocol::ProtocolRunInfo)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::GetRunInfoRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::ProtocolRunInfo)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::GetRunInfoRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::ProtocolRunInfo, ctx)
         response = @channel.unary_call(FULL_NAME, "get_run_info", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Protocol::ProtocolRunInfo).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -5430,8 +5440,8 @@ module MinknowApi::Protocol
       end
 
       def list_protocol_runs_response(request : ::MinknowApi::Protocol::ListProtocolRunsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Protocol::ListProtocolRunsResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::ListProtocolRunsRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::ListProtocolRunsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::ListProtocolRunsRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::ListProtocolRunsResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "list_protocol_runs", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Protocol::ListProtocolRunsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -5442,16 +5452,16 @@ module MinknowApi::Protocol
       end
 
       def get_current_protocol_run_response(request : ::MinknowApi::Protocol::GetCurrentProtocolRunRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Protocol::ProtocolRunInfo)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::GetCurrentProtocolRunRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::ProtocolRunInfo)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::GetCurrentProtocolRunRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::ProtocolRunInfo, ctx)
         response = @channel.unary_call(FULL_NAME, "get_current_protocol_run", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Protocol::ProtocolRunInfo).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
       def watch_current_protocol_run(request : ::MinknowApi::Protocol::WatchCurrentProtocolRunRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Protocol::ProtocolRunInfo)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::WatchCurrentProtocolRunRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::ProtocolRunInfo)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::WatchCurrentProtocolRunRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::ProtocolRunInfo, ctx)
         raw = @channel.open_server_stream(FULL_NAME, "watch_current_protocol_run", req_marshaller.encode(request), ctx)
         GRPC::ServerStream(::MinknowApi::Protocol::ProtocolRunInfo).new(raw, res_marshaller)
       end
@@ -5461,8 +5471,8 @@ module MinknowApi::Protocol
       end
 
       def list_protocols_response(request : ::MinknowApi::Protocol::ListProtocolsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Protocol::ListProtocolsResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::ListProtocolsRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::ListProtocolsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::ListProtocolsRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::ListProtocolsResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "list_protocols", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Protocol::ListProtocolsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -5473,8 +5483,8 @@ module MinknowApi::Protocol
       end
 
       def get_context_info_response(request : ::MinknowApi::Protocol::GetContextInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Protocol::GetContextInfoResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::GetContextInfoRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::GetContextInfoResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::GetContextInfoRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::GetContextInfoResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "get_context_info", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Protocol::GetContextInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -5485,8 +5495,8 @@ module MinknowApi::Protocol
       end
 
       def set_context_info_response(request : ::MinknowApi::Protocol::SetContextInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Protocol::SetContextInfoResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::SetContextInfoRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::SetContextInfoResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::SetContextInfoRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::SetContextInfoResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "set_context_info", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Protocol::SetContextInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -5497,8 +5507,8 @@ module MinknowApi::Protocol
       end
 
       def get_protocol_purpose_response(request : ::MinknowApi::Protocol::GetProtocolPurposeRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Protocol::GetProtocolPurposeResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::GetProtocolPurposeRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::GetProtocolPurposeResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::GetProtocolPurposeRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::GetProtocolPurposeResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "get_protocol_purpose", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Protocol::GetProtocolPurposeResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -5509,8 +5519,8 @@ module MinknowApi::Protocol
       end
 
       def set_protocol_purpose_response(request : ::MinknowApi::Protocol::SetProtocolPurposeRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Protocol::SetProtocolPurposeResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::SetProtocolPurposeRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::SetProtocolPurposeResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::SetProtocolPurposeRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::SetProtocolPurposeResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "set_protocol_purpose", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Protocol::SetProtocolPurposeResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -5521,8 +5531,8 @@ module MinknowApi::Protocol
       end
 
       def list_protocol_group_ids_response(request : ::MinknowApi::Protocol::ListProtocolGroupIdsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Protocol::ListProtocolGroupIdsResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::ListProtocolGroupIdsRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::ListProtocolGroupIdsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::ListProtocolGroupIdsRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::ListProtocolGroupIdsResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "list_protocol_group_ids", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Protocol::ListProtocolGroupIdsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -5533,8 +5543,8 @@ module MinknowApi::Protocol
       end
 
       def begin_hardware_check_response(request : ::MinknowApi::Protocol::BeginHardwareCheckRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Protocol::BeginHardwareCheckResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::BeginHardwareCheckRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::BeginHardwareCheckResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::BeginHardwareCheckRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::BeginHardwareCheckResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "begin_hardware_check", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Protocol::BeginHardwareCheckResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -5545,8 +5555,8 @@ module MinknowApi::Protocol
       end
 
       def begin_platform_qc_response(request : ::MinknowApi::Protocol::BeginPlatformQcRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Protocol::BeginPlatformQcResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::BeginPlatformQcRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::BeginPlatformQcResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::BeginPlatformQcRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::BeginPlatformQcResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "begin_platform_qc", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Protocol::BeginPlatformQcResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -5557,8 +5567,8 @@ module MinknowApi::Protocol
       end
 
       def begin_protocol_response(request : ::MinknowApi::Protocol::BeginProtocolRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Protocol::BeginProtocolResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::BeginProtocolRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::BeginProtocolResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::BeginProtocolRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::BeginProtocolResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "begin_protocol", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Protocol::BeginProtocolResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -5569,8 +5579,8 @@ module MinknowApi::Protocol
       end
 
       def set_platform_qc_result_response(request : ::MinknowApi::Protocol::SetPlatformQcResultRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Protocol::SetPlatformQcResultResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::SetPlatformQcResultRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::SetPlatformQcResultResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::SetPlatformQcResultRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::SetPlatformQcResultResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "set_platform_qc_result", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Protocol::SetPlatformQcResultResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -5581,8 +5591,8 @@ module MinknowApi::Protocol
       end
 
       def set_hardware_check_result_response(request : ::MinknowApi::Protocol::SetHardwareCheckResultRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Protocol::SetHardwareCheckResultResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::SetHardwareCheckResultRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::SetHardwareCheckResultResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::SetHardwareCheckResultRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::SetHardwareCheckResultResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "set_hardware_check_result", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Protocol::SetHardwareCheckResultResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -5593,8 +5603,8 @@ module MinknowApi::Protocol
       end
 
       def associate_post_processing_analysis_for_protocol_response(request : ::MinknowApi::Protocol::AssociatePostProcessingAnalysisRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Protocol::AssociatePostProcessingAnalysisResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::AssociatePostProcessingAnalysisRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::AssociatePostProcessingAnalysisResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::AssociatePostProcessingAnalysisRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::AssociatePostProcessingAnalysisResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "associate_post_processing_analysis_for_protocol", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Protocol::AssociatePostProcessingAnalysisResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -5605,8 +5615,8 @@ module MinknowApi::Protocol
       end
 
       def clear_protocol_history_data_response(request : ::MinknowApi::Protocol::ClearProtocolHistoryDataRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Protocol::ClearProtocolHistoryDataResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::ClearProtocolHistoryDataRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::ClearProtocolHistoryDataResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::ClearProtocolHistoryDataRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::ClearProtocolHistoryDataResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "clear_protocol_history_data", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Protocol::ClearProtocolHistoryDataResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -5617,21 +5627,21 @@ module MinknowApi::Protocol
       # signal end-of-input and iterate the replies with #each.
       def protocol_phase_management(ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::BidiCall(::MinknowApi::Protocol::ProtocolPhaseManagementRequest, ::MinknowApi::Protocol::ProtocolPhaseManagementResponse)
         raw = @channel.open_bidi_stream_live(FULL_NAME, "protocol_phase_management", ctx)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::ProtocolPhaseManagementRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::ProtocolPhaseManagementResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::ProtocolPhaseManagementRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::ProtocolPhaseManagementResponse, ctx)
         GRPC::BidiCall(::MinknowApi::Protocol::ProtocolPhaseManagementRequest, ::MinknowApi::Protocol::ProtocolPhaseManagementResponse).new(raw, req_marshaller, res_marshaller)
       end
 
       def generate_run_report(request : ::MinknowApi::Protocol::GenerateRunReportRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Protocol::GenerateRunReportResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::GenerateRunReportRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::GenerateRunReportResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::GenerateRunReportRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::GenerateRunReportResponse, ctx)
         raw = @channel.open_server_stream(FULL_NAME, "generate_run_report", req_marshaller.encode(request), ctx)
         GRPC::ServerStream(::MinknowApi::Protocol::GenerateRunReportResponse).new(raw, res_marshaller)
       end
 
       def watch_clearing_historic_data(request : ::MinknowApi::Protocol::WatchClearingHistoricDataRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Protocol::ClearedHistoricData)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::WatchClearingHistoricDataRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::ClearedHistoricData)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::WatchClearingHistoricDataRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::ClearedHistoricData, ctx)
         raw = @channel.open_server_stream(FULL_NAME, "watch_clearing_historic_data", req_marshaller.encode(request), ctx)
         GRPC::ServerStream(::MinknowApi::Protocol::ClearedHistoricData).new(raw, res_marshaller)
       end
@@ -5641,8 +5651,8 @@ module MinknowApi::Protocol
       end
 
       def set_protocol_script_restartable_response(request : ::MinknowApi::Protocol::SetProtocolRestartableRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Protocol::SetProtocolRestartableResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Protocol::SetProtocolRestartableRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Protocol::SetProtocolRestartableResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Protocol::SetProtocolRestartableRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Protocol::SetProtocolRestartableResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "set_protocol_script_restartable", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Protocol::SetProtocolRestartableResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)

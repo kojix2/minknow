@@ -379,6 +379,11 @@ module MinknowApi::Debug
         GRPC::ProtoMarshaller(T).new
       end
 
+      protected def marshaller_for(type : T.class, ctx : GRPC::ServerContext) : GRPC::Marshaller(T) forall T
+        options = ctx.protobuf_options
+        options ? GRPC::ProtoMarshaller(T).new(options: options) : marshaller_for(type)
+      end
+
       abstract def get_basecall_clients_states(request : ::MinknowApi::Debug::GetBasecallClientState, ctx : GRPC::ServerContext) : ::MinknowApi::Debug::GetBasecallClientResponse
       abstract def get_basecaller_server_state(request : ::MinknowApi::Debug::GetBasecallServerState, ctx : GRPC::ServerContext) : ::MinknowApi::Debug::GetBasecallServerResponse
       abstract def disconnect_flow_cell(request : ::MinknowApi::Debug::DisconnectFlowCellRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Debug::DisconnectFlowCellResponse
@@ -388,32 +393,32 @@ module MinknowApi::Debug
       def dispatch(method : String, body : Bytes, ctx : GRPC::ServerContext) : {Bytes, GRPC::Status}
         case method
         when "get_basecall_clients_states"
-          req_marshaller = marshaller_for(::MinknowApi::Debug::GetBasecallClientState)
-          res_marshaller = marshaller_for(::MinknowApi::Debug::GetBasecallClientResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Debug::GetBasecallClientState, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Debug::GetBasecallClientResponse, ctx)
           req = req_marshaller.decode(body)
           resp = get_basecall_clients_states(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_basecaller_server_state"
-          req_marshaller = marshaller_for(::MinknowApi::Debug::GetBasecallServerState)
-          res_marshaller = marshaller_for(::MinknowApi::Debug::GetBasecallServerResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Debug::GetBasecallServerState, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Debug::GetBasecallServerResponse, ctx)
           req = req_marshaller.decode(body)
           resp = get_basecaller_server_state(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "disconnect_flow_cell"
-          req_marshaller = marshaller_for(::MinknowApi::Debug::DisconnectFlowCellRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Debug::DisconnectFlowCellResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Debug::DisconnectFlowCellRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Debug::DisconnectFlowCellResponse, ctx)
           req = req_marshaller.decode(body)
           resp = disconnect_flow_cell(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "connect_flow_cell"
-          req_marshaller = marshaller_for(::MinknowApi::Debug::ConnectFlowCellRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Debug::ConnectFlowCellResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Debug::ConnectFlowCellRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Debug::ConnectFlowCellResponse, ctx)
           req = req_marshaller.decode(body)
           resp = connect_flow_cell(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "simulate_frame_loss"
-          req_marshaller = marshaller_for(::MinknowApi::Debug::SimulateFrameLossRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Debug::SimulateFrameLossResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Debug::SimulateFrameLossRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Debug::SimulateFrameLossResponse, ctx)
           req = req_marshaller.decode(body)
           resp = simulate_frame_loss(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
@@ -438,13 +443,18 @@ module MinknowApi::Debug
         GRPC::ProtoMarshaller(T).new
       end
 
+      protected def marshaller_for(type : T.class, ctx : GRPC::ClientContext) : GRPC::Marshaller(T) forall T
+        options = ctx.protobuf_options
+        options ? GRPC::ProtoMarshaller(T).new(options: options) : marshaller_for(type)
+      end
+
       def get_basecall_clients_states(request : ::MinknowApi::Debug::GetBasecallClientState, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Debug::GetBasecallClientResponse
         get_basecall_clients_states_response(request, ctx).ok!
       end
 
       def get_basecall_clients_states_response(request : ::MinknowApi::Debug::GetBasecallClientState, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Debug::GetBasecallClientResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Debug::GetBasecallClientState)
-        res_marshaller = marshaller_for(::MinknowApi::Debug::GetBasecallClientResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Debug::GetBasecallClientState, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Debug::GetBasecallClientResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "get_basecall_clients_states", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Debug::GetBasecallClientResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -455,8 +465,8 @@ module MinknowApi::Debug
       end
 
       def get_basecaller_server_state_response(request : ::MinknowApi::Debug::GetBasecallServerState, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Debug::GetBasecallServerResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Debug::GetBasecallServerState)
-        res_marshaller = marshaller_for(::MinknowApi::Debug::GetBasecallServerResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Debug::GetBasecallServerState, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Debug::GetBasecallServerResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "get_basecaller_server_state", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Debug::GetBasecallServerResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -467,8 +477,8 @@ module MinknowApi::Debug
       end
 
       def disconnect_flow_cell_response(request : ::MinknowApi::Debug::DisconnectFlowCellRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Debug::DisconnectFlowCellResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Debug::DisconnectFlowCellRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Debug::DisconnectFlowCellResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Debug::DisconnectFlowCellRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Debug::DisconnectFlowCellResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "disconnect_flow_cell", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Debug::DisconnectFlowCellResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -479,8 +489,8 @@ module MinknowApi::Debug
       end
 
       def connect_flow_cell_response(request : ::MinknowApi::Debug::ConnectFlowCellRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Debug::ConnectFlowCellResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Debug::ConnectFlowCellRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Debug::ConnectFlowCellResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Debug::ConnectFlowCellRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Debug::ConnectFlowCellResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "connect_flow_cell", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Debug::ConnectFlowCellResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -491,8 +501,8 @@ module MinknowApi::Debug
       end
 
       def simulate_frame_loss_response(request : ::MinknowApi::Debug::SimulateFrameLossRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Debug::SimulateFrameLossResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Debug::SimulateFrameLossRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Debug::SimulateFrameLossResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Debug::SimulateFrameLossRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Debug::SimulateFrameLossResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "simulate_frame_loss", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Debug::SimulateFrameLossResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)

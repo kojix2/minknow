@@ -1912,6 +1912,11 @@ module MinknowApi::Basecaller
         GRPC::ProtoMarshaller(T).new
       end
 
+      protected def marshaller_for(type : T.class, ctx : GRPC::ServerContext) : GRPC::Marshaller(T) forall T
+        options = ctx.protobuf_options
+        options ? GRPC::ProtoMarshaller(T).new(options: options) : marshaller_for(type)
+      end
+
       abstract def list_configs_by_kit(request : ::MinknowApi::Basecaller::ListConfigsByKitRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Basecaller::ListConfigsByKitResponse
       abstract def start_basecalling(request : ::MinknowApi::Basecaller::StartBasecallingRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Basecaller::StartBasecallingResponse
       abstract def start_barcoding(request : ::MinknowApi::Basecaller::StartBarcodingRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Basecaller::StartBarcodingResponse
@@ -1930,74 +1935,74 @@ module MinknowApi::Basecaller
       def dispatch(method : String, body : Bytes, ctx : GRPC::ServerContext) : {Bytes, GRPC::Status}
         case method
         when "list_configs_by_kit"
-          req_marshaller = marshaller_for(::MinknowApi::Basecaller::ListConfigsByKitRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Basecaller::ListConfigsByKitResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Basecaller::ListConfigsByKitRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Basecaller::ListConfigsByKitResponse, ctx)
           req = req_marshaller.decode(body)
           resp = list_configs_by_kit(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "start_basecalling"
-          req_marshaller = marshaller_for(::MinknowApi::Basecaller::StartBasecallingRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Basecaller::StartBasecallingResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Basecaller::StartBasecallingRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Basecaller::StartBasecallingResponse, ctx)
           req = req_marshaller.decode(body)
           resp = start_basecalling(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "start_barcoding"
-          req_marshaller = marshaller_for(::MinknowApi::Basecaller::StartBarcodingRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Basecaller::StartBarcodingResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Basecaller::StartBarcodingRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Basecaller::StartBarcodingResponse, ctx)
           req = req_marshaller.decode(body)
           resp = start_barcoding(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "start_post_processing_protocol"
-          req_marshaller = marshaller_for(::MinknowApi::Basecaller::StartPostProcessingProtocolRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Basecaller::StartPostProcessingProtocolResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Basecaller::StartPostProcessingProtocolRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Basecaller::StartPostProcessingProtocolResponse, ctx)
           req = req_marshaller.decode(body)
           resp = start_post_processing_protocol(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "start_alignment"
-          req_marshaller = marshaller_for(::MinknowApi::Basecaller::StartAlignmentRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Basecaller::StartAlignmentResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Basecaller::StartAlignmentRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Basecaller::StartAlignmentResponse, ctx)
           req = req_marshaller.decode(body)
           resp = start_alignment(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "cancel"
-          req_marshaller = marshaller_for(::MinknowApi::Basecaller::CancelRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Basecaller::CancelResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Basecaller::CancelRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Basecaller::CancelResponse, ctx)
           req = req_marshaller.decode(body)
           resp = cancel(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "clear_info"
-          req_marshaller = marshaller_for(::MinknowApi::Basecaller::ClearInfoRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Basecaller::ClearInfoResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Basecaller::ClearInfoRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Basecaller::ClearInfoResponse, ctx)
           req = req_marshaller.decode(body)
           resp = clear_info(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "make_alignment_index"
-          req_marshaller = marshaller_for(::MinknowApi::Basecaller::MakeAlignmentIndexRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Basecaller::MakeAlignmentIndexResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Basecaller::MakeAlignmentIndexRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Basecaller::MakeAlignmentIndexResponse, ctx)
           req = req_marshaller.decode(body)
           resp = make_alignment_index(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "list_post_processing_protocols"
-          req_marshaller = marshaller_for(::MinknowApi::Basecaller::ListPostProcessingProtocolsRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Basecaller::ListPostProcessingProtocolsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Basecaller::ListPostProcessingProtocolsRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Basecaller::ListPostProcessingProtocolsResponse, ctx)
           req = req_marshaller.decode(body)
           resp = list_post_processing_protocols(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "list_settings_for_post_processing_protocol"
-          req_marshaller = marshaller_for(::MinknowApi::Basecaller::ListSettingsForPostProcessingProtocolRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Basecaller::ListSettingsForPostProcessingProtocolResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Basecaller::ListSettingsForPostProcessingProtocolRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Basecaller::ListSettingsForPostProcessingProtocolResponse, ctx)
           req = req_marshaller.decode(body)
           resp = list_settings_for_post_processing_protocol(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "update_post_processing_protocol_progress"
-          req_marshaller = marshaller_for(::MinknowApi::Basecaller::UpdateProgressRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Basecaller::UpdateProgressResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Basecaller::UpdateProgressRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Basecaller::UpdateProgressResponse, ctx)
           req = req_marshaller.decode(body)
           resp = update_post_processing_protocol_progress(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "send_ping"
-          req_marshaller = marshaller_for(::MinknowApi::Basecaller::SendPingRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Basecaller::SendPingResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Basecaller::SendPingRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Basecaller::SendPingResponse, ctx)
           req = req_marshaller.decode(body)
           resp = send_ping(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
@@ -2023,13 +2028,13 @@ module MinknowApi::Basecaller
                                  writer : GRPC::RawResponseStream) : GRPC::Status
         case method
         when "get_info"
-          req_marshaller = marshaller_for(::MinknowApi::Basecaller::GetInfoRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Basecaller::GetInfoResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Basecaller::GetInfoRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Basecaller::GetInfoResponse, ctx)
           typed_writer = GRPC::ResponseStream(::MinknowApi::Basecaller::GetInfoResponse).new(writer, res_marshaller)
           get_info(req_marshaller.decode(body), typed_writer, ctx)
         when "watch"
-          req_marshaller = marshaller_for(::MinknowApi::Basecaller::WatchRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Basecaller::WatchResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Basecaller::WatchRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Basecaller::WatchResponse, ctx)
           typed_writer = GRPC::ResponseStream(::MinknowApi::Basecaller::WatchResponse).new(writer, res_marshaller)
           watch(req_marshaller.decode(body), typed_writer, ctx)
         else
@@ -2053,13 +2058,18 @@ module MinknowApi::Basecaller
         GRPC::ProtoMarshaller(T).new
       end
 
+      protected def marshaller_for(type : T.class, ctx : GRPC::ClientContext) : GRPC::Marshaller(T) forall T
+        options = ctx.protobuf_options
+        options ? GRPC::ProtoMarshaller(T).new(options: options) : marshaller_for(type)
+      end
+
       def list_configs_by_kit(request : ::MinknowApi::Basecaller::ListConfigsByKitRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Basecaller::ListConfigsByKitResponse
         list_configs_by_kit_response(request, ctx).ok!
       end
 
       def list_configs_by_kit_response(request : ::MinknowApi::Basecaller::ListConfigsByKitRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Basecaller::ListConfigsByKitResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Basecaller::ListConfigsByKitRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Basecaller::ListConfigsByKitResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Basecaller::ListConfigsByKitRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Basecaller::ListConfigsByKitResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "list_configs_by_kit", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Basecaller::ListConfigsByKitResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -2070,8 +2080,8 @@ module MinknowApi::Basecaller
       end
 
       def start_basecalling_response(request : ::MinknowApi::Basecaller::StartBasecallingRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Basecaller::StartBasecallingResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Basecaller::StartBasecallingRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Basecaller::StartBasecallingResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Basecaller::StartBasecallingRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Basecaller::StartBasecallingResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "start_basecalling", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Basecaller::StartBasecallingResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -2082,8 +2092,8 @@ module MinknowApi::Basecaller
       end
 
       def start_barcoding_response(request : ::MinknowApi::Basecaller::StartBarcodingRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Basecaller::StartBarcodingResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Basecaller::StartBarcodingRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Basecaller::StartBarcodingResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Basecaller::StartBarcodingRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Basecaller::StartBarcodingResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "start_barcoding", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Basecaller::StartBarcodingResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -2094,8 +2104,8 @@ module MinknowApi::Basecaller
       end
 
       def start_post_processing_protocol_response(request : ::MinknowApi::Basecaller::StartPostProcessingProtocolRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Basecaller::StartPostProcessingProtocolResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Basecaller::StartPostProcessingProtocolRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Basecaller::StartPostProcessingProtocolResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Basecaller::StartPostProcessingProtocolRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Basecaller::StartPostProcessingProtocolResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "start_post_processing_protocol", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Basecaller::StartPostProcessingProtocolResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -2106,8 +2116,8 @@ module MinknowApi::Basecaller
       end
 
       def start_alignment_response(request : ::MinknowApi::Basecaller::StartAlignmentRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Basecaller::StartAlignmentResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Basecaller::StartAlignmentRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Basecaller::StartAlignmentResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Basecaller::StartAlignmentRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Basecaller::StartAlignmentResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "start_alignment", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Basecaller::StartAlignmentResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -2118,16 +2128,16 @@ module MinknowApi::Basecaller
       end
 
       def cancel_response(request : ::MinknowApi::Basecaller::CancelRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Basecaller::CancelResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Basecaller::CancelRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Basecaller::CancelResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Basecaller::CancelRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Basecaller::CancelResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "cancel", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Basecaller::CancelResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
       def get_info(request : ::MinknowApi::Basecaller::GetInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Basecaller::GetInfoResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Basecaller::GetInfoRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Basecaller::GetInfoResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Basecaller::GetInfoRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Basecaller::GetInfoResponse, ctx)
         raw = @channel.open_server_stream(FULL_NAME, "get_info", req_marshaller.encode(request), ctx)
         GRPC::ServerStream(::MinknowApi::Basecaller::GetInfoResponse).new(raw, res_marshaller)
       end
@@ -2137,16 +2147,16 @@ module MinknowApi::Basecaller
       end
 
       def clear_info_response(request : ::MinknowApi::Basecaller::ClearInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Basecaller::ClearInfoResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Basecaller::ClearInfoRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Basecaller::ClearInfoResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Basecaller::ClearInfoRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Basecaller::ClearInfoResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "clear_info", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Basecaller::ClearInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
       def watch(request : ::MinknowApi::Basecaller::WatchRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Basecaller::WatchResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Basecaller::WatchRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Basecaller::WatchResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Basecaller::WatchRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Basecaller::WatchResponse, ctx)
         raw = @channel.open_server_stream(FULL_NAME, "watch", req_marshaller.encode(request), ctx)
         GRPC::ServerStream(::MinknowApi::Basecaller::WatchResponse).new(raw, res_marshaller)
       end
@@ -2156,8 +2166,8 @@ module MinknowApi::Basecaller
       end
 
       def make_alignment_index_response(request : ::MinknowApi::Basecaller::MakeAlignmentIndexRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Basecaller::MakeAlignmentIndexResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Basecaller::MakeAlignmentIndexRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Basecaller::MakeAlignmentIndexResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Basecaller::MakeAlignmentIndexRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Basecaller::MakeAlignmentIndexResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "make_alignment_index", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Basecaller::MakeAlignmentIndexResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -2168,8 +2178,8 @@ module MinknowApi::Basecaller
       end
 
       def list_post_processing_protocols_response(request : ::MinknowApi::Basecaller::ListPostProcessingProtocolsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Basecaller::ListPostProcessingProtocolsResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Basecaller::ListPostProcessingProtocolsRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Basecaller::ListPostProcessingProtocolsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Basecaller::ListPostProcessingProtocolsRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Basecaller::ListPostProcessingProtocolsResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "list_post_processing_protocols", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Basecaller::ListPostProcessingProtocolsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -2180,8 +2190,8 @@ module MinknowApi::Basecaller
       end
 
       def list_settings_for_post_processing_protocol_response(request : ::MinknowApi::Basecaller::ListSettingsForPostProcessingProtocolRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Basecaller::ListSettingsForPostProcessingProtocolResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Basecaller::ListSettingsForPostProcessingProtocolRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Basecaller::ListSettingsForPostProcessingProtocolResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Basecaller::ListSettingsForPostProcessingProtocolRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Basecaller::ListSettingsForPostProcessingProtocolResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "list_settings_for_post_processing_protocol", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Basecaller::ListSettingsForPostProcessingProtocolResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -2192,8 +2202,8 @@ module MinknowApi::Basecaller
       end
 
       def update_post_processing_protocol_progress_response(request : ::MinknowApi::Basecaller::UpdateProgressRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Basecaller::UpdateProgressResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Basecaller::UpdateProgressRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Basecaller::UpdateProgressResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Basecaller::UpdateProgressRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Basecaller::UpdateProgressResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "update_post_processing_protocol_progress", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Basecaller::UpdateProgressResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -2204,8 +2214,8 @@ module MinknowApi::Basecaller
       end
 
       def send_ping_response(request : ::MinknowApi::Basecaller::SendPingRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Basecaller::SendPingResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Basecaller::SendPingRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Basecaller::SendPingResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Basecaller::SendPingRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Basecaller::SendPingResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "send_ping", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Basecaller::SendPingResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)

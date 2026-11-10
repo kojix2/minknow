@@ -3918,6 +3918,11 @@ module MinknowApi::Data
         GRPC::ProtoMarshaller(T).new
       end
 
+      protected def marshaller_for(type : T.class, ctx : GRPC::ServerContext) : GRPC::Marshaller(T) forall T
+        options = ctx.protobuf_options
+        options ? GRPC::ProtoMarshaller(T).new(options: options) : marshaller_for(type)
+      end
+
       abstract def get_channel_states(request : ::MinknowApi::Data::GetChannelStatesRequest, writer : GRPC::ResponseStream(::MinknowApi::Data::GetChannelStatesResponse), ctx : GRPC::ServerContext) : GRPC::Status
       abstract def get_data_types(request : ::MinknowApi::Data::GetDataTypesRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Data::GetDataTypesResponse
       abstract def get_signal_bytes(request : ::MinknowApi::Data::GetSignalBytesRequest, writer : GRPC::ResponseStream(::MinknowApi::Data::GetSignalBytesResponse), ctx : GRPC::ServerContext) : GRPC::Status
@@ -3933,44 +3938,44 @@ module MinknowApi::Data
       def dispatch(method : String, body : Bytes, ctx : GRPC::ServerContext) : {Bytes, GRPC::Status}
         case method
         when "get_data_types"
-          req_marshaller = marshaller_for(::MinknowApi::Data::GetDataTypesRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Data::GetDataTypesResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Data::GetDataTypesRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Data::GetDataTypesResponse, ctx)
           req = req_marshaller.decode(body)
           resp = get_data_types(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "reset_channel_states"
-          req_marshaller = marshaller_for(::MinknowApi::Data::ResetChannelStatesRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Data::ResetChannelStatesResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Data::ResetChannelStatesRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Data::ResetChannelStatesResponse, ctx)
           req = req_marshaller.decode(body)
           resp = reset_channel_states(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "lock_channel_states"
-          req_marshaller = marshaller_for(::MinknowApi::Data::LockChannelStatesRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Data::LockChannelStatesResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Data::LockChannelStatesRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Data::LockChannelStatesResponse, ctx)
           req = req_marshaller.decode(body)
           resp = lock_channel_states(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "unlock_channel_states"
-          req_marshaller = marshaller_for(::MinknowApi::Data::UnlockChannelStatesRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Data::UnlockChannelStatesResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Data::UnlockChannelStatesRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Data::UnlockChannelStatesResponse, ctx)
           req = req_marshaller.decode(body)
           resp = unlock_channel_states(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "record_adaptive_sampling_information"
-          req_marshaller = marshaller_for(::MinknowApi::Data::RecordAdaptiveSamplingInformationRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Data::RecordAdaptiveSamplingInformationResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Data::RecordAdaptiveSamplingInformationRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Data::RecordAdaptiveSamplingInformationResponse, ctx)
           req = req_marshaller.decode(body)
           resp = record_adaptive_sampling_information(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_read_statistics"
-          req_marshaller = marshaller_for(::MinknowApi::Data::GetReadStatisticsRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Data::GetReadStatisticsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Data::GetReadStatisticsRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Data::GetReadStatisticsResponse, ctx)
           req = req_marshaller.decode(body)
           resp = get_read_statistics(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_experiment_yield_info"
-          req_marshaller = marshaller_for(::MinknowApi::Data::GetExperimentYieldInfoRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Data::GetExperimentYieldInfoResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Data::GetExperimentYieldInfoRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Data::GetExperimentYieldInfoResponse, ctx)
           req = req_marshaller.decode(body)
           resp = get_experiment_yield_info(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
@@ -3997,18 +4002,18 @@ module MinknowApi::Data
                                  writer : GRPC::RawResponseStream) : GRPC::Status
         case method
         when "get_channel_states"
-          req_marshaller = marshaller_for(::MinknowApi::Data::GetChannelStatesRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Data::GetChannelStatesResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Data::GetChannelStatesRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Data::GetChannelStatesResponse, ctx)
           typed_writer = GRPC::ResponseStream(::MinknowApi::Data::GetChannelStatesResponse).new(writer, res_marshaller)
           get_channel_states(req_marshaller.decode(body), typed_writer, ctx)
         when "get_signal_bytes"
-          req_marshaller = marshaller_for(::MinknowApi::Data::GetSignalBytesRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Data::GetSignalBytesResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Data::GetSignalBytesRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Data::GetSignalBytesResponse, ctx)
           typed_writer = GRPC::ResponseStream(::MinknowApi::Data::GetSignalBytesResponse).new(writer, res_marshaller)
           get_signal_bytes(req_marshaller.decode(body), typed_writer, ctx)
         when "get_signal_min_max"
-          req_marshaller = marshaller_for(::MinknowApi::Data::GetSignalMinMaxRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Data::GetSignalMinMaxResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Data::GetSignalMinMaxRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Data::GetSignalMinMaxResponse, ctx)
           typed_writer = GRPC::ResponseStream(::MinknowApi::Data::GetSignalMinMaxResponse).new(writer, res_marshaller)
           get_signal_min_max(req_marshaller.decode(body), typed_writer, ctx)
         else
@@ -4032,8 +4037,8 @@ module MinknowApi::Data
                                writer : GRPC::RawResponseStream) : GRPC::Status
         case method
         when "get_live_reads"
-          req_marshaller = marshaller_for(::MinknowApi::Data::GetLiveReadsRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Data::GetLiveReadsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Data::GetLiveReadsRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Data::GetLiveReadsResponse, ctx)
           reqs = GRPC::RequestStream(::MinknowApi::Data::GetLiveReadsRequest).new(requests.ch, req_marshaller)
           typed_writer = GRPC::ResponseStream(::MinknowApi::Data::GetLiveReadsResponse).new(writer, res_marshaller)
           get_live_reads(reqs, typed_writer, ctx)
@@ -4058,9 +4063,14 @@ module MinknowApi::Data
         GRPC::ProtoMarshaller(T).new
       end
 
+      protected def marshaller_for(type : T.class, ctx : GRPC::ClientContext) : GRPC::Marshaller(T) forall T
+        options = ctx.protobuf_options
+        options ? GRPC::ProtoMarshaller(T).new(options: options) : marshaller_for(type)
+      end
+
       def get_channel_states(request : ::MinknowApi::Data::GetChannelStatesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Data::GetChannelStatesResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Data::GetChannelStatesRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Data::GetChannelStatesResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Data::GetChannelStatesRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Data::GetChannelStatesResponse, ctx)
         raw = @channel.open_server_stream(FULL_NAME, "get_channel_states", req_marshaller.encode(request), ctx)
         GRPC::ServerStream(::MinknowApi::Data::GetChannelStatesResponse).new(raw, res_marshaller)
       end
@@ -4070,23 +4080,23 @@ module MinknowApi::Data
       end
 
       def get_data_types_response(request : ::MinknowApi::Data::GetDataTypesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Data::GetDataTypesResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Data::GetDataTypesRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Data::GetDataTypesResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Data::GetDataTypesRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Data::GetDataTypesResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "get_data_types", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Data::GetDataTypesResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
       def get_signal_bytes(request : ::MinknowApi::Data::GetSignalBytesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Data::GetSignalBytesResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Data::GetSignalBytesRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Data::GetSignalBytesResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Data::GetSignalBytesRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Data::GetSignalBytesResponse, ctx)
         raw = @channel.open_server_stream(FULL_NAME, "get_signal_bytes", req_marshaller.encode(request), ctx)
         GRPC::ServerStream(::MinknowApi::Data::GetSignalBytesResponse).new(raw, res_marshaller)
       end
 
       def get_signal_min_max(request : ::MinknowApi::Data::GetSignalMinMaxRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Data::GetSignalMinMaxResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Data::GetSignalMinMaxRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Data::GetSignalMinMaxResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Data::GetSignalMinMaxRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Data::GetSignalMinMaxResponse, ctx)
         raw = @channel.open_server_stream(FULL_NAME, "get_signal_min_max", req_marshaller.encode(request), ctx)
         GRPC::ServerStream(::MinknowApi::Data::GetSignalMinMaxResponse).new(raw, res_marshaller)
       end
@@ -4096,8 +4106,8 @@ module MinknowApi::Data
       end
 
       def reset_channel_states_response(request : ::MinknowApi::Data::ResetChannelStatesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Data::ResetChannelStatesResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Data::ResetChannelStatesRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Data::ResetChannelStatesResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Data::ResetChannelStatesRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Data::ResetChannelStatesResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "reset_channel_states", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Data::ResetChannelStatesResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -4108,8 +4118,8 @@ module MinknowApi::Data
       end
 
       def lock_channel_states_response(request : ::MinknowApi::Data::LockChannelStatesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Data::LockChannelStatesResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Data::LockChannelStatesRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Data::LockChannelStatesResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Data::LockChannelStatesRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Data::LockChannelStatesResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "lock_channel_states", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Data::LockChannelStatesResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -4120,8 +4130,8 @@ module MinknowApi::Data
       end
 
       def unlock_channel_states_response(request : ::MinknowApi::Data::UnlockChannelStatesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Data::UnlockChannelStatesResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Data::UnlockChannelStatesRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Data::UnlockChannelStatesResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Data::UnlockChannelStatesRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Data::UnlockChannelStatesResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "unlock_channel_states", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Data::UnlockChannelStatesResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -4132,8 +4142,8 @@ module MinknowApi::Data
       # signal end-of-input and iterate the replies with #each.
       def get_live_reads(ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::BidiCall(::MinknowApi::Data::GetLiveReadsRequest, ::MinknowApi::Data::GetLiveReadsResponse)
         raw = @channel.open_bidi_stream_live(FULL_NAME, "get_live_reads", ctx)
-        req_marshaller = marshaller_for(::MinknowApi::Data::GetLiveReadsRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Data::GetLiveReadsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Data::GetLiveReadsRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Data::GetLiveReadsResponse, ctx)
         GRPC::BidiCall(::MinknowApi::Data::GetLiveReadsRequest, ::MinknowApi::Data::GetLiveReadsResponse).new(raw, req_marshaller, res_marshaller)
       end
 
@@ -4142,8 +4152,8 @@ module MinknowApi::Data
       end
 
       def record_adaptive_sampling_information_response(request : ::MinknowApi::Data::RecordAdaptiveSamplingInformationRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Data::RecordAdaptiveSamplingInformationResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Data::RecordAdaptiveSamplingInformationRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Data::RecordAdaptiveSamplingInformationResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Data::RecordAdaptiveSamplingInformationRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Data::RecordAdaptiveSamplingInformationResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "record_adaptive_sampling_information", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Data::RecordAdaptiveSamplingInformationResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -4154,8 +4164,8 @@ module MinknowApi::Data
       end
 
       def get_read_statistics_response(request : ::MinknowApi::Data::GetReadStatisticsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Data::GetReadStatisticsResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Data::GetReadStatisticsRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Data::GetReadStatisticsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Data::GetReadStatisticsRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Data::GetReadStatisticsResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "get_read_statistics", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Data::GetReadStatisticsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -4166,8 +4176,8 @@ module MinknowApi::Data
       end
 
       def get_experiment_yield_info_response(request : ::MinknowApi::Data::GetExperimentYieldInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Data::GetExperimentYieldInfoResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Data::GetExperimentYieldInfoRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Data::GetExperimentYieldInfoResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Data::GetExperimentYieldInfoRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Data::GetExperimentYieldInfoResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "get_experiment_yield_info", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Data::GetExperimentYieldInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)

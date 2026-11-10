@@ -1410,6 +1410,11 @@ module MinknowApi::MinionDevice
         GRPC::ProtoMarshaller(T).new
       end
 
+      protected def marshaller_for(type : T.class, ctx : GRPC::ServerContext) : GRPC::Marshaller(T) forall T
+        options = ctx.protobuf_options
+        options ? GRPC::ProtoMarshaller(T).new(options: options) : marshaller_for(type)
+      end
+
       abstract def change_settings(request : ::MinknowApi::MinionDevice::ChangeSettingsRequest, ctx : GRPC::ServerContext) : ::MinknowApi::MinionDevice::ChangeSettingsResponse
       abstract def get_settings(request : ::MinknowApi::MinionDevice::GetSettingsRequest, ctx : GRPC::ServerContext) : ::MinknowApi::MinionDevice::GetSettingsResponse
       abstract def get_fan_speed(request : ::MinknowApi::MinionDevice::GetFanSpeedRequest, ctx : GRPC::ServerContext) : ::MinknowApi::MinionDevice::GetFanSpeedResponse
@@ -1417,20 +1422,20 @@ module MinknowApi::MinionDevice
       def dispatch(method : String, body : Bytes, ctx : GRPC::ServerContext) : {Bytes, GRPC::Status}
         case method
         when "change_settings"
-          req_marshaller = marshaller_for(::MinknowApi::MinionDevice::ChangeSettingsRequest)
-          res_marshaller = marshaller_for(::MinknowApi::MinionDevice::ChangeSettingsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::MinionDevice::ChangeSettingsRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::MinionDevice::ChangeSettingsResponse, ctx)
           req = req_marshaller.decode(body)
           resp = change_settings(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_settings"
-          req_marshaller = marshaller_for(::MinknowApi::MinionDevice::GetSettingsRequest)
-          res_marshaller = marshaller_for(::MinknowApi::MinionDevice::GetSettingsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::MinionDevice::GetSettingsRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::MinionDevice::GetSettingsResponse, ctx)
           req = req_marshaller.decode(body)
           resp = get_settings(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_fan_speed"
-          req_marshaller = marshaller_for(::MinknowApi::MinionDevice::GetFanSpeedRequest)
-          res_marshaller = marshaller_for(::MinknowApi::MinionDevice::GetFanSpeedResponse)
+          req_marshaller = marshaller_for(::MinknowApi::MinionDevice::GetFanSpeedRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::MinionDevice::GetFanSpeedResponse, ctx)
           req = req_marshaller.decode(body)
           resp = get_fan_speed(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
@@ -1455,13 +1460,18 @@ module MinknowApi::MinionDevice
         GRPC::ProtoMarshaller(T).new
       end
 
+      protected def marshaller_for(type : T.class, ctx : GRPC::ClientContext) : GRPC::Marshaller(T) forall T
+        options = ctx.protobuf_options
+        options ? GRPC::ProtoMarshaller(T).new(options: options) : marshaller_for(type)
+      end
+
       def change_settings(request : ::MinknowApi::MinionDevice::ChangeSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::MinionDevice::ChangeSettingsResponse
         change_settings_response(request, ctx).ok!
       end
 
       def change_settings_response(request : ::MinknowApi::MinionDevice::ChangeSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::MinionDevice::ChangeSettingsResponse)
-        req_marshaller = marshaller_for(::MinknowApi::MinionDevice::ChangeSettingsRequest)
-        res_marshaller = marshaller_for(::MinknowApi::MinionDevice::ChangeSettingsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::MinionDevice::ChangeSettingsRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::MinionDevice::ChangeSettingsResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "change_settings", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::MinionDevice::ChangeSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -1472,8 +1482,8 @@ module MinknowApi::MinionDevice
       end
 
       def get_settings_response(request : ::MinknowApi::MinionDevice::GetSettingsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::MinionDevice::GetSettingsResponse)
-        req_marshaller = marshaller_for(::MinknowApi::MinionDevice::GetSettingsRequest)
-        res_marshaller = marshaller_for(::MinknowApi::MinionDevice::GetSettingsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::MinionDevice::GetSettingsRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::MinionDevice::GetSettingsResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "get_settings", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::MinionDevice::GetSettingsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -1484,8 +1494,8 @@ module MinknowApi::MinionDevice
       end
 
       def get_fan_speed_response(request : ::MinknowApi::MinionDevice::GetFanSpeedRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::MinionDevice::GetFanSpeedResponse)
-        req_marshaller = marshaller_for(::MinknowApi::MinionDevice::GetFanSpeedRequest)
-        res_marshaller = marshaller_for(::MinknowApi::MinionDevice::GetFanSpeedResponse)
+        req_marshaller = marshaller_for(::MinknowApi::MinionDevice::GetFanSpeedRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::MinionDevice::GetFanSpeedResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "get_fan_speed", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::MinionDevice::GetFanSpeedResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)

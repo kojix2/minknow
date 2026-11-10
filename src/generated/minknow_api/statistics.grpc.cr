@@ -3416,6 +3416,11 @@ module MinknowApi::Statistics
         GRPC::ProtoMarshaller(T).new
       end
 
+      protected def marshaller_for(type : T.class, ctx : GRPC::ServerContext) : GRPC::Marshaller(T) forall T
+        options = ctx.protobuf_options
+        options ? GRPC::ProtoMarshaller(T).new(options: options) : marshaller_for(type)
+      end
+
       abstract def stream_duty_time(request : ::MinknowApi::Statistics::StreamDutyTimeRequest, writer : GRPC::ResponseStream(::MinknowApi::Statistics::StreamDutyTimeResponse), ctx : GRPC::ServerContext) : GRPC::Status
       abstract def stream_acquisition_output(request : ::MinknowApi::Statistics::StreamAcquisitionOutputRequest, writer : GRPC::ResponseStream(::MinknowApi::Statistics::StreamAcquisitionOutputResponse), ctx : GRPC::ServerContext) : GRPC::Status
       abstract def stream_writer_output(request : ::MinknowApi::Statistics::StreamWriterOutputRequest, writer : GRPC::ResponseStream(::MinknowApi::Statistics::StreamWriterOutputResponse), ctx : GRPC::ServerContext) : GRPC::Status
@@ -3432,14 +3437,14 @@ module MinknowApi::Statistics
       def dispatch(method : String, body : Bytes, ctx : GRPC::ServerContext) : {Bytes, GRPC::Status}
         case method
         when "read_length_n50"
-          req_marshaller = marshaller_for(::MinknowApi::Statistics::ReadLengthN50Request)
-          res_marshaller = marshaller_for(::MinknowApi::Statistics::ReadLengthN50Response)
+          req_marshaller = marshaller_for(::MinknowApi::Statistics::ReadLengthN50Request, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Statistics::ReadLengthN50Response, ctx)
           req = req_marshaller.decode(body)
           resp = read_length_n50(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_read_length_types"
-          req_marshaller = marshaller_for(::MinknowApi::Statistics::GetReadLengthTypesRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Statistics::GetReadLengthTypesResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Statistics::GetReadLengthTypesRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Statistics::GetReadLengthTypesResponse, ctx)
           req = req_marshaller.decode(body)
           resp = get_read_length_types(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
@@ -3473,53 +3478,53 @@ module MinknowApi::Statistics
                                  writer : GRPC::RawResponseStream) : GRPC::Status
         case method
         when "stream_duty_time"
-          req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamDutyTimeRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamDutyTimeResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamDutyTimeRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamDutyTimeResponse, ctx)
           typed_writer = GRPC::ResponseStream(::MinknowApi::Statistics::StreamDutyTimeResponse).new(writer, res_marshaller)
           stream_duty_time(req_marshaller.decode(body), typed_writer, ctx)
         when "stream_acquisition_output"
-          req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamAcquisitionOutputRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamAcquisitionOutputResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamAcquisitionOutputRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamAcquisitionOutputResponse, ctx)
           typed_writer = GRPC::ResponseStream(::MinknowApi::Statistics::StreamAcquisitionOutputResponse).new(writer, res_marshaller)
           stream_acquisition_output(req_marshaller.decode(body), typed_writer, ctx)
         when "stream_writer_output"
-          req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamWriterOutputRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamWriterOutputResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamWriterOutputRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamWriterOutputResponse, ctx)
           typed_writer = GRPC::ResponseStream(::MinknowApi::Statistics::StreamWriterOutputResponse).new(writer, res_marshaller)
           stream_writer_output(req_marshaller.decode(body), typed_writer, ctx)
         when "stream_encountered_acquisition_output_keys"
-          req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamEncounteredAcquisitionOutputKeysRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamEncounteredAcquisitionOutputKeysResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamEncounteredAcquisitionOutputKeysRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamEncounteredAcquisitionOutputKeysResponse, ctx)
           typed_writer = GRPC::ResponseStream(::MinknowApi::Statistics::StreamEncounteredAcquisitionOutputKeysResponse).new(writer, res_marshaller)
           stream_encountered_acquisition_output_keys(req_marshaller.decode(body), typed_writer, ctx)
         when "stream_temperature"
-          req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamTemperatureRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamTemperatureResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamTemperatureRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamTemperatureResponse, ctx)
           typed_writer = GRPC::ResponseStream(::MinknowApi::Statistics::StreamTemperatureResponse).new(writer, res_marshaller)
           stream_temperature(req_marshaller.decode(body), typed_writer, ctx)
         when "stream_bias_voltages"
-          req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamBiasVoltagesRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamBiasVoltagesResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamBiasVoltagesRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamBiasVoltagesResponse, ctx)
           typed_writer = GRPC::ResponseStream(::MinknowApi::Statistics::StreamBiasVoltagesResponse).new(writer, res_marshaller)
           stream_bias_voltages(req_marshaller.decode(body), typed_writer, ctx)
         when "stream_read_length_histogram"
-          req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamReadLengthHistogramRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamReadLengthHistogramResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamReadLengthHistogramRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamReadLengthHistogramResponse, ctx)
           typed_writer = GRPC::ResponseStream(::MinknowApi::Statistics::StreamReadLengthHistogramResponse).new(writer, res_marshaller)
           stream_read_length_histogram(req_marshaller.decode(body), typed_writer, ctx)
         when "stream_q_score_histogram"
-          req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamQScoreHistogramRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamQScoreHistogramResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamQScoreHistogramRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamQScoreHistogramResponse, ctx)
           typed_writer = GRPC::ResponseStream(::MinknowApi::Statistics::StreamQScoreHistogramResponse).new(writer, res_marshaller)
           stream_q_score_histogram(req_marshaller.decode(body), typed_writer, ctx)
         when "stream_q_accuracy_histogram"
-          req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamQAccuracyHistogramRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamQAccuracyHistogramResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamQAccuracyHistogramRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamQAccuracyHistogramResponse, ctx)
           typed_writer = GRPC::ResponseStream(::MinknowApi::Statistics::StreamQAccuracyHistogramResponse).new(writer, res_marshaller)
           stream_q_accuracy_histogram(req_marshaller.decode(body), typed_writer, ctx)
         when "stream_basecall_boxplots"
-          req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamBoxplotRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Statistics::BoxplotResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamBoxplotRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Statistics::BoxplotResponse, ctx)
           typed_writer = GRPC::ResponseStream(::MinknowApi::Statistics::BoxplotResponse).new(writer, res_marshaller)
           stream_basecall_boxplots(req_marshaller.decode(body), typed_writer, ctx)
         else
@@ -3543,51 +3548,56 @@ module MinknowApi::Statistics
         GRPC::ProtoMarshaller(T).new
       end
 
+      protected def marshaller_for(type : T.class, ctx : GRPC::ClientContext) : GRPC::Marshaller(T) forall T
+        options = ctx.protobuf_options
+        options ? GRPC::ProtoMarshaller(T).new(options: options) : marshaller_for(type)
+      end
+
       def stream_duty_time(request : ::MinknowApi::Statistics::StreamDutyTimeRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Statistics::StreamDutyTimeResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamDutyTimeRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamDutyTimeResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamDutyTimeRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamDutyTimeResponse, ctx)
         raw = @channel.open_server_stream(FULL_NAME, "stream_duty_time", req_marshaller.encode(request), ctx)
         GRPC::ServerStream(::MinknowApi::Statistics::StreamDutyTimeResponse).new(raw, res_marshaller)
       end
 
       def stream_acquisition_output(request : ::MinknowApi::Statistics::StreamAcquisitionOutputRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Statistics::StreamAcquisitionOutputResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamAcquisitionOutputRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamAcquisitionOutputResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamAcquisitionOutputRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamAcquisitionOutputResponse, ctx)
         raw = @channel.open_server_stream(FULL_NAME, "stream_acquisition_output", req_marshaller.encode(request), ctx)
         GRPC::ServerStream(::MinknowApi::Statistics::StreamAcquisitionOutputResponse).new(raw, res_marshaller)
       end
 
       def stream_writer_output(request : ::MinknowApi::Statistics::StreamWriterOutputRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Statistics::StreamWriterOutputResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamWriterOutputRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamWriterOutputResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamWriterOutputRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamWriterOutputResponse, ctx)
         raw = @channel.open_server_stream(FULL_NAME, "stream_writer_output", req_marshaller.encode(request), ctx)
         GRPC::ServerStream(::MinknowApi::Statistics::StreamWriterOutputResponse).new(raw, res_marshaller)
       end
 
       def stream_encountered_acquisition_output_keys(request : ::MinknowApi::Statistics::StreamEncounteredAcquisitionOutputKeysRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Statistics::StreamEncounteredAcquisitionOutputKeysResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamEncounteredAcquisitionOutputKeysRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamEncounteredAcquisitionOutputKeysResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamEncounteredAcquisitionOutputKeysRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamEncounteredAcquisitionOutputKeysResponse, ctx)
         raw = @channel.open_server_stream(FULL_NAME, "stream_encountered_acquisition_output_keys", req_marshaller.encode(request), ctx)
         GRPC::ServerStream(::MinknowApi::Statistics::StreamEncounteredAcquisitionOutputKeysResponse).new(raw, res_marshaller)
       end
 
       def stream_temperature(request : ::MinknowApi::Statistics::StreamTemperatureRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Statistics::StreamTemperatureResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamTemperatureRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamTemperatureResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamTemperatureRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamTemperatureResponse, ctx)
         raw = @channel.open_server_stream(FULL_NAME, "stream_temperature", req_marshaller.encode(request), ctx)
         GRPC::ServerStream(::MinknowApi::Statistics::StreamTemperatureResponse).new(raw, res_marshaller)
       end
 
       def stream_bias_voltages(request : ::MinknowApi::Statistics::StreamBiasVoltagesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Statistics::StreamBiasVoltagesResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamBiasVoltagesRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamBiasVoltagesResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamBiasVoltagesRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamBiasVoltagesResponse, ctx)
         raw = @channel.open_server_stream(FULL_NAME, "stream_bias_voltages", req_marshaller.encode(request), ctx)
         GRPC::ServerStream(::MinknowApi::Statistics::StreamBiasVoltagesResponse).new(raw, res_marshaller)
       end
 
       def stream_read_length_histogram(request : ::MinknowApi::Statistics::StreamReadLengthHistogramRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Statistics::StreamReadLengthHistogramResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamReadLengthHistogramRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamReadLengthHistogramResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamReadLengthHistogramRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamReadLengthHistogramResponse, ctx)
         raw = @channel.open_server_stream(FULL_NAME, "stream_read_length_histogram", req_marshaller.encode(request), ctx)
         GRPC::ServerStream(::MinknowApi::Statistics::StreamReadLengthHistogramResponse).new(raw, res_marshaller)
       end
@@ -3597,8 +3607,8 @@ module MinknowApi::Statistics
       end
 
       def read_length_n50_response(request : ::MinknowApi::Statistics::ReadLengthN50Request, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Statistics::ReadLengthN50Response)
-        req_marshaller = marshaller_for(::MinknowApi::Statistics::ReadLengthN50Request)
-        res_marshaller = marshaller_for(::MinknowApi::Statistics::ReadLengthN50Response)
+        req_marshaller = marshaller_for(::MinknowApi::Statistics::ReadLengthN50Request, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Statistics::ReadLengthN50Response, ctx)
         response = @channel.unary_call(FULL_NAME, "read_length_n50", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Statistics::ReadLengthN50Response).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -3609,30 +3619,30 @@ module MinknowApi::Statistics
       end
 
       def get_read_length_types_response(request : ::MinknowApi::Statistics::GetReadLengthTypesRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Statistics::GetReadLengthTypesResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Statistics::GetReadLengthTypesRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Statistics::GetReadLengthTypesResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Statistics::GetReadLengthTypesRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Statistics::GetReadLengthTypesResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "get_read_length_types", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Statistics::GetReadLengthTypesResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
       end
 
       def stream_q_score_histogram(request : ::MinknowApi::Statistics::StreamQScoreHistogramRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Statistics::StreamQScoreHistogramResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamQScoreHistogramRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamQScoreHistogramResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamQScoreHistogramRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamQScoreHistogramResponse, ctx)
         raw = @channel.open_server_stream(FULL_NAME, "stream_q_score_histogram", req_marshaller.encode(request), ctx)
         GRPC::ServerStream(::MinknowApi::Statistics::StreamQScoreHistogramResponse).new(raw, res_marshaller)
       end
 
       def stream_q_accuracy_histogram(request : ::MinknowApi::Statistics::StreamQAccuracyHistogramRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Statistics::StreamQAccuracyHistogramResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamQAccuracyHistogramRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamQAccuracyHistogramResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamQAccuracyHistogramRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Statistics::StreamQAccuracyHistogramResponse, ctx)
         raw = @channel.open_server_stream(FULL_NAME, "stream_q_accuracy_histogram", req_marshaller.encode(request), ctx)
         GRPC::ServerStream(::MinknowApi::Statistics::StreamQAccuracyHistogramResponse).new(raw, res_marshaller)
       end
 
       def stream_basecall_boxplots(request : ::MinknowApi::Statistics::StreamBoxplotRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Statistics::BoxplotResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamBoxplotRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Statistics::BoxplotResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Statistics::StreamBoxplotRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Statistics::BoxplotResponse, ctx)
         raw = @channel.open_server_stream(FULL_NAME, "stream_basecall_boxplots", req_marshaller.encode(request), ctx)
         GRPC::ServerStream(::MinknowApi::Statistics::BoxplotResponse).new(raw, res_marshaller)
       end

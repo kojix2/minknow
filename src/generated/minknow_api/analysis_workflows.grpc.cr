@@ -169,6 +169,11 @@ module MinknowApi::AnalysisWorkflows
         GRPC::ProtoMarshaller(T).new
       end
 
+      protected def marshaller_for(type : T.class, ctx : GRPC::ServerContext) : GRPC::Marshaller(T) forall T
+        options = ctx.protobuf_options
+        options ? GRPC::ProtoMarshaller(T).new(options: options) : marshaller_for(type)
+      end
+
       abstract def proxy(request : ::MinknowApi::AnalysisWorkflows::ProxyRequest, writer : GRPC::ResponseStream(::MinknowApi::AnalysisWorkflows::ProxyResponse), ctx : GRPC::ServerContext) : GRPC::Status
 
       def dispatch(method : String, body : Bytes, ctx : GRPC::ServerContext) : {Bytes, GRPC::Status}
@@ -191,8 +196,8 @@ module MinknowApi::AnalysisWorkflows
                                  writer : GRPC::RawResponseStream) : GRPC::Status
         case method
         when "proxy"
-          req_marshaller = marshaller_for(::MinknowApi::AnalysisWorkflows::ProxyRequest)
-          res_marshaller = marshaller_for(::MinknowApi::AnalysisWorkflows::ProxyResponse)
+          req_marshaller = marshaller_for(::MinknowApi::AnalysisWorkflows::ProxyRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::AnalysisWorkflows::ProxyResponse, ctx)
           typed_writer = GRPC::ResponseStream(::MinknowApi::AnalysisWorkflows::ProxyResponse).new(writer, res_marshaller)
           proxy(req_marshaller.decode(body), typed_writer, ctx)
         else
@@ -216,9 +221,14 @@ module MinknowApi::AnalysisWorkflows
         GRPC::ProtoMarshaller(T).new
       end
 
+      protected def marshaller_for(type : T.class, ctx : GRPC::ClientContext) : GRPC::Marshaller(T) forall T
+        options = ctx.protobuf_options
+        options ? GRPC::ProtoMarshaller(T).new(options: options) : marshaller_for(type)
+      end
+
       def proxy(request : ::MinknowApi::AnalysisWorkflows::ProxyRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::AnalysisWorkflows::ProxyResponse)
-        req_marshaller = marshaller_for(::MinknowApi::AnalysisWorkflows::ProxyRequest)
-        res_marshaller = marshaller_for(::MinknowApi::AnalysisWorkflows::ProxyResponse)
+        req_marshaller = marshaller_for(::MinknowApi::AnalysisWorkflows::ProxyRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::AnalysisWorkflows::ProxyResponse, ctx)
         raw = @channel.open_server_stream(FULL_NAME, "proxy", req_marshaller.encode(request), ctx)
         GRPC::ServerStream(::MinknowApi::AnalysisWorkflows::ProxyResponse).new(raw, res_marshaller)
       end

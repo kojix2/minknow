@@ -3281,6 +3281,11 @@ module MinknowApi::Acquisition
         GRPC::ProtoMarshaller(T).new
       end
 
+      protected def marshaller_for(type : T.class, ctx : GRPC::ServerContext) : GRPC::Marshaller(T) forall T
+        options = ctx.protobuf_options
+        options ? GRPC::ProtoMarshaller(T).new(options: options) : marshaller_for(type)
+      end
+
       abstract def start(request : ::MinknowApi::Acquisition::StartRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Acquisition::StartResponse
       abstract def stop(request : ::MinknowApi::Acquisition::StopRequest, ctx : GRPC::ServerContext) : ::MinknowApi::Acquisition::StopResponse
       abstract def watch_for_status_change(requests : GRPC::RequestStream(::MinknowApi::Acquisition::WatchForStatusChangeRequest), writer : GRPC::ResponseStream(::MinknowApi::Acquisition::WatchForStatusChangeResponse), ctx : GRPC::ServerContext) : GRPC::Status
@@ -3298,68 +3303,68 @@ module MinknowApi::Acquisition
       def dispatch(method : String, body : Bytes, ctx : GRPC::ServerContext) : {Bytes, GRPC::Status}
         case method
         when "start"
-          req_marshaller = marshaller_for(::MinknowApi::Acquisition::StartRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Acquisition::StartResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Acquisition::StartRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Acquisition::StartResponse, ctx)
           req = req_marshaller.decode(body)
           resp = start(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "stop"
-          req_marshaller = marshaller_for(::MinknowApi::Acquisition::StopRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Acquisition::StopResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Acquisition::StopRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Acquisition::StopResponse, ctx)
           req = req_marshaller.decode(body)
           resp = stop(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "current_status"
-          req_marshaller = marshaller_for(::MinknowApi::Acquisition::CurrentStatusRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Acquisition::CurrentStatusResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Acquisition::CurrentStatusRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Acquisition::CurrentStatusResponse, ctx)
           req = req_marshaller.decode(body)
           resp = current_status(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_progress"
-          req_marshaller = marshaller_for(::MinknowApi::Acquisition::GetProgressRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Acquisition::GetProgressResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Acquisition::GetProgressRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Acquisition::GetProgressResponse, ctx)
           req = req_marshaller.decode(body)
           resp = get_progress(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_acquisition_info"
-          req_marshaller = marshaller_for(::MinknowApi::Acquisition::GetAcquisitionRunInfoRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Acquisition::AcquisitionRunInfo)
+          req_marshaller = marshaller_for(::MinknowApi::Acquisition::GetAcquisitionRunInfoRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Acquisition::AcquisitionRunInfo, ctx)
           req = req_marshaller.decode(body)
           resp = get_acquisition_info(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "list_acquisition_runs"
-          req_marshaller = marshaller_for(::MinknowApi::Acquisition::ListAcquisitionRunsRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Acquisition::ListAcquisitionRunsResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Acquisition::ListAcquisitionRunsRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Acquisition::ListAcquisitionRunsResponse, ctx)
           req = req_marshaller.decode(body)
           resp = list_acquisition_runs(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_current_acquisition_run"
-          req_marshaller = marshaller_for(::MinknowApi::Acquisition::GetCurrentAcquisitionRunRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Acquisition::AcquisitionRunInfo)
+          req_marshaller = marshaller_for(::MinknowApi::Acquisition::GetCurrentAcquisitionRunRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Acquisition::AcquisitionRunInfo, ctx)
           req = req_marshaller.decode(body)
           resp = get_current_acquisition_run(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_signal_reader"
-          req_marshaller = marshaller_for(::MinknowApi::Acquisition::SetSignalReaderRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Acquisition::SetSignalReaderResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Acquisition::SetSignalReaderRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Acquisition::SetSignalReaderResponse, ctx)
           req = req_marshaller.decode(body)
           resp = set_signal_reader(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "get_signal_reader"
-          req_marshaller = marshaller_for(::MinknowApi::Acquisition::GetSignalReaderRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Acquisition::GetSignalReaderResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Acquisition::GetSignalReaderRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Acquisition::GetSignalReaderResponse, ctx)
           req = req_marshaller.decode(body)
           resp = get_signal_reader(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "set_bream_info"
-          req_marshaller = marshaller_for(::MinknowApi::Acquisition::SetBreamInfoRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Acquisition::SetBreamInfoResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Acquisition::SetBreamInfoRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Acquisition::SetBreamInfoResponse, ctx)
           req = req_marshaller.decode(body)
           resp = set_bream_info(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
         when "append_mux_scan_result"
-          req_marshaller = marshaller_for(::MinknowApi::Acquisition::MuxScanResult)
-          res_marshaller = marshaller_for(::MinknowApi::Acquisition::AppendMuxScanResultResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Acquisition::MuxScanResult, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Acquisition::AppendMuxScanResultResponse, ctx)
           req = req_marshaller.decode(body)
           resp = append_mux_scan_result(req, ctx)
           {res_marshaller.encode(resp), GRPC::Status.ok}
@@ -3384,8 +3389,8 @@ module MinknowApi::Acquisition
                                  writer : GRPC::RawResponseStream) : GRPC::Status
         case method
         when "watch_current_acquisition_run"
-          req_marshaller = marshaller_for(::MinknowApi::Acquisition::WatchCurrentAcquisitionRunRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Acquisition::AcquisitionRunInfo)
+          req_marshaller = marshaller_for(::MinknowApi::Acquisition::WatchCurrentAcquisitionRunRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Acquisition::AcquisitionRunInfo, ctx)
           typed_writer = GRPC::ResponseStream(::MinknowApi::Acquisition::AcquisitionRunInfo).new(writer, res_marshaller)
           watch_current_acquisition_run(req_marshaller.decode(body), typed_writer, ctx)
         else
@@ -3409,8 +3414,8 @@ module MinknowApi::Acquisition
                                writer : GRPC::RawResponseStream) : GRPC::Status
         case method
         when "watch_for_status_change"
-          req_marshaller = marshaller_for(::MinknowApi::Acquisition::WatchForStatusChangeRequest)
-          res_marshaller = marshaller_for(::MinknowApi::Acquisition::WatchForStatusChangeResponse)
+          req_marshaller = marshaller_for(::MinknowApi::Acquisition::WatchForStatusChangeRequest, ctx)
+          res_marshaller = marshaller_for(::MinknowApi::Acquisition::WatchForStatusChangeResponse, ctx)
           reqs = GRPC::RequestStream(::MinknowApi::Acquisition::WatchForStatusChangeRequest).new(requests.ch, req_marshaller)
           typed_writer = GRPC::ResponseStream(::MinknowApi::Acquisition::WatchForStatusChangeResponse).new(writer, res_marshaller)
           watch_for_status_change(reqs, typed_writer, ctx)
@@ -3435,13 +3440,18 @@ module MinknowApi::Acquisition
         GRPC::ProtoMarshaller(T).new
       end
 
+      protected def marshaller_for(type : T.class, ctx : GRPC::ClientContext) : GRPC::Marshaller(T) forall T
+        options = ctx.protobuf_options
+        options ? GRPC::ProtoMarshaller(T).new(options: options) : marshaller_for(type)
+      end
+
       def start(request : ::MinknowApi::Acquisition::StartRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : ::MinknowApi::Acquisition::StartResponse
         start_response(request, ctx).ok!
       end
 
       def start_response(request : ::MinknowApi::Acquisition::StartRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Acquisition::StartResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Acquisition::StartRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Acquisition::StartResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Acquisition::StartRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Acquisition::StartResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "start", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Acquisition::StartResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -3452,8 +3462,8 @@ module MinknowApi::Acquisition
       end
 
       def stop_response(request : ::MinknowApi::Acquisition::StopRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Acquisition::StopResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Acquisition::StopRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Acquisition::StopResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Acquisition::StopRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Acquisition::StopResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "stop", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Acquisition::StopResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -3464,14 +3474,14 @@ module MinknowApi::Acquisition
       # signal end-of-input and iterate the replies with #each.
       def watch_for_status_change(ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::BidiCall(::MinknowApi::Acquisition::WatchForStatusChangeRequest, ::MinknowApi::Acquisition::WatchForStatusChangeResponse)
         raw = @channel.open_bidi_stream_live(FULL_NAME, "watch_for_status_change", ctx)
-        req_marshaller = marshaller_for(::MinknowApi::Acquisition::WatchForStatusChangeRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Acquisition::WatchForStatusChangeResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Acquisition::WatchForStatusChangeRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Acquisition::WatchForStatusChangeResponse, ctx)
         GRPC::BidiCall(::MinknowApi::Acquisition::WatchForStatusChangeRequest, ::MinknowApi::Acquisition::WatchForStatusChangeResponse).new(raw, req_marshaller, res_marshaller)
       end
 
       def watch_current_acquisition_run(request : ::MinknowApi::Acquisition::WatchCurrentAcquisitionRunRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::ServerStream(::MinknowApi::Acquisition::AcquisitionRunInfo)
-        req_marshaller = marshaller_for(::MinknowApi::Acquisition::WatchCurrentAcquisitionRunRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Acquisition::AcquisitionRunInfo)
+        req_marshaller = marshaller_for(::MinknowApi::Acquisition::WatchCurrentAcquisitionRunRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Acquisition::AcquisitionRunInfo, ctx)
         raw = @channel.open_server_stream(FULL_NAME, "watch_current_acquisition_run", req_marshaller.encode(request), ctx)
         GRPC::ServerStream(::MinknowApi::Acquisition::AcquisitionRunInfo).new(raw, res_marshaller)
       end
@@ -3481,8 +3491,8 @@ module MinknowApi::Acquisition
       end
 
       def current_status_response(request : ::MinknowApi::Acquisition::CurrentStatusRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Acquisition::CurrentStatusResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Acquisition::CurrentStatusRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Acquisition::CurrentStatusResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Acquisition::CurrentStatusRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Acquisition::CurrentStatusResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "current_status", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Acquisition::CurrentStatusResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -3493,8 +3503,8 @@ module MinknowApi::Acquisition
       end
 
       def get_progress_response(request : ::MinknowApi::Acquisition::GetProgressRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Acquisition::GetProgressResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Acquisition::GetProgressRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Acquisition::GetProgressResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Acquisition::GetProgressRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Acquisition::GetProgressResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "get_progress", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Acquisition::GetProgressResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -3505,8 +3515,8 @@ module MinknowApi::Acquisition
       end
 
       def get_acquisition_info_response(request : ::MinknowApi::Acquisition::GetAcquisitionRunInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Acquisition::AcquisitionRunInfo)
-        req_marshaller = marshaller_for(::MinknowApi::Acquisition::GetAcquisitionRunInfoRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Acquisition::AcquisitionRunInfo)
+        req_marshaller = marshaller_for(::MinknowApi::Acquisition::GetAcquisitionRunInfoRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Acquisition::AcquisitionRunInfo, ctx)
         response = @channel.unary_call(FULL_NAME, "get_acquisition_info", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Acquisition::AcquisitionRunInfo).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -3517,8 +3527,8 @@ module MinknowApi::Acquisition
       end
 
       def list_acquisition_runs_response(request : ::MinknowApi::Acquisition::ListAcquisitionRunsRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Acquisition::ListAcquisitionRunsResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Acquisition::ListAcquisitionRunsRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Acquisition::ListAcquisitionRunsResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Acquisition::ListAcquisitionRunsRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Acquisition::ListAcquisitionRunsResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "list_acquisition_runs", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Acquisition::ListAcquisitionRunsResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -3529,8 +3539,8 @@ module MinknowApi::Acquisition
       end
 
       def get_current_acquisition_run_response(request : ::MinknowApi::Acquisition::GetCurrentAcquisitionRunRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Acquisition::AcquisitionRunInfo)
-        req_marshaller = marshaller_for(::MinknowApi::Acquisition::GetCurrentAcquisitionRunRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Acquisition::AcquisitionRunInfo)
+        req_marshaller = marshaller_for(::MinknowApi::Acquisition::GetCurrentAcquisitionRunRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Acquisition::AcquisitionRunInfo, ctx)
         response = @channel.unary_call(FULL_NAME, "get_current_acquisition_run", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Acquisition::AcquisitionRunInfo).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -3541,8 +3551,8 @@ module MinknowApi::Acquisition
       end
 
       def set_signal_reader_response(request : ::MinknowApi::Acquisition::SetSignalReaderRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Acquisition::SetSignalReaderResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Acquisition::SetSignalReaderRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Acquisition::SetSignalReaderResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Acquisition::SetSignalReaderRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Acquisition::SetSignalReaderResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "set_signal_reader", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Acquisition::SetSignalReaderResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -3553,8 +3563,8 @@ module MinknowApi::Acquisition
       end
 
       def get_signal_reader_response(request : ::MinknowApi::Acquisition::GetSignalReaderRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Acquisition::GetSignalReaderResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Acquisition::GetSignalReaderRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Acquisition::GetSignalReaderResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Acquisition::GetSignalReaderRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Acquisition::GetSignalReaderResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "get_signal_reader", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Acquisition::GetSignalReaderResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -3565,8 +3575,8 @@ module MinknowApi::Acquisition
       end
 
       def set_bream_info_response(request : ::MinknowApi::Acquisition::SetBreamInfoRequest, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Acquisition::SetBreamInfoResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Acquisition::SetBreamInfoRequest)
-        res_marshaller = marshaller_for(::MinknowApi::Acquisition::SetBreamInfoResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Acquisition::SetBreamInfoRequest, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Acquisition::SetBreamInfoResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "set_bream_info", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Acquisition::SetBreamInfoResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
@@ -3577,8 +3587,8 @@ module MinknowApi::Acquisition
       end
 
       def append_mux_scan_result_response(request : ::MinknowApi::Acquisition::MuxScanResult, ctx : GRPC::ClientContext = GRPC::ClientContext.new) : GRPC::UnaryResponse(::MinknowApi::Acquisition::AppendMuxScanResultResponse)
-        req_marshaller = marshaller_for(::MinknowApi::Acquisition::MuxScanResult)
-        res_marshaller = marshaller_for(::MinknowApi::Acquisition::AppendMuxScanResultResponse)
+        req_marshaller = marshaller_for(::MinknowApi::Acquisition::MuxScanResult, ctx)
+        res_marshaller = marshaller_for(::MinknowApi::Acquisition::AppendMuxScanResultResponse, ctx)
         response = @channel.unary_call(FULL_NAME, "append_mux_scan_result", req_marshaller.encode(request), ctx)
         message = response.status.ok? ? res_marshaller.decode(response.raw) : nil
         GRPC::UnaryResponse(::MinknowApi::Acquisition::AppendMuxScanResultResponse).new(message, response.initial_metadata, response.trailing_metadata, response.status)
