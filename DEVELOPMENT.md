@@ -16,6 +16,23 @@ pins the generator versions for development and CI; it does not constrain
 applications that depend on this shard. `make gen-tools` rebuilds both plugins
 from their current sources so changes in their required files take effect.
 
+When adopting generator changes, update both dependencies together and commit
+the lock and regenerated sources as one migration:
+
+```sh
+shards update grpc proto --without-development
+make gen
+crystal spec
+crystal spec spec/live_reads_large.cr
+```
+
+Keep `shard.lock` in version control and use `shards install --frozen` for
+ordinary development and CI. Applications that depend on this shard resolve
+their own locks and need to update `minknow`, `grpc` and `proto` together when
+adopting these generated APIs. Publish dependency commits before pushing a lock
+that references them. The lock pins generators; the API schema remains pinned
+by the `minknow_api` submodule.
+
 `make gen` and `make gen-one` also regenerate the Google protobuf types used by
 the API. Their schemas are pinned under `vendor/google/protobuf` instead of
 depending on the host's protobuf include files. See `vendor/README.md` for their
@@ -44,7 +61,8 @@ service; it does not connect to MinKNOW or operate sequencing hardware.
 
 CI shuffles examples with `github.run_id` as the reproducible seed. Replay a
 failure with `crystal spec --order SEED`. The gRPC repository additionally tests
-its candidate source against a pinned checkout of this consumer and schema.
+its candidate source and proto dependency against this consumer's current
+default branch and its pinned schema, using explicit dependency overrides.
 
 ## Release Checklist
 

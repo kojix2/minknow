@@ -55,6 +55,9 @@ jobs:
       - name: Run specs
         run: crystal spec --order "${{ github.run_id }}"
 
+      - name: Test large live-read signals
+        run: crystal spec spec/live_reads_large.cr --order "${{ github.run_id }}"
+
       - name: Build examples
         run: |
           find examples -name "*.cr" | sort | while read f; do
