@@ -37,6 +37,12 @@ describe Minknow do
     config = Minknow::ConnectionConfig.new(host: "localhost", port: 9501, tls: true)
 
     config.address.should eq("https://localhost:9501")
+    ipv6 = Minknow::ConnectionConfig.new(host: "::1", port: 9501)
+    ipv6.address.should eq("https://[::1]:9501")
+    ipv6.localhost?.should be_true
+    bracketed = Minknow::ConnectionConfig.new(host: "[::1]", port: 9501)
+    bracketed.address.should eq(ipv6.address)
+    bracketed.localhost?.should be_true
   end
 
   it "honors an explicit local authentication opt-out over the environment" do

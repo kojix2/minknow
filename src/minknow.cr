@@ -77,7 +77,12 @@ module Minknow
 
     def address : String
       scheme = tls? ? "https" : "http"
-      "#{scheme}://#{host}:#{port}"
+      "#{scheme}://#{authority}"
+    end
+
+    def authority : String
+      name = host.includes?(':') && !host.starts_with?("[") ? "[#{host}]" : host
+      "#{name}:#{port}"
     end
 
     def client_context(*, deadline : Time::Span | Time? = nil) : GRPC::ClientContext
@@ -112,7 +117,7 @@ module Minknow
 
     def localhost? : Bool
       case host.downcase
-      when "localhost", "localhost.localdomain", "127.0.0.1", "::1"
+      when "localhost", "localhost.localdomain", "127.0.0.1", "::1", "[::1]"
         true
       else
         false
@@ -295,7 +300,7 @@ module Minknow
     end
 
     def endpoint : String
-      "#{config.host}:#{config.port}"
+      config.authority
     end
 
     def instance : InstanceService
