@@ -7,6 +7,8 @@ class RecordingChannel < GRPC::Channel
   getter responses = {} of String => Bytes
   getter sent_requests = [] of Bytes
   property bidi_final_status : GRPC::Status? = nil
+  property server_stream_status = GRPC::Status.ok
+  getter server_stream_cancellations = 0
 
   def initialize
     super("http://localhost:9501")
@@ -36,7 +38,10 @@ class RecordingChannel < GRPC::Channel
     messages = ::Channel(Bytes?).new(1)
     messages.send(responses.fetch(method, Bytes.empty))
     messages.close
-    GRPC::RawServerStream.new(messages, -> { GRPC::Status.ok })
+    GRPC::RawServerStream.new(messages, -> { server_stream_status }, cancel_proc: -> {
+      @server_stream_cancellations += 1
+      nil
+    })
   end
 
   def open_bidi_stream_live(

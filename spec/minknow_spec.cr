@@ -298,6 +298,42 @@ describe "service wrappers" do
     positions.first.secure_port.should eq(9600)
     channel.calls.last[1].should eq("flow_cell_positions")
     channel.calls.last[3].should be(ctx)
+    channel.server_stream_cancellations.should eq(1)
+  end
+
+  it "raises trailer errors instead of returning empty or partial position lists" do
+    response = MinknowApi::Manager::FlowCellPositionsResponse.new
+    response.positions = [MinknowApi::Manager::FlowCellPosition.new.tap(&.name=("X1"))]
+    [GRPC::StatusCode::UNAUTHENTICATED, GRPC::StatusCode::UNAVAILABLE].each do |code|
+      [Bytes.empty, response.encode].each do |payload|
+        channel = RecordingChannel.new
+        channel.responses["flow_cell_positions"] = payload
+        channel.server_stream_status = GRPC::Status.new(code)
+        manager = RecordingManager.new
+        manager.recording_channel = channel
+
+        error = expect_raises(GRPC::StatusError) do
+          manager.fetch_flow_cell_positions(GRPC::ClientContext.new)
+        end
+        error.code.should eq(code)
+        channel.server_stream_cancellations.should eq(1)
+      end
+    end
+  end
+
+  it "releases the positions stream when converting a position fails" do
+    channel = RecordingChannel.new
+    position = MinknowApi::Manager::FlowCellPosition.new
+    position.rpc_ports = MinknowApi::Manager::FlowCellPosition::RpcPorts.new.tap(&.secure=(UInt32::MAX))
+    response = MinknowApi::Manager::FlowCellPositionsResponse.new.tap(&.positions=([position]))
+    channel.responses["flow_cell_positions"] = response.encode
+    manager = RecordingManager.new
+    manager.recording_channel = channel
+
+    expect_raises(OverflowError) do
+      manager.fetch_flow_cell_positions(GRPC::ClientContext.new)
+    end
+    channel.server_stream_cancellations.should eq(1)
   end
 
   {% for entry in [

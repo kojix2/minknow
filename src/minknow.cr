@@ -376,7 +376,11 @@ module Minknow
         end
       end
 
+      status = stream.status
+      raise GRPC::StatusError.new(status) unless status.ok?
       positions
+    ensure
+      stream.try(&.cancel)
     end
 
     def describe_host(ctx : GRPC::ClientContext = config.client_context) : MinknowApi::Manager::DescribeHostResponse
